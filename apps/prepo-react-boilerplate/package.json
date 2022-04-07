@@ -5,7 +5,7 @@
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",
     "postinstall": "yarn generate-types && yarn mst-gql:generate",
     "dev": "npx next",
-    "build": "next build && next-sitemap && next export",
+    "build": "next build && next-sitemap",
     "test": "jest -w 1",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext ts,tsx",

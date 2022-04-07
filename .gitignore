@@ -53,8 +53,8 @@ generated
 .sentryclirc
 
 # Sitemap
-/public/sitemap.xml
-/public/robots.txt
+**/public/sitemap.xml
+**/public/robots.txt
 
 # Hardhat
 apps/**/data

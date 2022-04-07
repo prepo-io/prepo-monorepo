@@ -4,6 +4,17 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "prepo-react-boilerplate#build": {
+      "dependsOn": [
+        "^build",
+        "$SENTRY_ORG",
+        "$SENTRY_PROJECT_PREPO_REACT_BOILERPLATE",
+        "$NEXT_PUBLIC_SENTRY_DSN",
+        "$SENTRY_AUTH_TOKEN",
+        "$NPM_RC"
+      ],
+      "outputs": [".next/**"]
+    },
     "test": {},
     "lint": {
       "outputs": []
