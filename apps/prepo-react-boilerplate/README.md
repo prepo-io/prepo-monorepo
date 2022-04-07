@@ -1,4 +1,4 @@
-# prePO React Boilerplate
+# prepo-react-boilerplate
 
 ## What is this?
 
