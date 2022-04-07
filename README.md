@@ -49,3 +49,7 @@ yarn install
 cd apps/prepo-x-y
 yarn dev
 ```
+
+## Disclaimer
+
+The AGPL V3 license only applies to the code within the repository. Any assets or other files (in part or whole) that already have a non-open-source license are excluded.
