@@ -15,6 +15,10 @@
       ],
       "outputs": [".next/**"]
     },
+    "prepo-docs#build": {
+      "dependsOn": ["^build", "$NPM_RC"],
+      "outputs": ["build/**"]
+    },
     "test": {},
     "lint": {
       "outputs": []
