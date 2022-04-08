@@ -37,7 +37,7 @@ $ yarn start
 $ yarn build
 ```
 
-This command will generate a folder `out` which will include all the static HTML files. That folder is the one that should be deployed to hosting provider.
+This command will generate a folder `out` which will include all the static HTML files. That folder is the one that should be deployed to hosting provider
 
 ## Test
 
