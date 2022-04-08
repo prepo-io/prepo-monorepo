@@ -1,0 +1,19 @@
+{
+  "extends": "tsconfig/frontend.json",
+  "include": ["vite-env.d.ts", "styled.d.ts", "src/**/*", "prepo-sdk/*", "vite.config.ts"],
+  "exclude": ["node_modules", ".next", ".turbo"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@prepo-sdk": ["../prepo-sdk/src/"],
+      "@prepo-sdk/types": ["../prepo-sdk/src/types"]
+    }
+  },
+  "plugins": [
+    {
+      "transform": "typescript-plugin-styled-components",
+      "type": "config",
+      "minify": true
+    }
+  ]
+}

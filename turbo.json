@@ -23,6 +23,10 @@
       "dependsOn": ["^build", "$NEXT_PUBLIC_RECAPTCHA_SITE_ID", "$NPM_RC"],
       "outputs": [".next/**", "out/**"]
     },
+    "prepo-simulator#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
     "test": {},
     "lint": {
       "outputs": []
