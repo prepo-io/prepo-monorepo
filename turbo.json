@@ -24,7 +24,7 @@
       "outputs": [".next/**", "out/**"]
     },
     "prepo-simulator#build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "$NPM_RC"],
       "outputs": ["dist/**"]
     },
     "test": {},
