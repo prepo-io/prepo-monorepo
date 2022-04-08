@@ -21,7 +21,7 @@
     },
     "prepo-website#build": {
       "dependsOn": ["^build", "$NEXT_PUBLIC_RECAPTCHA_SITE_ID", "$NPM_RC"],
-      "outputs": ["out/**"]
+      "outputs": [".next/**", "out/**"]
     },
     "test": {},
     "lint": {
