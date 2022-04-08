@@ -1,4 +1,4 @@
-# prePO Simulation Tool
+# prepo-simulator
 
 ## Installation
 
