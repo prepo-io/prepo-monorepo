@@ -1,5 +1,6 @@
 # prePO Monorepo
 
+[![GitHub license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/prepo-io/prepo-monorepo/blob/main/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 The monorepo for all prePO applications.
