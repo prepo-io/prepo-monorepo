@@ -1,12 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { SimulationTool } from 'prepo-sdk'
 import { Periods, PositionState } from './position-slice'
 import {
   calcMaxCapitalEfficiency,
   selectMaxCapitalEfficiency,
 } from './max-capital-efficiency-selector'
+import { checkValuationRangeValid, valuationToLongPrice } from '../../helpers'
 import { RootState } from '../../app/store'
-import { SimulationTool } from '@prepo-sdk'
-import { checkValuationRangeValid, valuationToLongPrice } from 'helpers'
 
 const { Market, Actor } = SimulationTool
 

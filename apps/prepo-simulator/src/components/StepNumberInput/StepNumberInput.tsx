@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Col, Input, Row } from 'antd'
 import { getCalculationVariables } from './step-number-input-utils'
+import { percentToFloat } from '../../helpers'
 import ButtonIcon from '../ButtonIcon'
-import { spacingIncrement } from 'features/app/themes'
-import { percentToFloat } from 'helpers'
+import { spacingIncrement } from '../../features/app/themes'
 
 const StyledInput = styled(Input)`
   && {

@@ -1,13 +1,13 @@
 import React, { createRef, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { getMarketValuationRange } from './utils/market-position-utils'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import RadioGroup from 'components/RadioGroup'
-import { actions } from 'features/position/position-slice'
-import StyledRadio from 'components/StyledRadio'
-import useBreakpoint from 'hooks/useBreakpoint'
-import markets from 'features/position/markets'
-import Radio from 'components/Radio'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import RadioGroup from '../../components/RadioGroup'
+import { actions } from '../position/position-slice'
+import StyledRadio from '../../components/StyledRadio'
+import useBreakpoint from '../../hooks/useBreakpoint'
+import markets from '../position/markets'
+import Radio from '../../components/Radio'
 
 const MarketLogo = styled.img`
   height: 1.5625rem;

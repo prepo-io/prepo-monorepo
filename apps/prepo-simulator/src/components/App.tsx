@@ -5,7 +5,7 @@ import { ModalContextProvider } from './Modal/ModalContext'
 import Simulation from './Simulation'
 import WelcomeModal from '../features/welcome-modal/WelcomeModal'
 import { useAppSelector } from '../app/hooks'
-import RestoreLabState from 'features/welcome-modal/RestoreLabState'
+import RestoreLabState from '../features/welcome-modal/RestoreLabState'
 
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.app.theme)

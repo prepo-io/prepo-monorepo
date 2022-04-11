@@ -1,0 +1,37 @@
+{
+  "name": "prepo-sdk",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "files": ["src/index.ts", "src/types.ts"],
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "build": "tsc",
+    "build:watch": "yarn build --watch",
+    "build-docs": "typedoc ./src/index.ts --excludePrivate"
+  },
+  "dependencies": {
+    "colors": "1.4.0",
+    "decimal.js": "10.3.1",
+    "table": "6.7.0",
+    "tslib": "1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.14.0",
+    "@babel/preset-env": "7.14.1",
+    "@babel/preset-typescript": "7.13.0",
+    "@types/jest": "26.0.23",
+    "@types/node": "10",
+    "@types/uuid": "8.3.0",
+    "config": "*",
+    "babel-jest": "26.6.3",
+    "eslint": "8.12.0",
+    "globby": "10",
+    "jest": "26.6.3",
+    "ts-node": "10.4.0",
+    "typedoc": "0.20.36",
+    "prettier": "2.5.1",
+    "tsconfig": "*",
+    "typescript": "4.2.4"
+  }
+}

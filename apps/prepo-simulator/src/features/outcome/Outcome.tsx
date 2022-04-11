@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import OutcomeTable from 'features/outcome-table/OutcomeTable'
-import ProfitLoss from 'features/profit-loss/ProfitLoss'
-import { useAppSelector } from 'app/hooks'
-import { media } from 'utils/media'
-import Deposit from 'features/deposit/Deposit'
+import OutcomeTable from '../outcome-table/OutcomeTable'
+import ProfitLoss from '../profit-loss/ProfitLoss'
+import { useAppSelector } from '../../app/hooks'
+import { media } from '../../utils/media'
+import Deposit from '../deposit/Deposit'
 
 type WrapperProps = {
   visibleOnMobile: boolean

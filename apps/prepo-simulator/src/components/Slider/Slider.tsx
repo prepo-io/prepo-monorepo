@@ -7,7 +7,7 @@ import { getColoredTrackPercentages, SupportedColor } from './slider-utils'
 import SliderTrack from './SliderTrack'
 import SliderThumb from './SliderThumb'
 import SingleSliderTrack from './SingleSliderTrack'
-import { spacingIncrement } from 'features/app/themes'
+import { spacingIncrement } from '../../features/app/themes'
 
 type LabelPosition = 'top' | 'side'
 

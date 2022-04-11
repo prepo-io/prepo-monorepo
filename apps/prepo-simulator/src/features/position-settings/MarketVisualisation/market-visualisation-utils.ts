@@ -13,8 +13,8 @@ import {
   LIMITS_RECT_SIZE_DEFAULT,
   SCALE,
 } from './market-visualisation-constants'
-import { Bounds } from 'features/position/markets'
-import { formatValutionNumber } from 'helpers'
+import { Bounds } from '../../position/markets'
+import { formatValutionNumber } from '../../../helpers'
 
 type Coord = { x: number; y: number }
 

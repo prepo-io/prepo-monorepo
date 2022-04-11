@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState, useEffect } from 'react'
 import throttle from 'lodash.throttle'
-import { Sizes, sizes } from 'features/app/themes'
+import { Sizes, sizes } from '../features/app/themes'
 
 const getDeviceConfig = (width: number): keyof Sizes => {
   if (width < sizes.lg) {

@@ -3,7 +3,7 @@ import { PositionState } from './position-slice'
 import { simulateOutcome } from './outcome-selector'
 import { calcMaxCapitalEfficiency } from './max-capital-efficiency-selector'
 import { RootState } from '../../app/store'
-import { calcValuationPrecision, roundValuation } from 'helpers'
+import { calcValuationPrecision, roundValuation } from '../../helpers'
 
 interface ScenarioBounds {
   maxProfit: [number, number]

@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom'
 import Div100vh from 'react-div-100vh'
 import styled from 'styled-components'
 import { useModalContext } from './ModalContext'
-import { media } from 'utils/media'
-import { spacingIncrement } from 'features/app/themes'
+import { media } from '../../utils/media'
+import { spacingIncrement } from '../../features/app/themes'
 
 export const ModalBlock = styled(Div100vh)`
   align-items: center;

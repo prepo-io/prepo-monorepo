@@ -4,8 +4,8 @@ import React, { createRef, useEffect } from 'react'
 import styled from 'styled-components'
 import scrollIntoView from 'smooth-scroll-into-view-if-needed'
 import { Radio, RadioProps } from 'antd'
-import { actions } from 'features/position/position-slice'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
+import { actions } from '../features/position/position-slice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 
 export const MultiRadioContainer = styled.div`
   border-color: ${({ theme }): string => theme.colors.accent};

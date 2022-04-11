@@ -4,45 +4,28 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'airbnb-base',
     'airbnb-typescript/base',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
-    'prettier',
+    'plugin:import/recommended',
+    'plugin:prettier/recommended',
   ],
-  plugins: ['import', '@typescript-eslint'],
+  plugins: [...require('./eslint-common').plugins],
   parserOptions: {
     project: ['./tsconfig.json'],
   },
   settings: {
+    ...require('./eslint-common').settings,
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts'],
     },
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.ts'],
-        moduleDirectory: ['node_modules', 'src/'],
-      },
-      typescript: {
-        alwaysTryTypes: true,
-        project: '.',
-      },
-    },
   },
   rules: {
-    // Typescript
-    '@typescript-eslint/explicit-function-return-type': 'error',
+    ...require('./eslint-common').rules,
   },
-  // overrides: [
-  //   {
-  //     env: {
-  //       jest: true,
-  //     },
-  //     files: ['**/__tests__/**/*.[jt]s', '**/?(*.)+(spec|test).[jt]s'],
-  //     extends: ['plugin:jest/recommended'],
-  //   },
-  // ],
-  ignorePatterns: ['**/*.js', 'node_modules', '.turbo', 'dist'],
+  overrides: require('./eslint-common').overrides,
+  ignorePatterns: require('./eslint-common').ignorePatterns,
 }

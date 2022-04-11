@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import PencilIcon from 'assets/images/pencil-icon.svg'
-import MinusIcon from 'assets/images/minus.svg'
-import PlusIcon from 'assets/images/plus.svg'
-import { noSelect } from 'utils/style-utils'
+import MinusIcon from '../assets/images/minus.svg'
+import PlusIcon from '../assets/images/plus.svg'
+import { noSelect } from '../utils/style-utils'
+import PencilIcon from '../assets/images/pencil-icon.svg'
 
 const Wrapper = styled.div`
   ${noSelect};

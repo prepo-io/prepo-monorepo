@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { useAppSelector } from '../../app/hooks'
+import useBreakpoint from '../../hooks/useBreakpoint'
+import { bigAmountToUsd } from '../../utils/number-utils'
 import RoiPercent, { RoiWrapper } from '../../components/RoiPercent'
 import { selectOutcome } from '../position/outcome-selector'
 import { formatUsd } from '../../helpers'
 import ProfitBackground from '../../assets/images/profit-background.svg'
 import LossBackground from '../../assets/images/loss-background.svg'
-import { useAppSelector } from 'app/hooks'
-import useBreakpoint from 'hooks/useBreakpoint'
-import { bigAmountToUsd } from 'utils/number-utils'
 
 const Wrapper = styled.div`
   position: sticky;

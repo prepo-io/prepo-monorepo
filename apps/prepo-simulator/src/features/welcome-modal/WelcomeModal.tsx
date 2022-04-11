@@ -5,10 +5,10 @@ import Button from '../../components/Button'
 import { useModalContext } from '../../components/Modal/ModalContext'
 import { actions as positionActions } from '../position/position-slice'
 import { actions as appActions } from '../app/app-slice'
-import { media } from 'utils/media'
-import { useAppDispatch } from 'app/hooks'
-import { spacingIncrement } from 'features/app/themes'
-import Logo from 'components/Logo'
+import { media } from '../../utils/media'
+import { useAppDispatch } from '../../app/hooks'
+import { spacingIncrement } from '../app/themes'
+import Logo from '../../components/Logo'
 
 const Wrapper = styled.div`
   ${media.lg`
