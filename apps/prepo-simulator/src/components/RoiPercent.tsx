@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { formatPercent } from 'helpers'
+import { formatPercent } from '../helpers'
 
 type Sign = '' | '+' | '-'
 

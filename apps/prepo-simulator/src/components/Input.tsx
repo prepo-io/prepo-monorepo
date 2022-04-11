@@ -2,8 +2,8 @@
 import React, { forwardRef } from 'react'
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
 import { Input as AntInput, InputProps } from 'antd'
-import { spacingIncrement } from 'features/app/themes'
-import { media } from 'utils/media'
+import { spacingIncrement } from '../features/app/themes'
+import { media } from '../utils/media'
 
 const inputStyles = css`
   background-color: ${({ theme }): string => theme.colors.foreground};

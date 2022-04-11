@@ -76,4 +76,10 @@ artifacts
 .cache-loader
 .vercel
 
-# --------- prepo-react-boilerplate ---------
+# --------- prepo-sdk ---------
+*-debug.log
+*-error.log
+.nyc_output
+lib
+tmp
+docs

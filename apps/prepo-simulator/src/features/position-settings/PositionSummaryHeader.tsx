@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getHoldingPeriodLabel } from './utils/market-position-utils'
-import { useAppSelector } from 'app/hooks'
-import { Direction } from 'features/position/position-slice'
-import { media } from 'utils/media'
-import { cardPadding } from 'components/Card'
+import { useAppSelector } from '../../app/hooks'
+import { Direction } from '../position/position-slice'
+import { media } from '../../utils/media'
+import { cardPadding } from '../../components/Card'
 
 const Wrapper = styled.div`
   display: flex;

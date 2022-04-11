@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Row, Alert } from 'antd'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import { actions } from 'features/position/position-slice'
-import { spacingIncrement } from 'features/app/themes'
-import InfoTooltipIcon from 'features/icons/InfoTooltipIcon'
-import Input from 'components/Input'
-import { Bounds } from 'features/position/markets'
-import { forceNumInRange } from 'helpers'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { actions } from '../../position/position-slice'
+import { spacingIncrement } from '../../app/themes'
+import InfoTooltipIcon from '../../icons/InfoTooltipIcon'
+import Input from '../../../components/Input'
+import { Bounds } from '../../position/markets'
+import { forceNumInRange } from '../../../helpers'
 
 const Wrapper = styled.div`
   margin-top: ${spacingIncrement(2)};

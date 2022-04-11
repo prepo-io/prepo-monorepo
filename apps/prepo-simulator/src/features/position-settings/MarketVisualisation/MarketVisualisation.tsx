@@ -1,11 +1,11 @@
 import React, { forwardRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { draw } from './market-visualisation-utils'
 import { OVERFLOW_MARGIN } from './market-visualisation-constants'
-import { useAppSelector } from 'app/hooks'
-import { selectNonZeroOutcome } from 'features/position/outcome-selector'
-import { spacingIncrement } from 'features/app/themes'
-import { checkValuationRangeValid, valuationToLongPrice } from 'helpers'
+import { draw } from './market-visualisation-utils'
+import { useAppSelector } from '../../../app/hooks'
+import { selectNonZeroOutcome } from '../../position/outcome-selector'
+import { spacingIncrement } from '../../app/themes'
+import { checkValuationRangeValid, valuationToLongPrice } from '../../../helpers'
 
 const Wrapper = styled.div`
   align-items: center;

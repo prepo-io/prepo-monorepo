@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import styled from 'styled-components'
-import Button from 'components/Button'
-import { useModalContext } from 'components/Modal/ModalContext'
-import { spacingIncrement } from 'features/app/themes'
-import { media } from 'utils/media'
-import useBreakpoint from 'hooks/useBreakpoint'
+import Button from '../../components/Button'
+import { useModalContext } from '../../components/Modal/ModalContext'
+import { spacingIncrement } from '../app/themes'
+import { media } from '../../utils/media'
+import useBreakpoint from '../../hooks/useBreakpoint'
 
 const Wrapper = styled.div`
   align-items: flex-end;

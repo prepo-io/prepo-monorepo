@@ -9,7 +9,7 @@
     "incremental": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": false,

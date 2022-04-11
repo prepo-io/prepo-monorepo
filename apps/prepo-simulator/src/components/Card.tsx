@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css, FlattenSimpleInterpolation } from 'styled-components'
-import { spacingIncrement } from 'features/app/themes'
-import { media } from 'utils/media'
+import { spacingIncrement } from '../features/app/themes'
+import { media } from '../utils/media'
 
 export const cardPadding = css`
   padding-bottom: ${spacingIncrement(2.5)};

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import RoiPercent from 'components/RoiPercent'
-import { spacingIncrement } from 'features/app/themes'
+import RoiPercent from '../../components/RoiPercent'
+import { spacingIncrement } from '../app/themes'
 
 const ROIWrapper = styled.div<{ primary: boolean }>`
   float: right;

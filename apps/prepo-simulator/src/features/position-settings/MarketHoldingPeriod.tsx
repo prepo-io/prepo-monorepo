@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { Col, Row } from 'antd'
 import { getHoldingPeriodLabel } from './utils/market-position-utils'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import { actions, Periods } from 'features/position/position-slice'
-import { spacingIncrement } from 'features/app/themes'
-import Input from 'components/Input'
-import { MultiSelect, MultiSelectItem } from 'components/MultiSelect'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { actions, Periods } from '../position/position-slice'
+import { spacingIncrement } from '../app/themes'
+import Input from '../../components/Input'
+import { MultiSelect, MultiSelectItem } from '../../components/MultiSelect'
 
 const OuterWrapper = styled.div`
   display: flex;

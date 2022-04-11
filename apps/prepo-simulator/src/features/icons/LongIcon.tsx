@@ -1,5 +1,5 @@
 import React from 'react'
-import themes from 'features/app/themes'
+import themes from '../app/themes'
 
 type Props = {
   disabled?: boolean

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import PencilIcon from 'assets/images/pencil-icon.svg'
+import PencilIcon from '../assets/images/pencil-icon.svg'
 
 const BorderImg = styled.img`
   background-color: ${({ theme }): string => theme.colors.foreground};

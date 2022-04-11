@@ -3,7 +3,7 @@ import { Literal, Union, Static } from 'runtypes'
 import markets, { Market, MarketName, MarketType, Bounds } from './markets'
 import { calcMaxCapitalEfficiency } from './max-capital-efficiency-selector'
 import { deriveMaxProfitLossEntryExitValues } from './scenario-bounds-selector'
-import { forceNumInRange } from 'helpers'
+import { forceNumInRange } from '../../helpers'
 
 export const TraderType = Union(Literal('trader'), Literal('lp'))
 export type Type = Static<typeof TraderType>
