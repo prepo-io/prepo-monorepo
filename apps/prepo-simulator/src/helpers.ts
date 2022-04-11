@@ -1,10 +1,11 @@
+import { PoolBounds } from 'prepo-sdk'
+import { Bounds } from './features/position/markets'
 import { DELTA } from './constants'
-import { Bounds } from 'features/position/markets'
-import { PoolBounds } from '@prepo-sdk/types'
 
 export function formatPercent(decimal: number, suffix = true): string {
-  if (decimal > 0.1 - DELTA || decimal < -0.1 + DELTA)
+  if (decimal > 0.1 - DELTA || decimal < -0.1 + DELTA) {
     return `${(decimal * 100).toFixed(0)}${suffix ? '%' : ''}`
+  }
   return `${(decimal * 100).toFixed(1)}${suffix ? '%' : ''}`
 }
 

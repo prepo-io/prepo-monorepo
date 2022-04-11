@@ -5,7 +5,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { css, DefaultTheme, ThemedCssFunction } from 'styled-components'
-import { sizes } from 'features/app/themes'
+import { sizes } from '../features/app/themes'
 
 export const pixelSizes = {
   lg: `${sizes.lg}px`,

@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import OutcomeTableRow, { RowData } from './OutcomeTableRow'
 import OutcomeTableTop from './OutcomeTableTop'
+import OutcomeTableRow, { RowData } from './OutcomeTableRow'
+import { selectOutcome } from '../position/outcome-selector'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { spacingIncrement } from '../app/themes'
+import StepNumberInput from '../../components/StepNumberInput'
+import { formatPercent } from '../../helpers'
+import { actions } from '../position/position-slice'
 import { DEFAULT_HOLDING_PERIOD_MESSAGE, MAX_REWARD } from '../../constants'
-import { selectOutcome } from 'features/position/outcome-selector'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import { spacingIncrement } from 'features/app/themes'
-import StepNumberInput from 'components/StepNumberInput'
-import { formatPercent } from 'helpers'
-import { actions } from 'features/position/position-slice'
 
 const Wrapper = styled.div`
   margin-bottom: ${spacingIncrement(4)};

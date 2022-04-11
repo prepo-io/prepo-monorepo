@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PositionSettingsEntryExitAccordion from './entry-exit-accordion/PositionSettingsEntryExitAccordion'
-import PositionSettingsAccordion from 'features/position-settings/PositionSettingsTypeAccordion'
+import PositionSettingsAccordion from './PositionSettingsTypeAccordion'
 
 const Wrapper = styled.div``
 

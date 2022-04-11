@@ -1,7 +1,7 @@
 import React, { forwardRef, Ref } from 'react'
 import { Radio, RadioGroupProps } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement } from 'features/app/themes'
+import { spacingIncrement } from '../features/app/themes'
 
 type Props = RadioGroupProps & {
   ref?: Ref<HTMLDivElement> | undefined

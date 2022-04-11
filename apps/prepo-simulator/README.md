@@ -1,4 +1,4 @@
-# prepo-simulator
+# prepo-simulator.
 
 ## Installation
 

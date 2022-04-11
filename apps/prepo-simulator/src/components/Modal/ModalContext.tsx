@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unused-prop-types */
 import React, { createContext, useContext, useState, useMemo } from 'react'
 import Modal from './Modal'
-import { useAppSelector } from 'app/hooks'
+import { useAppSelector } from '../../app/hooks'
 
 export type ModalContextProviderValues = {
   showModal?: boolean

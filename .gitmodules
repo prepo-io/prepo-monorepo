@@ -1,3 +1,0 @@
-[submodule "apps/prepo-simulator/prepo-sdk"]
-	path = apps/prepo-simulator/prepo-sdk
-	url = https://github.com/prepo-io/prepo-sdk

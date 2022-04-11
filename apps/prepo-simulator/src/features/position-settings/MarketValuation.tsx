@@ -1,15 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { getPositionColor } from './utils/market-position-utils'
+import { selectScenarioBounds } from '../position/scenario-bounds-selector'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { actions } from '../position/position-slice'
+import { MultiSelect, MultiSelectItem } from '../../components/MultiSelect'
+import { spacingIncrement } from '../app/themes'
+import { selectNonZeroOutcome } from '../position/outcome-selector'
+import { media } from '../../utils/media'
+import {
+  calcValuationPrecision,
+  checkValuationRangeValid,
+  formatValutionNumber,
+} from '../../helpers'
 import Slider, { SliderValue } from '../../components/Slider/Slider'
-import { selectScenarioBounds } from 'features/position/scenario-bounds-selector'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import { actions } from 'features/position/position-slice'
-import { MultiSelect, MultiSelectItem } from 'components/MultiSelect'
-import { spacingIncrement } from 'features/app/themes'
-import { selectNonZeroOutcome } from 'features/position/outcome-selector'
-import { media } from 'utils/media'
-import { calcValuationPrecision, checkValuationRangeValid, formatValutionNumber } from 'helpers'
 
 const Wrapper = styled.div`
   display: flex;

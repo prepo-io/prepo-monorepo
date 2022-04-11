@@ -1,7 +1,7 @@
 import { Bounds } from '../../position/markets'
 import { formatValuation } from '../../../helpers'
-import { Periods, periods } from 'features/position/position-slice'
-import { Outcome } from 'features/position/outcome-selector'
+import { Periods, periods } from '../../position/position-slice'
+import { Outcome } from '../../position/outcome-selector'
 
 export const getMarketValuationRange = (marketValuationBounds: Bounds): string => {
   const { ceil, floor } = marketValuationBounds

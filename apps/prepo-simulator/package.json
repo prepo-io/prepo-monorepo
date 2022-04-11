@@ -8,6 +8,9 @@
     "lint": "eslint . --ext .tsx --ext .ts",
     "lint:fix": "yarn lint --fix"
   },
+  "bundledDependencies": [
+    "prepo-sdk"
+  ],
   "dependencies": {
     "@reduxjs/toolkit": "1.7.1",
     "antd": "4.17.4",
@@ -20,7 +23,8 @@
     "runtypes": "6.5.0",
     "smooth-scroll-into-view-if-needed": "1.1.32",
     "styled-components": "5.3.1",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
+    "prepo-sdk": "*"
   },
   "devDependencies": {
     "@types/lodash.throttle": "4.1.6",

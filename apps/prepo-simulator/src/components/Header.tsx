@@ -10,8 +10,8 @@ import { actions as positionActions } from '../features/position/position-slice'
 import MenuDropdown from '../assets/images/menu-dropdown.svg'
 import StartOverIcon from '../assets/images/start-over-icon.svg'
 import StartOverIconGrey from '../assets/images/start-over-icon-grey.svg'
-import { media } from 'utils/media'
-import { spacingIncrement } from 'features/app/themes'
+import { media } from '../utils/media'
+import { spacingIncrement } from '../features/app/themes'
 
 const StartOverButton = styled.div`
   align-items: center;

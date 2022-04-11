@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Input as AntdInput } from 'antd'
+import { actions } from '../position/position-slice'
+import { spacingIncrement } from '../app/themes'
+import Input from '../../components/Input'
+import { media } from '../../utils/media'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { MAX_DEPOSIT_AMOUNT } from '../../constants'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
-import { actions } from 'features/position/position-slice'
-import { spacingIncrement } from 'features/app/themes'
-import Input from 'components/Input'
-import { media } from 'utils/media'
 
 type WrapperProps = {
   show: boolean

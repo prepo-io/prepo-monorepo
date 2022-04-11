@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Row, Col } from 'antd'
+import { useAppSelector } from '../../../app/hooks'
+import { spacingIncrement } from '../../app/themes'
+import { media } from '../../../utils/media'
+import { selectNonZeroOutcome } from '../../position/outcome-selector'
+import RightArrowIcon from '../../../components/icons/RightArrowIcon'
+import { formatValutionNumber } from '../../../helpers'
+import { cardPadding } from '../../../components/Card'
 import {
   floatToPercentageFormat,
   getCapitalEfficiencyLabelFormat,
   getMarketValuationRange,
   getPositionColor,
 } from '../utils/market-position-utils'
-import { useAppSelector } from 'app/hooks'
-import { spacingIncrement } from 'features/app/themes'
-import { media } from 'utils/media'
-import { selectNonZeroOutcome } from 'features/position/outcome-selector'
-import RightArrowIcon from 'components/icons/RightArrowIcon'
-import { formatValutionNumber } from 'helpers'
-import { cardPadding } from 'components/Card'
 
 const Wrapper = styled.div`
   display: flex;
