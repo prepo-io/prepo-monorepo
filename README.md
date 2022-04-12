@@ -3,6 +3,11 @@
 [![GitHub license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/prepo-io/prepo-monorepo/blob/main/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
+[![prePO](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/XSQRdJactS)
+[![prePO Discord](https://badgen.net/discord/members/XSQRdJactS)](https://discord.gg/XSQRdJactS)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/prepo_io?style=social&logo=twitter)](https://twitter.com/prepo_io)
+
 The monorepo for all prePO applications.
 
 ## What's inside?
