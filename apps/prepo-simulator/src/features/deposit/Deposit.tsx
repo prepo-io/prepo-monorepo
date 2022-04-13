@@ -34,6 +34,8 @@ function parseUsd(dollars: string): number {
   return parseInt(dollars.replace(/\D*/g, ''), 10) // replace non-numbers
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 function keepCursorRight(inputEl: React.RefObject<AntdInput>): void {
   const shiftRight = (): void => {
     setTimeout(() => {
@@ -48,6 +50,8 @@ function keepCursorRight(inputEl: React.RefObject<AntdInput>): void {
 }
 
 const Deposit: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const inputEl = useRef<AntdInput>(null)
   const position = useAppSelector((state) => state.position)
   const dispatch = useAppDispatch()

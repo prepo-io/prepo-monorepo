@@ -21,7 +21,8 @@ const StyledThumb: any = styled.div`
   width: 0.875rem;
 `
 
-const ToolTipWrapper = styled(Tooltip)<TooltipProps>`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ToolTipWrapper: any = styled(Tooltip)<TooltipProps>`
   display: flex;
   flex-direction: column;
   outline: none;

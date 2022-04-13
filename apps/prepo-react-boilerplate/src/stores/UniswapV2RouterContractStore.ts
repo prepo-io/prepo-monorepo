@@ -1,5 +1,5 @@
 import { makeObservable, observable, runInAction } from 'mobx'
-import { ContractStore, Factory } from '@prepo-io/stores'
+import { ContractStore } from '@prepo-io/stores'
 import { RootStore } from './RootStore'
 import { ContractReturn } from './utils/class-utils'
 import {
@@ -15,12 +15,7 @@ export class UniswapV2RouterContractStore extends ContractStore<RootStore, Suppo
   removingLiquidity: boolean
 
   constructor(root: RootStore) {
-    super(
-      root,
-      'UNISWAP_V2_ROUTER',
-      'uniswapV2RouterContractStore',
-      UniswapV2RouterAbi__factory as unknown as Factory
-    )
+    super(root, 'UNISWAP_V2_ROUTER', UniswapV2RouterAbi__factory)
     this.removingLiquidity = false
     makeObservable(this, {
       removingLiquidity: observable,
