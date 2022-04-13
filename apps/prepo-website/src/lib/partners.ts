@@ -299,7 +299,7 @@ export const angels: Partner[] = [
     url: 'https://twitter.com/intocryptoast',
   },
   {
-    imageUrl: 'https://pbs.twimg.com/profile_images/1447263028559466498/RYSG4wED_400x400.jpg',
+    iconName: 'octav',
     name: 'Mathieu Baril',
     url: 'https://twitter.com/mbaril010',
     description: 'Octav',
