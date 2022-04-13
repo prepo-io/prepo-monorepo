@@ -13,25 +13,25 @@
   "dependencies": {
     "colors": "1.4.0",
     "decimal.js": "10.3.1",
-    "table": "6.7.0",
-    "tslib": "1"
+    "table": "6.8.0",
+    "tslib": "2.3.1"
   },
   "devDependencies": {
-    "@babel/core": "7.14.0",
-    "@babel/preset-env": "7.14.1",
-    "@babel/preset-typescript": "7.13.0",
-    "@types/jest": "26.0.23",
-    "@types/node": "10",
-    "@types/uuid": "8.3.0",
+    "@babel/core": "7.17.9",
+    "@babel/preset-env": "7.16.11",
+    "@babel/preset-typescript": "7.16.7",
+    "@types/jest": "27.4.1",
+    "@types/node": "17.0.23",
+    "@types/uuid": "8.3.4",
     "config": "*",
-    "babel-jest": "26.6.3",
-    "eslint": "8.12.0",
-    "globby": "10",
-    "jest": "26.6.3",
-    "ts-node": "10.4.0",
-    "typedoc": "0.20.36",
-    "prettier": "2.5.1",
+    "babel-jest": "27.5.1",
+    "eslint": "8.13.0",
+    "globby": "13.1.1",
+    "jest": "27.5.1",
+    "ts-node": "10.7.0",
+    "typedoc": "0.22.15",
+    "prettier": "2.6.2",
     "tsconfig": "*",
-    "typescript": "4.2.4"
+    "typescript": "4.6.3"
   }
 }
