@@ -19,6 +19,7 @@ const ForkVentures = dynamic(() => import('./ForkVentures'), { ssr: false })
 const HoneyDAO = dynamic(() => import('./HoneyDAO'), { ssr: false })
 const IOSGVenture = dynamic(() => import('./IosgVenture'), { ssr: false })
 const NeptuneDAO = dynamic(() => import('./NeptuneDAO'), { ssr: false })
+const Octav = dynamic(() => import('./Octav'), { ssr: false })
 const Re7Capital = dynamic(() => import('./Re7Capital'), { ssr: false })
 const TheLao = dynamic(() => import('./TheLao'), { ssr: false })
 
@@ -38,6 +39,7 @@ export default {
   mexc: Mexc,
   neptuneDAO: NeptuneDAO,
   nxgen: NxGen,
+  octav: Octav,
   possibleVentures: PossibleVentures,
   re7Capital: Re7Capital,
   republicCapital: RepublicCapital,
