@@ -80,6 +80,6 @@ artifacts
 *-debug.log
 *-error.log
 .nyc_output
-lib
+packages/prepo-sdk/lib
 tmp
 docs
