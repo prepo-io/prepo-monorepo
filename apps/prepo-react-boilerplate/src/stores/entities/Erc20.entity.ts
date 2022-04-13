@@ -1,6 +1,6 @@
 import { makeObservable, observable, runInAction, computed, action } from 'mobx'
 import { BigNumber, utils } from 'ethers'
-import { ContractReturn, ContractStore, Factory } from '@prepo-io/stores'
+import { ContractReturn, ContractStore } from '@prepo-io/stores'
 import { RootStore } from '../RootStore'
 import { SupportedContracts, SupportedContractsNames } from '../../lib/contract.types'
 import { Erc20Abi, Erc20Abi__factory } from '../../../generated/typechain'
@@ -26,7 +26,7 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
     storeKey: keyof RootStore,
     symbolOverride?: string
   ) {
-    super(root, tokenName, storeKey, Erc20Abi__factory as unknown as Factory)
+    super(root, tokenName, Erc20Abi__factory)
     if (symbolOverride) this.symbolOverride = symbolOverride
     makeObservable(this, {
       allowance: observable,
