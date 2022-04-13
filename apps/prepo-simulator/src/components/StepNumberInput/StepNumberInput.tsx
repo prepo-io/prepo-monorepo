@@ -80,6 +80,8 @@ const StepNumberInput: React.FC<Props> = ({
   max,
   min,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const textInputRef: React.RefObject<Input> = useRef(null)
   const [selectedInput, setSelectedInput] = useState(false)
   const [customInputValue, setCustomInputValue] = useState(value)
