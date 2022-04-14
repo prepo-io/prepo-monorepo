@@ -1,17 +1,14 @@
 import type { Config } from '@jest/types'
+import base from 'config/jest-frontend'
+import path from 'path'
+
+const fromRoot = (d): string => path.join(__dirname, d)
 
 const config: Config.InitialOptions = {
-  testPathIgnorePatterns: ['/node_modules/'],
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  coverageThreshold: {
-    global: {
-      statements: 80,
-      branches: 70,
-      functions: 80,
-      lines: 80,
-    },
-  },
+  ...base,
+  roots: [fromRoot('.')],
+  name: 'acquisition-royale-home',
+  displayName: 'Acquisition Royale Home Tests',
 }
 
 export default config

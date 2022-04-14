@@ -56,7 +56,10 @@ const MyEnterprises: React.FC = () => {
       <EnterpriseCarousel
         enterprises={
           doneLoading()
-            ? signerEnterprises?.map((enterprise) => showEnterpriseCard(enterprise))
+            ? signerEnterprises?.map((enterprise) => ({
+                id: enterprise.id,
+                component: showEnterpriseCard(enterprise),
+              }))
             : undefined
         }
         loading={connected && signerEnterprises === undefined}

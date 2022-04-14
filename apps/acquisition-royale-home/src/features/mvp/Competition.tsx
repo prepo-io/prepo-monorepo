@@ -79,7 +79,10 @@ const Competition: React.FC = () => {
         <EnterpriseCarousel
           enterprises={
             doneLoading()
-              ? competitionEnterprises?.map((enterprise) => showEnterpriseCard(enterprise))
+              ? competitionEnterprises?.map((enterprise) => ({
+                  id: enterprise.id,
+                  component: showEnterpriseCard(enterprise),
+                }))
               : undefined
           }
           loading={Boolean(searchCompetitionQuery) && competitionEnterprises === undefined}

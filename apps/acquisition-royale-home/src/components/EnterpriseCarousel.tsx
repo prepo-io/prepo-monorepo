@@ -38,7 +38,7 @@ export type OverlayProps = {
   message?: React.ReactNode
 }
 type Props = {
-  enterprises?: React.ReactNode[]
+  enterprises?: { id: number; component: React.ReactNode }[]
   loading?: boolean
   overlay?: OverlayProps
   onActiveSlidesChange?: (slides: number) => unknown
@@ -149,9 +149,10 @@ const EnterpriseCarousel: React.FC<Props> = ({
   // 32 is the padding outside of EnterpriseCard. The padding is required for glowing effect because swiper has overflow hidden, which will cut off the glow effect
   const arrowHeight = useMemo(() => (height || 345) - 32, [height])
 
-  const placeholderEnterprises = generateDummyArray(slidesPerView).map((id) => (
-    <LoadingCarouselCard key={id.toString()} loading={loading} />
-  ))
+  const placeholderEnterprises = generateDummyArray(slidesPerView).map((id) => ({
+    id,
+    component: <LoadingCarouselCard key={id.toString()} loading={loading} />,
+  }))
 
   const renderContent = (): React.ReactNode => {
     const cards =
@@ -168,9 +169,9 @@ const EnterpriseCarousel: React.FC<Props> = ({
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...swiperProps}
         >
-          {cards.map((enterprise) => (
-            <SwiperSlideComponent key={enterprise.toLocaleString()} style={StyledSwiperStyle}>
-              {enterprise}
+          {cards.map(({ id, component }) => (
+            <SwiperSlideComponent key={id} style={StyledSwiperStyle}>
+              {component}
             </SwiperSlideComponent>
           ))}
         </SwiperComponent>
