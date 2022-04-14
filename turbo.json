@@ -4,6 +4,18 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "acquisition-royale-home#build": {
+      "dependsOn": [
+        "^build",
+        "$NEXT_PUBLIC_NETWORK",
+        "$SENTRY_ORG",
+        "$SENTRY_PROJECT",
+        "$NEXT_PUBLIC_SENTRY_DSN",
+        "$SENTRY_AUTH_TOKEN",
+        "$NPM_RC"
+      ],
+      "outputs": [".next/**"]
+    },
     "prepo-react-boilerplate#build": {
       "dependsOn": [
         "^build",

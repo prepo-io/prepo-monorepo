@@ -1,0 +1,105 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_newMergeCost", "type": "address" },
+      { "internalType": "address", "name": "_newDynamicPrice", "type": "address" },
+      { "internalType": "uint256", "name": "_newAcquisitionFee", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "getAcquisitionFee",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_callerId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_recipientId", "type": "uint256" }
+    ],
+    "name": "getCost",
+    "outputs": [
+      { "internalType": "uint256", "name": "_amountToRecipient", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amountToTreasury", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amountToBurn", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDynamicPrice",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMergeCost",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPercentDenominator",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_newAcquisitionFee", "type": "uint256" }],
+    "name": "setAcquisitionFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_callerId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_recipientId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_actionCount", "type": "uint256" }
+    ],
+    "name": "updateAndGetCost",
+    "outputs": [
+      { "internalType": "uint256", "name": "_amountToRecipient", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amountToTreasury", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amountToBurn", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
