@@ -7,6 +7,7 @@ node_modules
 
 # testing
 coverage
+coverage*
 
 # next.js
 .next/
@@ -60,17 +61,6 @@ generated
 **/public/sitemap-0.xml
 **/public/robots.txt
 
-# Hardhat
-apps/**/data
-apps/hardhat-core/*.txt
-apps/hardhat-core/artifacts*
-apps/hardhat-core/deployments
-apps/hardhat-core/cache*
-apps/hardhat-core/cache
-cache
-artifacts
-
-
 # --------- prepo-docs ---------
 # Generated files
 .docusaurus
@@ -84,3 +74,14 @@ artifacts
 packages/prepo-sdk/lib
 tmp
 docs
+
+# --------- prepo-core ---------
+typechain/
+apps/core/artifacts*
+apps/core/cache*
+apps/core/cache
+cache
+apps/core/deployments/localhost
+apps/core/deployments/goerli
+apps/core/.openzeppelin/unknown-*.json
+apps/core/.openzeppelin/goerli.json
