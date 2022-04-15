@@ -1,4 +1,4 @@
 module.exports = {
-    skipFiles: ["trident", "core/interfaces", "core/mocks"],
-    configureYulOptimizer: true
-};
+  skipFiles: ['core/interfaces', 'core/mocks'],
+  configureYulOptimizer: true,
+}

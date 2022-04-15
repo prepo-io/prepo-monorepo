@@ -79,9 +79,7 @@ docs
 typechain/
 apps/core/artifacts*
 apps/core/cache*
-apps/core/cache
-cache
 apps/core/deployments/localhost
 apps/core/deployments/goerli
-apps/core/.openzeppelin/unknown-*.json
+apps/core/.openzeppelin/unknown-31337.json
 apps/core/.openzeppelin/goerli.json
