@@ -8,7 +8,7 @@
       "dependsOn": [
         "^build",
         "$SENTRY_ORG",
-        "$SENTRY_PROJECT_PREPO_REACT_BOILERPLATE",
+        "$SENTRY_PROJECT",
         "$NEXT_PUBLIC_SENTRY_DSN",
         "$SENTRY_AUTH_TOKEN",
         "$NPM_RC"
