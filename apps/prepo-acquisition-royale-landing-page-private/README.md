@@ -67,7 +67,7 @@ $ yarn test
 /features
 /hooks
 /pages
-/types
+/generated
 /utils
 ```
 
@@ -117,7 +117,7 @@ Contains all the abis that will be used for the project
 
 - NextJS default structure for exporting new pages in the application
 
-### /types
+### /generated
 
 - Auto generated types
 - Typechain factories, etc.
