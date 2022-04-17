@@ -1,0 +1,7 @@
+# Production context:
+# All deploys from the main repository branch
+# will inherit these settings.
+[context.production]
+  [context.production.environment]
+    NEXT_PUBLIC_NETWORK = "matic"
+    ENVIRONMENT = "production"
