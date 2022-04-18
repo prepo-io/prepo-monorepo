@@ -66,6 +66,9 @@ generated
 .docusaurus
 .cache-loader
 .vercel
+docs
+!docs/
+!apps/frontend/docs
 
 # --------- prepo-sdk ---------
 *-debug.log
@@ -73,7 +76,6 @@ generated
 .nyc_output
 packages/prepo-sdk/lib
 tmp
-docs
 
 # --------- smart-contracts ---------
 typechain/
