@@ -1,0 +1,274 @@
+{
+  "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newAccessController",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_newDepositRecord",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "vault",
+          "type": "address"
+        }
+      ],
+      "name": "VaultChanged",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "getAccountAccessController",
+      "outputs": [
+        {
+          "internalType": "contract IAccountAccessController",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getDepositRecord",
+      "outputs": [
+        {
+          "internalType": "contract ICollateralDepositRecord",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getVault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_initialAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_finalAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "hook",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newVault",
+          "type": "address"
+        }
+      ],
+      "name": "setVault",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x2d663aeff8032b0f1e2cb0392b0b3836d51062fcce2a9c0ca0e3f2e4b5e2c629",
+  "receipt": {
+    "to": null,
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "transactionIndex": 0,
+    "gasUsed": "577348",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000020000000000000100000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000002020000000000000000020000000000000000000000000000000000000000001000000000100000000000000",
+    "blockHash": "0xb00b5dfd16f394adf0b6a33980867a250584008a21cf6b296068667639cb352e",
+    "transactionHash": "0x2d663aeff8032b0f1e2cb0392b0b3836d51062fcce2a9c0ca0e3f2e4b5e2c629",
+    "logs": [
+      {
+        "transactionIndex": 0,
+        "blockNumber": 5,
+        "transactionHash": "0x2d663aeff8032b0f1e2cb0392b0b3836d51062fcce2a9c0ca0e3f2e4b5e2c629",
+        "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+        ],
+        "data": "0x",
+        "logIndex": 0,
+        "blockHash": "0xb00b5dfd16f394adf0b6a33980867a250584008a21cf6b296068667639cb352e"
+      }
+    ],
+    "blockNumber": 5,
+    "cumulativeGasUsed": "577348",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "2291239b0483a343113106725cbe2c29",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.7+commit.e28d00a7\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newAccessController\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_newDepositRecord\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"vault\",\"type\":\"address\"}],\"name\":\"VaultChanged\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getAccountAccessController\",\"outputs\":[{\"internalType\":\"contract IAccountAccessController\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDepositRecord\",\"outputs\":[{\"internalType\":\"contract ICollateralDepositRecord\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getVault\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_initialAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_finalAmount\",\"type\":\"uint256\"}],\"name\":\"hook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newVault\",\"type\":\"address\"}],\"name\":\"setVault\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/core/DepositHook.sol\":\"DepositHook\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":99999},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts v4.4.0 (access/Ownable.sol)\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * By default, the owner account will be the one that deploys the contract. This\\n * can later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the deployer as the initial owner.\\n     */\\n    constructor() {\\n        _transferOwnership(_msgSender());\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        require(owner() == _msgSender(), \\\"Ownable: caller is not the owner\\\");\\n        _;\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby removing any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        require(newOwner != address(0), \\\"Ownable: new owner is the zero address\\\");\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xa1b27b3f44ff825974e5268e8f63ad3b03add5b464880d860fbb8cae043e17f7\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts v4.4.0 (utils/Context.sol)\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n}\\n\",\"keccak256\":\"0x7736c187e6f1358c1ea9350a2a21aa8528dec1c2f43b374a9067465a3a51f5d3\",\"license\":\"MIT\"},\"contracts/core/DepositHook.sol\":{\"content\":\"// SPDX-License-Identifier: UNLICENSED\\nimport './interfaces/IHook.sol';\\nimport './interfaces/IAccountAccessController.sol';\\nimport './interfaces/ICollateralDepositRecord.sol';\\nimport '@openzeppelin/contracts/access/Ownable.sol';\\n\\npragma solidity =0.8.7;\\n\\ncontract DepositHook is IHook, Ownable {\\n  address private _vault;\\n  IAccountAccessController private _accountAccessController;\\n  ICollateralDepositRecord private _depositRecord;\\n\\n  constructor(address _newAccessController, address _newDepositRecord) {\\n    _accountAccessController = IAccountAccessController(_newAccessController);\\n    _depositRecord = ICollateralDepositRecord(_newDepositRecord);\\n  }\\n\\n  modifier onlyVault() {\\n    require(msg.sender == _vault, 'Caller is not the vault');\\n    _;\\n  }\\n\\n  function hook(\\n    address _sender,\\n    uint256 _initialAmount,\\n    uint256 _finalAmount\\n  ) external override onlyVault {\\n    require(\\n      _accountAccessController.isAccountAllowed(_sender) &&\\n        !_accountAccessController.isAccountBlocked(_sender),\\n      'Account not allowed to deposit'\\n    );\\n    _depositRecord.recordDeposit(_sender, _finalAmount);\\n  }\\n\\n  function setVault(address _newVault) external override onlyOwner {\\n    _vault = _newVault;\\n    emit VaultChanged(_newVault);\\n  }\\n\\n  function getVault() external view returns (address) {\\n    return _vault;\\n  }\\n\\n  function getAccountAccessController() external view returns (IAccountAccessController) {\\n    return _accountAccessController;\\n  }\\n\\n  function getDepositRecord() external view returns (ICollateralDepositRecord) {\\n    return _depositRecord;\\n  }\\n}\\n\",\"keccak256\":\"0xeb71f70228ea915268e38acab3257a3c093ee6f2eef62315f24b405d69531d78\",\"license\":\"UNLICENSED\"},\"contracts/core/interfaces/IAccountAccessController.sol\":{\"content\":\"// SPDX-License-Identifier: UNLICENSED\\n\\npragma solidity =0.8.7;\\n\\n/**\\n * @notice The Access Controller is used for allowing/blocking access to\\n * contract functions.\\n */\\ninterface IAccountAccessController {\\n  /**\\n   * @dev Emitted via `setRoot()`.\\n   * @param root The new merkle root\\n   */\\n  event RootChanged(bytes32 root);\\n\\n  /**\\n   * @dev Emitted via `allowAccounts()` and `allowSelf`.\\n   * @param account The account that was allowed\\n   */\\n  event AccountAllowed(address indexed account);\\n\\n  /**\\n   * @dev Emitted via `blockAccounts()`.\\n   * @param account The account that was blocked\\n   */\\n  event AccountBlocked(address indexed account);\\n\\n  /**\\n   * @dev Emitted via `setRoot()` and `clearAllowedAccounts`,\\n   * and `setRootAndClearAllowedAccounts`.\\n   * @param index The index for the new allowlist\\n   */\\n  event AllowedAccountsCleared(uint32 index);\\n\\n  /**\\n   * @dev Emitted via `clearBlockedAccounts`.\\n   * @param index The index for the new blocklist\\n   */\\n  event BlockedAccountsCleared(uint32 index);\\n\\n  /**\\n   * @notice Sets the merkle root used to determine which accounts\\n   * to allow.\\n   * @dev Only callable by `owner()`.\\n   * @param newRoot The new merkle root\\n   */\\n  function setRoot(bytes32 newRoot) external;\\n\\n  /**\\n   * @notice Clears the allowlist for all accounts.\\n   * @dev This does not actually modify any existing allowlists, the\\n   * the function will increment an index pointing to a new mapping\\n   * that will be referenced.\\n   *\\n   * Only callable by `owner()`.\\n   */\\n  function clearAllowedAccounts() external;\\n\\n  /**\\n   * @notice Sets the merkle root used to determine which accounts\\n   * to allow and resets the allowlist.\\n   * @dev Only callable by `owner()`.\\n   * @param newRoot The new merkle root\\n   */\\n  function setRootAndClearAllowedAccounts(bytes32 newRoot) external;\\n\\n  /**\\n   * @notice Clears the blocklist for all accounts.\\n   * @dev This does not actually modify any existing blocklists, the\\n   * the function will increment an index pointing to a new mapping\\n   * that will be referenced.\\n   *\\n   * Only callable by `owner()`.\\n   */\\n  function clearBlockedAccounts() external;\\n\\n  /**\\n   * @notice Allows one or more accounts, regardless of existing access.\\n   * @dev Only callable by `owner()`.\\n   * @param accounts Accounts to allow\\n   */\\n  function allowAccounts(address[] calldata accounts) external;\\n\\n  /**\\n   * @notice Blocks one or more accounts, regardless of existing access.\\n   * @dev Only callable by `owner()`.\\n   * @param accounts Accounts to block\\n   */\\n  function blockAccounts(address[] calldata accounts) external;\\n\\n  /**\\n   * @notice Allows the caller if the provided signature is valid.\\n   * @dev An account cannot call this function if it is already\\n   * allowed/blocked.\\n   * @param proof Proof of the caller's inclusion in the merkle root\\n   */\\n  function allowSelf(bytes32[] calldata proof) external;\\n\\n  /**\\n   * @notice Returns the merkle root used to determine which accounts\\n   * to allow.\\n   * @return The current merkle root\\n   */\\n  function getRoot() external view returns (bytes32);\\n\\n  /**\\n   * @return Whether the account is allowed\\n   */\\n  function isAccountAllowed(address account) external view returns (bool);\\n\\n  /**\\n   * @return Whether the account is blocked\\n   */\\n  function isAccountBlocked(address account) external view returns (bool);\\n}\\n\",\"keccak256\":\"0x5f5566bc688b3b379f16a40043ef1839b50c9477b90150a646342b43242c4af0\",\"license\":\"UNLICENSED\"},\"contracts/core/interfaces/ICollateralDepositRecord.sol\":{\"content\":\"// SPDX-License-Identifier: UNLICENSED\\n\\npragma solidity =0.8.7;\\n\\n/// @notice Enforces Collateral deposit caps.\\ninterface ICollateralDepositRecord {\\n  /// @dev Emitted via `setGlobalDepositCap()`.\\n  /// @param amount New global deposit cap\\n  event GlobalDepositCapChanged(uint256 amount);\\n\\n  /// @dev Emitted via `setAccountDepositCap()`.\\n  /// @param amount New account deposit cap\\n  event AccountDepositCapChanged(uint256 amount);\\n\\n  /// @dev Emitted via `setAllowedHook()`.\\n  /// @param hook Hook with changed permissions\\n  /// @param allowed Whether the hook is allowed\\n  event AllowedHooksChanged(address hook, bool allowed);\\n\\n  /**\\n   * @dev This function will be called by a Collateral hook before the fee\\n   * is subtracted from the initial `amount` passed in.\\n   *\\n   * Only callable by allowed hooks.\\n   *\\n   * Reverts if the incoming deposit brings either total over their\\n   * respective caps.\\n   *\\n   * `finalAmount` is added to both the global and account-specific\\n   * deposit totals.\\n   * @param sender The account making the Collateral deposit\\n   * @param finalAmount The amount actually deposited by the user\\n   */\\n  function recordDeposit(address sender, uint256 finalAmount) external;\\n\\n  /**\\n   * @notice Called by a Collateral hook before the fee is subtracted from\\n   * the amount withdrawn from the Strategy.\\n   * @dev `finalAmount` is subtracted from both the global and\\n   * account-specific deposit totals.\\n   *\\n   * Only callable by allowed hooks.\\n   * @param sender The account making the Collateral withdrawal\\n   * @param finalAmount The amount actually withdrawn by the user\\n   */\\n  function recordWithdrawal(address sender, uint256 finalAmount) external;\\n\\n  /**\\n   * @notice Sets the global cap on assets backing Collateral in circulation.\\n   * @dev Only callable by owner().\\n   * @param newGlobalDepositCap The new global deposit cap\\n   */\\n  function setGlobalDepositCap(uint256 newGlobalDepositCap) external;\\n\\n  /**\\n   * @notice Sets the cap on net Base Token deposits per user.\\n   * @dev Only callable by owner().\\n   * @param newAccountDepositCap The new account deposit cap\\n   */\\n  function setAccountDepositCap(uint256 newAccountDepositCap) external;\\n\\n  /**\\n   * @notice Sets if a contract is allowed to record deposits\\n   * and withdrawals.\\n   * @dev Only callable by owner().\\n   * @param hook The contract address\\n   * @param allowed Whether or not the contract will be allowed\\n   */\\n  function setAllowedHook(address hook, bool allowed) external;\\n\\n  /**\\n   * @notice Gets the maximum Base Token amount that is allowed to be\\n   * deposited (net of withdrawals).\\n   * @dev Deposits are not allowed if `globalDepositAmount` exceeds\\n   * the `globalDepositCap`.\\n   * @return Base Token amount\\n   */\\n  function getGlobalDepositCap() external view returns (uint256);\\n\\n  /// @return Net total of Base Token deposited.\\n  function getGlobalDepositAmount() external view returns (uint256);\\n\\n  /**\\n   * @dev An account will not be allowed to deposit if their net deposits\\n   * exceed `accountDepositCap`.\\n   * @return The cap on net Base Token deposits per user\\n   */\\n  function getAccountDepositCap() external view returns (uint256);\\n\\n  /**\\n   * @param account The account to retrieve net deposits for\\n   * @return The net total amount of Base Token deposited by a user\\n   */\\n  function getNetDeposit(address account) external view returns (uint256);\\n\\n  /**\\n   * @notice Returns whether the contract is allowed to record deposits and\\n   * withdrawals.\\n   * @param hook The contract to retrieve allowed status for\\n   * @return Whether the contract is allowed\\n   */\\n  function isHookAllowed(address hook) external view returns (bool);\\n}\\n\",\"keccak256\":\"0xeaa812a5715bae639199dbd9f853083c2c91b069d67e71925c147bcde309cf8c\",\"license\":\"UNLICENSED\"},\"contracts/core/interfaces/IHook.sol\":{\"content\":\"// SPDX-License-Identifier: UNLICENSED\\npragma solidity =0.8.7;\\n\\n/// @notice Used for adding additional checks and/or data recording when\\n/// interacting with the Collateral vault.\\ninterface IHook {\\n  /**\\n   * @dev Emitted via `setVault()`.\\n   * @param vault The new vault address\\n   */\\n  event VaultChanged(address vault);\\n\\n  /**\\n   * @dev This hook should only contain calls to external contracts, where\\n   * the actual implementation and state of a feature will reside.\\n   *\\n   * `initialAmount` for `deposit()` and `withdraw()` is the `amount`\\n   * parameter passed in by the caller.\\n   *\\n   * `finalAmount` for `deposit()` is the Base Token amount provided by\\n   * the user and any latent contract balance that is included in the\\n   * deposit.\\n   *\\n   * `finalAmount` for `withdraw()` is the Base Token amount returned\\n   * by the configured Strategy.\\n   *\\n   * Only callable by the vault.\\n   * @param sender The account calling the Collateral vault\\n   * @param initialAmount The amount passed to the Collateral vault\\n   * @param finalAmount The amount actually involved in the transaction\\n   */\\n  function hook(\\n    address sender,\\n    uint256 initialAmount,\\n    uint256 finalAmount\\n  ) external;\\n\\n  /**\\n   * @notice Sets the vault that will be allowed to call this hook.\\n   * @dev Only callable by owner().\\n   * @param newVault The vault address\\n   */\\n  function setVault(address newVault) external;\\n}\\n\",\"keccak256\":\"0x8c30fe6462f2a59f30be7eceaf9bcdd8d22d540e19530e9046326864d3c6abba\",\"license\":\"UNLICENSED\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161095238038061095283398101604081905261002f916100d5565b61003833610069565b600280546001600160a01b039384166001600160a01b03199182161790915560038054929093169116179055610108565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80516001600160a01b03811681146100d057600080fd5b919050565b600080604083850312156100e857600080fd5b6100f1836100b9565b91506100ff602084016100b9565b90509250929050565b61083b806101176000396000f3fe608060405234801561001057600080fd5b50600436106100885760003560e01c80638d928af81161005b5780638d928af8146101005780638da5cb5b1461011e578063a85cae9f1461013c578063f2fde38b1461015a57600080fd5b80633223ac9b1461008d5780636817031b146100d0578063715018a6146100e557806377bd50e9146100ed575b600080fd5b60025473ffffffffffffffffffffffffffffffffffffffff165b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b6100e36100de36600461078e565b61016d565b005b6100e361026c565b6100e36100fb3660046107b0565b6102f9565b60015473ffffffffffffffffffffffffffffffffffffffff166100a7565b60005473ffffffffffffffffffffffffffffffffffffffff166100a7565b60035473ffffffffffffffffffffffffffffffffffffffff166100a7565b6100e361016836600461078e565b6105c0565b60005473ffffffffffffffffffffffffffffffffffffffff1633146101f3576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b600180547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff83169081179091556040519081527fa49691f0dd6477ccef49962612a236d252e3a31c3be8b61fa6abeff3e74a75729060200160405180910390a150565b60005473ffffffffffffffffffffffffffffffffffffffff1633146102ed576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016101ea565b6102f760006106f0565b565b60015473ffffffffffffffffffffffffffffffffffffffff16331461037a576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f43616c6c6572206973206e6f7420746865207661756c7400000000000000000060448201526064016101ea565b6002546040517f1fd9a8c600000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015290911690631fd9a8c69060240160206040518083038186803b1580156103e557600080fd5b505afa1580156103f9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061041d91906107e3565b80156104c957506002546040517fca88bd5b00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff85811660048301529091169063ca88bd5b9060240160206040518083038186803b15801561048f57600080fd5b505afa1580156104a3573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104c791906107e3565b155b61052f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601e60248201527f4163636f756e74206e6f7420616c6c6f77656420746f206465706f736974000060448201526064016101ea565b6003546040517f1e578bae00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff85811660048301526024820184905290911690631e578bae90604401600060405180830381600087803b1580156105a357600080fd5b505af11580156105b7573d6000803e3d6000fd5b50505050505050565b60005473ffffffffffffffffffffffffffffffffffffffff163314610641576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016101ea565b73ffffffffffffffffffffffffffffffffffffffff81166106e4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f646472657373000000000000000000000000000000000000000000000000000060648201526084016101ea565b6106ed816106f0565b50565b6000805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461078957600080fd5b919050565b6000602082840312156107a057600080fd5b6107a982610765565b9392505050565b6000806000606084860312156107c557600080fd5b6107ce84610765565b95602085013595506040909401359392505050565b6000602082840312156107f557600080fd5b815180151581146107a957600080fdfea26469706673582212207e1c89a4f5eb368f51b7610710b72bf74fd1f27d7c0cd828a6cb204aced5712764736f6c63430008070033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100885760003560e01c80638d928af81161005b5780638d928af8146101005780638da5cb5b1461011e578063a85cae9f1461013c578063f2fde38b1461015a57600080fd5b80633223ac9b1461008d5780636817031b146100d0578063715018a6146100e557806377bd50e9146100ed575b600080fd5b60025473ffffffffffffffffffffffffffffffffffffffff165b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b6100e36100de36600461078e565b61016d565b005b6100e361026c565b6100e36100fb3660046107b0565b6102f9565b60015473ffffffffffffffffffffffffffffffffffffffff166100a7565b60005473ffffffffffffffffffffffffffffffffffffffff166100a7565b60035473ffffffffffffffffffffffffffffffffffffffff166100a7565b6100e361016836600461078e565b6105c0565b60005473ffffffffffffffffffffffffffffffffffffffff1633146101f3576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b600180547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff83169081179091556040519081527fa49691f0dd6477ccef49962612a236d252e3a31c3be8b61fa6abeff3e74a75729060200160405180910390a150565b60005473ffffffffffffffffffffffffffffffffffffffff1633146102ed576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016101ea565b6102f760006106f0565b565b60015473ffffffffffffffffffffffffffffffffffffffff16331461037a576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f43616c6c6572206973206e6f7420746865207661756c7400000000000000000060448201526064016101ea565b6002546040517f1fd9a8c600000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015290911690631fd9a8c69060240160206040518083038186803b1580156103e557600080fd5b505afa1580156103f9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061041d91906107e3565b80156104c957506002546040517fca88bd5b00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff85811660048301529091169063ca88bd5b9060240160206040518083038186803b15801561048f57600080fd5b505afa1580156104a3573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104c791906107e3565b155b61052f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601e60248201527f4163636f756e74206e6f7420616c6c6f77656420746f206465706f736974000060448201526064016101ea565b6003546040517f1e578bae00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff85811660048301526024820184905290911690631e578bae90604401600060405180830381600087803b1580156105a357600080fd5b505af11580156105b7573d6000803e3d6000fd5b50505050505050565b60005473ffffffffffffffffffffffffffffffffffffffff163314610641576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016101ea565b73ffffffffffffffffffffffffffffffffffffffff81166106e4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f646472657373000000000000000000000000000000000000000000000000000060648201526084016101ea565b6106ed816106f0565b50565b6000805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461078957600080fd5b919050565b6000602082840312156107a057600080fd5b6107a982610765565b9392505050565b6000806000606084860312156107c557600080fd5b6107ce84610765565b95602085013595506040909401359392505050565b6000602082840312156107f557600080fd5b815180151581146107a957600080fdfea26469706673582212207e1c89a4f5eb368f51b7610710b72bf74fd1f27d7c0cd828a6cb204aced5712764736f6c63430008070033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 1537,
+        "contract": "contracts/core/DepositHook.sol:DepositHook",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 4423,
+        "contract": "contracts/core/DepositHook.sol:DepositHook",
+        "label": "_vault",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 4426,
+        "contract": "contracts/core/DepositHook.sol:DepositHook",
+        "label": "_accountAccessController",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_contract(IAccountAccessController)6037"
+      },
+      {
+        "astId": 4429,
+        "contract": "contracts/core/DepositHook.sol:DepositHook",
+        "label": "_depositRecord",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_contract(ICollateralDepositRecord)6371"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_contract(IAccountAccessController)6037": {
+        "encoding": "inplace",
+        "label": "contract IAccountAccessController",
+        "numberOfBytes": "20"
+      },
+      "t_contract(ICollateralDepositRecord)6371": {
+        "encoding": "inplace",
+        "label": "contract ICollateralDepositRecord",
+        "numberOfBytes": "20"
+      }
+    }
+  }
+}

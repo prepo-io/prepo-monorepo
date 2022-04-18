@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "apps/*",
+      "apps/frontend/*",
+      "apps/smart-contracts/*",
       "packages/*"
     ],
     "nohoist": [
