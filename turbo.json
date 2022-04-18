@@ -27,7 +27,7 @@
       "dependsOn": ["^build", "$NPM_RC"],
       "outputs": ["dist/**"]
     },
-    "prepo-acquisition-royale-landing-page-private#build": {
+    "acquisition-royale-landing-page#build": {
       "dependsOn": ["^build", "$NPM_RC"],
       "outputs": ["dist/**"]
     },

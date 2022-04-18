@@ -1,5 +1,5 @@
 {
-  "name": "prepo-acquisition-royale-landing-page-private",
+  "name": "acquisition-royale-landing-page",
   "version": "1.0.0",
   "scripts": {
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",

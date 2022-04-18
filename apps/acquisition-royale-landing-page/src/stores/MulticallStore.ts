@@ -28,7 +28,7 @@ function normalizeMulticallReturnValues(item: any): any {
 
 const arrayUniqueByKey = <T>(array: T[], key: string): T[] =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [...new Map(array.map((item: any) => [item[key], item])).values()]
+  Array.from(new Map(array.map((item: any) => [item[key], item])).values())
 
 const bundleCalls = (calls: ContractCall[] = []): ContractCall[] => {
   const uniqueContracts = arrayUniqueByKey<ContractCall>(calls, 'contractAddress')
