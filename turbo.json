@@ -28,8 +28,8 @@
       "outputs": ["dist/**"]
     },
     "acquisition-royale-landing-page#build": {
-      "dependsOn": ["^build", "$NPM_RC"],
-      "outputs": ["dist/**"]
+      "dependsOn": ["^build", "$NEXT_PUBLIC_NETWORK"],
+      "outputs": [".next/**", "out/**"]
     },
     "test": {},
     "lint": {
