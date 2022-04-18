@@ -28,7 +28,7 @@
       "outputs": ["dist/**"]
     },
     "acquisition-royale-landing-page#build": {
-      "dependsOn": ["^build", "$NEXT_PUBLIC_NETWORK"],
+      "dependsOn": ["^build", "$NEXT_PUBLIC_NETWORK", "$NPM_RC"],
       "outputs": [".next/**", "out/**"]
     },
     "test": {},
