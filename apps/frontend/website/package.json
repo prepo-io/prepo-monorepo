@@ -40,17 +40,11 @@
   "devDependencies": {
     "@types/canvas-confetti": "1.4.2",
     "@types/d3-ease": "3.0.0",
-    "@types/jest": "27.4.1",
     "@types/react": "17.0.38",
     "@types/react-lottie": "1.2.6",
     "autoprefixer": "10.4.4",
     "config": "*",
-    "eslint": "8.13.0",
-    "jest": "27.5.1",
     "postcss": "8.4.12",
-    "prettier": "2.6.2",
-    "ts-jest": "27.1.4",
-    "tsconfig": "*",
-    "typescript": "4.6.3"
+    "tsconfig": "*"
   }
 }

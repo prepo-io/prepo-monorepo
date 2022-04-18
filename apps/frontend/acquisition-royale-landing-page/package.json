@@ -57,31 +57,12 @@
   },
   "devDependencies": {
     "@typechain/ethers-v5": "7.1.1",
-    "@types/jest": "27.0.3",
     "@types/lodash.throttle": "4.1.6",
     "@types/react": "17.0.37",
     "@types/react-scroll": "1.8.3",
     "@types/styled-components": "5.1.18",
     "config": "*",
-    "babel-jest": "27.4.5",
-    "eslint": "8.13.0",
-    "@next/eslint-plugin-next": "12.1.5",
-    "@typescript-eslint/eslint-plugin": "5.19.0",
-    "@typescript-eslint/parser": "5.19.0",
-    "eslint-config-airbnb": "19.0.4",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-airbnb-typescript": "17.0.0",
-    "eslint-config-next": "12.1.5",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-import-resolver-typescript": "2.7.1",
-    "husky": "7.0.4",
-    "is-ci": "3.0.1",
-    "jest": "27.4.5",
     "next-sitemap": "1.6.203",
-    "prettier": "2.5.1",
-    "ts-jest": "27.1.2",
-    "ts-node": "10.4.0",
-    "typechain": "5.1.2",
-    "typescript": "4.5.4"
+    "typechain": "5.1.2"
   }
 }
