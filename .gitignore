@@ -84,5 +84,5 @@ cache*
 cache
 deployments/localhost
 deployments/goerli
-.openzeppelin/unknown-31337.json
-.openzeppelin/goerli.json
+# Ignores .openzeppelin folders
+.**/
