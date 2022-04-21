@@ -39,7 +39,7 @@ jobs:
           restore-keys: |
             turbo-${{ github.job }}-${{ github.ref_name }}-
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           yarn install --frozen-lockfile
 
