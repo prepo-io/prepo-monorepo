@@ -1,0 +1,28 @@
+name: Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Use NodeJS 14'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 'Setup npm'
+        run: |
+          npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+      - name: Install dependencies
+        run: |
+          yarn install --frozen-lockfile
