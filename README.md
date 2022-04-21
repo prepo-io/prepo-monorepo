@@ -56,6 +56,64 @@ cd apps/prepo-x-y
 yarn dev
 ```
 
+## Work on a specific application
+
+If you want to work on a specific application:
+
+1. You should move your terminal to that specific folder. Example:
+
+```
+cd apps/[frontend/smart-contracts]/[app-name]
+```
+
+2. You should not do `yarn install` on the application folder. The only place to do `yarn install` is on the `root` folder. After that, your application should work as expected.
+   Yarn workspaces will handle the instalation of your packages corresponding to your application `package.json`.
+   If there's any package version that is re-used across other applications, that will also be handled automatically.
+
+## FAQ
+
+### Which one is the name of my application on [yarn workspaces](https://classic.yarnpkg.com/en/docs/cli/workspace)?
+
+To get that the name of your application, you just need to open the `package.json` file inside your application folder and that would be the `name` property written there.
+
+### How do I install a new dependency on my application?
+
+Locate the name of your application in yarn workspaces.
+
+Then you can run the command:
+
+```
+yarn workspace [yarn-workspace-application-name] add react
+```
+
+**Don't forget to remove the caret after installing to lock the version and re-run `yarn install` on the root folder.**
+
+### How do I install a new dev dependency on my application?
+
+Locate the name of your application in yarn workspaces.
+
+Then you can run the command:
+
+```
+yarn workspace [yarn-workspace-application-name] add @types/react -D
+```
+
+**Don't forget to remove the caret after installing to lock the version and re-run `yarn install` on the root folder.**
+
+### How do I install a dependency/dev dependency on the root package.json that will be shared across other apps?
+
+Go to the root folder of this monorepo.
+
+Then you can run the command:
+
+```
+yarn add dependency-name -W
+```
+
+Include `-D` if you are planning to install a dev dependency.
+
+**Don't forget to remove the caret after installing to lock the version and re-run `yarn install` on the root folder.**
+
 ## Disclaimer
 
 The AGPL V3 license only applies to the code within the repository. Any assets or other files (in part or whole) that already have a non-open-source license are excluded.
