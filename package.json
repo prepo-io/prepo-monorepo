@@ -20,7 +20,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "npx is-ci || npx husky install",
-    "test": "turbo run test"
+    "test": "turbo run test 2>&1 | tee .test_output"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.3",

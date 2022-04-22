@@ -61,6 +61,8 @@ generated
 **/public/sitemap-0.xml
 **/public/robots.txt
 
+.test_output
+
 # --------- prepo-docs ---------
 # Generated files
 .docusaurus
