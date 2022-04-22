@@ -34,7 +34,7 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
-      - name: Turborepo Cache
+      - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v2
         with:
