@@ -80,12 +80,13 @@ jobs:
     name: Deploy apps
     needs: get-changed-apps
     runs-on: ubuntu-latest
-    if: |
-      needs.get-changed-apps.outputs.matrix != '[]'||
-      !contains(github.event.head_commit.message, '[skip ci]')
+    # if: |
+    #   needs.get-changed-apps.outputs.matrix != '[]'||
+    #   !contains(github.event.head_commit.message, '[skip ci]')
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}} 
+    if: ${{ needs.get-changed-apps.outputs.matrix != '[]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
