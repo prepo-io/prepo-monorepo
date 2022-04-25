@@ -56,7 +56,7 @@ jobs:
     - name: Set matrix value
       id: set-matrix
       run: |
-          matrix=$(cat changed_apps.json | jq -c .)
+          matrix="{\"include\":$(cat changed_apps.json | jq -c .)}"
           echo $matrix
           echo $matrix | jq .
           echo "::set-output name=matrix::$matrix"
