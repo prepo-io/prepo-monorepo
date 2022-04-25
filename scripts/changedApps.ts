@@ -51,7 +51,11 @@ const getChangedApps = async (): Promise<FrontendApp[]> => {
 
 const writeChangedAppsFile = (changedAppsArray: string) => {
   try {
-    fs.writeFileSync(FILE_NAME, changedAppsArray)
+    const input = {
+      include: changedAppsArray,
+    }
+    console.log({ input })
+    fs.writeFileSync(FILE_NAME, JSON.stringify(input))
     //file written successfully
   } catch (err) {
     console.error(err)
