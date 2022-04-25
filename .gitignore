@@ -63,6 +63,9 @@ generated
 
 .test_output
 
+# -------- prePO monorepo CI --------
+changed_apps.json
+
 # --------- prepo-docs ---------
 # Generated files
 .docusaurus

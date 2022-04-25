@@ -1,0 +1,96 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Checks
+    types:
+      - completed
+
+jobs:
+  get-changed-apps:
+    name: Get changed apps
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: 'Restore node_modules cache'   
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: 'Use NodeJS 14'
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: 'Setup npm'
+      run: |
+        npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+        npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+    - name: Install Dependencies
+      run: |
+        yarn install --frozen-lockfile
+
+    - name: Turbo Cache
+      id: turbo-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules/.cache
+        key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+        restore-keys: |
+          turbo-${{ github.job }}-${{ github.ref_name }}-
+
+    - name: Get changed apps list
+      run: yarn run changed:ci
+    - name: Set matrix value
+      id: set-matrix
+      run: echo "::set-output name=matrix::$(cat changed_apps.json)"
+
+  deploy-apps:
+    name: Deploy apps
+    needs: get-changed-apps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy to Vercel Action
+        id: vercel-deploy
+        uses: BetaHuhn/deploy-to-vercel-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ matrix.projectId }}
+          CREATE_COMMENT: false
+      - uses: phulsechinmay/rewritable-pr-comment@v0.3.0
+        if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
+        with:
+          message: |
+            This pull request has been deployed to Vercel.
+
+            <table>
+              <tr>
+                <td><strong>✅ Preview:</strong></td>
+                <td><a href='${{ steps.vercel-deploy.outputs.PREVIEW_URL }}'>${{ steps.vercel-deploy.outputs.PREVIEW_URL }}</a></td>
+              </tr>
+              <tr>
+                <td><strong>🔍 Inspect:</strong></td>
+                <td><a href='${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }'>${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }</a></td>
+              </tr>
+            </table>
+
+            [View Workflow Logs](${ LOG_URL })
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          COMMENT_IDENTIFIER: 'vercel-deploy'

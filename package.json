@@ -15,12 +15,15 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:dry": "npx turbo run build --since=origin/main --dry-run=json",
+    "changed:ci": "npx ts-node scripts/changedApps.ts",
     "dev": "turbo run compile && turbo run dev --parallel",
     "compile": "turbo run compile",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "npx is-ci || npx husky install",
-    "test": "turbo run test 2>&1 | tee .test_output"
+    "test": "turbo run test",
+    "test:ci": "turbo run test --since=origin/main"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
