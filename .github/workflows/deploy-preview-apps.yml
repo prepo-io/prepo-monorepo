@@ -103,7 +103,7 @@ jobs:
         if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
         with:
           message: |
-            This pull request has been deployed to Vercel.
+            App ${{ matrix.name }} has been deployed to Vercel.
 
             <table>
               <tr>
@@ -116,6 +116,5 @@ jobs:
               </tr>
             </table>
 
-            [View Workflow Logs](${ LOG_URL })
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          COMMENT_IDENTIFIER: 'vercel-deploy'
+          COMMENT_IDENTIFIER: ${{ matrix.projectId }}
