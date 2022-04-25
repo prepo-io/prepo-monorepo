@@ -12,6 +12,7 @@ import { SupportedContracts } from '../lib/contract.types'
 
 type LocalStorage = {
   selectedTheme: SupportedThemes
+  test?: string
   selectedWallet: string | undefined
 }
 
