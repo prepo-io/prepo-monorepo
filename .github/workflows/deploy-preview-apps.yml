@@ -79,7 +79,7 @@ jobs:
   deploy-apps:
     name: Deploy apps
     needs: get-changed-apps
-    if: ${{ needs.get-changed-apps.outputs.matrix != '[]' && needs.get-changed-apps.outputs.matrix != '' }}
+    if: ${{ needs.get-changed-apps.outputs.matrix == '[]' && needs.get-changed-apps.outputs.matrix == '' }}
     runs-on: ubuntu-latest
     # if: |
     #   needs.get-changed-apps.outputs.matrix != '[]'||
