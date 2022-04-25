@@ -81,7 +81,7 @@ jobs:
     needs: get-changed-apps
     runs-on: ubuntu-latest
     if: |
-      needs.get-changed-apps.outputs.matrix[0] != null ||
+      ${{fromJSON(needs.get-changed-apps.outputs.matrix).include[0]}} ||
       !contains(github.event.head_commit.message, '[skip ci]')
     strategy:
       fail-fast: false
@@ -96,7 +96,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ matrix.app.projectId }}
+          VERCEL_PROJECT_ID: ${{ matrix.projectId }}
           CREATE_COMMENT: false
       - uses: phulsechinmay/rewritable-pr-comment@v0.3.0
         if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
