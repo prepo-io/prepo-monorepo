@@ -11,6 +11,8 @@ import SEO from '../components/SEO'
 import { useRootStore } from '../context/RootStoreProvider'
 import { InvestorsSection } from '../components/layout/InvestorsSection'
 
+// Test change - Will remove
+
 const Index: NextPage = () => {
   const {
     uiStore: { isMobileMenuOpen, toggleMobileMenu },
