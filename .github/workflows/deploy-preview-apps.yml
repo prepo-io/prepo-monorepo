@@ -1,6 +1,8 @@
 name: Deploy previews
 
 on:
+  pull_request:
+    types: [opened, synchronize]
   workflow_run:
     workflows: [Checks]
     types:
