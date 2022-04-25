@@ -80,7 +80,6 @@ jobs:
     name: Deploy apps
     needs: get-changed-apps
     runs-on: ubuntu-latest
-    # if: ${{ needs.get-changed-apps.outputs.matrix != '[]' && needs.get-changed-apps.outputs.matrix != '{"include":"[]"}' }}
     if: |
       needs.get-changed-apps.outputs.matrix != '[]'||
       !contains(github.event.head_commit.message, '[skip ci]')
@@ -103,16 +102,12 @@ jobs:
         if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
         with:
           message: |
-            App ${{ matrix.name }} has been deployed to Vercel.
+            App <strong>${{ matrix.name }}</strong> has been deployed to Vercel.
 
             <table>
               <tr>
                 <td><strong>✅ Preview:</strong></td>
                 <td><a href='${{ steps.vercel-deploy.outputs.PREVIEW_URL }}'>${{ steps.vercel-deploy.outputs.PREVIEW_URL }}</a></td>
-              </tr>
-              <tr>
-                <td><strong>🔍 Inspect:</strong></td>
-                <td><a href='${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }'>${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }</a></td>
               </tr>
             </table>
 
