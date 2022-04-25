@@ -55,11 +55,12 @@ jobs:
 
     - name: Set matrix value
       id: set-matrix
-      run: |
-          matrix="{\"include\":$(cat changed_apps.json | jq -c .)}"
-          echo $matrix
-          echo $matrix | jq .
-          echo "::set-output name=matrix::$matrix"
+      run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+      # run: |
+      #     matrix="{\"include\":$(cat changed_apps.json | jq -c .)}"
+      #     echo $matrix
+      #     echo $matrix | jq .
+      #     echo "::set-output name=matrix::$matrix"
 
   check-matrix:
     runs-on: ubuntu-latest
@@ -88,34 +89,37 @@ jobs:
       fail-fast: false
       matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}} 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Deploy to Vercel Action
-        id: vercel-deploy
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ matrix.projectId }}
-          CREATE_COMMENT: false
-      - uses: phulsechinmay/rewritable-pr-comment@v0.3.0
-        if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
-        with:
-          message: |
-            This pull request has been deployed to Vercel.
+      - name: Check matrix definition
+        run: echo ${{ matrix.project }}
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v2
+    #   - name: Deploy to Vercel Action
+    #     id: vercel-deploy
+    #     uses: BetaHuhn/deploy-to-vercel-action@v1
+    #     with:
+    #       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+    #       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    #       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    #       VERCEL_PROJECT_ID: ${{ matrix.projectId }}
+    #       CREATE_COMMENT: false
+    #   - uses: phulsechinmay/rewritable-pr-comment@v0.3.0
+    #     if: ${{ steps.vercel-deploy.outputs.DEPLOYMENT_CREATED }}
+    #     with:
+    #       message: |
+    #         This pull request has been deployed to Vercel.
 
-            <table>
-              <tr>
-                <td><strong>✅ Preview:</strong></td>
-                <td><a href='${{ steps.vercel-deploy.outputs.PREVIEW_URL }}'>${{ steps.vercel-deploy.outputs.PREVIEW_URL }}</a></td>
-              </tr>
-              <tr>
-                <td><strong>🔍 Inspect:</strong></td>
-                <td><a href='${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }'>${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }</a></td>
-              </tr>
-            </table>
+    #         <table>
+    #           <tr>
+    #             <td><strong>✅ Preview:</strong></td>
+    #             <td><a href='${{ steps.vercel-deploy.outputs.PREVIEW_URL }}'>${{ steps.vercel-deploy.outputs.PREVIEW_URL }}</a></td>
+    #           </tr>
+    #           <tr>
+    #             <td><strong>🔍 Inspect:</strong></td>
+    #             <td><a href='${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }'>${ steps.vercel-deploy.outputs.DEPLOYMENT_INSPECTOR_URL }</a></td>
+    #           </tr>
+    #         </table>
 
-            [View Workflow Logs](${ LOG_URL })
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          COMMENT_IDENTIFIER: 'vercel-deploy'
+    #         [View Workflow Logs](${ LOG_URL })
+    #       GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+    #       COMMENT_IDENTIFIER: 'vercel-deploy'
