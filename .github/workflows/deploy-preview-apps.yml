@@ -55,12 +55,12 @@ jobs:
 
     - name: Set matrix value
       id: set-matrix
-      run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
-      # run: |
-      #     matrix="{\"include\":$(cat changed_apps.json | jq -c .)}"
-      #     echo $matrix
-      #     echo $matrix | jq .
-      #     echo "::set-output name=matrix::$matrix"
+      # run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+      run: |
+          matrix="{\"include\":$(cat changed_apps.json | jq -c . | tr -d '"')}"
+          echo $matrix
+          echo $matrix | jq .
+          echo "::set-output name=matrix::$matrix"
 
   check-matrix:
     runs-on: ubuntu-latest
