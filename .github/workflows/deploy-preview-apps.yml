@@ -55,7 +55,26 @@ jobs:
 
     - name: Set matrix value
       id: set-matrix
-      run: echo "::set-output name=matrix::$(cat changed_apps.json)"
+      run: |
+          matrix=$(cat changed_apps.json) | jq -c .)
+          echo $matrix
+          echo $matrix | jq .
+          echo "::set-output name=matrix::$matrix"
+
+  check-matrix:
+    runs-on: ubuntu-latest
+    needs: get-changed-apps
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+
+      - name: Check matrix definition
+        run: |
+          matrix='${{ needs.get-changed-apps.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
 
   deploy-apps:
     name: Deploy apps
@@ -65,8 +84,8 @@ jobs:
       needs.get-changed-apps.outputs.matrix[0] != null ||
       !contains(github.event.head_commit.message, '[skip ci]')
     strategy:
-      matrix: 
-        app: ${{fromJson(needs.get-changed-apps.outputs.matrix)}}
+      fail-fast: false
+      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}} 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
