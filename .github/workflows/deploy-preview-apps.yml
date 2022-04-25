@@ -1,9 +1,8 @@
-name: Deploy
+name: Deploy previews
 
 on:
   workflow_run:
-    workflows:
-      - Checks
+    workflows: [Checks]
     types:
       - completed
 
