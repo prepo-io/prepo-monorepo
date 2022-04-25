@@ -60,11 +60,11 @@ jobs:
     name: Deploy apps
     needs: get-changed-apps
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}}
     if: |
       needs.get-changed-apps.outputs.matrix[0] != null ||
       !contains(github.event.head_commit.message, '[skip ci]')
+    strategy:
+      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
