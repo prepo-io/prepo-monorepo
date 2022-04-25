@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
 import Acquire from './acquire'
 import Compete from './actions/Compete'
 import MyEnterprises from './MyEnterprises'
@@ -15,6 +16,7 @@ import UniswapLink from './UniswapLink'
 import RemainingEnterprises from './RemainingEnterprises'
 import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
+import { useRootStore } from '../../context/RootStoreProvider'
 
 const ActionsWrapper = styled.div`
   display: grid;
@@ -24,36 +26,40 @@ const ActionsWrapper = styled.div`
   max-width: ${spacingIncrement(540)};
 `
 
-const GamePage: React.FC = () => (
-  <div>
-    <Section>
-      <RemainingEnterprises />
-      <Intern />
-    </Section>
-    <Section greyOnUnconnected title="Your Enterprises">
-      <MyEnterprises />
-      <ActionsWrapper>
-        <Merge />
-        <UniswapLink />
-        <RPShop />
-        <DepositRp />
-        <WithdrawRp />
-      </ActionsWrapper>
-    </Section>
-    <Section
-      action={<SearchCompetition />}
-      title="Competitor Analysis"
-      description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
-    >
-      <Competition />
-      <ActionsWrapper>
-        <Compete />
-        <Acquire />
-        <Rename />
-        <Revive />
-      </ActionsWrapper>
-    </Section>
-  </div>
-)
+const GamePage: React.FC = () => {
+  const { enterprisesStore } = useRootStore()
+  const { enterprisesBalance } = enterprisesStore
+  return (
+    <div>
+      <Section>
+        <RemainingEnterprises />
+        <Intern />
+      </Section>
+      <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
+        <MyEnterprises />
+        <ActionsWrapper>
+          <Merge />
+          <UniswapLink />
+          <RPShop />
+          <DepositRp />
+          <WithdrawRp />
+        </ActionsWrapper>
+      </Section>
+      <Section
+        action={<SearchCompetition />}
+        title="Competitor Analysis"
+        description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
+      >
+        <Competition />
+        <ActionsWrapper>
+          <Compete />
+          <Acquire />
+          <Rename />
+          <Revive />
+        </ActionsWrapper>
+      </Section>
+    </div>
+  )
+}
 
-export default GamePage
+export default observer(GamePage)
