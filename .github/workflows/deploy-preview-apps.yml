@@ -61,7 +61,7 @@ jobs:
     needs: get-changed-apps
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}}
+      matrix: ${{needs.get-changed-apps.outputs.matrix}}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
