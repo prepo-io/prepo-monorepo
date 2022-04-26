@@ -9,8 +9,20 @@ on:
       - completed
 
 jobs:
+  get-branch-name:
+    name: Get current branch name
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+    - name: Extract branch name
+      if: github.event_name == 'pull_request'
+      run: echo "::set-output name=branch_name::$(echo ${GITHUB_HEAD_REF})"
+
   get-changed-apps:
     name: Get changed apps
+    needs: get-branch-name
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -41,10 +53,6 @@ jobs:
       run: |
         yarn install --frozen-lockfile
 
-    - name: Extract branch name
-      if: github.event_name == 'pull_request'
-      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
-
     - name: Turbo Cache
       id: turbo-cache
       uses: actions/cache@v2
@@ -55,7 +63,7 @@ jobs:
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
     - name: Get changed apps list
-      run: FILTER_BRANCH=${BRANCH_NAME} yarn run changed:ci
+      run: FILTER_BRANCH=${{ needs.get-branch-name.outputs.branch_name }} yarn run changed:ci
 
     - name: Set matrix value
       id: set-matrix
