@@ -15,8 +15,8 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "build:dry": "npx turbo run build --since=origin/main --dry-run=json",
-    "changed:ci": "npx ts-node scripts/changedApps.ts",
+    "build:dry": "npx turbo run build --dry-run=json",
+    "changed:ci": "npx ts-node scripts/changedApps.ts $FILTER_BRANCH",
     "dev": "turbo run compile && turbo run dev --parallel",
     "compile": "turbo run compile",
     "lint": "turbo run lint",

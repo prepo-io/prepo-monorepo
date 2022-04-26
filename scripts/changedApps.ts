@@ -35,7 +35,10 @@ const FRONTEND_APPS: FrontendApp[] = [
 ]
 
 const getChangedApps = async (): Promise<FrontendApp[]> => {
-  const { stdout } = await execCommand('yarn build:dry')
+  const filterBranch = process.env.FILTER_BRANCH
+  const commandToRun = `yarn build:dry --filter="...[origin/${filterBranch}]"`
+  console.log({ commandToRun })
+  const { stdout } = await execCommand(commandToRun)
 
   // https://stackoverflow.com/a/63660736
   const TWO_LEVEL_JSON = /\{(?:[^{}]|(\{(?:[^{}]|())*\}))*\}/g

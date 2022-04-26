@@ -41,6 +41,11 @@ jobs:
       run: |
         yarn install --frozen-lockfile
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     - name: Turbo Cache
       id: turbo-cache
       uses: actions/cache@v2
@@ -51,7 +56,7 @@ jobs:
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
     - name: Get changed apps list
-      run: yarn run changed:ci
+      run: FILTER_BRANCH=${{ steps.extract_branch.outputs.branch }} yarn run changed:ci
 
     - name: Set matrix value
       id: set-matrix
