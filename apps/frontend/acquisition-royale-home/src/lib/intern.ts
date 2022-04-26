@@ -1,0 +1,18 @@
+export const tasks = [
+  'Wake up early',
+  'Coffee run',
+  'Agree with boss',
+  'Take meeting notes',
+  'Photocopy documents',
+  'Shred documents',
+  'Fax documents',
+  'Enter data',
+  'Answer calls',
+  'Schedule meetings',
+  'Fix printer',
+  'File paperwork',
+  'Collect mail',
+  'Clean toilets',
+  'Pick up laundry',
+  'Work late',
+]
