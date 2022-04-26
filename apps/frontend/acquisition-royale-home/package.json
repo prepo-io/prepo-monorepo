@@ -20,7 +20,7 @@
       "@emotion/styled": "11",
       "@panelbear/panelbear-nextjs": "1.0.3",
       "@prepo-io/constants": "0.10.3",
-      "@prepo-io/stores": "0.18.1",
+      "@prepo-io/stores": "0.24.0",
       "@prepo-io/utils": "0.8.1",
       "@sentry/nextjs": "6.17.7",
       "@uniswap/sdk": "3.0.3",
