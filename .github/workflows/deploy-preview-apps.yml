@@ -49,8 +49,11 @@ jobs:
         key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
         restore-keys: |
           turbo-${{ github.job }}-${{ github.ref_name }}-
-    - uses: nelonoel/branch-name@v1
+
     - name: Get changed apps list
+      uses: nelonoel/branch-name@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       run: FILTER_BRANCH=${BRANCH_NAME} yarn run changed:ci
 
     - name: Set matrix value
