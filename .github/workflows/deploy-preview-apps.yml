@@ -41,6 +41,10 @@ jobs:
       run: |
         yarn install --frozen-lockfile
 
+    - name: Extract branch name
+      if: github.event_name == 'pull_request'
+      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+
     - name: Turbo Cache
       id: turbo-cache
       uses: actions/cache@v2
@@ -51,9 +55,6 @@ jobs:
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
     - name: Get changed apps list
-      uses: nelonoel/branch-name@v1
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       run: FILTER_BRANCH=${BRANCH_NAME} yarn run changed:ci
 
     - name: Set matrix value
