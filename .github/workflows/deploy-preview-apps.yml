@@ -67,7 +67,7 @@ jobs:
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
     - name: Get changed apps list
-      run: FILTER_BRANCH=${{ needs.get-branch-name.outputs.branch_name }} yarn run changed:ci
+      run: FILTER_BRANCH=${GITHUB_HEAD_REF} yarn run changed:ci
 
     - name: Set matrix value
       id: set-matrix
