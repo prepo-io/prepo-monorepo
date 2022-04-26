@@ -19,7 +19,10 @@ jobs:
     - name: Extract branch name
       id: set-branch-name
       if: github.event_name == 'pull_request'
-      run: echo "::set-output name=branch_name::$(echo ${GITHUB_HEAD_REF})"
+      run: | 
+        branch_name=${GITHUB_HEAD_REF}
+        echo $branch_name
+        echo "::set-output name=branch_name::$branch_name"
 
   get-changed-apps:
     name: Get changed apps
