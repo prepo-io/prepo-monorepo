@@ -13,10 +13,11 @@ jobs:
     name: Get current branch name
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.set-branch-name.outputs.branch_name }}
 
     steps:
     - name: Extract branch name
+      id: set-branch-name
       if: github.event_name == 'pull_request'
       run: echo "::set-output name=branch_name::$(echo ${GITHUB_HEAD_REF})"
 
