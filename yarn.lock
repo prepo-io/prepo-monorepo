@@ -5453,17 +5453,21 @@
   resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.13.0/af3a758f4ab24fc3e008aae2026410b46ea32ff957ad7b038a2b31060f1627d6#401476256e87ac4f9a43f3b88633e2dce2d6056b"
   integrity sha512-7tUkuFbakk2EwBP6NI9A/QpIKAlW9PT7waYm8U3K70Hi/sXxrMTLkhK4VkLK2dZB7mmYw+sNZPPTHy8K1wgZEA==
 
-"@prepo-io/stores@0.18.1":
-  version "0.18.1"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.18.1/fe8f28b1b20363a6095e4b9f960212b6e900d24800c52c96326a68aa91289ca2#9e4f995cfae49743f83b32c85eaec61cc53bdfed"
-  integrity sha512-opae173eWk6MyqbKstYxxDlvwqvx/Y4DgLDtpw3s8plzc+m+OtmxK/pyLxgF7QRO56gB0jzvQtGRLhRoOhENXQ==
-  dependencies:
-    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
-
 "@prepo-io/stores@0.23.0":
   version "0.23.0"
   resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.23.0/f008f22f4459afcdecb6012b9e508174ec0cd3658ebd011ed469c56a300d444a#941573753529057404c79a6a834614c006c1b455"
   integrity sha512-aIJar7Ny1VAU60iVZ0r/RkTGT8oBPVw6Dmey/qUzBSrKymemu0QSoXVuWBQUVQQRm68oRfTFzvwl9LJO831m+w==
+  dependencies:
+    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
+    graphql "16.3.0"
+    graphql-request "4.0.0"
+    mobx-state-tree "5.1.3"
+    mst-gql "0.14.1"
+
+"@prepo-io/stores@0.24.1":
+  version "0.24.1"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.24.1/9fe894c432006bb206c5bb78ed96b6db117577eee719468be970580fb604be15#97984f5703060e374b87a7ad60c757b625fa3b6d"
+  integrity sha512-k7lAzKYKXhGGavG/aKRGqb+X+KwC+343sxLsQvuUB7U+VVPvAZJV1ftzzobReBx14dqPNYHfvOJqWeKmpJOASA==
   dependencies:
     ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
     graphql "16.3.0"
@@ -14159,14 +14163,6 @@ ethereum-multicall@2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/ethereum-multicall/-/ethereum-multicall-2.9.0.tgz#12ec9bda703a257b02c76c564f7e52038d06232c"
   integrity sha512-KCe51v42DDk3Ed0/DJaESymned4P9yQ6bJdpY+PlKGcPYmD6p/5yMThQr8G27V+REUVHY5L1zc7r0n4XAO/0mQ==
-  dependencies:
-    "@ethersproject/providers" "^5.0.10"
-    ethers "^5.0.15"
-
-"ethereum-multicall@git+https://github.com/prepo-io/ethereum-multicall.git#1.0.1-prepo":
-  version "2.10.0"
-  uid "359516f74e66bc6cda16bad8d8170f943765b467"
-  resolved "git+https://github.com/prepo-io/ethereum-multicall.git#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"

@@ -11,7 +11,7 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'styled-components': path.resolve(root, 'node_modules', 'styled-components'),
+      'styled-components': path.resolve(root, '../../../node_modules', 'styled-components'),
 
       // removes the problem described here without having to link manually on dev machine
       // https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
@@ -25,6 +25,7 @@ const nextConfig = {
 
 const sentryWebpackPluginOptions = {
   authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: true,
 }
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
