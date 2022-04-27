@@ -148,22 +148,16 @@ const SummaryWrapper = styled.div`
 
 const Wrapper = styled.form`
   background-color: ${({ theme }): string => theme.color.secondary};
-  border: solid 1px ${({ theme }): string => theme.color.grey};
+  border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
+  box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
   font-family: ${({ theme }): string => theme.fontFamily.secondary};
   letter-spacing: 1px;
   line-height: 1;
   max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
-  opacity: 0.6;
   padding: ${spacingIncrement(16)};
   position: relative;
   transition: 0.3s;
   width: 100%;
-  :focus-within,
-  :hover {
-    border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
-    box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
-    opacity: 1;
-  }
 `
 
 const ActionCard: React.FC<Props> = ({
