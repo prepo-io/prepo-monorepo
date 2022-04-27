@@ -36,7 +36,8 @@ const FRONTEND_APPS: FrontendApp[] = [
 
 const getChangedApps = async (): Promise<FrontendApp[]> => {
   const filterBranch = process.env.FILTER_BRANCH
-  const commandToRun = `yarn build:dry --filter="...[origin/${filterBranch}]"`
+  // const commandToRun = `yarn build:dry --filter="...[origin/${filterBranch}]"`
+  const commandToRun = `yarn build:dry --since=origin/main`
   console.log({ commandToRun })
   const { stdout } = await execCommand(commandToRun)
 
