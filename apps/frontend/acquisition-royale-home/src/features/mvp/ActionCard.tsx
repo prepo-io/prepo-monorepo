@@ -15,6 +15,7 @@ import InfoTooltip from '../../components/InfoTooltip'
 import { RewardElements } from '../../stores/UiStore'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { CARDS_MAX_WIDTH } from '../../lib/constants'
+import { media } from '../../utils/theme/media'
 
 export type CostBreakdown = {
   amount: string
@@ -109,9 +110,13 @@ const InputWrapper = styled.div`
 
 const Description = styled.div`
   color: ${({ theme }): string => theme.color.grey};
+  font-size: ${({ theme }): string => theme.fontSize.base};
   margin: 0;
   margin-top: ${spacingIncrement(24)};
   text-align: center;
+  ${media.tablet`
+  font-size: ${({ theme }): string => theme.fontSize.sm};
+  `}
 `
 
 const LowMaticWrapper = styled.div`
