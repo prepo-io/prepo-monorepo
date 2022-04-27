@@ -23,10 +23,19 @@ jobs:
         branch_name=${GITHUB_HEAD_REF}
         echo $branch_name
         echo "::set-output name=branch_name::$branch_name"
+  
+  get-github-context:
+    name: Get Github Context
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_CONTEXT: ${{ toJson(github) }}
+    steps:
+      - name: Print github context
+        run: echo "$GITHUB_CONTEXT"
 
   get-changed-apps:
     name: Get changed apps
-    needs: get-branch-name
+    needs: [get-branch-name, get-github-context]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
