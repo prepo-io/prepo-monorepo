@@ -15,6 +15,8 @@ import UniswapLink from './UniswapLink'
 import RemainingEnterprises from './RemainingEnterprises'
 import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
+import MainTab, { TabPane } from '../../components/MainTab'
+import { media } from '../../utils/theme/media'
 
 const ActionsWrapper = styled.div`
   display: grid;
@@ -24,36 +26,69 @@ const ActionsWrapper = styled.div`
   max-width: ${spacingIncrement(540)};
 `
 
+const CenterWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: ${spacingIncrement(20)};
+  width: 100%;
+`
+
+const Wrapper = styled.div`
+  padding-bottom: ${spacingIncrement(180)};
+  ${media.tablet`
+    padding-bottom: ${spacingIncrement(90)};
+  `}
+`
+
 const GamePage: React.FC = () => (
-  <div>
+  <Wrapper>
     <Section>
       <RemainingEnterprises />
-      <Intern />
     </Section>
     <Section greyOnUnconnected title="Your Enterprises">
       <MyEnterprises />
-      <ActionsWrapper>
-        <Merge />
-        <UniswapLink />
-        <RPShop />
-        <DepositRp />
-        <WithdrawRp />
-      </ActionsWrapper>
     </Section>
-    <Section
-      action={<SearchCompetition />}
-      title="Competitor Analysis"
-      description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
-    >
-      <Competition />
-      <ActionsWrapper>
-        <Compete />
-        <Acquire />
-        <Rename />
-        <Revive />
-      </ActionsWrapper>
-    </Section>
-  </div>
+    <MainTab centered>
+      <TabPane tab="RP" key="rp">
+        <CenterWrapper>
+          <ActionsWrapper>
+            <UniswapLink />
+            <RPShop />
+            <DepositRp />
+            <WithdrawRp />
+          </ActionsWrapper>
+        </CenterWrapper>
+      </TabPane>
+      <TabPane tab="PLAY" key="play">
+        <CenterWrapper>
+          <Merge />
+        </CenterWrapper>
+        <Section
+          action={<SearchCompetition />}
+          title="Competitor Analysis"
+          description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
+        >
+          <Competition />
+          <ActionsWrapper>
+            <Compete />
+            <Acquire />
+            <Revive />
+          </ActionsWrapper>
+        </Section>
+      </TabPane>
+      <TabPane tab="EARN" key="earn">
+        <CenterWrapper>
+          <Intern />
+        </CenterWrapper>
+      </TabPane>
+      <TabPane tab="CUSTOMIZE" key="customize">
+        <CenterWrapper>
+          <Rename />
+        </CenterWrapper>
+      </TabPane>
+    </MainTab>
+  </Wrapper>
 )
 
 export default GamePage
