@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
 import Acquire from './acquire'
 import Compete from './actions/Compete'
 import MyEnterprises from './MyEnterprises'
@@ -17,6 +18,7 @@ import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
 import MainTab, { TabPane } from '../../components/MainTab'
 import { media } from '../../utils/theme/media'
+import { useRootStore } from '../../context/RootStoreProvider'
 
 const ActionsWrapper = styled.div`
   display: grid;
@@ -41,54 +43,58 @@ const Wrapper = styled.div`
   `}
 `
 
-const GamePage: React.FC = () => (
-  <Wrapper>
-    <Section>
-      <RemainingEnterprises />
-    </Section>
-    <Section greyOnUnconnected title="Your Enterprises">
-      <MyEnterprises />
-    </Section>
-    <MainTab centered>
-      <TabPane tab="RP" key="rp">
-        <CenterWrapper>
-          <ActionsWrapper>
-            <UniswapLink />
-            <RPShop />
-            <DepositRp />
-            <WithdrawRp />
-          </ActionsWrapper>
-        </CenterWrapper>
-      </TabPane>
-      <TabPane tab="PLAY" key="play">
-        <CenterWrapper>
-          <Merge />
-        </CenterWrapper>
-        <Section
-          action={<SearchCompetition />}
-          title="Competitor Analysis"
-          description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
-        >
-          <Competition />
-          <ActionsWrapper>
-            <Compete />
-            <Acquire />
-            <Revive />
-          </ActionsWrapper>
-        </Section>
-      </TabPane>
-      <TabPane tab="EARN" key="earn">
-        <CenterWrapper>
-          <Intern />
-        </CenterWrapper>
-      </TabPane>
-      <TabPane tab="CUSTOMIZE" key="customize">
-        <CenterWrapper>
-          <Rename />
-        </CenterWrapper>
-      </TabPane>
-    </MainTab>
-  </Wrapper>
-)
+const GamePage: React.FC = () => {
+  const { enterprisesStore } = useRootStore()
+  const { enterprisesBalance } = enterprisesStore
+  return (
+    <Wrapper>
+      <Section>
+        <RemainingEnterprises />
+      </Section>
+      <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
+        <MyEnterprises />
+      </Section>
+      <MainTab centered>
+        <TabPane tab="RP" key="rp">
+          <CenterWrapper>
+            <ActionsWrapper>
+              <UniswapLink />
+              <RPShop />
+              <DepositRp />
+              <WithdrawRp />
+            </ActionsWrapper>
+          </CenterWrapper>
+        </TabPane>
+        <TabPane tab="PLAY" key="play">
+          <CenterWrapper>
+            <Merge />
+          </CenterWrapper>
+          <Section
+            action={<SearchCompetition />}
+            title="Competitor Analysis"
+            description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
+          >
+            <Competition />
+            <ActionsWrapper>
+              <Compete />
+              <Acquire />
+              <Revive />
+            </ActionsWrapper>
+          </Section>
+        </TabPane>
+        <TabPane tab="EARN" key="earn">
+          <CenterWrapper>
+            <Intern />
+          </CenterWrapper>
+        </TabPane>
+        <TabPane tab="CUSTOMIZE" key="customize">
+          <CenterWrapper>
+            <Rename />
+          </CenterWrapper>
+        </TabPane>
+      </MainTab>
+    </Wrapper>
+  )
+}
 
-export default GamePage
+export default observer(GamePage)
