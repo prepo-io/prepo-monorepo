@@ -69,7 +69,7 @@ const Subtabs: React.FC<TabsProps & { subtabs: SubtabProps[] }> = ({ subtabs, ..
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Tabs centered animated={{ inkBar: false }} {...props}>
       {subtabs.map(({ content, tab }) => (
-        <SubTabPane tab={tab} key={tab.toLowerCase()}>
+        <SubTabPane tab={tab} key={tab}>
           {content}
         </SubTabPane>
       ))}

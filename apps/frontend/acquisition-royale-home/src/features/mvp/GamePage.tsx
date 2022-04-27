@@ -28,6 +28,11 @@ const Wrapper = styled.div`
 const GamePage: React.FC = () => {
   const { enterprisesStore } = useRootStore()
   const { enterprisesBalance } = enterprisesStore
+
+  const subtabsList = categories
+    .filter(({ subtabs }) => subtabs !== undefined)
+    .map(({ tab }) => tab)
+
   return (
     <Wrapper>
       <Section>
@@ -36,9 +41,9 @@ const GamePage: React.FC = () => {
       <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
         <MyEnterprises />
       </Section>
-      <MainTab subtabs={['rp', 'play']} defaultActiveKey="rp" centered>
+      <MainTab subtabs={subtabsList} defaultActiveKey={subtabsList[0]} centered>
         {categories.map(({ tab, content, subtabs }) => (
-          <TabPane tab={tab} key={tab.toLowerCase()}>
+          <TabPane tab={tab} key={tab}>
             {subtabs && <Subtabs subtabs={subtabs} />}
             {content && <CenterWrapper>{content}</CenterWrapper>}
           </TabPane>
