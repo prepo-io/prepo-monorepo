@@ -21,7 +21,7 @@ const arrowStyles = css`
   width: 0;
 `
 
-const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
+const Wrapper = styled.div<{ $showSubtabArrow: boolean }>`
   &&& {
     .ant-tabs-top > .ant-tabs-nav {
       margin-bottom: 0;
@@ -48,7 +48,7 @@ const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
     // border of subtab arrow
     .ant-tabs-tab-active::before {
       ${arrowStyles}
-      ${({ showSubtabArrow }): string => !showSubtabArrow && 'display: none'};
+      ${({ $showSubtabArrow }): string => !$showSubtabArrow && 'display: none'};
       border-left: ${spacingIncrement(ARROW_SIZE)} solid transparent;
       border-right: ${spacingIncrement(ARROW_SIZE)} solid transparent;
       border-bottom: ${spacingIncrement(ARROW_SIZE)} solid
@@ -58,7 +58,7 @@ const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
     // center of subtab arrow
     .ant-tabs-tab-active::after {
       ${arrowStyles}
-      ${({ showSubtabArrow }): string => !showSubtabArrow && 'display: none'};
+      ${({ $showSubtabArrow }): string => !$showSubtabArrow && 'display: none'};
       border-left: ${spacingIncrement(ARROW_SIZE - ARROW_BORDER_WIDTH)} solid transparent;
       border-right: ${spacingIncrement(ARROW_SIZE - ARROW_BORDER_WIDTH)} solid transparent;
       border-bottom: ${spacingIncrement(ARROW_SIZE - ARROW_BORDER_WIDTH)} solid
@@ -68,7 +68,7 @@ const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
     }
     // top border of subtabs
     .ant-tabs-nav::before {
-      ${({ showSubtabArrow }): string => !showSubtabArrow && 'display: none'};
+      ${({ $showSubtabArrow }): string => !$showSubtabArrow && 'display: none'};
       border-color: ${({ theme }): string => theme.color.accentPrimary};
       left: 50%;
       max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
@@ -85,7 +85,7 @@ const MainTab: React.FC<TabsProps & { subtabs?: string[] }> = ({
 }) => {
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
   return (
-    <Wrapper showSubtabArrow={subtabs.includes(activeKey)}>
+    <Wrapper $showSubtabArrow={subtabs.includes(activeKey)}>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Tabs
         defaultActiveKey={defaultActiveKey}
