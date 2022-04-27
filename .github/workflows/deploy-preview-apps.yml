@@ -94,13 +94,14 @@ jobs:
           if [[ $matrix == "true" ]] ; then echo "Matrix is truthy!" ; else echo "Matrix is falsy!" ; fi
           if [[ $matrix != '' ]] ; then echo "Matrix is not empty string!" ; else echo "Matrix is empty string!" ; fi
           if [[ $matrix != '[]' ]] ; then echo "Matrix is not empty array!" ; else echo "Matrix is empty array!" ; fi
+          if [[ (needs.get-changed-apps.outputs.matrix == 'true' && needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') ]] ; then echo "Should run pipeline" ; else echo "Should not run pipeline" ; fi
 
   deploy-apps:
     name: Deploy apps
     needs: get-changed-apps
     runs-on: ubuntu-latest
     if: |
-      needs.get-changed-apps.outputs.matrix == 'true' && needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]' || 
+      (needs.get-changed-apps.outputs.matrix == 'true' && needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') || 
       !contains(github.event.head_commit.message, '[skip ci]')
     strategy:
       fail-fast: false
