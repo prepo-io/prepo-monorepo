@@ -2,11 +2,9 @@ import { Tabs, TabsProps } from 'antd'
 import styled from 'styled-components'
 import { media } from '../utils/theme/media'
 
-type Props = TabsProps
-
 export const { TabPane } = Tabs
 
-const StyledTabPane = styled.div`
+const Wrapper = styled.div`
   &&& {
     .ant-tabs-top > .ant-tabs-nav {
       margin-bottom: 0;
@@ -34,11 +32,11 @@ const StyledTabPane = styled.div`
   }
 `
 
-const MainTab: React.FC<Props> = ({ ...props }) => (
-  <StyledTabPane>
+const MainTab: React.FC<TabsProps> = ({ ...props }) => (
+  <Wrapper>
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
     <Tabs animated={{ inkBar: false }} {...props} />
-  </StyledTabPane>
+  </Wrapper>
 )
 
 export default MainTab
