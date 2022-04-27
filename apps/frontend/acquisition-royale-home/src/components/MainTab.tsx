@@ -45,7 +45,6 @@ const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
     .ant-tabs-tab-active {
       opacity: 1;
     }
-
     // border of subtab arrow
     .ant-tabs-tab-active::before {
       ${arrowStyles}
@@ -67,7 +66,6 @@ const Wrapper = styled.div<{ showSubtabArrow: boolean }>`
       margin-top: ${spacingIncrement(ARROW_BORDER_WIDTH)};
       z-index: ${Z_INDEX.arrowFill};
     }
-
     // top border of subtabs
     .ant-tabs-nav::before {
       ${({ showSubtabArrow }): string => !showSubtabArrow && 'display: none'};
