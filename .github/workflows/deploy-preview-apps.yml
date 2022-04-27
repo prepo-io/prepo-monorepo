@@ -97,7 +97,7 @@ jobs:
     needs: get-changed-apps
     runs-on: ubuntu-latest
     if: |
-      needs.get-changed-apps.outputs.matrix != '[]'||
+      needs.get-changed-apps.outputs.matrix && needs.get-changed-apps.outputs.matrix != '[]'||
       !contains(github.event.head_commit.message, '[skip ci]')
     strategy:
       fail-fast: false
