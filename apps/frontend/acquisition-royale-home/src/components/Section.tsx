@@ -31,6 +31,7 @@ const Title = styled.h1<{ connected: boolean }>`
   font-weight: ${({ theme }): number => theme.fontWeight.extraBold};
   margin-bottom: 0;
   opacity: ${({ connected }): number => (connected ? 1 : 0.6)};
+  padding: 0 ${spacingIncrement(8)};
   text-align: center;
   transition: opacity 0.3s;
 `
