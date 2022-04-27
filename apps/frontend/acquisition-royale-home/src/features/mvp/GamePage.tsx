@@ -19,13 +19,15 @@ import { spacingIncrement } from '../../utils/theme/utils'
 import MainTab, { TabPane } from '../../components/MainTab'
 import { media } from '../../utils/theme/media'
 import { useRootStore } from '../../context/RootStoreProvider'
+import { CARDS_MAX_WIDTH } from '../../lib/constants'
+import Subtabs, { SubTabPane } from '../../components/Subtabs'
 
 const ActionsWrapper = styled.div`
   display: grid;
   grid-row-gap: ${spacingIncrement(60)};
   grid-template-columns: repeat(1, 1fr);
   justify-items: center;
-  max-width: ${spacingIncrement(540)};
+  max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
 `
 
 const CenterWrapper = styled.div`
@@ -54,16 +56,22 @@ const GamePage: React.FC = () => {
       <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
         <MyEnterprises />
       </Section>
-      <MainTab centered>
+      <MainTab subtabs={['rp', 'play']} defaultActiveKey="rp" centered>
         <TabPane tab="RP" key="rp">
-          <CenterWrapper>
-            <ActionsWrapper>
+          <Subtabs>
+            <SubTabPane tab="Trade" key="trade">
               <UniswapLink />
+            </SubTabPane>
+            <SubTabPane tab="Shop" key="shop">
               <RPShop />
+            </SubTabPane>
+            <SubTabPane tab="Deposit" key="deposit">
               <DepositRp />
+            </SubTabPane>
+            <SubTabPane tab="Withdraw" key="withdraw">
               <WithdrawRp />
-            </ActionsWrapper>
-          </CenterWrapper>
+            </SubTabPane>
+          </Subtabs>
         </TabPane>
         <TabPane tab="PLAY" key="play">
           <CenterWrapper>

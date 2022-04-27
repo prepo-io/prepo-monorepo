@@ -14,6 +14,7 @@ import Button from '../../components/Button'
 import InfoTooltip from '../../components/InfoTooltip'
 import { RewardElements } from '../../stores/UiStore'
 import { useRootStore } from '../../context/RootStoreProvider'
+import { CARDS_MAX_WIDTH } from '../../lib/constants'
 
 export type CostBreakdown = {
   amount: string
@@ -146,7 +147,7 @@ const Wrapper = styled.form`
   font-family: ${({ theme }): string => theme.fontFamily.secondary};
   letter-spacing: 1px;
   line-height: 1;
-  max-width: ${spacingIncrement(540)};
+  max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
   opacity: 0.6;
   padding: ${spacingIncrement(16)};
   position: relative;
