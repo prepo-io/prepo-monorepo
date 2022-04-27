@@ -4,7 +4,13 @@ import { CARDS_MAX_WIDTH } from '../lib/constants'
 import { media } from '../utils/theme/media'
 import { centered, spacingIncrement } from '../utils/theme/utils'
 
+export type SubtabProps = {
+  tab: string
+  content: React.ReactNode
+}
+
 const { TabPane: ATabPane } = Tabs
+
 const Wrapper = styled.div`
   &&& {
     .ant-tabs-tab-active::before,
@@ -58,10 +64,16 @@ export const SubTabPane: React.FC<TabPaneProps> = ({ children, ...props }) => (
   </ATabPane>
 )
 
-const Subtabs: React.FC<TabsProps> = ({ ...props }) => (
+const Subtabs: React.FC<TabsProps & { subtabs: SubtabProps[] }> = ({ subtabs, ...props }) => (
   <Wrapper>
     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-    <Tabs centered animated={{ inkBar: false }} {...props} />
+    <Tabs centered animated={{ inkBar: false }} {...props}>
+      {subtabs.map(({ content, tab }) => (
+        <SubTabPane tab={tab} key={tab.toLowerCase()}>
+          {content}
+        </SubTabPane>
+      ))}
+    </Tabs>
   </Wrapper>
 )
 

@@ -1,34 +1,14 @@
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import Acquire from './acquire'
-import Compete from './actions/Compete'
+import categories from './categories'
 import MyEnterprises from './MyEnterprises'
-import Merge from './merge'
-import DepositRp from './actions/DepositRp'
-import WithdrawRp from './actions/WithdrawRp'
-import SearchCompetition from './SearchCompetition'
-import Competition from './Competition'
-import Intern from './actions/Intern'
-import Rename from './actions/Rename'
-import Revive from './actions/Revive'
-import RPShop from './actions/RPShop'
-import UniswapLink from './UniswapLink'
 import RemainingEnterprises from './RemainingEnterprises'
 import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
 import MainTab, { TabPane } from '../../components/MainTab'
 import { media } from '../../utils/theme/media'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { CARDS_MAX_WIDTH } from '../../lib/constants'
-import Subtabs, { SubTabPane } from '../../components/Subtabs'
-
-const ActionsWrapper = styled.div`
-  display: grid;
-  grid-row-gap: ${spacingIncrement(60)};
-  grid-template-columns: repeat(1, 1fr);
-  justify-items: center;
-  max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
-`
+import Subtabs from '../../components/Subtabs'
 
 const CenterWrapper = styled.div`
   align-items: center;
@@ -57,49 +37,12 @@ const GamePage: React.FC = () => {
         <MyEnterprises />
       </Section>
       <MainTab subtabs={['rp', 'play']} defaultActiveKey="rp" centered>
-        <TabPane tab="RP" key="rp">
-          <Subtabs>
-            <SubTabPane tab="Trade" key="trade">
-              <UniswapLink />
-            </SubTabPane>
-            <SubTabPane tab="Shop" key="shop">
-              <RPShop />
-            </SubTabPane>
-            <SubTabPane tab="Deposit" key="deposit">
-              <DepositRp />
-            </SubTabPane>
-            <SubTabPane tab="Withdraw" key="withdraw">
-              <WithdrawRp />
-            </SubTabPane>
-          </Subtabs>
-        </TabPane>
-        <TabPane tab="PLAY" key="play">
-          <CenterWrapper>
-            <Merge />
-          </CenterWrapper>
-          <Section
-            action={<SearchCompetition />}
-            title="Competitor Analysis"
-            description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
-          >
-            <Competition />
-            <ActionsWrapper>
-              <Compete />
-              <Acquire />
-              <Revive />
-            </ActionsWrapper>
-          </Section>
-        </TabPane>
-        <TabPane tab="EARN" key="earn">
-          <CenterWrapper>
-            <Intern />
-          </CenterWrapper>
-        </TabPane>
-        <TabPane tab="CUSTOMIZE" key="customize">
-          <CenterWrapper>
-            <Rename />
-          </CenterWrapper>
-        </TabPane>
+        {categories.map(({ tab, content, subtabs }) => (
+          <TabPane tab={tab} key={tab.toLowerCase()}>
+            {subtabs && <Subtabs subtabs={subtabs} />}
+            {content && <CenterWrapper>{content}</CenterWrapper>}
+          </TabPane>
+        ))}
       </MainTab>
     </Wrapper>
   )
