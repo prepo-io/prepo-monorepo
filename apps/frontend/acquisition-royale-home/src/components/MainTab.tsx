@@ -83,7 +83,7 @@ const MainTab: React.FC<TabsProps & { subtabs?: string[] }> = ({
   subtabs = [],
   ...props
 }) => {
-  const [activeKey, setActiveKey] = useState<string>(defaultActiveKey)
+  const [activeKey, setActiveKey] = useState(defaultActiveKey)
   return (
     <Wrapper showSubtabArrow={subtabs.includes(activeKey)}>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
