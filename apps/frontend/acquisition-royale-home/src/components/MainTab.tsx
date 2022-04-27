@@ -28,6 +28,9 @@ const StyledTabPane = styled.div`
     .ant-tabs-ink-bar {
       display: none;
     }
+    .ant-tabs-nav-operations {
+      display: none;
+    }
   }
 `
 
