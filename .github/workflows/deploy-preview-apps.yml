@@ -30,6 +30,8 @@ jobs:
     env:
       GITHUB_CONTEXT: ${{ toJson(github) }}
     steps:
+      - name: Print pull request sha
+        run: echo ${{ github.event.pull_request.head.sha }}
       - name: Print github context
         run: echo "$GITHUB_CONTEXT"
 
