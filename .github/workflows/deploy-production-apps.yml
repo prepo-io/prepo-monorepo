@@ -37,7 +37,7 @@ jobs:
     - name: 'Restore changed apps cache'   
       uses: actions/cache@v2
       with:
-        path: changed_apps.json
+        path: ~/changed_apps.json
         key: changed-apps-${{ github.head_ref }}
 
     - name: 'Checkout'
