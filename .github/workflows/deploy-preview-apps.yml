@@ -98,17 +98,17 @@ jobs:
     - name: Run changed apps script
       run: FILTER_BRANCH=${GITHUB_HEAD_REF} yarn run changed:ci
 
-    # - name: Upload changed apps artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-    #     path: changed_apps.json
-
-    - name: Create changed apps cache
-      uses: actions/cache@v2
+    - name: Upload changed apps artifact
+      uses: actions/upload-artifact@v2
       with:
+        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
         path: changed_apps.json
-        key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+
+    # - name: Create changed apps cache
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: changed_apps.json
+    #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
 
     - name: Set matrix value
       id: set-matrix
@@ -137,17 +137,17 @@ jobs:
           if [[ $matrix != '[]' ]] ; then echo "Matrix is not empty array!" ; else echo "Matrix is empty array!" ; fi
           if [[ (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') ]] ; then echo "Should run pipeline" ; else echo "Should not run pipeline" ; fi
       
-      # - name: Download changed apps artifact
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-
-      - name: Restore changed apps cache
-        uses: actions/cache@v2
+      - name: Download changed apps artifact
+        uses: actions/download-artifact@v2
         with:
-          path: changed_apps.json
-          key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-          restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+          name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+
+      # - name: Restore changed apps cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: changed_apps.json
+      #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+      #     restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
       
       - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .
