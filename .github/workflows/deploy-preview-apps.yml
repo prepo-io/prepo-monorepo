@@ -113,7 +113,7 @@ jobs:
 
   check-matrix-and-cache:
     runs-on: ubuntu-latest
-    needs: get-changed-apps
+    needs: [get-changed-apps, generate-artifact-key]
     if: github.event_name == 'pull_request'
     steps:
       - name: Install json2yaml
@@ -133,7 +133,7 @@ jobs:
       - name: Download changed apps artifact
         uses: actions/download-artifact@v2
         with:
-          name: changed-apps-${{ github.head_ref | sed 's/\//\-/g' }}
+          name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
       
       - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .
