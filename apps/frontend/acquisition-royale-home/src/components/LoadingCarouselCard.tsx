@@ -9,6 +9,7 @@ type Props = {
 const StyledImage = styled.img`
   height: auto;
   object-fit: cover;
+  opacity: 0.8;
 `
 
 const skeletonAnimation = keyframes`
@@ -28,12 +29,12 @@ const Wrapper = styled.div<{ shouldAnimate: boolean }>`
   opacity: 0.6;
   &&& {
     .ant-card {
-      background: transparent;
       border: none;
       flex-direction: column;
-      margin: ${spacingIncrement(16)} ${spacingIncrement(14)};
+      margin: 0 ${spacingIncrement(14)};
     }
     .ant-card-body {
+      background-color: ${({ theme }): string => theme.color.accentPrimary};
       padding: 0;
     }
   }

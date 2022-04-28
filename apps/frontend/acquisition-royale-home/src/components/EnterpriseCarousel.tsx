@@ -28,12 +28,14 @@ export type OverlayProps = {
   action?: React.ReactNode
   message?: React.ReactNode
 }
+
 type Props = {
   activeIndex?: number
   enterprises?: { id: number; component: React.ReactNode }[]
   loading?: boolean
   overlay?: OverlayProps
   onActiveSlidesChange?: (props: { enterpriseId?: number; slides: number }) => unknown
+  title?: string
 } & SwiperProps
 
 const ArrowWrapper = styled.div<Omit<ArrowProps, 'onClick'>>`
@@ -42,9 +44,11 @@ const ArrowWrapper = styled.div<Omit<ArrowProps, 'onClick'>>`
   border-radius: ${({ direction }): string =>
     direction === 'left' ? '12px 6px 6px 12px' : '6px 12px 12px 6px'};
   cursor: pointer;
-  top: ${spacingIncrement(16)};
-  width: ${spacingIncrement(39)};
-  z-index: 5;
+  height: 100%;
+  position: absolute;
+  ${({ direction }): string => (direction === 'left' ? 'left: 0' : 'right: 0')};
+  width: 8%;
+  z-index: 1;
 `
 
 const ArrowIconWrapper = styled(Icon)`
@@ -55,8 +59,8 @@ const ArrowIconWrapper = styled(Icon)`
 const InnerWrapper = styled.div`
   align-items: stretch;
   display: flex;
+  gap: ${spacingIncrement(14)};
   justify-content: center;
-  max-width: ${spacingIncrement(1200)};
   position: relative;
   width: 100%;
 `
@@ -85,16 +89,24 @@ const OverlayActionWrapper = styled.div`
   width: 100%;
 `
 
+const Labels = styled.p`
+  color: ${({ theme }): string => theme.color.white};
+  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-weight: ${({ theme }): number => theme.fontWeight.bold};
+  margin-bottom: 0;
+  text-align: center;
+`
+
 const SwiperWrapper = styled.div`
   display: flex;
-  flex: 1;
-  max-width: ${spacingIncrement(400)};
+  padding: 0 12%;
   width: 100%;
 `
 
 const Wrapper = styled.div`
   ${centered}
   flex-direction: column;
+  gap: ${spacingIncrement(12)};
   position: relative;
   width: 100%;
 `
@@ -113,6 +125,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
   loading,
   onActiveSlidesChange,
   overlay,
+  title,
   ...swiperProps
 }) => {
   const [swiperRef, setSwiperRef] = useState<SwiperCore>()
@@ -167,6 +180,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
           )}
         </MessageOverlay>
       )}
+      {Boolean(title) && <Labels>{title}</Labels>}
       <InnerWrapper>
         {showArrow && (
           <ArrowComponent direction="left" onClick={(): void => swiperRef?.slidePrev()} />
@@ -176,6 +190,11 @@ const EnterpriseCarousel: React.FC<Props> = ({
           <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
       </InnerWrapper>
+      {enterprises && (
+        <Labels>
+          {activeIndex + 1}/{enterprises.length}
+        </Labels>
+      )}
     </Wrapper>
   )
 }

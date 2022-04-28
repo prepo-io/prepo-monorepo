@@ -66,6 +66,7 @@ const MyEnterprises: React.FC = () => {
         loading={connected && signerEnterprises === undefined}
         onActiveSlidesChange={onSignerSlidesChange}
         overlay={overlay()}
+        title="Choose your Enterprise"
       />
     </Wrapper>
   )

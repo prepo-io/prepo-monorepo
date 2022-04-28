@@ -1,9 +1,9 @@
 import { Card, CardProps } from 'antd'
-import styled, { DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
+import styled from 'styled-components'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { formatPeriod } from '../utils/date-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
-import { centered, primaryBoxShadowGlow, spacingIncrement } from '../utils/theme/utils'
+import { centered, spacingIncrement } from '../utils/theme/utils'
 import { Enterprise } from '../types/enterprise.types'
 
 type Props = {
@@ -58,15 +58,13 @@ const TextWrapper = styled.div<{ active?: boolean }>`
   text-align: center;
 `
 
-const Wrapper = styled.div<{ active?: boolean; burned?: boolean }>`
-  ${({ burned }): string => (burned ? 'cursor: not-allowed;' : '')}
+const Wrapper = styled.div<{ $burned?: boolean }>`
+  ${({ $burned }): string => ($burned ? 'cursor: not-allowed;' : '')}
   &&& {
     .ant-card {
       background-color: transparent;
-      margin: 0 ${spacingIncrement(14)};
+      margin: 0;
       .ant-card-cover {
-        ${({ active }): FlattenInterpolation<ThemeProps<DefaultTheme>> | undefined =>
-          active ? primaryBoxShadowGlow : undefined};
         background-color: ${({ theme }): string => theme.color.primary};
         border: 1px solid ${({ theme }): string => theme.color.accentPrimary};
         cursor: pointer;
@@ -101,7 +99,7 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
   const { burned, id, art, immune, immuneUntil } = enterprise
 
   return (
-    <Wrapper active={active} burned={burned}>
+    <Wrapper $burned={burned}>
       <StyledCard bordered={false} cover={<StyledImage alt={id.toString()} src={art.image} />}>
         <TextWrapper active={active} />
         {burned && (
