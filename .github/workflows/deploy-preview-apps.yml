@@ -110,11 +110,13 @@ jobs:
           if [[ $matrix != '[]' ]] ; then echo "Matrix is not empty array!" ; else echo "Matrix is empty array!" ; fi
           if [[ (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') ]] ; then echo "Should run pipeline" ; else echo "Should not run pipeline" ; fi
       
-      - name: Check changed apps cache
+      - name: Fetch changed apps cache
         uses: actions/cache@v2
         with:
           path: changed_apps.json
           restore-keys: changed-apps-${{ github.event.pull_request.head.sha }}
+      
+      - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .
 
   deploy-apps:
