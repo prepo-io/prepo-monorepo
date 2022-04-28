@@ -49,31 +49,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
-      with:
-        github_token: ${{ secrets.GH_PAT }}
-        workflow: deploy-preview-apps.yml
-        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-        search_artifacts: true
-
-    # - name: 'Download changed apps artifact'   
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-
-    # - name: Restore changed apps cache
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: changed_apps.json
-    #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-    #     restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-
-    - name: 'Checkout'
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
     - name: 'Restore node_modules cache'   
       uses: actions/cache@v2
       with:
@@ -103,6 +78,29 @@ jobs:
         restore-keys: |
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{ secrets.GH_PAT }}
+        workflow: deploy-preview-apps.yml
+        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+        search_artifacts: true
+
+    - name: Display files
+      run: ls -la
+
+    # - name: 'Download changed apps artifact'   
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+
+    # - name: Restore changed apps cache
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: changed_apps.json
+    #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+    #     restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+    
     - name: Set matrix value
       id: set-matrix
       run: |
