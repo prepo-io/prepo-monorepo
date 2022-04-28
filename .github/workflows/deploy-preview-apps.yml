@@ -77,15 +77,15 @@ jobs:
         key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
         restore-keys: |
           turbo-${{ github.job }}-${{ github.ref_name }}-
-
-    - name: Get changed apps list
-      uses: actions/cache@v2
-      with:
-        path: ~/changed_apps.json
-        key: changed-apps-${{ github.head_ref }}
     
     - name: Run changed apps script
       run: FILTER_BRANCH=${GITHUB_HEAD_REF} yarn run changed:ci
+
+    - name: Upload changed apps artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: changed-apps-${{ github.head_ref }}
+        path: changed_apps.json
 
     - name: Set matrix value
       id: set-matrix
@@ -114,12 +114,10 @@ jobs:
           if [[ $matrix != '[]' ]] ; then echo "Matrix is not empty array!" ; else echo "Matrix is empty array!" ; fi
           if [[ (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') ]] ; then echo "Should run pipeline" ; else echo "Should not run pipeline" ; fi
       
-      - name: Fetch changed apps cache
-        uses: actions/cache@v2
+      - name: Download changed apps artifact
+        uses: actions/download-artifact@v2
         with:
-          path: ~/changed_apps.json
-          key: changed-apps-${{ github.head_ref }}
-          restore-keys: changed-apps-${{ github.head_ref }}
+          name: changed-apps-${{ github.head_ref }}
       
       - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .

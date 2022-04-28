@@ -34,11 +34,10 @@ jobs:
     - name: 'Print previous github sha'
       run: echo ${{ github.event.before }}
 
-    - name: 'Restore changed apps cache'   
-      uses: actions/cache@v2
+    - name: 'Download changed apps artifact'   
+      uses: actions/download-artifact@v2
       with:
-        path: ~/changed_apps.json
-        key: changed-apps-${{ github.head_ref }}
+        name: changed-apps-${{ github.head_ref }}
 
     - name: 'Checkout'
       uses: actions/checkout@v2
