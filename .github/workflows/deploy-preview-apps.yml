@@ -13,7 +13,7 @@ jobs:
     name: Get current branch name
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-branch-name.outputs.branch_name }}
+      branch_name: ${{ steps.set-branch-name.outputs.branch_name }}
 
     steps:
     - name: Extract branch name
@@ -28,7 +28,7 @@ jobs:
       name: Generate artifact key
       runs-on: ubuntu-latest
       outputs:
-        matrix: ${{ steps.set-artifact-key.outputs.artifact }}
+        artifact: ${{ steps.set-artifact-key.outputs.artifact }}
 
       steps:
       - name: Generate artifact key

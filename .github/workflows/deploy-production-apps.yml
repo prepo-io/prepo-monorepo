@@ -9,7 +9,7 @@ jobs:
     name: Pull request merged to main branch
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-branch-name.outputs.branch_name }}
+      branch_name: ${{ steps.set-branch-name.outputs.branch_name }}
 
     steps:
     # Helps us to check if a pull request is merged and not closed
@@ -23,7 +23,7 @@ jobs:
       name: Generate artifact key
       runs-on: ubuntu-latest
       outputs:
-        matrix: ${{ steps.set-artifact-key.outputs.artifact }}
+        artifact: ${{ steps.set-artifact-key.outputs.artifact }}
 
       steps:
       - name: Generate artifact key
