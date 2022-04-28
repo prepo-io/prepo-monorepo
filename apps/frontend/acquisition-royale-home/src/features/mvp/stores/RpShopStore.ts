@@ -56,7 +56,7 @@ export class RpShopStore {
   get rpShopComparisons(): ComparisonProps[] | undefined {
     const { balance } = this.root.runwayPointsContractStore
     const { rebrandBalance, renameBalance, reviveBalance } = this.root.consumablesContractStore
-    const { enterprisesBalance } = this.root.enterprisesStore
+    const { enterprisesBalance } = this.root.signerStore
     const { quantity, rpCost, selectedConsumable } = this.root.acquisitionRoyaleRPShopContractStore
     if (!selectedConsumable || balance === undefined || rpCost === undefined) return undefined
     const { name, balance: consumableBalance } = getCorrectConsumableBalance(selectedConsumable, {

@@ -165,6 +165,7 @@ const ActionCard: React.FC<Props> = ({
   balances,
   balanceLabel = 'Balance',
   buttonProps,
+  children,
   comparisons,
   comingSoon,
   costs,
@@ -271,6 +272,7 @@ const ActionCard: React.FC<Props> = ({
     <Wrapper onSubmit={handleSubmit}>
       <FancyTitle>{title}</FancyTitle>
       <Description>{description}</Description>
+      {children}
       {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
       {(cost !== null || balance !== null) && (
         <SummaryWrapper>

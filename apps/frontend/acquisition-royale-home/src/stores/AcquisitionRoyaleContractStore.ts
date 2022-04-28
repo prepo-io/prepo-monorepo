@@ -269,7 +269,8 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   // write contract
 
   async acquire(): Promise<boolean | undefined> {
-    const { competitionActiveEnterprise, signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     if (
       this.acquireKeepId !== undefined &&
       competitionActiveEnterprise !== undefined &&
@@ -290,9 +291,9 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
         await tx.wait()
 
         runInAction(() => {
-          this.root.enterprisesStore.setSignerEnterpriseActiveId(this.acquireKeepId)
-          this.root.enterprisesStore.setCompetitionEnterpriseActiveId(undefined)
-          this.root.enterprisesStore.searchCompetition('')
+          this.root.signerStore.setSignerEnterpriseActiveId(this.acquireKeepId)
+          this.root.competitionStore.setCompetitionEnterpriseActiveId(undefined)
+          this.root.competitionStore.searchCompetition('')
         })
         return true
       } catch (error) {
@@ -308,7 +309,8 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async compete(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise, competitionActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     if (signerActiveEnterprise !== undefined && competitionActiveEnterprise !== undefined) {
       try {
         this.competing = true
@@ -332,7 +334,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async deposit(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     if (
       signerActiveEnterprise !== undefined &&
       this.depositAmount &&
@@ -362,7 +364,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async merge(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise, mergeTargetEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise, mergeTargetEnterprise } = this.root.signerStore
     if (
       signerActiveEnterprise !== undefined &&
       mergeTargetEnterprise !== undefined &&
@@ -376,7 +378,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
           mergeTargetEnterprise.id,
         ])
         await tx.wait()
-        this.root.enterprisesStore.setMergeTargetId(undefined)
+        this.root.signerStore.setMergeTargetId(undefined)
         return true
       } catch (error) {
         this.root.toastStore.errorToast('merge', error)
@@ -390,7 +392,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async rename(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     try {
       if (this.newName.length > 0 && signerActiveEnterprise !== undefined) {
         this.renaming = true
@@ -416,7 +418,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
 
   async revive(): Promise<boolean | undefined> {
     try {
-      const { competitionActiveEnterprise } = this.root.enterprisesStore
+      const { competitionActiveEnterprise } = this.root.competitionStore
       if (competitionActiveEnterprise !== undefined) {
         if (!competitionActiveEnterprise.burned) {
           notification.error({ message: 'Cannot revive, enterprise is active!' })
@@ -429,8 +431,8 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
           message: `${competitionActiveEnterprise.name} is now yours! 🎉`,
         })
         runInAction(() => {
-          this.root.enterprisesStore.setCompetitionEnterpriseActiveId(undefined)
-          this.root.enterprisesStore.searchCompetition('')
+          this.root.competitionStore.setCompetitionEnterpriseActiveId(undefined)
+          this.root.competitionStore.searchCompetition('')
         })
         return true
       }
@@ -445,7 +447,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async rebrand(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     try {
       if (signerActiveEnterprise) {
         if (!ethers.utils.isAddress(this.rebrandAddress)) {
@@ -472,7 +474,7 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
   }
 
   async withdraw(): Promise<boolean | undefined> {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     if (
       signerActiveEnterprise !== undefined &&
       this.withdrawAmount &&

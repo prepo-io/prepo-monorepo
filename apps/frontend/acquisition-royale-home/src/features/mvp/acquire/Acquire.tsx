@@ -18,9 +18,11 @@ const toKeepOrBurn = (id?: number, keepId?: number): string => {
 }
 
 const Acquire: React.FC = () => {
-  const { acquireStore, acquisitionRoyaleContractStore, enterprisesStore } = useRootStore()
+  const { acquireStore, acquisitionRoyaleContractStore, competitionStore, signerStore } =
+    useRootStore()
   const { acquireButtonProps, acquireBalances, acquireCosts, acquireComparisons } = acquireStore
-  const { competitionActiveEnterprise, signerActiveEnterprise } = enterprisesStore
+  const { competitionActiveEnterprise } = competitionStore
+  const { signerActiveEnterprise } = signerStore
   const { acquire, acquireKeepId, acquiring, setAcquireKeepId } = acquisitionRoyaleContractStore
 
   const handleAcquire = useCallback(async (): Promise<void> => {

@@ -16,12 +16,12 @@ const Wrapper = styled.div`
 
 const SearchCompetition: React.FC = () => {
   const [query, setQuery] = useState('')
-  const { enterprisesStore } = useRootStore()
-  const { competitionEnterprises, searchCompetitionQuery } = enterprisesStore
+  const { competitionStore } = useRootStore()
+  const { competitionEnterprises, searchCompetition, searchCompetitionQuery } = competitionStore
 
   const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault()
-    enterprisesStore.searchCompetition(query)
+    searchCompetition(query)
   }
   return (
     <Wrapper>
@@ -33,7 +33,7 @@ const SearchCompetition: React.FC = () => {
           buttonProps={{
             children: 'Search',
             disabled: Number.isNaN(+query),
-            onClick: (): void => enterprisesStore.searchCompetition(query),
+            onClick: (): void => searchCompetition(query),
             loading: Boolean(searchCompetitionQuery) && competitionEnterprises === undefined,
           }}
         />

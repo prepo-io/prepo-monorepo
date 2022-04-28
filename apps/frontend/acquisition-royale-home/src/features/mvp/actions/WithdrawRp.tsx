@@ -6,6 +6,7 @@ import { useRootStore } from '../../../context/RootStoreProvider'
 import { numberInput } from '../../../utils/number-utils'
 import ActionCard from '../ActionCard'
 import { withdrawActionDescription } from '../Descriptions'
+import MyEnterprises from '../MyEnterprises'
 
 const WithdrawRp: React.FC = () => {
   const { acquisitionRoyaleContractStore, actionsStore } = useRootStore()
@@ -52,7 +53,9 @@ const WithdrawRp: React.FC = () => {
       input={input}
       loading={withdrawing}
       title="Withdraw RP"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 

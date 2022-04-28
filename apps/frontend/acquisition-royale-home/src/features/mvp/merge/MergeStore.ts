@@ -29,7 +29,7 @@ export class MergeStore {
     const { balance } = this.root.runwayPointsContractStore
     const { mergeCost } = this.root.mergeRPCostContractStore
     const { mergeTargetEnterprise, signerActiveEnterprise, signerEnterprises } =
-      this.root.enterprisesStore
+      this.root.signerStore
     if (signerEnterprises && signerEnterprises.length === 0)
       return { disabled: true, children: 'No owned Enterprise' }
 
@@ -49,7 +49,7 @@ export class MergeStore {
   }
 
   get mergeComparisons(): ComparisonProps[] | undefined {
-    const { mergeTargetEnterprise, signerActiveEnterprise } = this.root.enterprisesStore
+    const { mergeTargetEnterprise, signerActiveEnterprise } = this.root.signerStore
     const { getNewRpPerDay, mergerImmunityPeriod, passiveRpPerDay } =
       this.root.acquisitionRoyaleContractStore
     if (

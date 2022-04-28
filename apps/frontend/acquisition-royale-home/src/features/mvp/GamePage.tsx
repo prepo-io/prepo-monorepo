@@ -1,13 +1,10 @@
 import styled from 'styled-components'
-import { observer } from 'mobx-react-lite'
 import categories from './categories'
-import MyEnterprises from './MyEnterprises'
 import RemainingEnterprises from './RemainingEnterprises'
 import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
 import MainTab, { TabPane } from '../../components/MainTab'
 import { media } from '../../utils/theme/media'
-import { useRootStore } from '../../context/RootStoreProvider'
 import Subtabs from '../../components/Subtabs'
 
 const CenterWrapper = styled.div`
@@ -26,9 +23,6 @@ const Wrapper = styled.div`
 `
 
 const GamePage: React.FC = () => {
-  const { enterprisesStore } = useRootStore()
-  const { enterprisesBalance } = enterprisesStore
-
   const subtabsList = categories
     .filter(({ subtabs }) => subtabs !== undefined)
     .map(({ tab }) => tab)
@@ -37,9 +31,6 @@ const GamePage: React.FC = () => {
     <Wrapper>
       <Section>
         <RemainingEnterprises />
-      </Section>
-      <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
-        <MyEnterprises />
       </Section>
       <MainTab subtabs={subtabsList} defaultActiveKey={subtabsList[0]} centered>
         {categories.map(({ tab, content, subtabs }) => (
@@ -53,4 +44,4 @@ const GamePage: React.FC = () => {
   )
 }
 
-export default observer(GamePage)
+export default GamePage

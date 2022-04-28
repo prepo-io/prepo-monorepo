@@ -16,9 +16,10 @@ const Wrapper = styled.div`
   width: 100%;
 `
 const MyEnterprises: React.FC = () => {
-  const { enterprisesStore, web3Store } = useRootStore()
+  const { signerStore, web3Store } = useRootStore()
   const { connected } = web3Store
-  const { signerEnterprises, setSignerSlides, signerActiveEnterprise } = enterprisesStore
+  const { activeIndex, onSignerSlidesChange, signerEnterprises, signerActiveEnterprise } =
+    signerStore
 
   const doneLoading = (): boolean => isFirstEnterpriseLoaded(signerEnterprises)
 
@@ -45,7 +46,6 @@ const MyEnterprises: React.FC = () => {
       <EnterpriseCard
         enterprise={enterprise}
         active={signerActiveEnterprise && enterprise?.id === signerActiveEnterprise?.id}
-        onClick={enterprisesStore.setSignerEnterpriseActiveId}
       />
     ) : (
       <LoadingCarouselCard />
@@ -54,6 +54,7 @@ const MyEnterprises: React.FC = () => {
   return (
     <Wrapper>
       <EnterpriseCarousel
+        activeIndex={activeIndex}
         enterprises={
           doneLoading()
             ? signerEnterprises?.map((enterprise) => ({
@@ -63,7 +64,7 @@ const MyEnterprises: React.FC = () => {
             : undefined
         }
         loading={connected && signerEnterprises === undefined}
-        onActiveSlidesChange={setSignerSlides}
+        onActiveSlidesChange={onSignerSlidesChange}
         overlay={overlay()}
       />
     </Wrapper>

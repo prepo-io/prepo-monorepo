@@ -20,13 +20,9 @@ const SearchByIdWrapper = styled.div`
 `
 
 const Competition: React.FC = () => {
-  const { enterprisesStore } = useRootStore()
-  const {
-    competitionEnterprises,
-    searchCompetitionQuery,
-    competitionActiveEnterpriseId,
-    setCompetitionSlides,
-  } = enterprisesStore
+  const { competitionStore } = useRootStore()
+  const { competitionEnterprises, searchCompetitionQuery, activeEnterpriseId, onSlidesChange } =
+    competitionStore
 
   const doneLoading = (): boolean => isFirstEnterpriseLoaded(competitionEnterprises)
 
@@ -52,9 +48,8 @@ const Competition: React.FC = () => {
   const showEnterpriseCard = (enterprise: Enterprise | undefined): React.ReactNode =>
     enterprise && isEnterpriseLoaded(enterprise) ? (
       <EnterpriseCard
-        active={enterprise !== undefined && enterprise.id === competitionActiveEnterpriseId}
+        active={enterprise !== undefined && enterprise.id === activeEnterpriseId}
         enterprise={enterprise}
-        onClick={enterprisesStore.setCompetitionEnterpriseActiveId}
         isCompetitor
       />
     ) : (
@@ -68,12 +63,7 @@ const Competition: React.FC = () => {
       competitionEnterprises.length === 0 &&
       competitionEnterprises[0] ? (
         <SearchByIdWrapper>
-          <EnterpriseCard
-            active
-            enterprise={competitionEnterprises[0]}
-            isCompetitor
-            onClick={enterprisesStore.setCompetitionEnterpriseActiveId}
-          />
+          <EnterpriseCard active enterprise={competitionEnterprises[0]} isCompetitor />
         </SearchByIdWrapper>
       ) : (
         <EnterpriseCarousel
@@ -86,7 +76,7 @@ const Competition: React.FC = () => {
               : undefined
           }
           loading={Boolean(searchCompetitionQuery) && competitionEnterprises === undefined}
-          onActiveSlidesChange={setCompetitionSlides}
+          onActiveSlidesChange={onSlidesChange}
           overlay={overlay()}
         />
       )}

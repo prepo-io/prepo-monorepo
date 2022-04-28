@@ -6,6 +6,7 @@ import { useRootStore } from '../../../context/RootStoreProvider'
 import { numberInput } from '../../../utils/number-utils'
 import ActionCard from '../ActionCard'
 import { depositActionDescription } from '../Descriptions'
+import MyEnterprises from '../MyEnterprises'
 
 const DepositRp: React.FC = () => {
   const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
@@ -49,7 +50,9 @@ const DepositRp: React.FC = () => {
       input={input}
       loading={depositing}
       title="Deposit RP"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 
