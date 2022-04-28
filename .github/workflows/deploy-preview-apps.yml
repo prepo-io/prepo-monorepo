@@ -78,6 +78,10 @@ jobs:
           turbo-${{ github.job }}-${{ github.ref_name }}-
 
     - name: Get changed apps list
+      uses: actions/cache@v2
+      with:
+        path: changed_apps.json
+        key: changed-apps-${{ github.event.pull_request.head.sha }}
       run: FILTER_BRANCH=${GITHUB_HEAD_REF} yarn run changed:ci
 
     - name: Set matrix value
@@ -88,7 +92,7 @@ jobs:
           echo $matrix | jq .
           echo "::set-output name=matrix::$matrix"
 
-  check-matrix:
+  check-matrix-and-cache:
     runs-on: ubuntu-latest
     needs: get-changed-apps
     steps:
@@ -105,6 +109,13 @@ jobs:
           if [[ $matrix != '' ]] ; then echo "Matrix is not empty string!" ; else echo "Matrix is empty string!" ; fi
           if [[ $matrix != '[]' ]] ; then echo "Matrix is not empty array!" ; else echo "Matrix is empty array!" ; fi
           if [[ (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]') ]] ; then echo "Should run pipeline" ; else echo "Should not run pipeline" ; fi
+      
+      - name: Check changed apps cache
+        uses: actions/cache@v2
+        with:
+          path: changed_apps.json
+          restore-keys: changed-apps-${{ github.event.pull_request.head.sha }}
+        run: cat changed_apps.json | jq -c -r .
 
   deploy-apps:
     name: Deploy apps
