@@ -12,7 +12,7 @@
         "l": "yarn prettier --write './deploy/*.ts' './test/**/*.ts' './hardhat.config.ts'",
         "pret": "yarn c && yarn l",
         "t": "yarn hardhat test",
-        "test": "yarn hardhat test",
+        "test": "yarn hardhat compile && yarn hardhat test",
         "pret:coverage": "yarn c && yarn l",
         "t:coverage": "yarn hardhat coverage",
         "lint": "eslint . --max-warnings 0 --ext ts,tsx",

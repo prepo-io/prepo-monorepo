@@ -15,12 +15,15 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:dry": "npx turbo run build --dry-run=json",
+    "changed:ci": "npx ts-node scripts/changedApps.ts $FILTER_BRANCH",
     "dev": "turbo run compile && turbo run dev --parallel",
     "compile": "turbo run compile",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "npx is-ci || npx husky install",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "test:ci": "turbo run test --since=origin/main"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
@@ -47,7 +50,7 @@
     "prettier": "2.6.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
-    "turbo": "1.2.2",
+    "turbo": "1.2.5",
     "typescript": "4.6.3"
   },
   "config": {

@@ -1,0 +1,48 @@
+name: Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Restore node_modules cache'   
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: 'Use NodeJS 14'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: 'Setup npm'
+        run: |
+          npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache
+          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ github.ref_name }}-
+
+      - name: Run tests
+        run: |
+          yarn run test:ci

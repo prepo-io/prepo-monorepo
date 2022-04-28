@@ -1,0 +1,104 @@
+name: Deploy production
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  check-merge:
+    name: Pull request merged to main branch
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-branch-name.outputs.branch_name }}
+
+    steps:
+    # Helps us to check if a pull request is merged and not closed
+    - name: Check if pull request is merged
+      id: set-branch-name
+      if: github.event.pull_request.merged == 'true'
+      run: | 
+        echo Merged pull request
+  
+  checkout-repository:
+    name: Checkout repository
+    needs: check-merge
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_CONTEXT: ${{ toJson(github) }}
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: 'Print previous github sha'
+      run: echo ${{ github.event.before }}
+
+    - name: 'Restore node_modules cache'   
+      uses: actions/cache@v2
+      with:
+        path: changed_apps.json
+        key: changed-apps-${{ github.event.before }}
+
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: 'Restore node_modules cache'   
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: 'Use NodeJS 14'
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: 'Setup npm'
+      run: |
+        npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+        npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+    - name: Install Dependencies
+      run: |
+        yarn install --frozen-lockfile
+
+    - name: Turbo Cache
+      id: turbo-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules/.cache
+        key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+        restore-keys: |
+          turbo-${{ github.job }}-${{ github.ref_name }}-
+
+    - name: Set matrix value
+      id: set-matrix
+      run: |
+          matrix="{\"include\":$(cat changed_apps.json | jq -c -r .)}"
+          echo $matrix
+          echo $matrix | jq .
+          echo "::set-output name=matrix::$matrix"
+
+  deploy-apps:
+    name: Deploy apps
+    needs: checkout-repository
+    runs-on: ubuntu-latest
+    if: |
+      (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]')
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}} 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy to Vercel Action
+        id: vercel-deploy
+        uses: BetaHuhn/deploy-to-vercel-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ matrix.projectId }}
