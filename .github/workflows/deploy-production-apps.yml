@@ -18,10 +18,27 @@ jobs:
       if: github.event.pull_request.merged == 'true'
       run: | 
         echo Merged pull request
+
+  generate-artifact-key:
+      name: Generate artifact key
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.set-artifact-key.outputs.artifact }}
+
+      steps:
+      - name: Generate artifact key
+        id: set-artifact-key
+        # Replace possible / on the string to -
+        run: | 
+          github_head_ref="${{ github.head_ref }}"
+          echo $github_head_ref
+          artifact="${github_head_ref} | sed 's/\//\-/g'"
+          echo "::set-output name=artifact::$artifact"
+          
   
   checkout-repository:
     name: Checkout repository
-    needs: check-merge
+    needs: [check-merge, generate-artifact-key]
     runs-on: ubuntu-latest
     env:
       GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -37,7 +54,7 @@ jobs:
     - name: 'Download changed apps artifact'   
       uses: actions/download-artifact@v2
       with:
-        name: changed-apps-${{ github.head_ref | sed 's/\//\-/g' }}
+        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
 
     - name: 'Checkout'
       uses: actions/checkout@v2

@@ -23,6 +23,22 @@ jobs:
         branch_name=${GITHUB_HEAD_REF}
         echo $branch_name
         echo "::set-output name=branch_name::$branch_name"
+
+  generate-artifact-key:
+      name: Generate artifact key
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.set-artifact-key.outputs.artifact }}
+
+      steps:
+      - name: Generate artifact key
+        id: set-artifact-key
+        # Replace possible / on the string to -
+        run: | 
+          github_head_ref="${{ github.head_ref }}"
+          echo $github_head_ref
+          artifact="${github_head_ref} | sed 's/\//\-/g'"
+          echo "::set-output name=artifact::$artifact"
   
   get-github-context:
     name: Get Github Context
@@ -37,7 +53,7 @@ jobs:
 
   get-changed-apps:
     name: Get changed apps
-    needs: [get-branch-name, get-github-context]
+    needs: [get-branch-name, get-github-context, generate-artifact-key]
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     outputs:
@@ -84,7 +100,7 @@ jobs:
     - name: Upload changed apps artifact
       uses: actions/upload-artifact@v2
       with:
-        name: changed-apps-${{ github.head_ref | sed 's/\//\-/g' }} # Replace possible / on the string to -
+        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
         path: changed_apps.json
 
     - name: Set matrix value
