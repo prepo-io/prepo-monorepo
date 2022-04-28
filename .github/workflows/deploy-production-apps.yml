@@ -41,6 +41,8 @@ jobs:
     name: Checkout repository
     needs: [check-merge, generate-artifact-key]
     runs-on: ubuntu-latest
+    outputs:
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
     env:
       GITHUB_CONTEXT: ${{ toJson(github) }}
     steps:
@@ -114,10 +116,10 @@ jobs:
     needs: checkout-repository
     runs-on: ubuntu-latest
     if: |
-      (needs.get-changed-apps.outputs.matrix != '' && needs.get-changed-apps.outputs.matrix != '[]')
+      (needs.checkout-repository.outputs.matrix != '' && needs.checkout-repository.outputs.matrix != '[]')
     strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.get-changed-apps.outputs.matrix)}} 
+      matrix: ${{fromJson(needs.checkout-repository.outputs.matrix)}} 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
