@@ -9,8 +9,6 @@ import 'tailwindcss/tailwind.css'
 import '../styles/default.css'
 import { PANELBEAR_SITE_ID } from '../lib/constants'
 
-// Test second change website
-
 // mobx config
 configure({
   enforceActions: 'observed',
