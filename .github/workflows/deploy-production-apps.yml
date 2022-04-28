@@ -49,15 +49,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: 'Print previous github sha'
-      run: echo ${{ github.event.before }}
-
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{ secrets.GH_PAT }}
         workflow: deploy-preview-apps.yml
         name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+        search_artifacts: true
 
     # - name: 'Download changed apps artifact'   
     #   uses: actions/download-artifact@v2
