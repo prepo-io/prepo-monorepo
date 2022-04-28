@@ -116,6 +116,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: changed_apps.json
+          key: changed-apps-${{ github.event.pull_request.head.sha }}
           restore-keys: changed-apps-${{ github.event.pull_request.head.sha }}
       
       - name: Print changed apps cache
