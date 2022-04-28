@@ -84,7 +84,7 @@ jobs:
     - name: Upload changed apps artifact
       uses: actions/upload-artifact@v2
       with:
-        name: changed-apps-${{ github.head_ref }}
+        name: changed-apps-${{ github.head_ref | sed 's/\//\-/g' }} # Replace possible / on the string to -
         path: changed_apps.json
 
     - name: Set matrix value
@@ -117,7 +117,7 @@ jobs:
       - name: Download changed apps artifact
         uses: actions/download-artifact@v2
         with:
-          name: changed-apps-${{ github.head_ref }}
+          name: changed-apps-${{ github.head_ref | sed 's/\//\-/g' }}
       
       - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .
