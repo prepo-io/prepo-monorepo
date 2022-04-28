@@ -32,7 +32,8 @@ jobs:
         run: | 
           github_head_ref="${{ github.head_ref }}"
           echo $github_head_ref
-          artifact="${github_head_ref} | sed 's/\//\-/g'"
+          artifact=$(echo "${github_head_ref}" | sed 's/\//\-/g')
+          echo $artifact
           echo "::set-output name=artifact::$artifact"
           
   
