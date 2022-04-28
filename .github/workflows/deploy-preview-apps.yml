@@ -82,6 +82,8 @@ jobs:
       with:
         path: changed_apps.json
         key: changed-apps-${{ github.event.pull_request.head.sha }}
+    
+    - name: Run changed apps script
       run: FILTER_BRANCH=${GITHUB_HEAD_REF} yarn run changed:ci
 
     - name: Set matrix value
