@@ -90,18 +90,6 @@ jobs:
 
     - name: Display files
       run: ls -la
-
-    # - name: 'Download changed apps artifact'   
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-
-    # - name: Restore changed apps cache
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: changed_apps.json
-    #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-    #     restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
     
     - name: Set matrix value
       id: set-matrix

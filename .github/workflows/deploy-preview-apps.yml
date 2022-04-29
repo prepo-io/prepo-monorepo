@@ -104,12 +104,6 @@ jobs:
         name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
         path: changed_apps.json
 
-    # - name: Create changed apps cache
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: changed_apps.json
-    #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-
     - name: Set matrix value
       id: set-matrix
       run: |
@@ -142,13 +136,6 @@ jobs:
         with:
           name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
 
-      # - name: Restore changed apps cache
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: changed_apps.json
-      #     key: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-      #     restore-keys: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
-      
       - name: Print changed apps cache
         run: cat changed_apps.json | jq -c -r .
 
