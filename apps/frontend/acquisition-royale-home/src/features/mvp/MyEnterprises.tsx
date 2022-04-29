@@ -1,14 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import Button from '../../components/Button'
-import EnterpriseCard from '../../components/EnterpriseCard'
 import EnterpriseCarousel, { OverlayProps } from '../../components/EnterpriseCarousel'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { spacingIncrement } from '../../utils/theme/utils'
 import ConnectButton from '../connect/ConnectButton'
-import { isEnterpriseLoaded, isFirstEnterpriseLoaded } from '../../utils/enterprise-utils'
-import { Enterprise } from '../../types/enterprise.types'
-import LoadingCarouselCard from '../../components/LoadingCarouselCard'
 
 const Wrapper = styled.div`
   margin: ${spacingIncrement(44)} 0;
@@ -18,10 +14,7 @@ const Wrapper = styled.div`
 const MyEnterprises: React.FC = () => {
   const { signerStore, web3Store } = useRootStore()
   const { connected } = web3Store
-  const { activeIndex, onSignerSlidesChange, signerEnterprises, signerActiveEnterprise } =
-    signerStore
-
-  const doneLoading = (): boolean => isFirstEnterpriseLoaded(signerEnterprises)
+  const { activeIndex, onSignerSlidesChange, signerEnterprises } = signerStore
 
   const overlay = (): OverlayProps | undefined => {
     if (!connected)
@@ -41,28 +34,11 @@ const MyEnterprises: React.FC = () => {
     return undefined
   }
 
-  const showEnterpriseCard = (enterprise: Enterprise | undefined): React.ReactNode =>
-    enterprise && isEnterpriseLoaded(enterprise) ? (
-      <EnterpriseCard
-        enterprise={enterprise}
-        active={signerActiveEnterprise && enterprise?.id === signerActiveEnterprise?.id}
-      />
-    ) : (
-      <LoadingCarouselCard />
-    )
-
   return (
     <Wrapper>
       <EnterpriseCarousel
         activeIndex={activeIndex}
-        enterprises={
-          doneLoading()
-            ? signerEnterprises?.map((enterprise) => ({
-                id: enterprise.id,
-                component: showEnterpriseCard(enterprise),
-              }))
-            : undefined
-        }
+        enterprises={signerEnterprises}
         loading={connected && signerEnterprises === undefined}
         onActiveSlidesChange={onSignerSlidesChange}
         overlay={overlay()}

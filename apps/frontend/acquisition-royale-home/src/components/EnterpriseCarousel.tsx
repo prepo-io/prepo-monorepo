@@ -9,10 +9,16 @@ import { useEffect, useMemo, useState } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 import Icon from './icon'
 import 'swiper/css'
+import EnterpriseCard from './EnterpriseCard'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { centered, spacingIncrement } from '../utils/theme/utils'
-import { generateDummyArray } from '../utils/enterprise-utils'
+import {
+  generateDummyArray,
+  isEnterpriseLoaded,
+  isFirstEnterpriseLoaded,
+} from '../utils/enterprise-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
+import { Enterprises } from '../types/enterprise.types'
 
 const SwiperStyle: CSSProperties = {
   display: 'flex',
@@ -31,7 +37,7 @@ export type OverlayProps = {
 
 type Props = {
   activeIndex?: number
-  enterprises?: { id: number; component: React.ReactNode }[]
+  enterprises?: Enterprises
   loading?: boolean
   overlay?: OverlayProps
   onActiveSlidesChange?: (props: { enterpriseId?: number; slides: number }) => unknown
@@ -132,20 +138,33 @@ const EnterpriseCarousel: React.FC<Props> = ({
 
   const showArrow = enterprises && enterprises.length > SLIDES_PER_VIEW
 
-  const placeholderEnterprises = generateDummyArray(SLIDES_PER_VIEW).map((id) => ({
-    id,
-    component: <LoadingCarouselCard key={id} loading={loading} />,
-  }))
+  const placeholderEnterprises = generateDummyArray(SLIDES_PER_VIEW).map((id) => id)
 
   useEffect(() => {
     if (swiperRef && swiperRef.activeIndex !== activeIndex) swiperRef.slideTo(activeIndex)
   }, [activeIndex, swiperRef])
 
-  const renderContent = useMemo(() => {
-    const cards =
-      enterprises === undefined || enterprises.length === 0 ? placeholderEnterprises : enterprises
+  const renderCards = useMemo(() => {
+    if (enterprises !== undefined && enterprises.length > 0 && isFirstEnterpriseLoaded(enterprises))
+      return enterprises.map((enterprise, index) => (
+        <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
+          {isEnterpriseLoaded(enterprise) ? (
+            <EnterpriseCard active={index === activeIndex} enterprise={enterprise} />
+          ) : (
+            <LoadingCarouselCard />
+          )}
+        </SwiperSlideComponent>
+      ))
 
-    return (
+    return placeholderEnterprises.map((id) => (
+      <SwiperSlideComponent key={id} style={SwiperStyle}>
+        <LoadingCarouselCard key={id} loading />
+      </SwiperSlideComponent>
+    ))
+  }, [activeIndex, enterprises, placeholderEnterprises])
+
+  const renderContent = useMemo(
+    () => (
       <SwiperWrapper>
         <SwiperComponent
           onActiveIndexChange={(swiper): void => {
@@ -160,15 +179,12 @@ const EnterpriseCarousel: React.FC<Props> = ({
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...swiperProps}
         >
-          {cards.map(({ id, component }) => (
-            <SwiperSlideComponent key={id} style={SwiperStyle}>
-              {component}
-            </SwiperSlideComponent>
-          ))}
+          {renderCards}
         </SwiperComponent>
       </SwiperWrapper>
-    )
-  }, [enterprises, onActiveSlidesChange, placeholderEnterprises, swiperProps])
+    ),
+    [enterprises, onActiveSlidesChange, renderCards, swiperProps]
+  )
 
   return (
     <Wrapper>
