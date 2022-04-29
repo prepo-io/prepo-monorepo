@@ -185,7 +185,7 @@ export const angels: Partner[] = [
     description: 'Zeta',
   },
   {
-    imageUrl: 'https://pbs.twimg.com/profile_images/1369201998319341569/htYowoY2_400x400.png',
+    iconName: 'zepeto',
     name: 'Rudy Lee',
     url: 'https://www.linkedin.com/in/rudyclee/',
     description: 'Zepeto',

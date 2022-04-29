@@ -22,6 +22,7 @@ const NeptuneDAO = dynamic(() => import('./NeptuneDAO'), { ssr: false })
 const Octav = dynamic(() => import('./Octav'), { ssr: false })
 const Re7Capital = dynamic(() => import('./Re7Capital'), { ssr: false })
 const TheLao = dynamic(() => import('./TheLao'), { ssr: false })
+const Zepeto = dynamic(() => import('./Zepeto'), { ssr: false })
 
 export default {
   apolloCapital: ApolloCapital,
@@ -46,4 +47,5 @@ export default {
   shimaCapital: ShimaCapital,
   theLao: TheLao,
   thiel: ThielCapital,
+  zepeto: Zepeto,
 }
