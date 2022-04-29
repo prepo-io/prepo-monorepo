@@ -111,6 +111,9 @@ jobs:
           echo $matrix | jq .
           echo "::set-output name=matrix::$matrix"
 
+    - name: Install Vercel CLI
+      run: yarn global add vercel
+
   deploy-apps:
     name: Deploy apps
     needs: checkout-repository
@@ -121,16 +124,5 @@ jobs:
       fail-fast: false
       matrix: ${{fromJson(needs.checkout-repository.outputs.matrix)}} 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Deploy to Vercel Action
-        id: vercel-deploy
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ matrix.projectId }}
-          PRODUCTION: true
+      - name: Deploy to Vercel production
+        run: VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} VERCEL_PROJECT_ID=${{ matrix.projectId }} npx vercel deploy --confirm --prod --token ${{ secrets.VERCEL_TOKEN }}
