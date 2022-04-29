@@ -86,11 +86,11 @@ const MainTab: React.FC<TabsProps & { subtabs?: string[] }> = ({
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
   return (
     <Wrapper $showSubtabArrow={subtabs.includes(activeKey)}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Tabs
         defaultActiveKey={defaultActiveKey}
         onChange={setActiveKey}
         animated={{ inkBar: false }}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       />
     </Wrapper>

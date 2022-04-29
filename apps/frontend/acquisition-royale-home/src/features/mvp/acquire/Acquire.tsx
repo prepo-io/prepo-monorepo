@@ -7,6 +7,7 @@ import { useRootStore } from '../../../context/RootStoreProvider'
 import { INSUFFICIENT_MATIC } from '../../../utils/common-utils'
 import ActionCard from '../ActionCard'
 import { acquireActionDescription } from '../Descriptions'
+import MyEnterprises from '../MyEnterprises'
 
 const EnterpriseLabel = styled.span`
   font-size: ${({ theme }): string => theme.fontSize.base};
@@ -73,7 +74,9 @@ const Acquire: React.FC = () => {
       loading={acquiring}
       lowMatic={acquireButtonProps.children === INSUFFICIENT_MATIC}
       title="Acquire"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 

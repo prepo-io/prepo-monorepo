@@ -6,6 +6,7 @@ import Input from '../../../components/Input'
 import { competeActionDescription } from '../Descriptions'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { numberInput } from '../../../utils/number-utils'
+import MyEnterprises from '../MyEnterprises'
 
 const CompeteAction: React.FC = () => {
   const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
@@ -47,7 +48,9 @@ const CompeteAction: React.FC = () => {
       input={input}
       loading={competing}
       title="Compete"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 
