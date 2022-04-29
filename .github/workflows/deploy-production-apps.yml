@@ -124,5 +124,9 @@ jobs:
       fail-fast: false
       matrix: ${{fromJson(needs.checkout-repository.outputs.matrix)}} 
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Deploy to Vercel production
         run: VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} VERCEL_PROJECT_ID=${{ matrix.projectId }} npx vercel deploy --confirm --prod --token ${{ secrets.VERCEL_TOKEN }}
