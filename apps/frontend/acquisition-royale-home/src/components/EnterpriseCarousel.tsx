@@ -169,7 +169,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
         <SwiperComponent
           onActiveIndexChange={(swiper): void => {
             onActiveSlidesChange?.({
-              enterpriseId: enterprises?.[swiper.activeIndex].id,
+              enterpriseId: enterprises?.[swiper.activeIndex]?.id,
               slides: swiper.activeIndex + SLIDES_PER_VIEW,
             })
           }}

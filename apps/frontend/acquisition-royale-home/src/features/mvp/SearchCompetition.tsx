@@ -9,7 +9,6 @@ type Props = {
 }
 
 const InnerWrapper = styled.form`
-  max-width: ${spacingIncrement(400)};
   width: 100%;
 `
 
@@ -24,6 +23,7 @@ const Labels = styled.p`
 const Wrapper = styled.div`
   ${centered}
   margin-bottom: ${spacingIncrement(18)};
+  width: 100%;
 `
 
 const SearchCompetition: React.FC<Props> = ({ label }) => {
