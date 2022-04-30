@@ -293,7 +293,8 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
         runInAction(() => {
           this.root.signerStore.setSignerEnterpriseActiveId(this.acquireKeepId)
           this.root.competitionStore.setCompetitionEnterpriseActiveId(undefined)
-          this.root.competitionStore.searchCompetition('')
+          this.root.competitionStore.setLocalQuery('')
+          this.root.competitionStore.searchCompetition()
         })
         return true
       } catch (error) {
@@ -432,7 +433,8 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
         })
         runInAction(() => {
           this.root.competitionStore.setCompetitionEnterpriseActiveId(undefined)
-          this.root.competitionStore.searchCompetition('')
+          this.root.competitionStore.setLocalQuery('')
+          this.root.competitionStore.searchCompetition()
         })
         return true
       }
