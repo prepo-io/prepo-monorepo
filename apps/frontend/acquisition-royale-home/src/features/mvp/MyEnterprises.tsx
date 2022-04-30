@@ -7,7 +7,7 @@ import { spacingIncrement } from '../../utils/theme/utils'
 import ConnectButton from '../connect/ConnectButton'
 
 const Wrapper = styled.div`
-  margin: ${spacingIncrement(44)} 0;
+  margin-top: ${spacingIncrement(44)};
   position: relative;
   width: 100%;
 `

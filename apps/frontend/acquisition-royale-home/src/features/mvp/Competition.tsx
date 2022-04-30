@@ -9,7 +9,7 @@ type Props = {
   label?: string
 }
 const Wrapper = styled.div`
-  margin-bottom: ${spacingIncrement(44)};
+  margin-top: ${spacingIncrement(44)};
   position: relative;
   width: 100%;
 `
