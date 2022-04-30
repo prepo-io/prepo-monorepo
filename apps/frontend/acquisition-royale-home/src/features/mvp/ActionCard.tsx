@@ -213,7 +213,7 @@ const ActionCard: React.FC<Props> = ({
   }, [rewardOptions, uiStore])
 
   const button = useMemo(() => {
-    if (!buttonProps && !action) {
+    if (!buttonProps && !action && !buttonProps.href) {
       return null
     }
     if (!connected) {
