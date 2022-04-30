@@ -6,6 +6,7 @@ import EnterpriseRadio from '../../../components/EnterpriseRadio'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { INSUFFICIENT_MATIC } from '../../../utils/common-utils'
 import ActionCard from '../ActionCard'
+import Competition from '../Competition'
 import { acquireActionDescription } from '../Descriptions'
 import MyEnterprises from '../MyEnterprises'
 
@@ -76,6 +77,7 @@ const Acquire: React.FC = () => {
       title="Acquire"
     >
       <MyEnterprises />
+      <Competition />
     </ActionCard>
   )
 }

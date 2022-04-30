@@ -158,7 +158,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
 
     return placeholderEnterprises.map((id) => (
       <SwiperSlideComponent key={id} style={SwiperStyle}>
-        <LoadingCarouselCard key={id} loading />
+        <LoadingCarouselCard key={id} loading={enterprises === undefined} />
       </SwiperSlideComponent>
     ))
   }, [activeIndex, enterprises, placeholderEnterprises])
@@ -206,7 +206,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
           <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
       </InnerWrapper>
-      {enterprises && (
+      {enterprises && enterprises.length > 0 && activeIndex !== undefined && (
         <Labels>
           {activeIndex + 1}/{enterprises.length}
         </Labels>

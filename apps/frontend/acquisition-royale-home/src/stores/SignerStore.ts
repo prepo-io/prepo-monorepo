@@ -50,6 +50,10 @@ export class SignerStore {
     }
   }
 
+  get activeIndex(): number | undefined {
+    return this.signerEnterprises?.findIndex(({ id }) => id === this.activeEnterpriseId)
+  }
+
   get enterprisesBalance(): number | undefined {
     const { address } = this.root.web3Store
     if (address === undefined) return undefined
@@ -80,9 +84,5 @@ export class SignerStore {
     const { address } = this.root.web3Store
     if (!address) return []
     return this.root.enterprisesStore.lazyLoad(address, this.slides)
-  }
-
-  get activeIndex(): number | undefined {
-    return this.signerEnterprises?.findIndex(({ id }) => id === this.activeEnterpriseId)
   }
 }

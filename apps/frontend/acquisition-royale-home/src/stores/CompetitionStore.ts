@@ -1,7 +1,7 @@
 import { notification } from 'antd'
 import { BigNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, reaction } from 'mobx'
 import { RootStore } from './RootStore'
 import { Enterprise, Enterprises } from '../types/enterprise.types'
 
@@ -10,14 +10,35 @@ export class CompetitionStore {
   searchCompetitionQuery?: string
   slides: number
   constructor(public root: RootStore) {
-    this.slides = 0
+    this.slides = 1
     makeAutoObservable(this, {}, { autoBind: true })
+    this.updateCompetitionActiveEnterprise()
+  }
+
+  updateCompetitionActiveEnterprise(): void {
+    reaction(
+      () => this.competitionEnterprises,
+      (enterprises) => {
+        const { address } = this.root.web3Store
+        const ownAddress = address === this.searchCompetitionQuery
+
+        const enterprisesLoading =
+          enterprises === undefined && this.activeEnterpriseId !== undefined
+
+        const validSearch =
+          this.competitionEnterprises !== undefined && this.competitionEnterprises.length > 0
+
+        if (ownAddress || enterprisesLoading) this.clearEnterprises()
+        if (validSearch && this.activeEnterpriseId === undefined)
+          this.setCompetitionEnterpriseActiveId(enterprises[0].id)
+      }
+    )
   }
 
   clearEnterprises(): void {
     this.activeEnterpriseId = undefined
     this.root.acquisitionRoyaleContractStore.setAcquireKeepId(undefined)
-    this.slides = 0
+    this.slides = 1
   }
 
   onSlidesChange({ enterpriseId, slides }: { enterpriseId?: number; slides: number }): void {
@@ -39,6 +60,10 @@ export class CompetitionStore {
     }
     this.clearEnterprises()
     this.searchCompetitionQuery = query
+  }
+
+  get activeIndex(): number | undefined {
+    return this.competitionEnterprises?.findIndex(({ id }) => id === this.activeEnterpriseId)
   }
 
   get competitionActiveEnterprise(): Enterprise | undefined {

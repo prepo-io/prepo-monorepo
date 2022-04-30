@@ -146,7 +146,7 @@ const SummaryWrapper = styled.div`
   padding: ${spacingIncrement(8)} ${spacingIncrement(4)};
 `
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   background-color: ${({ theme }): string => theme.color.secondary};
   border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
   box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
@@ -269,24 +269,26 @@ const ActionCard: React.FC<Props> = ({
   }
 
   return (
-    <Wrapper onSubmit={handleSubmit}>
+    <Wrapper>
       <FancyTitle>{title}</FancyTitle>
       <Description>{description}</Description>
       {children}
-      {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
-      {(cost !== null || balance !== null) && (
-        <SummaryWrapper>
-          {cost}
-          {balance}
-        </SummaryWrapper>
-      )}
-      {lowMatic && (
-        <LowMaticWrapper>
-          <LowMatic />
-        </LowMaticWrapper>
-      )}
-      <Center>{reward}</Center>
-      <ActionWrapper>{button}</ActionWrapper>
+      <form onSubmit={handleSubmit}>
+        {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
+        {(cost !== null || balance !== null) && (
+          <SummaryWrapper>
+            {cost}
+            {balance}
+          </SummaryWrapper>
+        )}
+        {lowMatic && (
+          <LowMaticWrapper>
+            <LowMatic />
+          </LowMaticWrapper>
+        )}
+        <Center>{reward}</Center>
+        <ActionWrapper>{button}</ActionWrapper>
+      </form>
       {messageBelowButton}
       {comparisons &&
         comparisons.map((comparison) => (

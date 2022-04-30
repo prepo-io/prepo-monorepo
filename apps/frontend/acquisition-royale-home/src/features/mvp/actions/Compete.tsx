@@ -7,6 +7,7 @@ import { competeActionDescription } from '../Descriptions'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { numberInput } from '../../../utils/number-utils'
 import MyEnterprises from '../MyEnterprises'
+import Competition from '../Competition'
 
 const CompeteAction: React.FC = () => {
   const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
@@ -50,6 +51,7 @@ const CompeteAction: React.FC = () => {
       title="Compete"
     >
       <MyEnterprises />
+      <Competition />
     </ActionCard>
   )
 }
