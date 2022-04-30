@@ -206,7 +206,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
           <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
       </InnerWrapper>
-      {enterprises && enterprises.length > 0 && activeIndex !== undefined && (
+      {enterprises && enterprises.length > 1 && activeIndex !== undefined && (
         <Labels>
           {activeIndex + 1}/{enterprises.length}
         </Labels>

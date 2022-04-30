@@ -51,7 +51,7 @@ const CompeteAction: React.FC = () => {
       title="Compete"
     >
       <MyEnterprises />
-      <Competition />
+      <Competition label="Search for Enterprises to Compete:" />
     </ActionCard>
   )
 }

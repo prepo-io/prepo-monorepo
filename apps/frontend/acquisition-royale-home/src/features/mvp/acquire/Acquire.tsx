@@ -77,7 +77,7 @@ const Acquire: React.FC = () => {
       title="Acquire"
     >
       <MyEnterprises />
-      <Competition />
+      <Competition label="Search for Enterprises to Acquire:" />
     </ActionCard>
   )
 }

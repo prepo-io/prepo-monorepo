@@ -7,10 +7,12 @@ import { Enterprise, Enterprises } from '../types/enterprise.types'
 
 export class CompetitionStore {
   activeEnterpriseId?: number
+  localQuery: string
   searchCompetitionQuery?: string
   slides: number
   constructor(public root: RootStore) {
     this.slides = 1
+    this.localQuery = ''
     makeAutoObservable(this, {}, { autoBind: true })
     this.updateCompetitionActiveEnterprise()
   }
@@ -50,16 +52,20 @@ export class CompetitionStore {
     this.activeEnterpriseId = id
   }
 
-  searchCompetition(query: string): void {
+  setLocalQuery(query: string): void {
+    this.localQuery = query
+  }
+
+  searchCompetition(): void {
     if (
       this.root.web3Store.signerState.address !== undefined &&
-      query.toLowerCase() === this.root.web3Store.signerState.address.toLowerCase()
+      this.localQuery.toLowerCase() === this.root.web3Store.signerState.address.toLowerCase()
     ) {
       notification.error({ message: 'Cannot search your own address!' })
       return
     }
     this.clearEnterprises()
-    this.searchCompetitionQuery = query
+    this.searchCompetitionQuery = this.localQuery
   }
 
   get activeIndex(): number | undefined {
@@ -89,6 +95,11 @@ export class CompetitionStore {
       return this.root.enterprisesStore.lazyLoad(this.searchCompetitionQuery, this.slides)
     if (!Number.isNaN(+this.searchCompetitionQuery)) {
       const id = BigNumber.from(this.searchCompetitionQuery)
+      const ownIndex = this.root.signerStore.signerEnterprises?.findIndex(
+        ({ id: enterpriseId }) => enterpriseId === id.toNumber()
+      )
+      // cannot search own enterprise
+      if (ownIndex !== undefined && ownIndex >= 0) return []
       const rawIsMinted = this.root.acquisitionRoyaleContractStore.isMinted(id)
       if (rawIsMinted === undefined) return undefined
       if (!rawIsMinted[0]) return []

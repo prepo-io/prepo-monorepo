@@ -5,13 +5,16 @@ import EnterpriseCarousel, { OverlayProps } from '../../components/EnterpriseCar
 import { useRootStore } from '../../context/RootStoreProvider'
 import { spacingIncrement } from '../../utils/theme/utils'
 
+type Props = {
+  label?: string
+}
 const Wrapper = styled.div`
   margin-bottom: ${spacingIncrement(44)};
   position: relative;
   width: 100%;
 `
 
-const Competition: React.FC = () => {
+const Competition: React.FC<Props> = ({ label }) => {
   const { competitionStore } = useRootStore()
   const { activeIndex, competitionEnterprises, searchCompetitionQuery, onSlidesChange } =
     competitionStore
@@ -37,7 +40,7 @@ const Competition: React.FC = () => {
 
   return (
     <Wrapper>
-      <SearchCompetition />
+      <SearchCompetition label={label} />
       <EnterpriseCarousel
         activeIndex={activeIndex}
         enterprises={competitionEnterprises}
