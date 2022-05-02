@@ -47,10 +47,11 @@ const deployFunction: DeployFunction = async function ({
     console.log('Migrating StrategyController to the new Strategy...')
     await sendTxAndWait(await singleStrategyController.migrate(mockStrategyAddress))
   }
-  // Connect MockStrategy to the Collateral vault
-  if ((await mockStrategy.vault()) !== collateral.address) {
-    console.log('Connecting MockStrategy at', mockStrategy.address, 'to the Collateral vault...')
-    await sendTxAndWait(await mockStrategy.setVault(collateral.address))
+  // MockStrategy need permission to call `mint()` on MockBaseToken to mint virtual yields
+  // TODO Only perform this operation when on a testchain
+  if ((await baseToken.getMockStrategy()) !== mockStrategyAddress) {
+    console.log('Connecting MockBaseToken at', baseToken.address, 'to the MockStrategy...')
+    await sendTxAndWait(await baseToken.setMockStrategy(mockStrategyAddress))
   }
   console.log('')
 }
