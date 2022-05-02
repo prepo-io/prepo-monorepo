@@ -16,13 +16,14 @@ const deployFunction: DeployFunction = async function ({
   /**
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
+   * TODO Only deploy "Mock" contracts when on a testchain
    */
   assertIsTestnetChain(currentChain)
   // Fetch existing Collateral deployment from local .env
   const collateral = await fetchExistingCollateral(currentChain, ethers)
   // Retrieve existing non-upgradeable deployments using hardhat-deploy
   const singleStrategyController = await ethers.getContract('SingleStrategyController')
-  const baseToken = await ethers.getContract('BaseToken')
+  const baseToken = await ethers.getContract('MockBaseToken')
   // Deploy MockStrategy contract and configure for use
   const { address: mockStrategyAddress, newlyDeployed } = await deploy('MockStrategy', {
     from: deployer,
