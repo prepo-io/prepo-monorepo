@@ -15,6 +15,7 @@ import InfoTooltip from '../../components/InfoTooltip'
 import { RewardElements } from '../../stores/UiStore'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { CARDS_MAX_WIDTH } from '../../lib/constants'
+import { media } from '../../utils/theme/media'
 
 export type CostBreakdown = {
   amount: string
@@ -109,9 +110,13 @@ const InputWrapper = styled.div`
 
 const Description = styled.div`
   color: ${({ theme }): string => theme.color.grey};
+  font-size: ${({ theme }): string => theme.fontSize.base};
   margin: 0;
   margin-top: ${spacingIncrement(24)};
   text-align: center;
+  ${media.tablet`
+  font-size: ${({ theme }): string => theme.fontSize.sm};
+  `}
 `
 
 const LowMaticWrapper = styled.div`
@@ -143,22 +148,16 @@ const SummaryWrapper = styled.div`
 
 const Wrapper = styled.form`
   background-color: ${({ theme }): string => theme.color.secondary};
-  border: solid 1px ${({ theme }): string => theme.color.grey};
+  border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
+  box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
   font-family: ${({ theme }): string => theme.fontFamily.secondary};
   letter-spacing: 1px;
   line-height: 1;
   max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
-  opacity: 0.6;
   padding: ${spacingIncrement(16)};
   position: relative;
   transition: 0.3s;
   width: 100%;
-  :focus-within,
-  :hover {
-    border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
-    box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
-    opacity: 1;
-  }
 `
 
 const ActionCard: React.FC<Props> = ({
@@ -214,7 +213,7 @@ const ActionCard: React.FC<Props> = ({
   }, [rewardOptions, uiStore])
 
   const button = useMemo(() => {
-    if (!buttonProps && !action) {
+    if (!buttonProps && !action && !buttonProps.href) {
       return null
     }
     if (!connected) {

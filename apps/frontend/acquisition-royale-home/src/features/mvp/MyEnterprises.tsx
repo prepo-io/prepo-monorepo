@@ -22,10 +22,6 @@ const MyEnterprises: React.FC = () => {
 
   const doneLoading = (): boolean => isFirstEnterpriseLoaded(signerEnterprises)
 
-  const handleFoundEnterprise = (): void => {
-    window.open('https://acquisitionroyale.com')
-  }
-
   const overlay = (): OverlayProps | undefined => {
     if (!connected)
       return {
@@ -34,7 +30,11 @@ const MyEnterprises: React.FC = () => {
       }
     if (signerEnterprises !== undefined && signerEnterprises.length === 0)
       return {
-        action: <Button onClick={handleFoundEnterprise}>Found new enterprise</Button>,
+        action: (
+          <Button href="https://acquisitionroyale.com" target="_blank">
+            Found new enterprise
+          </Button>
+        ),
         message: "Don't own an Enterprise? Found one here.",
       }
     return undefined

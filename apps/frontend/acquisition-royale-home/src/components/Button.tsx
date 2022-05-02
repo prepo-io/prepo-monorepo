@@ -6,20 +6,25 @@ import { spacingIncrement } from '../utils/theme/utils'
 type Props = {
   rounded?: boolean
 }
+
 const Wrapper = styled.div<{ block?: boolean; rounded?: boolean }>`
   ${({ block }): string => (block ? 'width: 100%;' : '')}
   &&& {
     .ant-btn {
+      align-items: center;
       background: ${({ theme }): string => theme.color.accentPrimary};
       border: none;
       border-radius: ${({ rounded }): string => (rounded ? spacingIncrement(4) : '0')};
       color: ${({ theme }): string => theme.color.primary};
+      display: flex;
       font-family: ${({ theme }): string => theme.fontFamily.secondary};
       font-size: ${({ theme }): string => theme.fontSize.md};
       font-weight: ${({ theme }): number => theme.fontWeight.bold};
       height: ${spacingIncrement(54)};
+      justify-content: center;
       line-height: 1;
       letter-spacing: 1px;
+      padding-bottom: 0;
       :hover {
         background: ${({ theme }): string => theme.color.white};
       }

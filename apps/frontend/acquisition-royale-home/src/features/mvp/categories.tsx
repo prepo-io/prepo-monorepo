@@ -7,13 +7,13 @@ import Revive from './actions/Revive'
 import RPShop from './actions/RPShop'
 import WithdrawRp from './actions/WithdrawRp'
 import Merge from './merge'
-import UniswapLink from './UniswapLink'
+import Trade from './trade'
 import { SubtabProps } from '../../components/Subtabs'
 
 export const RP = [
   {
     tab: 'Trade',
-    content: <UniswapLink />,
+    content: <Trade />,
   },
   {
     tab: 'Shop',
