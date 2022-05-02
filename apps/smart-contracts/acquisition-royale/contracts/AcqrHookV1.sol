@@ -191,4 +191,8 @@ contract AcqrHookV1 is IAcqrHook {
   function getAcquisitionRoyale() external view returns (IAcquisitionRoyale) {
     return _acquisitionRoyale;
   }
+
+  function getMoat() external view returns (IMoat) {
+    return _moat;
+  }
 }

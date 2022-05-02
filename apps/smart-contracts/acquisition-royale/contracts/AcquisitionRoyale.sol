@@ -4,7 +4,7 @@ pragma solidity =0.8.6;
 import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import './interfaces/IAcquisitionRoyale.sol';
 import './interfaces/IAcqrHook.sol';
 
@@ -14,7 +14,7 @@ contract AcquisitionRoyale is
   IAcquisitionRoyale,
   ERC721EnumerableUpgradeable
 {
-  using SafeERC20 for IERC20;
+  using SafeERC20Upgradeable for IERC20Upgradeable;
 
   struct ImmunityPeriods {
     uint256 acquisition;
@@ -43,7 +43,7 @@ contract AcquisitionRoyale is
   FoundingParameters private _foundingParameters;
   PassiveRpParameters private _passiveRpPerDay;
   IMerkleProofVerifier private _verifier;
-  IERC20 private _weth;
+  IERC20Upgradeable private _weth;
   IRunwayPoints private _runwayPoints;
   ICompete private _compete;
   ICost private _acquireCost;
@@ -93,7 +93,7 @@ contract AcquisitionRoyale is
     _passiveRpPerDay.mergers = 1e18; // 1 rp/day per merger
     _withdrawalBurnPercentage = 2500000000; // 25%
     _verifier = IMerkleProofVerifier(_newVerifier);
-    _weth = IERC20(_newWeth);
+    _weth = IERC20Upgradeable(_newWeth);
     _runwayPoints = IRunwayPoints(_newRunwayPoints);
     _consumables = IERC1155Burnable(_newConsumables);
   }

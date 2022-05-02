@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.6;
 
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
@@ -10,9 +10,9 @@ import './interfaces/IAcquisitionRoyale.sol';
 import './interfaces/IAcquisitionRoyaleConsumables.sol';
 
 contract AcquisitionRoyaleRPShop is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
-  using SafeERC20 for IERC20;
+  using SafeERC20Upgradeable for IERC20Upgradeable;
 
-  IERC20 private _runwayPoints;
+  IERC20Upgradeable private _runwayPoints;
   IAcquisitionRoyale private _acquisitionRoyale;
   IAcquisitionRoyaleConsumables private _consumables;
   // Settable
@@ -31,7 +31,7 @@ contract AcquisitionRoyaleRPShop is Initializable, OwnableUpgradeable, Reentranc
     uint256 _newEnterpriseRpPrice
   ) public initializer {
     __Ownable_init();
-    _runwayPoints = IERC20(_newRunwayPoints);
+    _runwayPoints = IERC20Upgradeable(_newRunwayPoints);
     _acquisitionRoyale = IAcquisitionRoyale(_newAcquisitionRoyale);
     _consumables = IAcquisitionRoyaleConsumables(_newConsumables);
     _renameTokenRpPrice = _newRenameTokenRpPrice;
@@ -120,7 +120,7 @@ contract AcquisitionRoyaleRPShop is Initializable, OwnableUpgradeable, Reentranc
     _enterpriseRpPrice = _newRpPrice;
   }
 
-  function getRunwayPoints() external view returns (IERC20) {
+  function getRunwayPoints() external view returns (IERC20Upgradeable) {
     return _runwayPoints;
   }
 
