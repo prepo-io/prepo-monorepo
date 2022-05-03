@@ -64,7 +64,6 @@ contract MockStrategy is IStrategy, Ownable, ReentrancyGuard {
        * before/after reflects the deposit amount
        */
       if (_virtualBalance > _actualBalance) {
-        require(_baseToken.owner() == address(this), 'Strategy must be baseToken owner');
         /**
          * Mint tokens to bring `_baseToken` balance up to
          * `_virtualBalance` before deposit
@@ -81,7 +80,6 @@ contract MockStrategy is IStrategy, Ownable, ReentrancyGuard {
    * address ahead of time
    */
   function withdraw(address _recipient, uint256 _amount) external override onlyController {
-    require(_baseToken.owner() == address(this), 'Strategy must be baseToken owner');
     if (_amount > _baseToken.balanceOf(address(this))) {
       uint256 _shortfall = _amount - _baseToken.balanceOf(address(this));
       _baseToken.mint(address(this), _shortfall);

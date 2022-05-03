@@ -7,6 +7,8 @@ import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import { getMockStrategyVaultChangedEvent } from './events'
 import { setNextTimestamp, returnFromMockAPY, revertReason, AddressZero } from './utils'
+import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
+import { MockBaseToken } from '../typechain/MockBaseToken'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
 
@@ -15,14 +17,14 @@ chai.use(solidity)
 describe('=> MockStrategy', () => {
   let mockStrategy: MockStrategy
   let collateralToken: MockERC20
-  let baseToken: MockERC20
+  let baseToken: MockBaseToken
   let deployer: SignerWithAddress
   let user: SignerWithAddress
   let controller: SignerWithAddress
   let governance: SignerWithAddress
   let setupApyAndBeginning: (apy: number) => Promise<number>
   let mintAndApprove: (
-    mintable: MockERC20,
+    mintable: MockBaseToken,
     owner: SignerWithAddress,
     approver: SignerWithAddress,
     spender: string,
@@ -38,9 +40,10 @@ describe('=> MockStrategy', () => {
     ;[deployer, user, controller, governance] = await ethers.getSigners()
     collateralToken = await mockERC20Fixture('prePO Collateral Token', 'preCT')
     await collateralToken.mint(deployer.address, MOCK_COLLATERAL_SUPPLY)
-    baseToken = await mockERC20Fixture('Mock Base Token', 'MBT')
-    await baseToken.mint(deployer.address, MOCK_BASE_TOKEN_SUPPLY)
+    baseToken = await mockBaseTokenFixture()
+    await baseToken.connect(deployer).ownerMint(MOCK_BASE_TOKEN_SUPPLY)
     mockStrategy = await mockStrategyFixture(controller.address, baseToken.address)
+    await baseToken.setMockStrategy(mockStrategy.address)
     expect(await mockStrategy.owner()).to.eq(deployer.address)
     await mockStrategy.transferOwnership(governance.address)
     setupApyAndBeginning = async (apy: number): Promise<number> => {
@@ -52,13 +55,14 @@ describe('=> MockStrategy', () => {
     }
 
     mintAndApprove = async (
-      mintable: MockERC20,
+      mintable: MockBaseToken,
       owner: SignerWithAddress,
       approver: SignerWithAddress,
       spender: string,
       amount: BigNumber
     ): Promise<void> => {
-      await mintable.connect(owner).mint(approver.address, amount)
+      await mintable.connect(owner).ownerMint(amount)
+      await mintable.connect(owner).transfer(approver.address, amount)
       await mintable.connect(approver).approve(spender, amount)
     }
   })
@@ -165,7 +169,7 @@ describe('=> MockStrategy', () => {
         TEST_TIMESTAMP_DELAY,
         MOCK_COLLATERAL_SUPPLY
       )
-      await baseToken.mint(deployer.address, virtualAfterDelay)
+      await baseToken.connect(deployer).ownerMint(virtualAfterDelay)
       const beginning = await setupApyAndBeginning(TEST_APY)
       // setBeginning will increment timestamp to push totalValue to read 1 second of APY
       const virtualBeforeDelay = returnFromMockAPY(TEST_APY, 1, MOCK_COLLATERAL_SUPPLY)
@@ -189,35 +193,6 @@ describe('=> MockStrategy', () => {
       )
     })
 
-    it('should not allow deposit if strategy is not baseToken owner and token balance is >0', async () => {
-      await baseToken.mint(mockStrategy.address, 1)
-      await mintAndApprove(
-        baseToken,
-        deployer,
-        controller,
-        mockStrategy.address,
-        TEST_DEPOSIT_AMOUNT
-      )
-
-      await expect(mockStrategy.connect(controller).deposit(TEST_DEPOSIT_AMOUNT)).revertedWith(
-        revertReason('Strategy must be baseToken owner')
-      )
-    })
-
-    it('should allow deposit if strategy is not baseToken owner and token balance is 0', async () => {
-      await mintAndApprove(
-        baseToken,
-        deployer,
-        controller,
-        mockStrategy.address,
-        TEST_DEPOSIT_AMOUNT
-      )
-
-      await mockStrategy.connect(controller).deposit(TEST_DEPOSIT_AMOUNT)
-
-      expect(await baseToken.balanceOf(mockStrategy.address)).to.eq(TEST_DEPOSIT_AMOUNT)
-    })
-
     it('should only transfer assets from the controller', async () => {
       await mintAndApprove(
         baseToken,
@@ -226,7 +201,6 @@ describe('=> MockStrategy', () => {
         mockStrategy.address,
         TEST_DEPOSIT_AMOUNT
       )
-      await baseToken.transferOwnership(mockStrategy.address)
       await setupApyAndBeginning(TEST_APY)
       expect(await baseToken.balanceOf(controller.address)).to.eq(TEST_DEPOSIT_AMOUNT)
       expect(await baseToken.balanceOf(mockStrategy.address)).to.eq(0)
@@ -250,8 +224,8 @@ describe('=> MockStrategy', () => {
         mockStrategy.address,
         TEST_DEPOSIT_AMOUNT
       )
-      await baseToken.mint(mockStrategy.address, 1)
-      await baseToken.transferOwnership(mockStrategy.address)
+      await baseToken.connect(deployer).ownerMint(1)
+      await baseToken.connect(deployer).transfer(mockStrategy.address, 1)
       const beginning = await setupApyAndBeginning(TEST_APY)
       // setBeginning will increment timestamp to push totalValue to read 1 second of APY
       const virtualBeforeDelay = returnFromMockAPY(TEST_APY, 1, MOCK_COLLATERAL_SUPPLY)
@@ -275,7 +249,8 @@ describe('=> MockStrategy', () => {
         MOCK_COLLATERAL_SUPPLY
       )
       // mint token balance into the strategy that will exceed the expected virtual balance at time of deposit
-      await baseToken.mint(mockStrategy.address, virtualAfterDelay)
+      await baseToken.connect(deployer).ownerMint(virtualAfterDelay)
+      await baseToken.connect(deployer).transfer(mockStrategy.address, virtualAfterDelay)
       // gives funds to the controller to deposit as normal.
       await mintAndApprove(
         baseToken,
@@ -284,7 +259,6 @@ describe('=> MockStrategy', () => {
         mockStrategy.address,
         TEST_DEPOSIT_AMOUNT
       )
-      await baseToken.transferOwnership(mockStrategy.address)
       const beginning = await setupApyAndBeginning(TEST_APY)
       expect(await baseToken.balanceOf(mockStrategy.address)).to.eq(virtualAfterDelay)
       expect(await mockStrategy.totalValue()).to.eq(virtualAfterDelay)
@@ -312,7 +286,6 @@ describe('=> MockStrategy', () => {
     })
 
     it('should correctly withdraw funds into the specified account', async () => {
-      await baseToken.transferOwnership(mockStrategy.address)
       await baseToken.transfer(mockStrategy.address, TEST_WITHDRAWAL_AMOUNT)
       await mockStrategy.connect(controller).withdraw(user.address, TEST_WITHDRAWAL_AMOUNT)
 
@@ -320,19 +293,10 @@ describe('=> MockStrategy', () => {
     })
 
     it('should mint the shortfall if strategy does not have enough', async () => {
-      await baseToken.transferOwnership(mockStrategy.address)
       await baseToken.transfer(mockStrategy.address, TEST_WITHDRAWAL_AMOUNT.sub(1))
       await mockStrategy.connect(controller).withdraw(user.address, TEST_WITHDRAWAL_AMOUNT)
 
       expect(await baseToken.balanceOf(user.address)).to.eq(TEST_WITHDRAWAL_AMOUNT)
-    })
-
-    it('should not allow withdrawal if strategy is not baseToken owner', async () => {
-      await baseToken.transfer(mockStrategy.address, TEST_WITHDRAWAL_AMOUNT)
-
-      await expect(
-        mockStrategy.connect(controller).withdraw(user.address, TEST_WITHDRAWAL_AMOUNT)
-      ).revertedWith(revertReason('Strategy must be baseToken owner'))
     })
   })
 })

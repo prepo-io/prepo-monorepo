@@ -22,7 +22,7 @@ const deployFunction: DeployFunction = async function ({
    */
   assertIsTestnetChain(currentChain)
   // Retrieve existing non-upgradeable deployments using hardhat-deploy
-  const baseToken = await ethers.getContract('BaseToken')
+  const baseToken = await ethers.getContract('MockBaseToken')
   // Deploy SingleStrategyController and configure with the Collateral vault
   const { address: strategyControllerAddress, newlyDeployed } = await deploy(
     'SingleStrategyController',

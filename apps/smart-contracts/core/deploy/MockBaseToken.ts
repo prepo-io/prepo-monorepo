@@ -9,28 +9,29 @@ const deployFunction: DeployFunction = async function ({
 }: HardhatRuntimeEnvironment) {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
-  console.log('Running BaseToken deployment script with', deployer, 'as the deployer')
+  console.log('Running MockBaseToken deployment script with', deployer, 'as the deployer')
   const currentChain = await getChainId()
   /**
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
+   * TODO Only deploy "Mock" contracts when on a testchain
    */
   assertIsTestnetChain(currentChain)
-  const { address: baseTokenAddress, newlyDeployed } = await deploy('BaseToken', {
+  const { address: mockBaseTokenAddress, newlyDeployed } = await deploy('MockBaseToken', {
     from: deployer,
-    contract: 'MockERC20',
+    contract: 'MockBaseToken',
     deterministicDeployment: false,
-    args: ['Mock Base Token', 'MBT'],
+    args: [],
     skipIfAlreadyDeployed: true,
   })
   if (newlyDeployed) {
-    console.log('Deployed BaseToken to', baseTokenAddress)
+    console.log('Deployed MockBaseToken to', mockBaseTokenAddress)
   } else {
-    console.log('Existing BaseToken at', baseTokenAddress)
+    console.log('Existing MockBaseToken at', mockBaseTokenAddress)
   }
   console.log('')
 }
 
 export default deployFunction
 
-deployFunction.tags = ['BaseToken']
+deployFunction.tags = ['MockBaseToken']
