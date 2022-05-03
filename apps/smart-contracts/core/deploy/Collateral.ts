@@ -18,6 +18,7 @@ const deployFunction: DeployFunction = async function ({
   /**
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
+   * TODO Only deploy "Mock" contracts when on a testchain
    */
   assertIsTestnetChain(currentChain)
   /**
@@ -34,7 +35,7 @@ const deployFunction: DeployFunction = async function ({
   const existingCollateralAddress = process.env[envVarName]
   const collateralFactory = await ethers.getContractFactory('Collateral')
   if (!existingCollateralAddress) {
-    const baseToken = (await ethers.getContract('BaseToken')) as ERC20
+    const baseToken = (await ethers.getContract('MockBaseToken')) as ERC20
     collateral = (await upgrades.deployProxy(collateralFactory, [
       baseToken.address,
       governance,
@@ -94,7 +95,7 @@ const deployFunction: DeployFunction = async function ({
 export default deployFunction
 
 deployFunction.dependencies = [
-  'BaseToken',
+  'MockBaseToken',
   'SingleStrategyController',
   'DepositHook',
   'WithdrawHook',

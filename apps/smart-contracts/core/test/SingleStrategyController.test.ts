@@ -118,14 +118,6 @@ describe('=> SingleStrategyController', () => {
       expect(await baseToken.balanceOf(user.address)).to.eq(TEST_WITHDRAWAL_AMOUNT)
       expect(await baseToken.balanceOf(mockStrategy.address)).to.eq(0)
     })
-
-    it('should fail upon calling mockStrategy withdraw when mockStrategy is not baseToken owner', async () => {
-      await baseToken.transfer(mockStrategy.address, TEST_WITHDRAWAL_AMOUNT)
-
-      await expect(
-        strategyController.connect(vault).withdraw(user.address, TEST_WITHDRAWAL_AMOUNT)
-      ).revertedWith(revertReason('Strategy must be baseToken owner'))
-    })
   })
 
   describe('# migrate', () => {
