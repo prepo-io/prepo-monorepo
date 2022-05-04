@@ -20,7 +20,7 @@ describe('=> MockBaseToken', () => {
   }
 
   const setupMockBaseToken = async (): Promise<void> => {
-    mockBaseToken = await mockBaseTokenFixture()
+    mockBaseToken = await mockBaseTokenFixture('Fake USD', 'FAKEUSD')
   }
 
   describe('initial state', (): void => {
@@ -29,12 +29,12 @@ describe('=> MockBaseToken', () => {
       await setupMockBaseToken()
     })
 
-    it("sets name to 'Mock Base Token'", async () => {
-      expect(await mockBaseToken.name()).to.eq('Mock Base Token')
+    it("sets name to 'Fake USD'", async () => {
+      expect(await mockBaseToken.name()).to.eq('Fake USD')
     })
 
-    it("sets symbol to 'MBT'", async () => {
-      expect(await mockBaseToken.symbol()).to.eq('MBT')
+    it("sets symbol to 'FAKEUSD'", async () => {
+      expect(await mockBaseToken.symbol()).to.eq('FAKEUSD')
     })
 
     it('sets owner to deployer', async () => {

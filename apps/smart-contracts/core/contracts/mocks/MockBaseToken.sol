@@ -7,7 +7,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 contract MockBaseToken is ERC20, Ownable {
   address private _mockStrategy;
 
-  constructor() ERC20('Mock Base Token', 'MBT') {}
+  constructor(string memory _newName, string memory _newSymbol) ERC20(_newName, _newSymbol) {}
 
   modifier onlyMockStrategy() {
     require(msg.sender == _mockStrategy, 'Caller is not MockStrategy');
