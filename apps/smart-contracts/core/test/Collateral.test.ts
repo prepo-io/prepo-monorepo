@@ -944,22 +944,22 @@ describe('=> Collateral', () => {
   })
 
   describe('# setName', () => {
-    const nonBlankString = 'Not Blank'
+    const nonEmptyString = 'Not Empty'
     it('reverts if not owner', async () => {
       expect(await collateral.owner()).to.not.eq(user.address)
 
-      await expect(collateral.connect(user).setName(nonBlankString)).to.revertedWith(
+      await expect(collateral.connect(user).setName(nonEmptyString)).to.be.revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
     })
 
-    it('sets to a non-blank string', async () => {
-      expect(nonBlankString).to.not.eq('')
-      expect(await collateral.name()).to.not.eq(nonBlankString)
+    it('sets to a non-empty string', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setName(nonBlankString)
+      await collateral.connect(deployer).setName(nonEmptyString)
 
-      expect(await collateral.name()).to.eq(nonBlankString)
+      expect(await collateral.name()).to.eq(nonEmptyString)
     })
 
     it('sets to a blank string', async () => {
@@ -971,43 +971,43 @@ describe('=> Collateral', () => {
     })
 
     it('is idempotent', async () => {
-      expect(nonBlankString).to.not.eq('')
-      expect(await collateral.name()).to.not.eq(nonBlankString)
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setName(nonBlankString)
+      await collateral.connect(deployer).setName(nonEmptyString)
 
-      expect(await collateral.name()).to.eq(nonBlankString)
+      expect(await collateral.name()).to.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setName(nonBlankString)
+      await collateral.connect(deployer).setName(nonEmptyString)
 
-      expect(await collateral.name()).to.eq(nonBlankString)
+      expect(await collateral.name()).to.eq(nonEmptyString)
     })
 
-    it('should emit a NameChanged event', async () => {
-      await collateral.connect(deployer).setName(nonBlankString)
+    it('emits a NameChanged event', async () => {
+      await collateral.connect(deployer).setName(nonEmptyString)
 
       const nameChangedEvent = await getNameChangedEvent(collateral)
-      expect(nameChangedEvent.name).to.eq(nonBlankString)
+      expect(nameChangedEvent.name).to.eq(nonEmptyString)
     })
   })
 
   describe('# setSymbol', () => {
-    const nonBlankString = 'Not Blank'
+    const nonEmptyString = 'Not Empty'
     it('reverts if not owner', async () => {
       expect(await collateral.owner()).to.not.eq(user.address)
 
-      await expect(collateral.connect(user).setSymbol(nonBlankString)).to.revertedWith(
+      await expect(collateral.connect(user).setSymbol(nonEmptyString)).to.be.revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
     })
 
-    it('sets to a non-blank string', async () => {
-      expect(nonBlankString).to.not.eq('')
-      expect(await collateral.symbol()).to.not.eq(nonBlankString)
+    it('sets to a non-empty string', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setSymbol(nonBlankString)
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
 
-      expect(await collateral.symbol()).to.eq(nonBlankString)
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
     })
 
     it('sets to a blank string', async () => {
@@ -1019,23 +1019,23 @@ describe('=> Collateral', () => {
     })
 
     it('is idempotent', async () => {
-      expect(nonBlankString).to.not.eq('')
-      expect(await collateral.symbol()).to.not.eq(nonBlankString)
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setSymbol(nonBlankString)
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
 
-      expect(await collateral.symbol()).to.eq(nonBlankString)
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
 
-      await collateral.connect(deployer).setSymbol(nonBlankString)
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
 
-      expect(await collateral.symbol()).to.eq(nonBlankString)
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
     })
 
-    it('should emit a SymbolChanged event', async () => {
-      await collateral.connect(deployer).setSymbol(nonBlankString)
+    it('emits a SymbolChanged event', async () => {
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
 
       const symbolChangedEvent = await getSymbolChangedEvent(collateral)
-      expect(symbolChangedEvent.symbol).to.eq(nonBlankString)
+      expect(symbolChangedEvent.symbol).to.eq(nonEmptyString)
     })
   })
 
