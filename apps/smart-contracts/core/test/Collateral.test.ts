@@ -30,6 +30,8 @@ import {
   getWithdrawHookChangedEvent,
   getDepositsAllowedChangedEvent,
   getWithdrawalsAllowedChangedEvent,
+  getNameChangedEvent,
+  getSymbolChangedEvent,
 } from './events'
 import { smockDepositHookFixture, smockWithdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
@@ -938,6 +940,102 @@ describe('=> Collateral', () => {
       expect(await collateral.connect(user).callStatic.withdraw(sharesToRedeem)).to.eq(
         amountReceived
       )
+    })
+  })
+
+  describe('# setName', () => {
+    const nonBlankString = 'Not Blank'
+    it('reverts if not owner', async () => {
+      expect(await collateral.owner()).to.not.eq(user.address)
+
+      await expect(collateral.connect(user).setName(nonBlankString)).to.revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to a non-blank string', async () => {
+      expect(nonBlankString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonBlankString)
+
+      await collateral.connect(deployer).setName(nonBlankString)
+
+      expect(await collateral.name()).to.eq(nonBlankString)
+    })
+
+    it('sets to a blank string', async () => {
+      expect(await collateral.name()).to.not.eq('')
+
+      await collateral.connect(deployer).setName('')
+
+      expect(await collateral.name()).to.eq('')
+    })
+
+    it('is idempotent', async () => {
+      expect(nonBlankString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonBlankString)
+
+      await collateral.connect(deployer).setName(nonBlankString)
+
+      expect(await collateral.name()).to.eq(nonBlankString)
+
+      await collateral.connect(deployer).setName(nonBlankString)
+
+      expect(await collateral.name()).to.eq(nonBlankString)
+    })
+
+    it('should emit a NameChanged event', async () => {
+      await collateral.connect(deployer).setName(nonBlankString)
+
+      const nameChangedEvent = await getNameChangedEvent(collateral)
+      expect(nameChangedEvent.name).to.eq(nonBlankString)
+    })
+  })
+
+  describe('# setSymbol', () => {
+    const nonBlankString = 'Not Blank'
+    it('reverts if not owner', async () => {
+      expect(await collateral.owner()).to.not.eq(user.address)
+
+      await expect(collateral.connect(user).setSymbol(nonBlankString)).to.revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to a non-blank string', async () => {
+      expect(nonBlankString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonBlankString)
+
+      await collateral.connect(deployer).setSymbol(nonBlankString)
+
+      expect(await collateral.symbol()).to.eq(nonBlankString)
+    })
+
+    it('sets to a blank string', async () => {
+      expect(await collateral.symbol()).to.not.eq('')
+
+      await collateral.connect(deployer).setSymbol('')
+
+      expect(await collateral.symbol()).to.eq('')
+    })
+
+    it('is idempotent', async () => {
+      expect(nonBlankString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonBlankString)
+
+      await collateral.connect(deployer).setSymbol(nonBlankString)
+
+      expect(await collateral.symbol()).to.eq(nonBlankString)
+
+      await collateral.connect(deployer).setSymbol(nonBlankString)
+
+      expect(await collateral.symbol()).to.eq(nonBlankString)
+    })
+
+    it('should emit a SymbolChanged event', async () => {
+      await collateral.connect(deployer).setSymbol(nonBlankString)
+
+      const symbolChangedEvent = await getSymbolChangedEvent(collateral)
+      expect(symbolChangedEvent.symbol).to.eq(nonBlankString)
     })
   })
 
