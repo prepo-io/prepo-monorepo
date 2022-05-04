@@ -12,13 +12,11 @@ import {
   SingleStrategyController,
   MockERC20,
   CollateralDepositRecord,
-  AccountAccessController,
 } from '../../typechain'
 import { getMarketAddedEvent } from '../events'
 import { setNextTimestamp, FEE_DENOMINATOR } from '../utils'
 import { depositHookFixture, withdrawHookFixture } from '../fixtures/HookFixture'
 import { collateralDepositRecordFixture } from '../fixtures/CollateralDepositRecordFixture'
-import { accountAccessControllerFixture } from '../fixtures/AccountAccessControllerFixture'
 
 export type CreateMarketParams = {
   tokenNameSuffix: string
@@ -57,7 +55,6 @@ export class PrePO {
   public baseToken!: MockERC20
   public mockStrategy!: MockStrategy
   public collateral!: Collateral
-  public accountAccessController!: AccountAccessController
   public depositRecord!: CollateralDepositRecord
   public marketFactory!: PrePOMarketFactory
   public strategyController!: SingleStrategyController
@@ -134,15 +131,11 @@ export class PrePO {
     ])) as Collateral
     await this.collateral.setMintingFee(TEST_MINTING_FEE)
     await this.collateral.setRedemptionFee(TEST_REDEMPTION_FEE)
-    this.accountAccessController = await accountAccessControllerFixture()
     this.depositRecord = await collateralDepositRecordFixture(
       TEST_GLOBAL_DEPOSIT_CAP,
       TEST_ACCOUNT_DEPOSIT_CAP
     )
-    const depositHook = await depositHookFixture(
-      this.accountAccessController.address,
-      this.depositRecord.address
-    )
+    const depositHook = await depositHookFixture(this.depositRecord.address)
     const withdrawHook = await withdrawHookFixture(this.depositRecord.address)
     await depositHook.setVault(this.collateral.address)
     await withdrawHook.setVault(this.collateral.address)
