@@ -163,29 +163,6 @@ const EnterpriseCarousel: React.FC<Props> = ({
     ))
   }, [activeIndex, enterprises, placeholderEnterprises])
 
-  const renderContent = useMemo(
-    () => (
-      <SwiperWrapper>
-        <SwiperComponent
-          onActiveIndexChange={(swiper): void => {
-            onActiveSlidesChange?.({
-              enterpriseId: enterprises?.[swiper.activeIndex]?.id,
-              slides: swiper.activeIndex + SLIDES_PER_VIEW,
-            })
-          }}
-          spaceBetween={20}
-          slidesPerView={SLIDES_PER_VIEW}
-          onSwiper={setSwiperRef}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...swiperProps}
-        >
-          {renderCards}
-        </SwiperComponent>
-      </SwiperWrapper>
-    ),
-    [enterprises, onActiveSlidesChange, renderCards, swiperProps]
-  )
-
   return (
     <Wrapper>
       {overlay && (
@@ -201,7 +178,23 @@ const EnterpriseCarousel: React.FC<Props> = ({
         {showArrow && (
           <ArrowComponent direction="left" onClick={(): void => swiperRef?.slidePrev()} />
         )}
-        {renderContent}
+        <SwiperWrapper>
+          <SwiperComponent
+            onActiveIndexChange={(swiper): void => {
+              onActiveSlidesChange?.({
+                enterpriseId: enterprises?.[swiper.activeIndex]?.id,
+                slides: swiper.activeIndex + SLIDES_PER_VIEW,
+              })
+            }}
+            spaceBetween={20}
+            slidesPerView={SLIDES_PER_VIEW}
+            onSwiper={setSwiperRef}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...swiperProps}
+          >
+            {renderCards}
+          </SwiperComponent>
+        </SwiperWrapper>
         {showArrow && (
           <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
