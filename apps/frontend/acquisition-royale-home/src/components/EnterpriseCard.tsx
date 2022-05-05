@@ -1,22 +1,15 @@
 import { Card, CardProps } from 'antd'
-import { observer } from 'mobx-react-lite'
-import styled, { DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
+import styled from 'styled-components'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { formatPeriod } from '../utils/date-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
-import {
-  centered,
-  primaryBoxShadowGlow,
-  redBoxShadowGlow,
-  spacingIncrement,
-} from '../utils/theme/utils'
+import { centered, spacingIncrement } from '../utils/theme/utils'
 import { Enterprise } from '../types/enterprise.types'
 
 type Props = {
   active?: boolean
   enterprise?: Enterprise
   isCompetitor?: boolean
-  onClick?: (id: number) => void
 }
 
 const Burnt = styled.p`
@@ -65,31 +58,13 @@ const TextWrapper = styled.div<{ active?: boolean }>`
   text-align: center;
 `
 
-const Wrapper = styled.div<{
-  active?: boolean
-  burned?: boolean
-  isCompetitor?: boolean
-}>`
-  padding: ${spacingIncrement(16)} 0;
-  ${({ burned }): string => (burned ? 'cursor: not-allowed;' : '')}
+const Wrapper = styled.div<{ $burned?: boolean }>`
+  ${({ $burned }): string => ($burned ? 'cursor: not-allowed;' : '')}
   &&& {
     .ant-card {
       background-color: transparent;
-      margin: 0 ${spacingIncrement(14)};
+      margin: 0;
       .ant-card-cover {
-        ${({
-          active,
-          isCompetitor,
-        }): FlattenInterpolation<ThemeProps<DefaultTheme>> | undefined => {
-          if (active) {
-            if (isCompetitor) {
-              return redBoxShadowGlow
-            }
-            return primaryBoxShadowGlow
-          }
-
-          return undefined
-        }};
         background-color: ${({ theme }): string => theme.color.primary};
         border: 1px solid ${({ theme }): string => theme.color.accentPrimary};
         cursor: pointer;
@@ -111,12 +86,7 @@ const StyledImage = styled.img`
   object-fit: cover;
 `
 
-const EnterpriseCard: React.FC<Props> = ({
-  active = false,
-  enterprise,
-  isCompetitor = false,
-  onClick,
-}) => {
+const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
   if (
     !enterprise ||
     !enterprise.art ||
@@ -129,13 +99,7 @@ const EnterpriseCard: React.FC<Props> = ({
   const { burned, id, art, immune, immuneUntil } = enterprise
 
   return (
-    <Wrapper
-      active={active}
-      burned={burned}
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClick={onClick && !burned ? (): void => onClick(id) : (): void => {}}
-      isCompetitor={isCompetitor}
-    >
+    <Wrapper $burned={burned}>
       <StyledCard bordered={false} cover={<StyledImage alt={id.toString()} src={art.image} />}>
         <TextWrapper active={active} />
         {burned && (
@@ -163,4 +127,4 @@ export type EnterpriseCardProps = Props
 
 export type EnterpriseProps = Omit<EnterpriseCardProps, 'isCompetitor'>
 
-export default observer(EnterpriseCard)
+export default EnterpriseCard

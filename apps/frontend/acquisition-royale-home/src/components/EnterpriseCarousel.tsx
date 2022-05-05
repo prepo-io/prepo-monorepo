@@ -4,32 +4,29 @@ import {
   SwiperSlide as SwiperSlideComponent,
   SwiperProps,
 } from 'swiper/react'
-import { useResizeDetector } from 'react-resize-detector'
-import SwiperCore, { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper'
+import SwiperCore from 'swiper'
 import { useEffect, useMemo, useState } from 'react'
-import styled, {
-  CSSProperties,
-  css,
-  DefaultTheme,
-  FlattenInterpolation,
-  ThemeProps,
-} from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 import Icon from './icon'
 import 'swiper/css'
+import EnterpriseCard from './EnterpriseCard'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { centered, spacingIncrement } from '../utils/theme/utils'
-import useResponsive from '../hooks/useResponsive'
-import { generateDummyArray } from '../utils/enterprise-utils'
+import {
+  generateDummyArray,
+  isEnterpriseLoaded,
+  isFirstEnterpriseLoaded,
+} from '../utils/enterprise-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
+import { Enterprises } from '../types/enterprise.types'
 
-const StyledSwiperStyle: CSSProperties = {
+const SwiperStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 }
 type ArrowProps = {
   direction: 'left' | 'right'
-  height: number
   onClick?: () => void
 }
 
@@ -37,30 +34,26 @@ export type OverlayProps = {
   action?: React.ReactNode
   message?: React.ReactNode
 }
+
 type Props = {
-  enterprises?: { id: number; component: React.ReactNode }[]
+  activeIndex?: number
+  enterprises?: Enterprises
   loading?: boolean
   overlay?: OverlayProps
-  onActiveSlidesChange?: (slides: number) => unknown
+  onActiveSlidesChange?: (props: { enterpriseId?: number; slides: number }) => unknown
+  title?: string
 } & SwiperProps
 
 const ArrowWrapper = styled.div<Omit<ArrowProps, 'onClick'>>`
-  ${({ direction }): FlattenInterpolation<ThemeProps<DefaultTheme>> =>
-    direction === 'left'
-      ? css`
-          border-radius: 12px 6px 6px 12px;
-          left: 0;
-        `
-      : css`
-          border-radius: 6px 12px 12px 6px;
-          right: 0;
-        `}
+  align-self: stretch;
   background-color: ${({ theme }): string => theme.color.accentPrimary};
+  border-radius: ${({ direction }): string =>
+    direction === 'left' ? '12px 6px 6px 12px' : '6px 12px 12px 6px'};
   cursor: pointer;
-  height: ${({ height }): string => spacingIncrement(height)};
+  height: 100%;
   position: absolute;
-  top: ${spacingIncrement(16)};
-  width: ${spacingIncrement(39)};
+  ${({ direction }): string => (direction === 'left' ? 'left: 0' : 'right: 0')};
+  width: 8%;
   z-index: 1;
 `
 
@@ -70,7 +63,10 @@ const ArrowIconWrapper = styled(Icon)`
 `
 
 const InnerWrapper = styled.div`
-  max-width: ${spacingIncrement(1200)};
+  align-items: stretch;
+  display: flex;
+  gap: ${spacingIncrement(14)};
+  justify-content: center;
   position: relative;
   width: 100%;
 `
@@ -99,108 +95,115 @@ const OverlayActionWrapper = styled.div`
   width: 100%;
 `
 
+const Labels = styled.p`
+  color: ${({ theme }): string => theme.color.white};
+  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-weight: ${({ theme }): number => theme.fontWeight.bold};
+  margin-bottom: 0;
+  text-align: center;
+`
+
 const SwiperWrapper = styled.div`
-  margin: 0 ${spacingIncrement(50)};
+  display: flex;
+  padding: 0 12%;
+  width: 100%;
 `
 
 const Wrapper = styled.div`
   ${centered}
+  flex-direction: column;
+  gap: ${spacingIncrement(12)};
   position: relative;
   width: 100%;
 `
 
-const ArrowComponent: React.FC<ArrowProps> = ({ direction = 'left', height, onClick }) => (
-  <ArrowWrapper height={height} direction={direction} onClick={onClick}>
+const ArrowComponent: React.FC<ArrowProps> = ({ direction = 'left', onClick }) => (
+  <ArrowWrapper direction={direction} onClick={onClick}>
     <ArrowIconWrapper name={`${direction}Arrow`} color="primary" />
   </ArrowWrapper>
 )
 
+const SLIDES_PER_VIEW = 1
+
 const EnterpriseCarousel: React.FC<Props> = ({
+  activeIndex,
   enterprises,
   loading,
   onActiveSlidesChange,
   overlay,
+  title,
   ...swiperProps
 }) => {
-  const { isDesktop, isTablet } = useResponsive()
-  const { height, ref } = useResizeDetector()
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  SwiperCore.use([Navigation, Pagination, Mousewheel, Keyboard])
   const [swiperRef, setSwiperRef] = useState<SwiperCore>()
 
-  const onSlideNext = (): void => swiperRef?.slideNext()
-  const onSlidePrev = (): void => swiperRef?.slidePrev()
+  const showArrow = enterprises && enterprises.length > SLIDES_PER_VIEW
 
-  const slidesPerView = useMemo(() => {
-    if (isDesktop) return 3
-    if (isTablet) return 2
-    return 1
-  }, [isDesktop, isTablet])
+  const placeholderEnterprises = generateDummyArray(SLIDES_PER_VIEW).map((id) => id)
 
   useEffect(() => {
-    if (typeof onActiveSlidesChange === 'function') {
-      onActiveSlidesChange(slidesPerView + activeIndex)
-    }
-  }, [activeIndex, onActiveSlidesChange, slidesPerView])
+    if (swiperRef && swiperRef.activeIndex !== activeIndex) swiperRef.slideTo(activeIndex)
+  }, [activeIndex, swiperRef])
 
-  const showArrow = enterprises && enterprises.length > slidesPerView
+  const renderCards = useMemo(() => {
+    if (enterprises !== undefined && enterprises.length > 0 && isFirstEnterpriseLoaded(enterprises))
+      return enterprises.map((enterprise, index) => (
+        <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
+          {isEnterpriseLoaded(enterprise) ? (
+            <EnterpriseCard active={index === activeIndex} enterprise={enterprise} />
+          ) : (
+            <LoadingCarouselCard />
+          )}
+        </SwiperSlideComponent>
+      ))
 
-  const arrowHeight = useMemo(() => (height || 345) - 32, [height])
+    return placeholderEnterprises.map((id) => (
+      <SwiperSlideComponent key={id} style={SwiperStyle}>
+        <LoadingCarouselCard key={id} loading={enterprises === undefined} />
+      </SwiperSlideComponent>
+    ))
+  }, [activeIndex, enterprises, placeholderEnterprises])
 
-  const placeholderEnterprises = generateDummyArray(slidesPerView).map((id) => ({
-    id,
-    component: <LoadingCarouselCard key={id} loading={loading} />,
-  }))
-
-  const renderContent = (): React.ReactNode => {
-    const cards =
-      enterprises === undefined || enterprises.length === 0 ? placeholderEnterprises : enterprises
-    return (
-      <div ref={ref}>
-        <SwiperComponent
-          onActiveIndexChange={(swiper): void => {
-            setActiveIndex(swiper.activeIndex)
-          }}
-          spaceBetween={20}
-          slidesPerView={slidesPerView}
-          onSwiper={setSwiperRef}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...swiperProps}
-        >
-          {cards.map(({ id, component }) => (
-            <SwiperSlideComponent key={id} style={StyledSwiperStyle}>
-              {component}
-            </SwiperSlideComponent>
-          ))}
-        </SwiperComponent>
-      </div>
-    )
-  }
-
-  const renderOverlay = (): React.ReactNode => {
-    if (!overlay) return null
-    return (
-      <MessageOverlay>
-        <Message>{overlay.message}</Message>
-        {overlay.action !== undefined && (
-          <OverlayActionWrapper>{overlay.action}</OverlayActionWrapper>
-        )}
-      </MessageOverlay>
-    )
-  }
   return (
     <Wrapper>
-      {renderOverlay()}
+      {overlay && (
+        <MessageOverlay>
+          <Message>{overlay.message}</Message>
+          {overlay.action !== undefined && (
+            <OverlayActionWrapper>{overlay.action}</OverlayActionWrapper>
+          )}
+        </MessageOverlay>
+      )}
+      {Boolean(title) && <Labels>{title}</Labels>}
       <InnerWrapper>
         {showArrow && (
-          <ArrowComponent height={arrowHeight} direction="left" onClick={onSlidePrev} />
+          <ArrowComponent direction="left" onClick={(): void => swiperRef?.slidePrev()} />
         )}
-        <SwiperWrapper>{renderContent()}</SwiperWrapper>
+        <SwiperWrapper>
+          <SwiperComponent
+            onActiveIndexChange={(swiper): void => {
+              onActiveSlidesChange?.({
+                enterpriseId: enterprises?.[swiper.activeIndex]?.id,
+                slides: swiper.activeIndex + SLIDES_PER_VIEW,
+              })
+            }}
+            spaceBetween={20}
+            slidesPerView={SLIDES_PER_VIEW}
+            onSwiper={setSwiperRef}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...swiperProps}
+          >
+            {renderCards}
+          </SwiperComponent>
+        </SwiperWrapper>
         {showArrow && (
-          <ArrowComponent height={arrowHeight} direction="right" onClick={onSlideNext} />
+          <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
       </InnerWrapper>
+      {enterprises && enterprises.length > 1 && activeIndex !== undefined && (
+        <Labels>
+          {activeIndex + 1}/{enterprises.length}
+        </Labels>
+      )}
     </Wrapper>
   )
 }

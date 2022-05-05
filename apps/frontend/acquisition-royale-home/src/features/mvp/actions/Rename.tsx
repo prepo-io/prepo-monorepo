@@ -5,6 +5,7 @@ import ActionCard from '../ActionCard'
 import { renameActionDescription } from '../Descriptions'
 import Input from '../../../components/Input'
 import { useRootStore } from '../../../context/RootStoreProvider'
+import MyEnterprises from '../MyEnterprises'
 
 const Rename: React.FC = () => {
   const { acquisitionRoyaleContractStore, actionsStore } = useRootStore()
@@ -40,7 +41,9 @@ const Rename: React.FC = () => {
       input={input}
       loading={renaming}
       title="Rename"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 

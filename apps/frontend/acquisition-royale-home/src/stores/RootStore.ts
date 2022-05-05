@@ -10,9 +10,11 @@ import { AcquireRPCostContractStore } from './AcquireRPCostContractStore'
 import { AcquisitionRoyaleContractStore } from './AcquisitionRoyaleContractStore'
 import { AcquisitionRoyaleRPShopContractStore } from './AcquisitionRoyaleRPShopContractStore'
 import { CompeteV1ContractStore } from './CompeteV1ContractStore'
+import { CompetitionStore } from './CompetitionStore'
 import { ConsumablesContractStore } from './ConsumablesContractStore'
 import { MergeRPCostContractStore } from './MergeRPCostContract'
 import { RunwayPointsContractStore } from './RunwayPointsContractStore'
+import { SignerStore } from './SignerStore'
 import { InternContractStore } from './InternContractStore'
 import { InternStore } from './InternStore'
 import { EnterpriseStore } from './EnterprisesStore'
@@ -30,6 +32,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   acquisitionRoyaleContractStore: AcquisitionRoyaleContractStore
   acquisitionRoyaleRPShopContractStore: AcquisitionRoyaleRPShopContractStore
   competeV1ContractStore: CompeteV1ContractStore
+  competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
@@ -43,6 +46,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   internContractStore: InternContractStore
   internStore: InternStore
   rpShopStore: RpShopStore
+  signerStore: SignerStore
 
   constructor() {
     super({
@@ -62,6 +66,8 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.acquisitionRoyaleRPShopContractStore = new AcquisitionRoyaleRPShopContractStore(this)
     this.acquireStore = new AcquireStore(this)
     this.consumablesContractStore = new ConsumablesContractStore(this)
+    this.competitionStore = new CompetitionStore(this)
+    this.signerStore = new SignerStore(this)
     this.mergeStore = new MergeStore(this)
     this.mergeRPCostContractStore = new MergeRPCostContractStore(this)
     this.runwayPointsContractStore = new RunwayPointsContractStore(this)

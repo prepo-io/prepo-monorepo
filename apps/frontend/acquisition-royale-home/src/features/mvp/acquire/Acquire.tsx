@@ -6,7 +6,9 @@ import EnterpriseRadio from '../../../components/EnterpriseRadio'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { INSUFFICIENT_MATIC } from '../../../utils/common-utils'
 import ActionCard from '../ActionCard'
+import Competition from '../Competition'
 import { acquireActionDescription } from '../Descriptions'
+import MyEnterprises from '../MyEnterprises'
 
 const EnterpriseLabel = styled.span`
   font-size: ${({ theme }): string => theme.fontSize.base};
@@ -18,9 +20,11 @@ const toKeepOrBurn = (id?: number, keepId?: number): string => {
 }
 
 const Acquire: React.FC = () => {
-  const { acquireStore, acquisitionRoyaleContractStore, enterprisesStore } = useRootStore()
+  const { acquireStore, acquisitionRoyaleContractStore, competitionStore, signerStore } =
+    useRootStore()
   const { acquireButtonProps, acquireBalances, acquireCosts, acquireComparisons } = acquireStore
-  const { competitionActiveEnterprise, signerActiveEnterprise } = enterprisesStore
+  const { competitionActiveEnterprise } = competitionStore
+  const { signerActiveEnterprise } = signerStore
   const { acquire, acquireKeepId, acquiring, setAcquireKeepId } = acquisitionRoyaleContractStore
 
   const handleAcquire = useCallback(async (): Promise<void> => {
@@ -71,7 +75,10 @@ const Acquire: React.FC = () => {
       loading={acquiring}
       lowMatic={acquireButtonProps.children === INSUFFICIENT_MATIC}
       title="Acquire"
-    />
+    >
+      <MyEnterprises />
+      <Competition label="Search for Enterprises to Acquire:" />
+    </ActionCard>
   )
 }
 
