@@ -1,6 +1,8 @@
 import { BigNumber, utils } from 'ethers'
 import config from './config'
 
+export const CARDS_MAX_WIDTH = 540
+
 export const IS_BROWSER = Boolean(process.browser)
 
 export const PRODUCTION_DOMAIN_EN = ''

@@ -7,22 +7,23 @@ import { mergeActionDescription } from '../Descriptions'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { INSUFFICIENT_MATIC } from '../../../utils/common-utils'
 import { Enterprise } from '../../../types/enterprise.types'
+import MyEnterprises from '../MyEnterprises'
 
 const Merge: React.FC = () => {
-  const { acquisitionRoyaleContractStore, enterprisesStore, mergeStore } = useRootStore()
+  const { acquisitionRoyaleContractStore, signerStore, mergeStore } = useRootStore()
   const [shouldClear, setShouldClear] = useState(false)
   const { mergeButtonProps, mergeBalances, mergeCosts, mergeComparisons } = mergeStore
-  const { signerActiveEnterprise, signerEnterprises } = enterprisesStore
+  const { setMergeTargetId, signerActiveEnterprise, signerEnterprises } = signerStore
   const { merging } = acquisitionRoyaleContractStore
 
   const onSelect = (target: unknown): void => {
     const id: number = target as number
-    enterprisesStore.setMergeTargetId(id)
+    setMergeTargetId(id)
   }
 
   const onClear = (): void => {
     setShouldClear(false)
-    enterprisesStore.setMergeTargetId(undefined)
+    setMergeTargetId(undefined)
   }
 
   const onMerge = useCallback(async () => {
@@ -83,7 +84,9 @@ const Merge: React.FC = () => {
       loading={merging}
       lowMatic={mergeButtonProps.children === INSUFFICIENT_MATIC}
       title="Merge"
-    />
+    >
+      <MyEnterprises />
+    </ActionCard>
   )
 }
 

@@ -14,6 +14,8 @@ import Button from '../../components/Button'
 import InfoTooltip from '../../components/InfoTooltip'
 import { RewardElements } from '../../stores/UiStore'
 import { useRootStore } from '../../context/RootStoreProvider'
+import { CARDS_MAX_WIDTH } from '../../lib/constants'
+import { media } from '../../utils/theme/media'
 
 export type CostBreakdown = {
   amount: string
@@ -108,9 +110,13 @@ const InputWrapper = styled.div`
 
 const Description = styled.div`
   color: ${({ theme }): string => theme.color.grey};
+  font-size: ${({ theme }): string => theme.fontSize.base};
   margin: 0;
   margin-top: ${spacingIncrement(24)};
   text-align: center;
+  ${media.tablet`
+  font-size: ${({ theme }): string => theme.fontSize.sm};
+  `}
 `
 
 const LowMaticWrapper = styled.div`
@@ -140,24 +146,18 @@ const SummaryWrapper = styled.div`
   padding: ${spacingIncrement(8)} ${spacingIncrement(4)};
 `
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   background-color: ${({ theme }): string => theme.color.secondary};
-  border: solid 1px ${({ theme }): string => theme.color.grey};
+  border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
+  box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
   font-family: ${({ theme }): string => theme.fontFamily.secondary};
   letter-spacing: 1px;
   line-height: 1;
-  max-width: ${spacingIncrement(540)};
-  opacity: 0.6;
+  max-width: ${spacingIncrement(CARDS_MAX_WIDTH)};
   padding: ${spacingIncrement(16)};
   position: relative;
   transition: 0.3s;
   width: 100%;
-  :focus-within,
-  :hover {
-    border: solid 1px ${({ theme }): string => theme.color.accentPrimary};
-    box-shadow: 0px 2px 24px ${({ theme }): string => theme.color.accentPrimary};
-    opacity: 1;
-  }
 `
 
 const ActionCard: React.FC<Props> = ({
@@ -165,6 +165,7 @@ const ActionCard: React.FC<Props> = ({
   balances,
   balanceLabel = 'Balance',
   buttonProps,
+  children,
   comparisons,
   comingSoon,
   costs,
@@ -213,7 +214,7 @@ const ActionCard: React.FC<Props> = ({
   }, [rewardOptions, uiStore])
 
   const button = useMemo(() => {
-    if (!buttonProps && !action) {
+    if (!buttonProps && !action && !buttonProps.href) {
       return null
     }
     if (!connected) {
@@ -268,23 +269,26 @@ const ActionCard: React.FC<Props> = ({
   }
 
   return (
-    <Wrapper onSubmit={handleSubmit}>
+    <Wrapper>
       <FancyTitle>{title}</FancyTitle>
       <Description>{description}</Description>
-      {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
-      {(cost !== null || balance !== null) && (
-        <SummaryWrapper>
-          {cost}
-          {balance}
-        </SummaryWrapper>
-      )}
-      {lowMatic && (
-        <LowMaticWrapper>
-          <LowMatic />
-        </LowMaticWrapper>
-      )}
-      <Center>{reward}</Center>
-      <ActionWrapper>{button}</ActionWrapper>
+      {children}
+      <form onSubmit={handleSubmit}>
+        {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
+        {(cost !== null || balance !== null) && (
+          <SummaryWrapper>
+            {cost}
+            {balance}
+          </SummaryWrapper>
+        )}
+        {lowMatic && (
+          <LowMaticWrapper>
+            <LowMatic />
+          </LowMaticWrapper>
+        )}
+        <Center>{reward}</Center>
+        <ActionWrapper>{button}</ActionWrapper>
+      </form>
       {messageBelowButton}
       {comparisons &&
         comparisons.map((comparison) => (

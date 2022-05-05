@@ -32,8 +32,8 @@ export class ActionsStore {
   // action props ...
 
   get competeButtonProps(): ButtonProps {
-    const { competitionActiveEnterprise, signerActiveEnterprise, signerEnterprises } =
-      this.root.enterprisesStore
+    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { competeRp } = this.root.acquisitionRoyaleContractStore
 
     if (signerEnterprises && signerEnterprises.length === 0) {
@@ -64,7 +64,7 @@ export class ActionsStore {
 
   get depositButtonProps(): ButtonProps {
     const { balance } = this.root.runwayPointsContractStore
-    const { signerEnterprises, signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerEnterprises, signerActiveEnterprise } = this.root.signerStore
     const { depositAmount } = this.root.acquisitionRoyaleContractStore
     if (signerEnterprises && signerEnterprises.length === 0) {
       return { disabled: true, children: 'No owned Enterprise' }
@@ -137,7 +137,7 @@ export class ActionsStore {
   }
 
   get rebrandButtonProps(): ButtonProps {
-    const { signerActiveEnterprise, signerEnterprises } = this.root.enterprisesStore
+    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
     const { rebrandAddress } = this.root.acquisitionRoyaleContractStore
     const { rebrandBalance } = this.root.consumablesContractStore
     if (signerEnterprises && signerEnterprises.length === 0) {
@@ -160,7 +160,7 @@ export class ActionsStore {
   }
 
   get renameButtonProps(): ButtonProps {
-    const { signerActiveEnterprise, signerEnterprises } = this.root.enterprisesStore
+    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
     const { newName } = this.root.acquisitionRoyaleContractStore
     const { renameBalance } = this.root.consumablesContractStore
     if (signerEnterprises && signerEnterprises.length === 0) {
@@ -181,7 +181,7 @@ export class ActionsStore {
   }
 
   get reviveButtonProps(): ButtonProps {
-    const { competitionActiveEnterprise } = this.root.enterprisesStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { reviveBalance } = this.root.consumablesContractStore
     if (reviveBalance === undefined) {
       return LOADING
@@ -200,7 +200,7 @@ export class ActionsStore {
 
   get withdrawButtonProps(): ButtonProps {
     const { balance } = this.root.runwayPointsContractStore
-    const { signerActiveEnterprise, signerEnterprises } = this.root.enterprisesStore
+    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
     const { withdrawAmount } = this.root.acquisitionRoyaleContractStore
     if (signerEnterprises && signerEnterprises.length === 0) {
       return { disabled: true, children: 'No owned Enterprise' }
@@ -222,7 +222,7 @@ export class ActionsStore {
   // balances ...
 
   get competeBalances(): CostBalance[] {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     return [makeRPCostBalance(signerActiveEnterprise?.stats.rp || 0)]
   }
 
@@ -250,7 +250,7 @@ export class ActionsStore {
   }
 
   get withdrawBalances(): CostBalance[] {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     return [makeRPCostBalance(signerActiveEnterprise?.stats.rp || 0)]
   }
 
@@ -282,7 +282,8 @@ export class ActionsStore {
   // stats comparisons ...
 
   get competeComparisons(): ComparisonProps[] | undefined {
-    const { signerActiveEnterprise, competitionActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { competeRp } = this.root.acquisitionRoyaleContractStore
     const { damage } = this.root.competeV1ContractStore
     if (!signerActiveEnterprise || !competitionActiveEnterprise || damage === undefined)
@@ -318,7 +319,7 @@ export class ActionsStore {
   }
 
   get depositComparisons(): ComparisonProps[] | undefined {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     const { depositAmount } = this.root.acquisitionRoyaleContractStore
     if (!signerActiveEnterprise || depositAmount === '') return undefined
     const formattedRpBefore = formatNumberToNumber(signerActiveEnterprise.stats.rp)
@@ -377,7 +378,7 @@ export class ActionsStore {
 
   get withdrawComparisons(): ComparisonProps[] | undefined {
     const { balance } = this.root.runwayPointsContractStore
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     const { withdrawAmount, withdrawalBurnPercentage } = this.root.acquisitionRoyaleContractStore
     if (
       !signerActiveEnterprise ||

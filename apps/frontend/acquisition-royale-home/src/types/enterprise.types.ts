@@ -72,4 +72,4 @@ export type UseEnterprise = {
   enterprises: Enterprise[] | undefined
 }
 
-export type Enterprises = (Enterprise | undefined)[]
+export type Enterprises = Enterprise[]

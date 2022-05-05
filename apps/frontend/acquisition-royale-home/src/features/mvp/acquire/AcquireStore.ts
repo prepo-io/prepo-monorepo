@@ -23,7 +23,7 @@ export class AcquireStore {
   }
 
   get acquireBalances(): CostBalance[] | undefined {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     const { balance } = this.root.runwayPointsContractStore
     if (!signerActiveEnterprise) return undefined
     const rpCostBalanceEnterprise = makeRPCostBalanceWallet(balance ?? 0)
@@ -37,8 +37,8 @@ export class AcquireStore {
     const { acquireCost } = this.root.acquireRPCostContractStore
     const { balance } = this.root.runwayPointsContractStore
     const { rpRequiredForDamage } = this.root.competeV1ContractStore
-    const { signerEnterprises, signerActiveEnterprise, competitionActiveEnterprise } =
-      this.root.enterprisesStore
+    const { signerEnterprises, signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { acquireKeepId } = this.root.acquisitionRoyaleContractStore
 
     if (signerEnterprises && signerEnterprises.length === 0)
@@ -75,7 +75,8 @@ export class AcquireStore {
   }
 
   get acquireComparisons(): ComparisonProps[] | undefined {
-    const { competitionActiveEnterprise, signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { acquireKeepId, getNewRpPerDay, passiveRpPerDay, acquisitionImmunityPeriod } =
       this.root.acquisitionRoyaleContractStore
     const { rpRequiredForDamage } = this.root.competeV1ContractStore
@@ -154,7 +155,7 @@ export class AcquireStore {
   }
 
   get acquireCosts(): CostBalance[] | undefined {
-    const { signerActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
     const { acquireCost } = this.root.acquireRPCostContractStore
     const { rpRequiredForDamage } = this.root.competeV1ContractStore
     // RP cost can be 0 when no competition is selected

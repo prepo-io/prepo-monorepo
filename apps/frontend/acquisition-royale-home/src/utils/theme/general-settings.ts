@@ -15,6 +15,8 @@ export const lineHeights: LineHeight = {
 export const Z_INDEX = {
   actionCardBackgroundOverlay: -1,
   actionCardOverlay: 2,
+  arrowBorder: 3,
+  arrowFill: 4,
   enterpriseBurnt: 1,
   selectDropdown: 1,
   frame: 5,

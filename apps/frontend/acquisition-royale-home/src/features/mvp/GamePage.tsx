@@ -1,32 +1,11 @@
 import styled from 'styled-components'
-import { observer } from 'mobx-react-lite'
-import Acquire from './acquire'
-import Compete from './actions/Compete'
-import MyEnterprises from './MyEnterprises'
-import Merge from './merge'
-import DepositRp from './actions/DepositRp'
-import WithdrawRp from './actions/WithdrawRp'
-import SearchCompetition from './SearchCompetition'
-import Competition from './Competition'
-import Intern from './actions/Intern'
-import Rename from './actions/Rename'
-import Revive from './actions/Revive'
-import RPShop from './actions/RPShop'
-import UniswapLink from './UniswapLink'
+import categories from './categories'
 import RemainingEnterprises from './RemainingEnterprises'
 import Section from '../../components/Section'
 import { spacingIncrement } from '../../utils/theme/utils'
 import MainTab, { TabPane } from '../../components/MainTab'
 import { media } from '../../utils/theme/media'
-import { useRootStore } from '../../context/RootStoreProvider'
-
-const ActionsWrapper = styled.div`
-  display: grid;
-  grid-row-gap: ${spacingIncrement(60)};
-  grid-template-columns: repeat(1, 1fr);
-  justify-items: center;
-  max-width: ${spacingIncrement(540)};
-`
+import Subtabs from '../../components/Subtabs'
 
 const CenterWrapper = styled.div`
   align-items: center;
@@ -44,57 +23,25 @@ const Wrapper = styled.div`
 `
 
 const GamePage: React.FC = () => {
-  const { enterprisesStore } = useRootStore()
-  const { enterprisesBalance } = enterprisesStore
+  const subtabsList = categories
+    .filter(({ subtabs }) => subtabs !== undefined)
+    .map(({ tab }) => tab)
+
   return (
     <Wrapper>
       <Section>
         <RemainingEnterprises />
       </Section>
-      <Section greyOnUnconnected title={`Your Enterprises (${enterprisesBalance ?? '...'})`}>
-        <MyEnterprises />
-      </Section>
-      <MainTab centered>
-        <TabPane tab="RP" key="rp">
-          <CenterWrapper>
-            <ActionsWrapper>
-              <UniswapLink />
-              <RPShop />
-              <DepositRp />
-              <WithdrawRp />
-            </ActionsWrapper>
-          </CenterWrapper>
-        </TabPane>
-        <TabPane tab="PLAY" key="play">
-          <CenterWrapper>
-            <Merge />
-          </CenterWrapper>
-          <Section
-            action={<SearchCompetition />}
-            title="Competitor Analysis"
-            description="Know your competition. You can analyze your competition by searching their wallet address or enterprise ID."
-          >
-            <Competition />
-            <ActionsWrapper>
-              <Compete />
-              <Acquire />
-              <Revive />
-            </ActionsWrapper>
-          </Section>
-        </TabPane>
-        <TabPane tab="EARN" key="earn">
-          <CenterWrapper>
-            <Intern />
-          </CenterWrapper>
-        </TabPane>
-        <TabPane tab="CUSTOMIZE" key="customize">
-          <CenterWrapper>
-            <Rename />
-          </CenterWrapper>
-        </TabPane>
+      <MainTab subtabs={subtabsList} defaultActiveKey={subtabsList[0]} centered>
+        {categories.map(({ tab, content, subtabs }) => (
+          <TabPane tab={tab} key={tab}>
+            {subtabs && <Subtabs subtabs={subtabs} />}
+            {content && <CenterWrapper>{content}</CenterWrapper>}
+          </TabPane>
+        ))}
       </MainTab>
     </Wrapper>
   )
 }
 
-export default observer(GamePage)
+export default GamePage

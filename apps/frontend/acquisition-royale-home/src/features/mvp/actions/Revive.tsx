@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import ActionCard from '../ActionCard'
 import { reviveActionDescription } from '../Descriptions'
 import { useRootStore } from '../../../context/RootStoreProvider'
+import Competition from '../Competition'
 
 const Revive: React.FC = () => {
   const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
@@ -23,7 +24,9 @@ const Revive: React.FC = () => {
       description={reviveActionDescription}
       loading={acquisitionRoyaleContractStore.reviving}
       title="Revive"
-    />
+    >
+      <Competition label="Search for Enterprises to Revive:" />
+    </ActionCard>
   )
 }
 

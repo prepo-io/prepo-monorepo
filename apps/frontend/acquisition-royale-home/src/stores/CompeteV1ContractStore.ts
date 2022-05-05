@@ -20,7 +20,8 @@ export class CompeteV1ContractStore extends ContractStore<RootStore, SupportedCo
       latestRpRequiredForDamage: computed,
     })
     autorun(() => {
-      const { signerActiveEnterprise, competitionActiveEnterprise } = this.root.enterprisesStore
+      const { signerActiveEnterprise } = this.root.signerStore
+      const { competitionActiveEnterprise } = this.root.competitionStore
       const { competeAddress } = this.root.acquisitionRoyaleContractStore
       if (competeAddress !== undefined && this.contract?.address !== competeAddress) {
         this.updateAddress(competeAddress)
@@ -56,7 +57,8 @@ export class CompeteV1ContractStore extends ContractStore<RootStore, SupportedCo
   }
 
   get damage(): number | undefined {
-    const { signerActiveEnterprise, competitionActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     const { competeRp } = this.root.acquisitionRoyaleContractStore
     if (signerActiveEnterprise === undefined || competitionActiveEnterprise === undefined) {
       return undefined
@@ -72,7 +74,8 @@ export class CompeteV1ContractStore extends ContractStore<RootStore, SupportedCo
   }
 
   get latestRpRequiredForDamage(): number | undefined {
-    const { signerActiveEnterprise, competitionActiveEnterprise } = this.root.enterprisesStore
+    const { signerActiveEnterprise } = this.root.signerStore
+    const { competitionActiveEnterprise } = this.root.competitionStore
     if (
       signerActiveEnterprise !== undefined &&
       competitionActiveEnterprise?.stats.rp !== undefined
