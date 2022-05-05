@@ -20,8 +20,7 @@ module.exports = {
         // icon buttons background
         light: '#E5E5FB',
         DEFAULT: '#6264D9',
-        accent: '#3335CC',
-        secondaryAccent: '#454699',
+        accent: '#454699',
       },
       background: {
         DEFAULT: '#fff',

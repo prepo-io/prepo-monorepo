@@ -20,7 +20,7 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const styles = clsx(
-    'inline-flex justify-center items-center py-4 px-14 text-lg font-semibold text-white bg-prepo hover:bg-prepo-secondaryAccent disabled:hover:bg-prepo rounded disabled:opacity-50 transition-colors disabled:cursor-default',
+    'inline-flex justify-center items-center py-4 px-14 text-lg font-semibold text-white bg-prepo hover:bg-prepo-accent disabled:hover:bg-prepo rounded disabled:opacity-50 transition-colors disabled:cursor-default',
     className
   )
 

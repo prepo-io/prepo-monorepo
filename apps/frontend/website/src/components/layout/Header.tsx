@@ -3,8 +3,7 @@ import { FC } from 'react'
 import Banner from './Banner'
 import { Icon } from '../Icon'
 import { IconButton, IconButtonProps } from '../IconButton'
-
-const SHOW_LAUNCH_APP_BTN = false
+import { ROUTES } from '../../lib/constants'
 
 type MobileMenuLinkProps = {
   href: string
@@ -72,14 +71,15 @@ const MobileMenu: FC<{ isOpen: boolean }> = ({ isOpen }) => (
       {externalLinks.map(({ title, href }) => (
         <MobileMenuLink key={title} title={title} href={href} />
       ))}
-      {SHOW_LAUNCH_APP_BTN && (
-        <button
-          type="button"
-          className="mt-7 w-56 h-16 font-semibold text-background bg-prepo rounded"
-        >
-          Launch App
-        </button>
-      )}
+      <a
+        type="button"
+        href={ROUTES.APP}
+        target="_blank"
+        className="flex justify-center items-center mt-7 w-56 h-16 font-semibold text-background bg-prepo rounded"
+        rel="noreferrer"
+      >
+        Try Testnet
+      </a>
     </div>
     <div className="mb-9">
       <SocialLinks />
@@ -115,14 +115,16 @@ const DesktopItems: FC = () => (
       ))}
     </div>
     <div className="hidden gap-4 justify-center items-center lg:flex lg:visible">
-      {SHOW_LAUNCH_APP_BTN && (
-        <button
-          type="button"
-          className="w-36 h-10 font-semibold text-background bg-prepo hover:bg-prepo-accent rounded transition-all"
-        >
-          Launch App
-        </button>
-      )}
+      <a
+        href={ROUTES.APP}
+        target="_blank"
+        type="button"
+        className="flex justify-center items-center w-36 h-10 font-semibold text-background bg-prepo hover:bg-prepo-accent rounded transition-all"
+        rel="noreferrer"
+      >
+        Try Testnet
+      </a>
+
       <SocialLinks />
     </div>
   </>

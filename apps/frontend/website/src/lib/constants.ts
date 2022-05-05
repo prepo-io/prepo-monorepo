@@ -10,6 +10,10 @@ export const DEFAULT_LANGUAGE = 'en-us'
 
 export const APP_NAME = 'prePO'
 
+export enum ROUTES {
+  APP = 'https://app.prepo.io',
+}
+
 export const MAILCHIMP_URL =
   'https://prepo.us6.list-manage.com/subscribe/post?u=b8c56831dea49f16a5f4d0518&id=111d836609'
 
