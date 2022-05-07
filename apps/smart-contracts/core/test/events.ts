@@ -124,20 +124,20 @@ export async function getSingleStrategyControllerVaultChangedEvent(
   return events[0].args as any
 }
 
-export async function getNameChangedEvent(collateral: Collateral): Promise<any> {
+export async function getNameChangeEvent(collateral: Collateral): Promise<any> {
   const filter = {
     address: collateral.address,
-    topics: [ethers.utils.id('NameChanged(string)')],
+    topics: [ethers.utils.id('NameChange(string)')],
   }
 
   const events = await collateral.queryFilter(filter, 'latest')
   return events[0].args as any
 }
 
-export async function getSymbolChangedEvent(collateral: Collateral): Promise<any> {
+export async function getSymbolChangeEvent(collateral: Collateral): Promise<any> {
   const filter = {
     address: collateral.address,
-    topics: [ethers.utils.id('SymbolChanged(string)')],
+    topics: [ethers.utils.id('SymbolChange(string)')],
   }
 
   const events = await collateral.queryFilter(filter, 'latest')

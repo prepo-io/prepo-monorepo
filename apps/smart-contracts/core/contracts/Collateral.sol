@@ -153,13 +153,11 @@ contract Collateral is
   }
 
   function setName(string memory _newName) external onlyOwner {
-    _name = _newName;
-    emit NameChanged(_newName);
+    _setName(_newName);
   }
 
   function setSymbol(string memory _newSymbol) external onlyOwner {
-    _symbol = _newSymbol;
-    emit SymbolChanged(_newSymbol);
+    _setSymbol(_newSymbol);
   }
 
   function setDepositsAllowed(bool _allowed) external override onlyOwner {

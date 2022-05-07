@@ -32,6 +32,9 @@ import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
  * Finally, the non-standard {decreaseAllowance} and {increaseAllowance}
  * functions have been added to mitigate the well-known issues around setting
  * allowances. See {IERC20-approve}.
+ *
+ * ERC20UpgradeableRenameable adds internal methods '_setName' and
+ * '_setSymbol' to allow changing the name and symbol.
  */
 contract ERC20UpgradeableRenameable is
   Initializable,
@@ -39,21 +42,21 @@ contract ERC20UpgradeableRenameable is
   IERC20Upgradeable,
   IERC20MetadataUpgradeable
 {
+  event NameChange(string name);
+  event SymbolChange(string symbol);
+
   mapping(address => uint256) private _balances;
 
   mapping(address => mapping(address => uint256)) private _allowances;
   uint256 private _totalSupply;
-  string internal _name;
-  string internal _symbol;
+  string private _name;
+  string private _symbol;
 
   /**
    * @dev Sets the values for {name} and {symbol}.
    *
    * The default value of {decimals} is 18. To select a different value for
    * {decimals} you should overload it.
-   *
-   * All two of these values are immutable: they can only be set once during
-   * construction.
    */
   function __ERC20_init(string memory name_, string memory symbol_) internal initializer {
     __Context_init_unchained();
@@ -357,6 +360,16 @@ contract ERC20UpgradeableRenameable is
     address to,
     uint256 amount
   ) internal virtual {}
+
+  function _setName(string memory _newName) internal virtual {
+    _name = _newName;
+    emit NameChange(_newName);
+  }
+
+  function _setSymbol(string memory _newSymbol) internal virtual {
+    _symbol = _newSymbol;
+    emit SymbolChange(_newSymbol);
+  }
 
   uint256[45] private __gap;
 }

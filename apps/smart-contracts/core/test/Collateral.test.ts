@@ -30,8 +30,8 @@ import {
   getWithdrawHookChangedEvent,
   getDepositsAllowedChangedEvent,
   getWithdrawalsAllowedChangedEvent,
-  getNameChangedEvent,
-  getSymbolChangedEvent,
+  getNameChangeEvent,
+  getSymbolChangeEvent,
 } from './events'
 import { smockDepositHookFixture, smockWithdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
@@ -983,11 +983,11 @@ describe('=> Collateral', () => {
       expect(await collateral.name()).to.eq(nonEmptyString)
     })
 
-    it('emits a NameChanged event', async () => {
+    it('emits a NameChange event', async () => {
       await collateral.connect(deployer).setName(nonEmptyString)
 
-      const nameChangedEvent = await getNameChangedEvent(collateral)
-      expect(nameChangedEvent.name).to.eq(nonEmptyString)
+      const nameChangeEvent = await getNameChangeEvent(collateral)
+      expect(nameChangeEvent.name).to.eq(nonEmptyString)
     })
   })
 
@@ -1034,8 +1034,8 @@ describe('=> Collateral', () => {
     it('emits a SymbolChanged event', async () => {
       await collateral.connect(deployer).setSymbol(nonEmptyString)
 
-      const symbolChangedEvent = await getSymbolChangedEvent(collateral)
-      expect(symbolChangedEvent.symbol).to.eq(nonEmptyString)
+      const symbolChangeEvent = await getSymbolChangeEvent(collateral)
+      expect(symbolChangeEvent.symbol).to.eq(nonEmptyString)
     })
   })
 
