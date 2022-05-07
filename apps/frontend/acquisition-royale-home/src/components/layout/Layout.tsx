@@ -14,6 +14,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100vh;
   &&& {
+    .ant-layout {
+      background: none;
+    }
     .ant-layout-content {
       ${contentCss}
     }
@@ -26,9 +29,18 @@ const Wrapper = styled.div`
   }
 `
 
-export const InnerWrapper = styled.div`
+const Background = styled.div`
   background: ${({ theme }): string =>
     `linear-gradient(180deg, ${theme.color.backgroundGradientStart} 0%, ${theme.color.backgroundGradientEnd} 100%)`};
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: -1;
+`
+
+export const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -48,6 +60,7 @@ const Layout: React.FC = ({ children }) => {
       <ALayout>
         <Header />
         <InnerWrapper>
+          <Background />
           <MainContent>{children}</MainContent>
         </InnerWrapper>
         <Footer />
