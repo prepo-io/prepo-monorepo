@@ -40,7 +40,7 @@ describe('=> MockStrategy', () => {
     ;[deployer, user, controller, governance] = await ethers.getSigners()
     collateralToken = await mockERC20Fixture('prePO Collateral Token', 'preCT')
     await collateralToken.mint(deployer.address, MOCK_COLLATERAL_SUPPLY)
-    baseToken = await mockBaseTokenFixture()
+    baseToken = await mockBaseTokenFixture('Fake USD', 'FAKEUSD')
     await baseToken.connect(deployer).ownerMint(MOCK_BASE_TOKEN_SUPPLY)
     mockStrategy = await mockStrategyFixture(controller.address, baseToken.address)
     await baseToken.setMockStrategy(mockStrategy.address)

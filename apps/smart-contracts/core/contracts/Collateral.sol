@@ -4,7 +4,7 @@ pragma solidity =0.8.7;
 import './interfaces/ICollateral.sol';
 import './interfaces/IStrategyController.sol';
 import './interfaces/IHook.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
+import './openzeppelin/ERC20UpgradeableRenameable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
@@ -12,7 +12,7 @@ import '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 
 contract Collateral is
   ICollateral,
-  ERC20Upgradeable,
+  ERC20UpgradeableRenameable,
   OwnableUpgradeable,
   ReentrancyGuardUpgradeable
 {
@@ -150,6 +150,14 @@ contract Collateral is
     }
     _baseToken.safeTransfer(msg.sender, _amountWithdrawn);
     return _amountWithdrawn;
+  }
+
+  function setName(string memory _newName) external onlyOwner {
+    _setName(_newName);
+  }
+
+  function setSymbol(string memory _newSymbol) external onlyOwner {
+    _setSymbol(_newSymbol);
   }
 
   function setDepositsAllowed(bool _allowed) external override onlyOwner {

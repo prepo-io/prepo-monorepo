@@ -22,6 +22,14 @@ interface ICollateral is IERC20Upgradeable {
     uint256 blockNumber;
   }
 
+  /// @dev Emitted via `setName()`.
+  /// @param name Token name
+  event NameChanged(string name);
+
+  /// @dev Emitted via `setSymbol()`.
+  /// @param symbol Token symbol
+  event SymbolChanged(string symbol);
+
   /// @dev Emitted via `setDepositsAllowed()`.
   /// @param allowed Whether deposits are allowed
   event DepositsAllowedChanged(bool allowed);

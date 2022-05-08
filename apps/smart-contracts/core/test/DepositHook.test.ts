@@ -6,7 +6,6 @@ import { parseEther } from 'ethers/lib/utils'
 import { Contract } from 'ethers'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { depositHookFixture } from './fixtures/HookFixture'
-import { smockAccountAccessControllerFixture } from './fixtures/AccountAccessControllerFixture'
 import { smockCollateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
 import { AddressZero, revertReason } from './utils'
 import { getDepositHookVaultChangedEvent } from './events'
@@ -21,7 +20,6 @@ describe('=> DepositHook', () => {
   let user: SignerWithAddress
   let vault: SignerWithAddress
   let mockCollateralDepositRecord: MockContract<Contract>
-  let mockAccountAccessController: MockContract<Contract>
   const TEST_GLOBAL_DEPOSIT_CAP = parseEther('50000')
   const TEST_ACCOUNT_DEPOSIT_CAP = parseEther('50')
   const TEST_AMOUNT_ONE = parseEther('1')
@@ -29,24 +27,17 @@ describe('=> DepositHook', () => {
 
   beforeEach(async () => {
     ;[deployer, user, vault] = await ethers.getSigners()
-    mockAccountAccessController = await smockAccountAccessControllerFixture()
     mockCollateralDepositRecord = await smockCollateralDepositRecordFixture(
       TEST_GLOBAL_DEPOSIT_CAP,
       TEST_ACCOUNT_DEPOSIT_CAP
     )
-    depositHook = await depositHookFixture(
-      mockAccountAccessController.address,
-      mockCollateralDepositRecord.address
-    )
+    depositHook = await depositHookFixture(mockCollateralDepositRecord.address)
     await mockCollateralDepositRecord.connect(deployer).setAllowedHook(depositHook.address, true)
   })
 
   describe('# initialize', () => {
     it('should be initialized with correct values', async () => {
       expect(await depositHook.getVault()).to.eq(AddressZero)
-      expect(await depositHook.getAccountAccessController()).to.eq(
-        mockAccountAccessController.address
-      )
       expect(await depositHook.getDepositRecord()).to.eq(mockCollateralDepositRecord.address)
     })
   })
@@ -64,57 +55,12 @@ describe('=> DepositHook', () => {
       ).to.revertedWith(revertReason('Caller is not the vault'))
     })
 
-    it('should revert when an account is not allowed, but blocked', async () => {
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(false)
-      mockAccountAccessController.isAccountBlocked.whenCalledWith(user.address).returns(true)
-
-      await expect(
-        depositHook.connect(vault).hook(user.address, TEST_AMOUNT_ONE, TEST_AMOUNT_TWO)
-      ).to.be.revertedWith(revertReason('Account not allowed to deposit'))
-    })
-
-    it('should revert when an account is allowed and blocked', async () => {
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(true)
-      mockAccountAccessController.isAccountBlocked.whenCalledWith(user.address).returns(true)
-
-      await expect(
-        depositHook.connect(vault).hook(user.address, TEST_AMOUNT_ONE, TEST_AMOUNT_TWO)
-      ).to.be.revertedWith(revertReason('Account not allowed to deposit'))
-    })
-
-    it('should revert when an account is not allowed and not blocked', async () => {
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(false)
-      mockAccountAccessController.isAccountBlocked.whenCalledWith(user.address).returns(false)
-
-      await expect(
-        depositHook.connect(vault).hook(user.address, TEST_AMOUNT_ONE, TEST_AMOUNT_TWO)
-      ).to.be.revertedWith(revertReason('Account not allowed to deposit'))
-    })
-
-    it('should not revert when an account is allowed and not blocked', async () => {
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(true)
-      mockAccountAccessController.isAccountBlocked.whenCalledWith(user.address).returns(false)
-
-      await expect(
-        depositHook.connect(vault).hook(user.address, TEST_AMOUNT_ONE, TEST_AMOUNT_TWO)
-      ).not.revertedWith(revertReason('Account not allowed to deposit'))
-    })
-
     it('should call recordDeposit with the correct parameters', async () => {
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(true)
-      mockAccountAccessController.isAccountBlocked.whenCalledWith(user.address).returns(false)
-
       await depositHook.connect(vault).hook(user.address, TEST_AMOUNT_ONE, TEST_AMOUNT_TWO)
 
       expect(mockCollateralDepositRecord.recordDeposit).to.be.calledWith(
         user.address,
         TEST_AMOUNT_TWO
-      )
-      expect(mockCollateralDepositRecord.recordDeposit).to.have.been.calledAfter(
-        mockAccountAccessController.isAccountAllowed
-      )
-      expect(mockCollateralDepositRecord.recordDeposit).to.have.been.calledAfter(
-        mockAccountAccessController.isAccountBlocked
       )
     })
   })
@@ -160,6 +106,47 @@ describe('=> DepositHook', () => {
 
       const event = await getDepositHookVaultChangedEvent(depositHook)
       expect(event.vault).to.eq(vault.address)
+    })
+  })
+
+  describe('# setDepositRecord', () => {
+    it('reverts if not owner', async () => {
+      expect(await depositHook.owner()).to.not.eq(user.address)
+
+      await expect(
+        depositHook.connect(user).setDepositRecord(mockCollateralDepositRecord.address)
+      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+    })
+
+    it('sets to non-zero address', async () => {
+      await depositHook.connect(deployer).setDepositRecord(AddressZero)
+      expect(mockCollateralDepositRecord.address).to.not.eq(AddressZero)
+      expect(await depositHook.getDepositRecord()).to.not.eq(mockCollateralDepositRecord.address)
+
+      await depositHook.connect(deployer).setDepositRecord(mockCollateralDepositRecord.address)
+
+      expect(await depositHook.getDepositRecord()).to.eq(mockCollateralDepositRecord.address)
+    })
+
+    it('sets to zero address', async () => {
+      expect(await depositHook.getDepositRecord()).to.not.eq(AddressZero)
+
+      await depositHook.connect(deployer).setDepositRecord(AddressZero)
+
+      expect(await depositHook.getDepositRecord()).to.eq(AddressZero)
+    })
+
+    it('is idempotent', async () => {
+      await depositHook.connect(deployer).setDepositRecord(AddressZero)
+      expect(await depositHook.getDepositRecord()).to.not.eq(mockCollateralDepositRecord.address)
+
+      await depositHook.connect(deployer).setDepositRecord(mockCollateralDepositRecord.address)
+
+      expect(await depositHook.getDepositRecord()).to.eq(mockCollateralDepositRecord.address)
+
+      await depositHook.connect(deployer).setDepositRecord(mockCollateralDepositRecord.address)
+
+      expect(await depositHook.getDepositRecord()).to.eq(mockCollateralDepositRecord.address)
     })
   })
 })

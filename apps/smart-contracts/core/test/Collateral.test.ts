@@ -30,10 +30,11 @@ import {
   getWithdrawHookChangedEvent,
   getDepositsAllowedChangedEvent,
   getWithdrawalsAllowedChangedEvent,
+  getNameChangeEvent,
+  getSymbolChangeEvent,
 } from './events'
 import { smockDepositHookFixture, smockWithdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { smockAccountAccessControllerFixture } from './fixtures/AccountAccessControllerFixture'
 import {
   MockERC20,
   TestCollateral,
@@ -56,7 +57,6 @@ describe('=> Collateral', () => {
   let treasury: SignerWithAddress
   let governance: SignerWithAddress
   let depositRecord: CollateralDepositRecord
-  let mockAccountAccessController: MockContract<Contract>
   let mockDepositHook: MockContract<Contract>
   let mockWithdrawHook: MockContract<Contract>
   let setupControllerAndStrategy: () => Promise<void>
@@ -94,21 +94,11 @@ describe('=> Collateral', () => {
       await collateral.setMintingFee(TEST_MINTING_FEE)
       await collateral.setRedemptionFee(TEST_REDEMPTION_FEE)
       // Setup hook for Collateral deposits
-      mockAccountAccessController = await smockAccountAccessControllerFixture()
-      await mockAccountAccessController.allowAccounts([
-        deployer.address,
-        user.address,
-        treasury.address,
-        governance.address,
-      ])
       depositRecord = await collateralDepositRecordFixture(
         TEST_GLOBAL_DEPOSIT_CAP,
         TEST_ACCOUNT_DEPOSIT_CAP
       )
-      mockDepositHook = await smockDepositHookFixture(
-        mockAccountAccessController.address,
-        depositRecord.address
-      )
+      mockDepositHook = await smockDepositHookFixture(depositRecord.address)
       mockWithdrawHook = await smockWithdrawHookFixture(depositRecord.address)
       await mockDepositHook.setVault(collateral.address)
       await mockWithdrawHook.setVault(collateral.address)
@@ -309,16 +299,6 @@ describe('=> Collateral', () => {
       await collateral.connect(user).deposit(TEST_ACCOUNT_DEPOSIT_CAP.div(2))
 
       expect(mockDepositHook.hook).to.not.have.been.called
-    })
-
-    it('should revert if the configured depositHook reverts', async () => {
-      expect(await collateral.getDepositHook()).to.not.eq(AddressZero)
-      await transferAndApproveForDeposit(user, collateral.address, TEST_ACCOUNT_DEPOSIT_CAP.div(2))
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(false)
-
-      await expect(
-        collateral.connect(user).deposit(TEST_ACCOUNT_DEPOSIT_CAP.div(2))
-      ).to.be.revertedWith(revertReason('Account not allowed to deposit'))
     })
 
     it('should correctly process a deposit with a non-zero initial supply', async () => {
@@ -938,6 +918,106 @@ describe('=> Collateral', () => {
       expect(await collateral.connect(user).callStatic.withdraw(sharesToRedeem)).to.eq(
         amountReceived
       )
+    })
+  })
+
+  describe('# setName', () => {
+    const nonEmptyString = 'Not Empty'
+
+    it('reverts if not owner', async () => {
+      expect(await collateral.owner()).to.not.eq(user.address)
+
+      await expect(collateral.connect(user).setName(nonEmptyString)).to.be.revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to non-empty string', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setName(nonEmptyString)
+
+      expect(await collateral.name()).to.eq(nonEmptyString)
+    })
+
+    it('sets to a blank string', async () => {
+      expect(await collateral.name()).to.not.eq('')
+
+      await collateral.connect(deployer).setName('')
+
+      expect(await collateral.name()).to.eq('')
+    })
+
+    it('is idempotent', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.name()).to.not.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setName(nonEmptyString)
+
+      expect(await collateral.name()).to.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setName(nonEmptyString)
+
+      expect(await collateral.name()).to.eq(nonEmptyString)
+    })
+
+    it('emits a NameChange event', async () => {
+      await collateral.connect(deployer).setName(nonEmptyString)
+
+      const nameChangeEvent = await getNameChangeEvent(collateral)
+
+      expect(nameChangeEvent.name).to.eq(nonEmptyString)
+    })
+  })
+
+  describe('# setSymbol', () => {
+    const nonEmptyString = 'Not Empty'
+
+    it('reverts if not owner', async () => {
+      expect(await collateral.owner()).to.not.eq(user.address)
+
+      await expect(collateral.connect(user).setSymbol(nonEmptyString)).to.be.revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to non-empty string', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
+
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
+    })
+
+    it('sets to a blank string', async () => {
+      expect(await collateral.symbol()).to.not.eq('')
+
+      await collateral.connect(deployer).setSymbol('')
+
+      expect(await collateral.symbol()).to.eq('')
+    })
+
+    it('is idempotent', async () => {
+      expect(nonEmptyString).to.not.eq('')
+      expect(await collateral.symbol()).to.not.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
+
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
+
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
+
+      expect(await collateral.symbol()).to.eq(nonEmptyString)
+    })
+
+    it('emits a SymbolChanged event', async () => {
+      await collateral.connect(deployer).setSymbol(nonEmptyString)
+
+      const symbolChangeEvent = await getSymbolChangeEvent(collateral)
+
+      expect(symbolChangeEvent.symbol).to.eq(nonEmptyString)
     })
   })
 
