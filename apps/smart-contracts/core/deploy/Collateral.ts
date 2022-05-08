@@ -2,8 +2,8 @@
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { ContractAddressOrInstance } from '@openzeppelin/hardhat-upgrades/dist/utils'
-import { assertIsTestnetChain, recordDeployment } from './utils'
-import { sendTxAndWait } from './helpers'
+import { assertIsTestnetChain, recordDeployment } from '../utils'
+import { sendTxAndWait } from '../helpers'
 import { Collateral, ERC20 } from '../typechain'
 
 const deployFunction: DeployFunction = async function ({
