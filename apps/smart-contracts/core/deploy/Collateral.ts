@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { ContractAddressOrInstance } from '@openzeppelin/hardhat-upgrades/dist/utils'
