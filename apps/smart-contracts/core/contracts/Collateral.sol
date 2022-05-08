@@ -4,7 +4,7 @@ pragma solidity =0.8.7;
 import './interfaces/ICollateral.sol';
 import './interfaces/IStrategyController.sol';
 import './interfaces/IHook.sol';
-import './ERC20UpgradeableRenameable.sol';
+import './openzeppelin/ERC20UpgradeableRenameable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';

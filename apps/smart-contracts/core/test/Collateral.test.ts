@@ -923,6 +923,7 @@ describe('=> Collateral', () => {
 
   describe('# setName', () => {
     const nonEmptyString = 'Not Empty'
+
     it('reverts if not owner', async () => {
       expect(await collateral.owner()).to.not.eq(user.address)
 
@@ -931,7 +932,7 @@ describe('=> Collateral', () => {
       )
     })
 
-    it('sets to a non-empty string', async () => {
+    it('sets to non-empty string', async () => {
       expect(nonEmptyString).to.not.eq('')
       expect(await collateral.name()).to.not.eq(nonEmptyString)
 
@@ -965,12 +966,14 @@ describe('=> Collateral', () => {
       await collateral.connect(deployer).setName(nonEmptyString)
 
       const nameChangeEvent = await getNameChangeEvent(collateral)
+
       expect(nameChangeEvent.name).to.eq(nonEmptyString)
     })
   })
 
   describe('# setSymbol', () => {
     const nonEmptyString = 'Not Empty'
+
     it('reverts if not owner', async () => {
       expect(await collateral.owner()).to.not.eq(user.address)
 
@@ -979,7 +982,7 @@ describe('=> Collateral', () => {
       )
     })
 
-    it('sets to a non-empty string', async () => {
+    it('sets to non-empty string', async () => {
       expect(nonEmptyString).to.not.eq('')
       expect(await collateral.symbol()).to.not.eq(nonEmptyString)
 
@@ -1013,6 +1016,7 @@ describe('=> Collateral', () => {
       await collateral.connect(deployer).setSymbol(nonEmptyString)
 
       const symbolChangeEvent = await getSymbolChangeEvent(collateral)
+
       expect(symbolChangeEvent.symbol).to.eq(nonEmptyString)
     })
   })
