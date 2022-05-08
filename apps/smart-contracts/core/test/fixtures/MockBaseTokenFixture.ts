@@ -5,7 +5,7 @@ import { MockBaseToken } from '../../typechain/MockBaseToken'
 
 chai.use(solidity)
 
-export async function mockBaseTokenFixture(): Promise<MockBaseToken> {
+export async function mockBaseTokenFixture(name: string, symbol: string): Promise<MockBaseToken> {
   const mockBaseToken = await ethers.getContractFactory('MockBaseToken')
-  return (await mockBaseToken.deploy()) as MockBaseToken
+  return (await mockBaseToken.deploy(name, symbol)) as MockBaseToken
 }

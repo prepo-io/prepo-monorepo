@@ -35,7 +35,6 @@ import {
 } from './events'
 import { smockDepositHookFixture, smockWithdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { smockAccountAccessControllerFixture } from './fixtures/AccountAccessControllerFixture'
 import {
   MockERC20,
   TestCollateral,
@@ -58,7 +57,6 @@ describe('=> Collateral', () => {
   let treasury: SignerWithAddress
   let governance: SignerWithAddress
   let depositRecord: CollateralDepositRecord
-  let mockAccountAccessController: MockContract<Contract>
   let mockDepositHook: MockContract<Contract>
   let mockWithdrawHook: MockContract<Contract>
   let setupControllerAndStrategy: () => Promise<void>
@@ -96,21 +94,11 @@ describe('=> Collateral', () => {
       await collateral.setMintingFee(TEST_MINTING_FEE)
       await collateral.setRedemptionFee(TEST_REDEMPTION_FEE)
       // Setup hook for Collateral deposits
-      mockAccountAccessController = await smockAccountAccessControllerFixture()
-      await mockAccountAccessController.allowAccounts([
-        deployer.address,
-        user.address,
-        treasury.address,
-        governance.address,
-      ])
       depositRecord = await collateralDepositRecordFixture(
         TEST_GLOBAL_DEPOSIT_CAP,
         TEST_ACCOUNT_DEPOSIT_CAP
       )
-      mockDepositHook = await smockDepositHookFixture(
-        mockAccountAccessController.address,
-        depositRecord.address
-      )
+      mockDepositHook = await smockDepositHookFixture(depositRecord.address)
       mockWithdrawHook = await smockWithdrawHookFixture(depositRecord.address)
       await mockDepositHook.setVault(collateral.address)
       await mockWithdrawHook.setVault(collateral.address)
@@ -311,16 +299,6 @@ describe('=> Collateral', () => {
       await collateral.connect(user).deposit(TEST_ACCOUNT_DEPOSIT_CAP.div(2))
 
       expect(mockDepositHook.hook).to.not.have.been.called
-    })
-
-    it('should revert if the configured depositHook reverts', async () => {
-      expect(await collateral.getDepositHook()).to.not.eq(AddressZero)
-      await transferAndApproveForDeposit(user, collateral.address, TEST_ACCOUNT_DEPOSIT_CAP.div(2))
-      mockAccountAccessController.isAccountAllowed.whenCalledWith(user.address).returns(false)
-
-      await expect(
-        collateral.connect(user).deposit(TEST_ACCOUNT_DEPOSIT_CAP.div(2))
-      ).to.be.revertedWith(revertReason('Account not allowed to deposit'))
     })
 
     it('should correctly process a deposit with a non-zero initial supply', async () => {

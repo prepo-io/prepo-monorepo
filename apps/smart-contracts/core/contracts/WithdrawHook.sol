@@ -31,6 +31,10 @@ contract WithdrawHook is IHook, Ownable {
     emit VaultChanged(_newVault);
   }
 
+  function setDepositRecord(address _newDepositRecord) external onlyOwner {
+    _depositRecord = ICollateralDepositRecord(_newDepositRecord);
+  }
+
   function getVault() external view returns (address) {
     return _vault;
   }

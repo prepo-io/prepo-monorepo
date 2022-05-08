@@ -113,4 +113,45 @@ describe('=> WithdrawHook', () => {
       expect(event.vault).to.eq(vault.address)
     })
   })
+
+  describe('# setDepositRecord', () => {
+    it('reverts if not owner', async () => {
+      expect(await withdrawHook.owner()).to.not.eq(user.address)
+
+      await expect(withdrawHook.connect(user).setDepositRecord(depositRecord.address)).revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to non-zero address', async () => {
+      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
+      expect(depositRecord.address).to.not.eq(AddressZero)
+      expect(await withdrawHook.getDepositRecord()).to.not.eq(depositRecord.address)
+
+      await withdrawHook.connect(deployer).setDepositRecord(depositRecord.address)
+
+      expect(await withdrawHook.getDepositRecord()).to.eq(depositRecord.address)
+    })
+
+    it('sets to zero address', async () => {
+      expect(await withdrawHook.getDepositRecord()).to.not.eq(AddressZero)
+
+      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
+
+      expect(await withdrawHook.getDepositRecord()).to.eq(AddressZero)
+    })
+
+    it('is idempotent', async () => {
+      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
+      expect(await withdrawHook.getDepositRecord()).to.not.eq(depositRecord.address)
+
+      await withdrawHook.connect(deployer).setDepositRecord(depositRecord.address)
+
+      expect(await withdrawHook.getDepositRecord()).to.eq(depositRecord.address)
+
+      await withdrawHook.connect(deployer).setDepositRecord(depositRecord.address)
+
+      expect(await withdrawHook.getDepositRecord()).to.eq(depositRecord.address)
+    })
+  })
 })

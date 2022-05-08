@@ -19,9 +19,6 @@ const deployFunction: DeployFunction = async function ({
    */
   assertIsTestnetChain(currentChain)
   // Retrieve existing non-upgradeable deployments using hardhat-deploy
-  const accountAccessController = (await ethers.getContract(
-    'AccountAccessController'
-  )) as AccountAccessController
   const collateralDepositRecord = (await ethers.getContract(
     'CollateralDepositRecord'
   )) as CollateralDepositRecord
@@ -32,7 +29,7 @@ const deployFunction: DeployFunction = async function ({
       from: deployer,
       contract: 'DepositHook',
       deterministicDeployment: false,
-      args: [accountAccessController.address, collateralDepositRecord.address],
+      args: [collateralDepositRecord.address],
       skipIfAlreadyDeployed: true,
     }
   )
@@ -55,6 +52,6 @@ const deployFunction: DeployFunction = async function ({
 
 export default deployFunction
 
-deployFunction.dependencies = ['AccountAccessController', 'CollateralDepositRecord']
+deployFunction.dependencies = ['CollateralDepositRecord']
 
 deployFunction.tags = ['DepositHook']

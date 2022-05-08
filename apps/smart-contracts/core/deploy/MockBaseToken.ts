@@ -21,7 +21,7 @@ const deployFunction: DeployFunction = async function ({
     from: deployer,
     contract: 'MockBaseToken',
     deterministicDeployment: false,
-    args: [],
+    args: ['Fake USD', 'FAKEUSD'],
     skipIfAlreadyDeployed: true,
   })
   if (newlyDeployed) {

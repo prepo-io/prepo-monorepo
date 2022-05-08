@@ -8,11 +8,9 @@ pragma solidity =0.8.7;
 
 contract DepositHook is IHook, Ownable {
   address private _vault;
-  IAccountAccessController private _accountAccessController;
   ICollateralDepositRecord private _depositRecord;
 
-  constructor(address _newAccessController, address _newDepositRecord) {
-    _accountAccessController = IAccountAccessController(_newAccessController);
+  constructor(address _newDepositRecord) {
     _depositRecord = ICollateralDepositRecord(_newDepositRecord);
   }
 
@@ -26,11 +24,6 @@ contract DepositHook is IHook, Ownable {
     uint256 _initialAmount,
     uint256 _finalAmount
   ) external override onlyVault {
-    require(
-      _accountAccessController.isAccountAllowed(_sender) &&
-        !_accountAccessController.isAccountBlocked(_sender),
-      'Account not allowed to deposit'
-    );
     _depositRecord.recordDeposit(_sender, _finalAmount);
   }
 
@@ -39,12 +32,12 @@ contract DepositHook is IHook, Ownable {
     emit VaultChanged(_newVault);
   }
 
-  function getVault() external view returns (address) {
-    return _vault;
+  function setDepositRecord(address _newDepositRecord) external onlyOwner {
+    _depositRecord = ICollateralDepositRecord(_newDepositRecord);
   }
 
-  function getAccountAccessController() external view returns (IAccountAccessController) {
-    return _accountAccessController;
+  function getVault() external view returns (address) {
+    return _vault;
   }
 
   function getDepositRecord() external view returns (ICollateralDepositRecord) {
