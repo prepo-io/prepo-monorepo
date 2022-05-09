@@ -9,7 +9,7 @@
         "size": "npx hardhat size-contracts",
         "prec": "yarn clean && yarn sl",
         "c": "npx hardhat compile",
-        "l": "yarn prettier --write './deploy/*.ts' './test/**/*.ts' './hardhat.config.ts' './harnesses/*.ts' './helpers/*.ts' './utils/*.ts'",
+        "l": "yarn prettier --write './deploy/*.ts' './test/**/*.ts' './hardhat.config.ts' './harnesses/*.ts' './helpers/*.ts' './utils/*.ts' './tasks/*.ts'",
         "pret": "yarn c && yarn l",
         "t": "npx hardhat test",
         "test": "npx hardhat compile && npx hardhat test",
