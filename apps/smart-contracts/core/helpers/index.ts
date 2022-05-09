@@ -1,23 +1,44 @@
 import { HardhatEthersHelpers } from '@nomiclabs/hardhat-ethers/types'
-import { ContractTransaction } from 'ethers'
+import { Contract, ContractFactory, ContractTransaction } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
-import { Collateral } from '../typechain'
+import { PrePOMarketFactory, Collateral } from '../typechain'
+
+/**
+ * Check if deployment for the specified network exists. Need to do this
+ * for PrePOMarketFactory and Collateral contracts since they are
+ * upgradeable and deployed via OpenZeppelin's hardhat-upgrades rather
+ * than hardhat-deploy.
+ */
+async function fetchExistingDeploymentFromEnvironment(
+  envVarName: string,
+  contractFactory: ContractFactory
+): Promise<Contract> {
+  const valueFromEnvVar = process.env[envVarName]
+  if (!valueFromEnvVar) {
+    throw new Error(`environment variable ${envVarName} does not exist`)
+  }
+  const existingAddress = getAddress(valueFromEnvVar as string)
+  return (await contractFactory.attach(existingAddress)) as Contract
+}
 
 export async function fetchExistingCollateral(
   chainId: string,
   ethers: HardhatEthersHelpers
 ): Promise<Collateral> {
-  const collateralFactory = await ethers.getContractFactory('Collateral')
-  /**
-   * Check if Collateral contract for the specified network exists, need to do this because
-   * Collateral contract is deployed using OZ's upgrade library, not hardhat-deploy.
-   */
-  const existingCollateralAddress = process.env[`COLLATERAL_${chainId}`]
-  if (!existingCollateralAddress) {
-    throw new Error('Collateral contract for the network is not configured')
-  }
-  const collateralAddress = getAddress(existingCollateralAddress as string)
-  return (await collateralFactory.attach(collateralAddress)) as Collateral
+  return (await fetchExistingDeploymentFromEnvironment(
+    `COLLATERAL_${chainId}`,
+    await ethers.getContractFactory('Collateral')
+  )) as Collateral
+}
+
+export async function fetchExistingPrePOMarketFactory(
+  chainId: string,
+  ethers: HardhatEthersHelpers
+): Promise<PrePOMarketFactory> {
+  return (await fetchExistingDeploymentFromEnvironment(
+    `PREPO_MARKET_FACTORY_${chainId}`,
+    await ethers.getContractFactory('PrePOMarketFactory')
+  )) as PrePOMarketFactory
 }
 
 export async function sendTxAndWait(transaction: ContractTransaction): Promise<void> {
