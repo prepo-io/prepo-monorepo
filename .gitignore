@@ -88,4 +88,4 @@ artifacts*
 cache*
 cache
 deployments/localhost
-.openzeppelin/unknown-31337.json
+**/unknown-31337.json
