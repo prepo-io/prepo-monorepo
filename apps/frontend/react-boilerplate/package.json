@@ -4,7 +4,7 @@
   "scripts": {
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",
     "generate": "yarn generate-types && yarn mst-gql:generate",
-    "postinstall": "yarn generate-types && yarn mst-gql:generate && i18n:compile",
+    "postinstall": "yarn generate-types && yarn mst-gql:generate && yarn i18n:compile",
     "extract": "NODE_ENV=development lingui extract",
     "compile": "lingui compile",
     "dev": "npx next",
