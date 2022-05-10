@@ -1,5 +1,6 @@
 import { Button } from 'antd'
 import { observer } from 'mobx-react-lite'
+import { Trans } from '@lingui/macro'
 import styled from 'styled-components'
 import { formatNumber } from 'prepo-utils'
 import Identicon from './Identicon'
@@ -53,7 +54,7 @@ const ConnectButton: React.FC = () => {
       )}
       <Flex>
         <Button onClick={onClick} size="large">
-          {(account && formatNumber(account, { compact: true })) ?? 'Connect Wallet'}
+          {(account && formatNumber(account, { compact: true })) ?? <Trans>Connect Wallet</Trans>}
           <AccountIcon />
         </Button>
       </Flex>
