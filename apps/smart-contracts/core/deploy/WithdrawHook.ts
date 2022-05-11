@@ -1,6 +1,7 @@
+// eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { assertIsTestnetChain } from './utils'
+import { assertIsTestnetChain } from '../utils'
 import { CollateralDepositRecord } from '../typechain'
 
 const deployFunction: DeployFunction = async function ({

@@ -1,6 +1,21 @@
 import { parse, stringify } from 'envfile'
-import { Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { readFileSync, writeFileSync } from 'fs'
+
+export const ZERO = BigNumber.from(0)
+export const ONE = BigNumber.from(1)
+export const TWO = BigNumber.from(2)
+export const E18 = BigNumber.from(10).pow(18)
+export const MAX_FEE = BigNumber.from(10000)
+export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
+export const FEE_DENOMINATOR = BigNumber.from(1000000)
+
+export function nowPlusMonths(n: number): number {
+  const d = new Date()
+  d.setMonth(d.getMonth() + n)
+  d.setHours(0, 0, 0, 0)
+  return d.getTime() / 1000
+}
 
 export function recordDeployment(envVarName: string, contract: Contract): void {
   const sourcePath = '.env'
