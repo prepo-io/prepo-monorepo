@@ -1,7 +1,8 @@
+// eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { fetchExistingCollateral, sendTxAndWait } from './helpers'
-import { assertIsTestnetChain } from './utils'
+import { fetchExistingCollateral, sendTxAndWait } from '../helpers'
+import { assertIsTestnetChain } from '../utils'
 
 const deployFunction: DeployFunction = async function ({
   deployments,
@@ -37,11 +38,6 @@ const deployFunction: DeployFunction = async function ({
   } else {
     console.log('Existing MockStrategy at', mockStrategyAddress)
   }
-  // MockStrategy needs ownership of BaseToken to mint virtual yields
-  if ((await baseToken.owner()) !== mockStrategyAddress) {
-    console.log('Transferring BaseToken ownership to MockStrategy...')
-    await sendTxAndWait(await baseToken.transferOwnership(mockStrategyAddress))
-  }
   // Migrate currently deployed SingleStrategyController to use this strategy
   if ((await singleStrategyController.getStrategy()) !== mockStrategyAddress) {
     console.log('Migrating StrategyController to the new Strategy...')
@@ -52,6 +48,11 @@ const deployFunction: DeployFunction = async function ({
   if ((await baseToken.getMockStrategy()) !== mockStrategyAddress) {
     console.log('Connecting MockBaseToken at', baseToken.address, 'to the MockStrategy...')
     await sendTxAndWait(await baseToken.setMockStrategy(mockStrategyAddress))
+  }
+  // Connect MockStrategy to the Collateral vault
+  if ((await mockStrategy.vault()) !== collateral.address) {
+    console.log('Connecting MockStrategy at', mockStrategy.address, 'to the Collateral vault...')
+    await sendTxAndWait(await mockStrategy.setVault(collateral.address))
   }
   console.log('')
 }

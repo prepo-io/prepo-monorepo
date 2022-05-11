@@ -1,7 +1,8 @@
+// eslint-disable no-console
 import { parseEther } from 'ethers/lib/utils'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { assertIsTestnetChain } from './utils'
+import { assertIsTestnetChain } from '../utils'
 
 const deployFunction: DeployFunction = async function ({
   deployments,
