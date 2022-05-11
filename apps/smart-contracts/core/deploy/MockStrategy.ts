@@ -1,8 +1,8 @@
 // eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { fetchExistingCollateral, sendTxAndWait } from './helpers'
-import { assertIsTestnetChain } from './utils'
+import { fetchExistingCollateral, sendTxAndWait } from '../helpers'
+import { assertIsTestnetChain } from '../utils'
 
 const deployFunction: DeployFunction = async function ({
   deployments,
