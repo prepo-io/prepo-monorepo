@@ -82,12 +82,22 @@ export class CompetitionStore {
 
   generateRandomId(): void {
     let randomId
-    const { auctionCount, freeCount, maxAuctioned } = this.root.acquisitionRoyaleContractStore
-    randomId = generateRandomInt(auctionCount + freeCount)
-    // if id is larger than auctionCount (0 - X), offset maxAuctioned
-    // e.g. auctionCount is 300, maxAuctioned is 1000, if randomId is 301, we should get 1001
-    // so 301 + 1000 - 300 = 1001
-    if (randomId >= auctionCount) randomId = randomId + maxAuctioned - auctionCount
+    const { auctionCount, freeCount, maxAuctioned, maxFree, reservedCount } =
+      this.root.acquisitionRoyaleContractStore
+
+    // range of 0 to totalSupply + total enterprises eliminated
+    randomId = generateRandomInt(auctionCount + freeCount + reservedCount - 1)
+
+    // in range of reserved enterprises
+    if (randomId >= auctionCount + freeCount) {
+      randomId = randomId + maxAuctioned + maxFree - auctionCount - freeCount
+
+      // in range of free enterprises
+    } else if (randomId >= auctionCount) {
+      randomId = randomId + maxAuctioned - auctionCount
+    }
+
+    // in range of auctioned enterprises if didn't go into the if checks
     this.randomId = randomId
   }
 
@@ -181,11 +191,14 @@ export class CompetitionStore {
   }
 
   get randomLoading(): boolean {
-    const { auctionCount, freeCount, maxAuctioned } = this.root.acquisitionRoyaleContractStore
+    const { auctionCount, freeCount, maxAuctioned, maxFree, reservedCount } =
+      this.root.acquisitionRoyaleContractStore
     return (
       auctionCount === undefined ||
       freeCount === undefined ||
       maxAuctioned === undefined ||
+      reservedCount === undefined ||
+      maxFree === undefined ||
       this.searchingRandom
     )
   }
