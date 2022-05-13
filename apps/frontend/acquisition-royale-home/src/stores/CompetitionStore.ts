@@ -38,6 +38,7 @@ export class CompetitionStore {
           } else {
             runInAction(() => {
               this.searchCompetitionQuery = `${this.randomId}`
+              this.localQuery = `${this.randomId}`
               this.randomId = undefined
               this.searchingRandom = false
             })
