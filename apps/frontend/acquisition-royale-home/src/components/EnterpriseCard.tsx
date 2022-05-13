@@ -1,4 +1,3 @@
-import { Card, CardProps } from 'antd'
 import styled from 'styled-components'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { formatPeriod } from '../utils/date-utils'
@@ -37,6 +36,7 @@ const OverlayWrapper = styled.div`
   ${centered}
   height: 100%;
   left: 0;
+  padding: ${spacingIncrement(20)};
   position: absolute;
   top: 0;
   width: 100%;
@@ -60,25 +60,9 @@ const TextWrapper = styled.div<{ active?: boolean }>`
 
 const Wrapper = styled.div<{ $burned?: boolean }>`
   ${({ $burned }): string => ($burned ? 'cursor: not-allowed;' : '')}
-  &&& {
-    .ant-card {
-      background-color: transparent;
-      margin: 0;
-      .ant-card-cover {
-        background-color: ${({ theme }): string => theme.color.primary};
-        border: 1px solid ${({ theme }): string => theme.color.accentPrimary};
-        cursor: pointer;
-      }
-      .ant-card-body {
-        padding: 0 ${spacingIncrement(5)};
-        padding-bottom: 0;
-      }
-    }
-  }
-`
-
-const StyledCard = styled(Card)<CardProps>`
+  height: 100%;
   position: relative;
+  width: inherit;
 `
 
 const StyledImage = styled.img`
@@ -100,8 +84,8 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
 
   return (
     <Wrapper $burned={burned}>
-      <StyledCard bordered={false} cover={<StyledImage alt={id.toString()} src={art.image} />}>
-        <TextWrapper active={active} />
+      <StyledImage width="100%" alt={id.toString()} src={art.image} />
+      <TextWrapper active={active}>
         {burned && (
           <OverlayWrapper>
             <Burnt>
@@ -113,7 +97,7 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
             <Overlay />
           </OverlayWrapper>
         )}
-      </StyledCard>
+      </TextWrapper>
       {immune && (
         <ImmunityLabel>
           Enterprise immune for <NoWrap>{formatPeriod(immuneUntil)}</NoWrap>
