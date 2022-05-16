@@ -33,7 +33,11 @@ export class CompetitionStore {
         if (!searchingRandom) return
         if (randomId === undefined) this.generateRandomId()
         if (randomEnterprise && randomEnterprise.burned !== undefined) {
-          if (randomEnterprise.burned) {
+          const { signerEnterprises } = this.root.signerStore
+          const isOwnEnterprise =
+            (signerEnterprises?.findIndex(({ id }) => id === randomEnterprise.id) ?? -1) >= 0
+
+          if (randomEnterprise.burned || randomEnterprise.immune || isOwnEnterprise) {
             this.generateRandomId()
           } else {
             runInAction(() => {
