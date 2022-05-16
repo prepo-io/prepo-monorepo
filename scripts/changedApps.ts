@@ -17,6 +17,10 @@ const FRONTEND_APPS: FrontendApp[] = [
     projectId: 'prj_So4gfuKdA7SYrdLpc20mSTLyCWAz',
   },
   {
+    name: 'acquisition-royale-home',
+    projectId: 'prj_NmTWdZatGYCtOoC6q8xZnUKkySNg',
+  },
+  {
     name: 'docs',
     projectId: 'prj_P9R3CtLzShfhpRDRTnvFqguGIvtB',
   },

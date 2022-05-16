@@ -25,7 +25,7 @@ const Revive: React.FC = () => {
       loading={acquisitionRoyaleContractStore.reviving}
       title="Revive"
     >
-      <Competition label="Search for Enterprises to Revive:" />
+      <Competition label="Search for Enterprises to Revive:" hideRandom />
     </ActionCard>
   )
 }

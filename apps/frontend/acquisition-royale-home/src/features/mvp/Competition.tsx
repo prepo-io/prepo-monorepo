@@ -7,6 +7,7 @@ import { spacingIncrement } from '../../utils/theme/utils'
 
 type Props = {
   label?: string
+  hideRandom?: boolean
 }
 const Wrapper = styled.div`
   margin-top: ${spacingIncrement(44)};
@@ -14,12 +15,18 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
-const Competition: React.FC<Props> = ({ label }) => {
+const Competition: React.FC<Props> = ({ label, hideRandom }) => {
   const { competitionStore } = useRootStore()
-  const { activeIndex, competitionEnterprises, searchCompetitionQuery, onSlidesChange } =
-    competitionStore
+  const {
+    activeIndex,
+    competitionLoading,
+    competitionEnterprises,
+    searchCompetitionQuery,
+    onSlidesChange,
+  } = competitionStore
 
   const overlay = (): OverlayProps | undefined => {
+    if (competitionLoading) return undefined
     // if searchCompetitionQuery is empty, user hasn't searched anything
     if (!searchCompetitionQuery) {
       return {
@@ -40,11 +47,11 @@ const Competition: React.FC<Props> = ({ label }) => {
 
   return (
     <Wrapper>
-      <SearchCompetition label={label} />
+      <SearchCompetition label={label} hideRandom={hideRandom} />
       <EnterpriseCarousel
         activeIndex={activeIndex}
         enterprises={competitionEnterprises}
-        loading={Boolean(searchCompetitionQuery) && competitionEnterprises === undefined}
+        loading={competitionLoading}
         onActiveSlidesChange={onSlidesChange}
         overlay={overlay()}
       />
