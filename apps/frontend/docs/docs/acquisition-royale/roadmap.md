@@ -8,7 +8,7 @@
 - Moats mechanic
 - Redeeming $RP directly for $MATIC (with a limit per day)
 - Internship-like minigame with hourly RP claims
-- Internship-like minigame with weekly RP claims, only for those w/ a renamed Enterprise w/ multiple Merges/Acquisitions
+- Internship-like minigame with weekly RP claims, only for those w/ a renamed Enterprise w/ multiple Mergers/Acquisitions
 - RP Tokenomics improvements
 - More collaborations
 - Community bounties
