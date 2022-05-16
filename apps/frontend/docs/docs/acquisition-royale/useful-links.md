@@ -12,7 +12,7 @@
 
 ### Trading Pools
 
-- RP-MATIC Uniswap V3 Pool: [https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x93dA8f92e89Dde30C27CD2Ef965bD9e91BcFb174](https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x93dA8f92e89Dde30C27CD2Ef965bD9e91BcFb174)
+- RP-MATIC Uniswap V3 Pool: [https://url.prepo.io/RP-MATIC](https://url.prepo.io/RP-MATIC)
   - Switch to Polygon network first (in Uniswap and in your wallet)
   - You may need to clear your cache on app.uniswap.org to see the Polygon network option
 - RP-MATIC Pool Analytics: [https://info.uniswap.org/#/polygon/pools/0x0c19525da8343cbd3251c67d3edc01f1c747f463](https://info.uniswap.org/#/polygon/pools/0x0c19525da8343cbd3251c67d3edc01f1c747f463)

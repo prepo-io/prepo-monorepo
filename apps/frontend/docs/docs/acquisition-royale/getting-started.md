@@ -10,10 +10,10 @@ You can follow our [step-by-step guide](https://medium.com/prepo/setting-up-met
 
 ### How to get an Enterprise NFT
 
-- Mint for 15 MATIC on [https://acquisitionroyale.com/](https://acquisitionroyale.com/)
+- Mint using MATIC on [https://acquisitionroyale.com/](https://acquisitionroyale.com/)
     - Note: these Enterprises will have 7 days of Immunity
 - Purchase using RP on [https://play.acquisitionroyale.com/](https://play.acquisitionroyale.com/)
     - Note: these Enterprises will not have Immunity
 - Purchase from another player on [OpenSea](https://opensea.io/collection/acquisition-royale)
     - Note: these Enterprises may not have Immunity
-- Win an Enterprise in a giveaway (see the #giveaways-directory channel in [our Discord](https://url.prepo.io/discord))
+- Win an Enterprise in a giveaway (see the #giveaways channel in [our Discord](https://url.prepo.io/discord), only visible after passing verification)
