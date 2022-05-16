@@ -6,10 +6,12 @@ import { RootStore } from './RootStore'
 import { Enterprise, Enterprises } from '../types/enterprise.types'
 import { generateRandomInt } from '../utils/number-utils'
 
+const MAX_IDS_PER_SEARCH = 100
 export class CompetitionStore {
   activeEnterpriseId?: number
   localQuery: string
   randomId?: number
+  randomIds?: number[]
   searchCompetitionQuery?: string
   slides: number
   searchingRandom: boolean
@@ -24,33 +26,42 @@ export class CompetitionStore {
 
   searchRandomEnterprise(): void {
     reaction(
-      () => ({
-        searchingRandom: this.searchingRandom,
-        randomId: this.randomId,
-        randomEnterprise: this.randomEnterprise,
-      }),
-      ({ searchingRandom, randomId, randomEnterprise }) => {
-        if (!searchingRandom) return
-        if (randomId === undefined) this.generateRandomId()
-        if (randomEnterprise && randomEnterprise.burned !== undefined) {
-          const { signerEnterprises } = this.root.signerStore
-          const isOwnEnterprise =
-            (signerEnterprises?.findIndex(({ id }) => id === randomEnterprise.id) ?? -1) >= 0
-
-          if (randomEnterprise.burned || randomEnterprise.immune || isOwnEnterprise) {
-            this.generateRandomId()
-          } else {
-            runInAction(() => {
-              this.searchCompetitionQuery = `${this.randomId}`
-              this.localQuery = `${this.randomId}`
-              this.randomId = undefined
-              this.searchingRandom = false
-            })
-          }
-        }
+      () => this.randomEnterprises,
+      (randomEnterprises) => {
+        console.log(randomEnterprises)
       }
     )
   }
+
+  // searchRandomEnterprise(): void {
+  //   reaction(
+  //     () => ({
+  //       searchingRandom: this.searchingRandom,
+  //       randomId: this.randomId,
+  //       randomEnterprise: this.randomEnterprise,
+  //     }),
+  //     ({ searchingRandom, randomId, randomEnterprise }) => {
+  //       if (!searchingRandom) return
+  //       if (randomId === undefined) this.generateRandomId()
+  //       if (randomEnterprise && randomEnterprise.burned !== undefined) {
+  //         const { signerEnterprises } = this.root.signerStore
+  //         const isOwnEnterprise =
+  //           (signerEnterprises?.findIndex(({ id }) => id === randomEnterprise.id) ?? -1) >= 0
+
+  //         if (randomEnterprise.burned || randomEnterprise.immune || isOwnEnterprise) {
+  //           this.generateRandomId()
+  //         } else {
+  //           runInAction(() => {
+  //             this.searchCompetitionQuery = `${this.randomId}`
+  //             this.localQuery = `${this.randomId}`
+  //             this.randomId = undefined
+  //             this.searchingRandom = false
+  //           })
+  //         }
+  //       }
+  //     }
+  //   )
+  // }
 
   updateCompetitionActiveEnterprise(): void {
     reaction(
@@ -81,16 +92,33 @@ export class CompetitionStore {
   findRandomEnterprise(): void {
     this.localQuery = ''
     this.searchCompetitionQuery = undefined
-    this.searchingRandom = true
+    // this.searchingRandom = true
+    this.generateIds()
   }
 
-  generateRandomId(): void {
-    let randomId
-    const { auctionCount, freeCount, maxAuctioned, maxFree, reservedCount } =
+  generateIds(): void {
+    const { foundedEnterprisesCount } = this.root.enterprisesStore
+    const maxSearch = Math.min(MAX_IDS_PER_SEARCH, foundedEnterprisesCount)
+    const ids = []
+    for (let i = 0; i < maxSearch; i++) {
+      let id = this.generateRandomId()
+      while (ids.includes(id)) {
+        id = this.generateRandomId()
+      }
+      ids.push(id)
+    }
+    this.randomIds = ids
+  }
+
+  generateRandomId(): number {
+    let randomId = 0
+    const { auctionCount, freeCount, maxAuctioned, maxFree } =
       this.root.acquisitionRoyaleContractStore
 
+    const { foundedEnterprisesCount } = this.root.enterprisesStore
+    if (foundedEnterprisesCount === undefined) return randomId
     // range of 0 to totalSupply + total enterprises eliminated
-    randomId = generateRandomInt(auctionCount + freeCount + reservedCount - 1)
+    randomId = generateRandomInt(foundedEnterprisesCount)
 
     // in range of reserved enterprises
     if (randomId >= auctionCount + freeCount) {
@@ -102,7 +130,7 @@ export class CompetitionStore {
     }
 
     // in range of auctioned enterprises if didn't go into the if checks
-    this.randomId = randomId
+    return randomId
   }
 
   onSlidesChange({ enterpriseId, slides }: { enterpriseId?: number; slides: number }): void {
@@ -194,15 +222,25 @@ export class CompetitionStore {
     return undefined
   }
 
+  get randomEnterprises(): Enterprises | undefined {
+    const enterprises = []
+    if (!this.randomIds) return enterprises
+    const { getEnterpriseById } = this.root.enterprisesStore
+    for (let i = 0; i < this.randomIds.length; i++) {
+      const enterprise = getEnterpriseById(BigNumber.from(i))
+      if (enterprise) enterprises.push(enterprise)
+    }
+    if (enterprises.length !== this.randomIds.length) return undefined
+    return enterprises
+  }
+
   get randomLoading(): boolean {
-    const { auctionCount, freeCount, maxAuctioned, maxFree, reservedCount } =
-      this.root.acquisitionRoyaleContractStore
+    const { maxAuctioned, maxFree } = this.root.acquisitionRoyaleContractStore
+    const { foundedEnterprisesCount } = this.root.enterprisesStore
     return (
-      auctionCount === undefined ||
-      freeCount === undefined ||
       maxAuctioned === undefined ||
-      reservedCount === undefined ||
       maxFree === undefined ||
+      foundedEnterprisesCount === undefined ||
       this.searchingRandom
     )
   }
