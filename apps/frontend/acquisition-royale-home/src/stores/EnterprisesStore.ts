@@ -40,11 +40,13 @@ export class EnterpriseStore {
     if (rawEnterprise === undefined) return undefined
     const immuneUntil = acquisitionRoyaleContractStore.getEnterpriseImmunityUntil(rawEnterprise)
     if (immuneUntil === undefined || !virtualRpBalance) return undefined
+    const rawImmune = acquisitionRoyaleContractStore.isEnterpriseImmune(id)
+    if (rawImmune === undefined) return undefined
     const rp = +ethers.utils.formatEther(virtualRpBalance[0])
     const rpPerDay = calculateRpPerDay(passiveRpPerDay, rawEnterprise)
     return getReadableEnterpriseBasic({
       id,
-      // 1000 to push timestamp forward to current time. Else it will be pointing to 1970
+      rawImmune,
       immuneUntil: immuneUntil * SEC_IN_MS,
       rawEnterprise,
       rp,
@@ -56,14 +58,12 @@ export class EnterpriseStore {
     const { acquisitionRoyaleContractStore, brandingContractStore } = this.root
     const art = formatArt(brandingContractStore.getArt(id))
     const rawOwnerOf = acquisitionRoyaleContractStore.ownerOf(id)
-    const rawImmune = acquisitionRoyaleContractStore.isEnterpriseImmune(id)
 
-    if (art && rawImmune && rawOwnerOf) {
+    if (art && rawOwnerOf) {
       const burned = rawOwnerOf[0] === EMPTY_CONTRACT_ADDRESS
       return {
         art,
         burned,
-        immune: rawImmune[0],
       }
     }
     return undefined
@@ -89,5 +89,12 @@ export class EnterpriseStore {
     }
     if (enterprises.length !== balance) return undefined
     return enterprises
+  }
+
+  get foundedEnterprisesCount(): number | undefined {
+    const { auctionCount, freeCount, reservedCount } = this.root.acquisitionRoyaleContractStore
+    if (auctionCount === undefined || freeCount === undefined || reservedCount === undefined)
+      return undefined
+    return auctionCount + freeCount + reservedCount - 1
   }
 }

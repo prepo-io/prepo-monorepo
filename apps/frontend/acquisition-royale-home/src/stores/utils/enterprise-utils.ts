@@ -31,16 +31,19 @@ export const getReadableEnterpriseBasic = ({
   id,
   immuneUntil,
   rawEnterprise,
+  rawImmune,
   rp,
   rpPerDay,
 }: {
   id: BigNumber
   immuneUntil: number
   rawEnterprise: RawEnterprise
+  rawImmune: [boolean]
   rp: number
   rpPerDay: number
 }): EnterpriseBasic => ({
   id: id.toNumber(),
+  immune: rawImmune[0],
   immuneUntil,
   name: rawEnterprise.name,
   stats: {
