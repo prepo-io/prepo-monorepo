@@ -1,12 +1,25 @@
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { centered, spacingIncrement } from '../../utils/theme/utils'
+import { bordered, centered, spacingIncrement } from '../../utils/theme/utils'
 import Input from '../../components/Input'
 import { useRootStore } from '../../context/RootStoreProvider'
+import Button from '../../components/Button'
 
 type Props = {
   label?: string
+  hideRandom?: boolean
 }
+
+const StyledRandomButton = styled.div`
+  ${bordered}
+  margin-left: ${spacingIncrement(4)};
+`
+
+const InputButtonWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  width: 100%;
+`
 
 const InnerWrapper = styled.form`
   width: 100%;
@@ -26,35 +39,46 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
-const SearchCompetition: React.FC<Props> = ({ label }) => {
+const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
   const { competitionStore } = useRootStore()
   const {
-    competitionEnterprises,
+    competitionLoading,
+    findRandomEnterprise,
     localQuery,
     setLocalQuery,
+    searching,
     searchCompetition,
-    searchCompetitionQuery,
+    validSearchQuery,
   } = competitionStore
 
   const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault()
     searchCompetition()
   }
+
   return (
     <Wrapper>
       <InnerWrapper onSubmit={handleSearch}>
         <Labels>{label}</Labels>
-        <Input
-          onChange={(e): void => setLocalQuery(e.target.value)}
-          placeholder="Wallet address/Enterprise ID"
-          value={localQuery}
-          buttonProps={{
-            children: 'Search',
-            disabled: Number.isNaN(+localQuery),
-            onClick: searchCompetition,
-            loading: Boolean(searchCompetitionQuery) && competitionEnterprises === undefined,
-          }}
-        />
+        <InputButtonWrapper>
+          <Input
+            onChange={(e): void => setLocalQuery(e.target.value)}
+            placeholder="Wallet address/Enterprise ID"
+            value={searching ? 'Searching...' : localQuery}
+            buttonProps={{
+              children: 'Search',
+              disabled: competitionLoading || !validSearchQuery,
+              onClick: searchCompetition,
+            }}
+          />
+          {!hideRandom && (
+            <StyledRandomButton>
+              <Button disabled={competitionLoading} onClick={(): void => findRandomEnterprise()}>
+                🔀 Random
+              </Button>
+            </StyledRandomButton>
+          )}
+        </InputButtonWrapper>
       </InnerWrapper>
     </Wrapper>
   )

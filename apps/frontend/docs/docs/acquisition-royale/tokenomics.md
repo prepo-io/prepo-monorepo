@@ -7,7 +7,7 @@
 #### Distribution
 
 - There are 15k Enterprises in total at the start of the game
-- 9k are purchasable for 15 MATIC
+- 9k are purchasable for MATIC
 - 6k are reserved for game expansions (e.g. RP Shop), collaborations, influencers, contributors, competitions, and giveaways.
 
 #### Deflationary Supply
@@ -33,7 +33,7 @@
 #### Inflation
 
 - Enterprises generate new RP every block.
-- There is an RP/day limit per Enterprise (currently a max of +10 RP/day).
+- There is an RP/day limit per Enterprise (currently a max of +12 RP/day).
 - If an Enterprise gets acquired or merged, it will no longer contribute to RP inflation. However, the upgraded Enterprise will earn more RP/day, which will offset the effect of there being less Enterprises unless they are at the RP/day limit.
 - Enterprises that haven't been founded yet will not contribute towards inflation.
 - During special events, global RP/day rates may be temporarily boosted.
@@ -44,15 +44,15 @@
 
 - All RP spent on game actions and RP Shop purchases is burnt.
 - All RP spent on game actions is burnt.
-- 25% of RP withdrawn from an Enterprise is burnt.
-- 25% of RP from combined balances after merging or acquiring is burnt.
+- 50% of RP withdrawn from an Enterprise is burnt.
+- 30% of RP from combined balances after merging or acquiring is burnt.
 - All RP spent on RP Shop purchases is burnt.
 - All RP redeemed for MATIC is burnt.
 - Deflationary effects become more significant in the late stages of the game due to [Dynamic Difficulty](/acquisition-royale/gameplay/compete#dynamic-difficulty), increasing prices for game actions, increasing prices for RP Shop items, and redemptions for MATIC requiring more RP.
 
 #### Liquidity
 
-- 2k MATIC of initial liquidity has been seeded on the [RP/MATIC Uniswap V3 pool](/acquisition-royale/useful-links#trading-pools).
+- $50k of effective liquidity has been seeded in a concentrated range for the [RP/MATIC Uniswap V3 pool](/acquisition-royale/useful-links#trading-pools).
 
 #### RP for MATIC
 

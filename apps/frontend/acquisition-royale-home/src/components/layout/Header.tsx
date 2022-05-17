@@ -71,7 +71,6 @@ const WalletIconWrapper = styled.div`
 
 const Wrapper = styled.div<{ showAnnouncementBanner: boolean }>`
   &&& {
-    background-color: ${({ theme }): string => theme.color.secondary};
     padding: ${spacingIncrement(24)} 0;
     padding-top: ${({ showAnnouncementBanner }): string =>
       showAnnouncementBanner ? spacingIncrement(48) : '0'};
