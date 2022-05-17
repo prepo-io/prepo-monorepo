@@ -12,6 +12,7 @@ import 'solidity-coverage'
 import { HardhatUserConfig } from 'hardhat/config'
 import { HDAccountsUserConfig, NetworkUserConfig } from 'hardhat/types'
 import { resolve } from 'path'
+import './tasks/CoreFunding'
 import './tasks/Markets'
 
 dotenvConfig({ path: resolve(__dirname, './.env') })
