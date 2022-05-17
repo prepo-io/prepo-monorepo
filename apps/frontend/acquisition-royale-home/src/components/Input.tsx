@@ -34,6 +34,7 @@ const InputBox = styled.div`
 `
 
 const Wrapper = styled.div`
+  width: 100%;
   &&& {
     font-family: ${({ theme }): string => theme.fontFamily.secondary};
     letter-spacing: 2px;

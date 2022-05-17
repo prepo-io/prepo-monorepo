@@ -34,6 +34,8 @@ type GetEnterprise = AcquisitionRoyale['functions']['getEnterprise']
 type GetEnterpriseVirtualBalance = AcquisitionRoyale['functions']['getEnterpriseVirtualBalance']
 type GetFreeCount = AcquisitionRoyale['functions']['getFreeCount']
 type GetImmunityPeriods = AcquisitionRoyale['functions']['getImmunityPeriods']
+type GetMaxAuctioned = AcquisitionRoyale['functions']['getMaxAuctioned']
+type GetMaxFree = AcquisitionRoyale['functions']['getMaxFree']
 type GetPassiveRpPerDay = AcquisitionRoyale['functions']['getPassiveRpPerDay']
 type GetReservedCount = AcquisitionRoyale['functions']['getReservedCount']
 type GetRunwayPoints = AcquisitionRoyale['functions']['getRunwayPoints']
@@ -232,6 +234,14 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
     ...params: Parameters<GetImmunityPeriods>
   ): ContractReturn<GetImmunityPeriods> {
     return this.call<GetImmunityPeriods>('getImmunityPeriods', params)
+  }
+
+  getMaxAuctioned(...params: Parameters<GetMaxAuctioned>): ContractReturn<GetMaxAuctioned> {
+    return this.call<GetMaxAuctioned>('getMaxAuctioned', params)
+  }
+
+  getMaxFree(...params: Parameters<GetMaxFree>): ContractReturn<GetMaxFree> {
+    return this.call<GetMaxFree>('getMaxFree', params)
   }
 
   getPassiveRpPerday(
@@ -547,6 +557,14 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
     const immunityPeriods = this.getImmunityPeriods()
     if (immunityPeriods === undefined) return undefined
     return formatImmunityPeriods(immunityPeriods)
+  }
+
+  get maxAuctioned(): number | undefined {
+    return transformRawNumber(this.getMaxAuctioned())
+  }
+
+  get maxFree(): number | undefined {
+    return transformRawNumber(this.getMaxFree())
   }
 
   get mergeRPCostContract(): string | undefined {

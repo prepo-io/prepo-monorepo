@@ -83,6 +83,7 @@ const MessageOverlay = styled.div`
   font-family: ${({ theme }): string => theme.fontFamily.secondary};
   font-size: ${({ theme }): string => theme.fontSize.xl};
   height: 100%;
+  max-width: ${spacingIncrement(280)};
   position: absolute;
   text-align: center;
   width: 100%;

@@ -87,5 +87,8 @@ typechain/
 artifacts*
 cache*
 cache
-deployments/localhost
-.openzeppelin/unknown-31337.json
+
+## Ignores deployments/localhost across all the sub-folders
+**/deployments/localhost
+## Ignores .openzeppelin/unknown-31337.json across all the sub-folders
+**/.openzeppelin/unknown-31337.json

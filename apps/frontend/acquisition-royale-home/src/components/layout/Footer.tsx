@@ -10,7 +10,6 @@ const { Footer: AFooter } = Layout
 
 const Wrapper = styled.div`
   &&& {
-    background-color: ${({ theme }): string => theme.color.backgroundGradientEnd};
     padding: ${spacingIncrement(24)} 0;
     .ant-layout-footer {
       align-items: center;
