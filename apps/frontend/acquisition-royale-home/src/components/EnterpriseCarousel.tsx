@@ -15,7 +15,7 @@ import { generateDummyArray, isFirstEnterpriseLoaded } from '../utils/enterprise
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { Enterprises } from '../types/enterprise.types'
 
-const SWIPER_PADDIN_PERCENTAGE = 12
+const SWIPER_PADDING_PERCENTAGE = 12
 const SwiperStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
@@ -102,7 +102,7 @@ const Labels = styled.p`
 
 const SwiperWrapper = styled.div`
   display: flex;
-  padding: 0 ${SWIPER_PADDIN_PERCENTAGE}%;
+  padding: 0 ${SWIPER_PADDING_PERCENTAGE}%;
   width: 100%;
 `
 
@@ -147,7 +147,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
   useEffect(() => {
     const getCardHeight = (): void => {
       if (swiperWrapperRef.current) {
-        const WIDTH_MULTIPLIER = (100 - 2 * SWIPER_PADDIN_PERCENTAGE) / 100
+        const WIDTH_MULTIPLIER = (100 - 2 * SWIPER_PADDING_PERCENTAGE) / 100
         const width = swiperWrapperRef.current.clientWidth * WIDTH_MULTIPLIER
         setCardWidth(Math.ceil(width))
       }
