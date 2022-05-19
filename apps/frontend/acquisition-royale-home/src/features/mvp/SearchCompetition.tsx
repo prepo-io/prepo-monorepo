@@ -46,7 +46,6 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
     findRandomEnterprise,
     localQuery,
     setLocalQuery,
-    searching,
     searchCompetition,
     validSearchQuery,
   } = competitionStore
@@ -64,7 +63,7 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
           <Input
             onChange={(e): void => setLocalQuery(e.target.value)}
             placeholder="Wallet address/Enterprise ID"
-            value={searching ? 'Searching...' : localQuery}
+            value={localQuery}
             buttonProps={{
               children: 'Search',
               disabled: competitionLoading || !validSearchQuery,

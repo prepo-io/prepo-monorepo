@@ -5,7 +5,7 @@ import { getRawEnterprise, getReadableEnterpriseBasic } from './utils/enterprise
 import { calculateRpPerDay } from './utils/common-utils'
 import { formatArt } from './utils/branding-utils'
 import { EnterpriseBasic, EnterpriseDetails, Enterprises } from '../types/enterprise.types'
-import { EMPTY_CONTRACT_ADDRESS, SEC_IN_MS } from '../lib/constants'
+import { SEC_IN_MS } from '../lib/constants'
 
 export class EnterpriseStore {
   root: RootStore
@@ -42,28 +42,29 @@ export class EnterpriseStore {
     if (immuneUntil === undefined || !virtualRpBalance) return undefined
     const rawImmune = acquisitionRoyaleContractStore.isEnterpriseImmune(id)
     if (rawImmune === undefined) return undefined
+    const rawOwnerOf = acquisitionRoyaleContractStore.ownerOf(id)
+    if (rawOwnerOf === undefined) return undefined
     const rp = +ethers.utils.formatEther(virtualRpBalance[0])
     const rpPerDay = calculateRpPerDay(passiveRpPerDay, rawEnterprise)
+
     return getReadableEnterpriseBasic({
       id,
-      rawImmune,
       immuneUntil: immuneUntil * SEC_IN_MS,
       rawEnterprise,
+      rawImmune,
+      rawOwnerOf,
       rp,
       rpPerDay,
     })
   }
 
   getEnterpriseDetails({ id }: EnterpriseBasic): EnterpriseDetails | undefined {
-    const { acquisitionRoyaleContractStore, brandingContractStore } = this.root
+    const { brandingContractStore } = this.root
     const art = formatArt(brandingContractStore.getArt(id))
-    const rawOwnerOf = acquisitionRoyaleContractStore.ownerOf(id)
 
-    if (art && rawOwnerOf) {
-      const burned = rawOwnerOf[0] === EMPTY_CONTRACT_ADDRESS
+    if (art) {
       return {
         art,
-        burned,
       }
     }
     return undefined
@@ -89,6 +90,16 @@ export class EnterpriseStore {
     }
     if (enterprises.length !== balance) return undefined
     return enterprises
+  }
+
+  localIsMinted(id: number): boolean | undefined {
+    const { auctionCount, maxAuctioned, freeCount, maxFree, reservedCount } =
+      this.root.acquisitionRoyaleContractStore
+    const auctioned = id < auctionCount
+    const free = id >= maxAuctioned && id < freeCount + maxAuctioned
+    const reservedStart = maxFree + maxAuctioned
+    const reserved = id >= reservedStart && id < reservedCount + reservedStart
+    return auctioned || free || reserved
   }
 
   get foundedEnterprisesCount(): number | undefined {

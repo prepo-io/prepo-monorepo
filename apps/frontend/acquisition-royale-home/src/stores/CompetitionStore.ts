@@ -6,7 +6,7 @@ import { RootStore } from './RootStore'
 import { Enterprise, Enterprises } from '../types/enterprise.types'
 import { generateRandomInt } from '../utils/number-utils'
 
-const MAX_IDS_PER_SEARCH = 100
+const MAX_IDS_PER_SEARCH = 80
 export class CompetitionStore {
   activeEnterpriseId?: number
   localQuery: string
@@ -14,54 +14,60 @@ export class CompetitionStore {
   randomIds?: number[]
   searchCompetitionQuery?: string
   slides: number
-  searchingRandom: boolean
+  useRandomEnterprises: boolean
   constructor(public root: RootStore) {
     this.slides = 1
     this.localQuery = ''
-    this.searchingRandom = false
+    this.useRandomEnterprises = false
     makeAutoObservable(this, {}, { autoBind: true })
     this.updateCompetitionActiveEnterprise()
-    this.searchRandomEnterprise()
+
+    this.initRandomIds()
+    this.filterRandomEnterprise()
   }
 
-  searchRandomEnterprise(): void {
-    reaction(
-      () => this.randomEnterprises,
-      (randomEnterprises) => {
-        console.log(randomEnterprises)
+  initRandomIds(): void {
+    const { acquisitionRoyaleContractStore, enterprisesStore } = this.root
+    const disposer = reaction(
+      () =>
+        // do not destructure these otherwise they will lose observability
+        enterprisesStore.foundedEnterprisesCount !== undefined &&
+        acquisitionRoyaleContractStore.auctionCount !== undefined &&
+        acquisitionRoyaleContractStore.freeCount !== undefined &&
+        acquisitionRoyaleContractStore.maxAuctioned !== undefined &&
+        acquisitionRoyaleContractStore.maxFree !== undefined,
+      (valid) => {
+        if (valid) {
+          this.generateIds()
+          disposer()
+        }
       }
     )
   }
 
-  // searchRandomEnterprise(): void {
-  //   reaction(
-  //     () => ({
-  //       searchingRandom: this.searchingRandom,
-  //       randomId: this.randomId,
-  //       randomEnterprise: this.randomEnterprise,
-  //     }),
-  //     ({ searchingRandom, randomId, randomEnterprise }) => {
-  //       if (!searchingRandom) return
-  //       if (randomId === undefined) this.generateRandomId()
-  //       if (randomEnterprise && randomEnterprise.burned !== undefined) {
-  //         const { signerEnterprises } = this.root.signerStore
-  //         const isOwnEnterprise =
-  //           (signerEnterprises?.findIndex(({ id }) => id === randomEnterprise.id) ?? -1) >= 0
-
-  //         if (randomEnterprise.burned || randomEnterprise.immune || isOwnEnterprise) {
-  //           this.generateRandomId()
-  //         } else {
-  //           runInAction(() => {
-  //             this.searchCompetitionQuery = `${this.randomId}`
-  //             this.localQuery = `${this.randomId}`
-  //             this.randomId = undefined
-  //             this.searchingRandom = false
-  //           })
-  //         }
-  //       }
-  //     }
-  //   )
-  // }
+  filterRandomEnterprise(): void {
+    reaction(
+      () => ({
+        randomEnterprises: this.randomEnterprises,
+        randomIds: this.randomIds,
+        signerAddress: this.root.web3Store.signerState?.address,
+      }),
+      ({ randomEnterprises, randomIds, signerAddress }) => {
+        runInAction(() => {
+          if (randomEnterprises) {
+            const ids = randomIds
+            randomEnterprises.forEach((enterprise, index) => {
+              const owned = Boolean(signerAddress) && signerAddress === enterprise.ownerOf
+              if (enterprise.immune || enterprise.burned || owned) ids.splice(index, 1)
+            })
+            runInAction(() => {
+              this.randomIds = ids
+            })
+          }
+        })
+      }
+    )
+  }
 
   updateCompetitionActiveEnterprise(): void {
     reaction(
@@ -84,21 +90,26 @@ export class CompetitionStore {
   }
 
   clearEnterprises(): void {
+    this.useRandomEnterprises = false
     this.activeEnterpriseId = undefined
     this.root.acquisitionRoyaleContractStore.setAcquireKeepId(undefined)
     this.slides = 1
   }
 
   findRandomEnterprise(): void {
-    this.localQuery = ''
-    this.searchCompetitionQuery = undefined
-    // this.searchingRandom = true
-    this.generateIds()
+    if (this.randomEnterprise) {
+      const idString = `${this.randomEnterprise.id}`
+      this.localQuery = idString
+      this.searchCompetitionQuery = idString
+
+      const ids = this.randomIds
+      ids.shift()
+      this.randomIds = ids
+    }
   }
 
   generateIds(): void {
-    const { foundedEnterprisesCount } = this.root.enterprisesStore
-    const maxSearch = Math.min(MAX_IDS_PER_SEARCH, foundedEnterprisesCount)
+    const maxSearch = Math.min(MAX_IDS_PER_SEARCH)
     const ids = []
     for (let i = 0; i < maxSearch; i++) {
       let id = this.generateRandomId()
@@ -179,9 +190,9 @@ export class CompetitionStore {
       this.searchCompetitionQuery === undefined ||
       this.searchCompetitionQuery.length === 0 ||
       (address && address.toLowerCase() === this.searchCompetitionQuery.toLowerCase())
-    ) {
-      return this.searchingRandom ? undefined : []
-    }
+    )
+      return []
+
     if (isAddress(this.searchCompetitionQuery))
       return this.root.enterprisesStore.lazyLoad(this.searchCompetitionQuery, this.slides)
     if (!Number.isNaN(+this.searchCompetitionQuery)) {
@@ -191,9 +202,9 @@ export class CompetitionStore {
       )
       // cannot search own enterprise
       if (ownIndex !== undefined && ownIndex >= 0) return []
-      const rawIsMinted = this.root.acquisitionRoyaleContractStore.isMinted(id)
-      if (rawIsMinted === undefined) return undefined
-      if (!rawIsMinted[0]) return []
+      const minted = this.root.enterprisesStore.localIsMinted(id.toNumber())
+      if (minted === undefined) return undefined
+      if (!minted) return []
       const enterpriseBasic = this.root.enterprisesStore.getEnterpriseById(
         BigNumber.from(this.searchCompetitionQuery)
       )
@@ -210,24 +221,24 @@ export class CompetitionStore {
   }
 
   get randomEnterprise(): Enterprise | undefined {
-    if (this.randomId === undefined) return undefined
-    const { getEnterpriseById, getEnterpriseDetails } = this.root.enterprisesStore
-    const enterpriseBasic = getEnterpriseById(BigNumber.from(this.randomId))
-    if (enterpriseBasic) {
-      const enterpriseDetails = getEnterpriseDetails(enterpriseBasic)
-      if (enterpriseDetails && enterpriseDetails.burned !== undefined) {
-        return { ...enterpriseBasic, ...enterpriseDetails }
-      }
-    }
-    return undefined
+    if (this.randomEnterprises === undefined || this.randomEnterprises.length < 1) return undefined
+    // show loading ui while reaction finds the next valid enterprise
+    if (this.randomEnterprises[0].immune || this.randomEnterprises[0].burned) return undefined
+    return this.randomEnterprises[0]
   }
 
   get randomEnterprises(): Enterprises | undefined {
     const enterprises = []
     if (!this.randomIds) return enterprises
-    const { getEnterpriseById } = this.root.enterprisesStore
+    const { getEnterpriseById, getEnterpriseDetails } = this.root.enterprisesStore
     for (let i = 0; i < this.randomIds.length; i++) {
-      const enterprise = getEnterpriseById(BigNumber.from(i))
+      const basic = getEnterpriseById(BigNumber.from(this.randomIds[i]))
+      let enterprise = basic
+      // preload 5 enterprises so when random is clicked again, the next Enterprise's NFT is already loaded
+      if (i < 5 && enterprise) {
+        const details = getEnterpriseDetails(basic)
+        if (details !== undefined) enterprise = { ...basic, ...details }
+      }
       if (enterprise) enterprises.push(enterprise)
     }
     if (enterprises.length !== this.randomIds.length) return undefined
@@ -241,16 +252,12 @@ export class CompetitionStore {
       maxAuctioned === undefined ||
       maxFree === undefined ||
       foundedEnterprisesCount === undefined ||
-      this.searchingRandom
+      !this.randomEnterprise
     )
   }
 
   get searchLoading(): boolean {
     return Boolean(this.searchCompetitionQuery) && this.competitionEnterprises === undefined
-  }
-
-  get searching(): boolean {
-    return this.searchLoading || this.searchingRandom
   }
 
   get validSearchQuery(): boolean {
