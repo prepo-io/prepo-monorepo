@@ -48,6 +48,7 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
     setLocalQuery,
     searchCompetition,
     searchDisabled,
+    searchLoading,
     searchingRandom,
   } = competitionStore
 
@@ -68,6 +69,7 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
             buttonProps={{
               children: 'Search',
               disabled: searchDisabled,
+              loading: searchLoading,
               onClick: searchCompetition,
             }}
           />
