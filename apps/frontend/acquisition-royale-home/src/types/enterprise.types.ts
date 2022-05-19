@@ -47,7 +47,10 @@ export type Art = {
 }
 
 export type EnterpriseBasic = {
+  burned: boolean
+  ownerOf: string
   id: number
+  immune: boolean
   immuneUntil: number
   name: string
   raw: RawEnterprise
@@ -62,8 +65,6 @@ export type EnterpriseBasic = {
 
 export type EnterpriseDetails = {
   art?: Art
-  burned?: boolean
-  immune?: boolean
 }
 
 export type Enterprise = EnterpriseBasic & EnterpriseDetails

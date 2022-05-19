@@ -28,7 +28,7 @@ const Competition: React.FC<Props> = ({ label, hideRandom }) => {
   const overlay = (): OverlayProps | undefined => {
     if (competitionLoading) return undefined
     // if searchCompetitionQuery is empty, user hasn't searched anything
-    if (!searchCompetitionQuery) {
+    if (!searchCompetitionQuery && competitionEnterprises?.length === 0) {
       return {
         message: 'Search a wallet address or an enterprise ID above.',
       }
