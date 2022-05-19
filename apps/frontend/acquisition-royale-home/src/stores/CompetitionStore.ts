@@ -272,13 +272,6 @@ export class CompetitionStore {
     return this.searchLoading || this.searchingRandom
   }
 
-  get randomEnterprise(): Enterprise | undefined {
-    if (this.randomEnterprises === undefined || this.randomEnterprises.length < 1) return undefined
-    // show loading ui while reaction finds the next valid enterprise
-    if (this.randomEnterprises[0].immune || this.randomEnterprises[0].burned) return undefined
-    return this.randomEnterprises[0]
-  }
-
   get randomEnterprises(): Enterprises | undefined {
     const enterprises = []
     if (!this.randomIds) return enterprises
