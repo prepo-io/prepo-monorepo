@@ -5,21 +5,17 @@ import {
   SwiperProps,
 } from 'swiper/react'
 import SwiperCore from 'swiper'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 import Icon from './icon'
 import 'swiper/css'
 import EnterpriseCard from './EnterpriseCard'
-import LoadingCarouselCard from './LoadingCarouselCard'
 import { centered, spacingIncrement } from '../utils/theme/utils'
-import {
-  generateDummyArray,
-  isEnterpriseLoaded,
-  isFirstEnterpriseLoaded,
-} from '../utils/enterprise-utils'
+import { generateDummyArray, isFirstEnterpriseLoaded } from '../utils/enterprise-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { Enterprises } from '../types/enterprise.types'
 
+const SWIPER_PADDING_PERCENTAGE = 12
 const SwiperStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
@@ -106,7 +102,7 @@ const Labels = styled.p`
 
 const SwiperWrapper = styled.div`
   display: flex;
-  padding: 0 12%;
+  padding: 0 ${SWIPER_PADDING_PERCENTAGE}%;
   width: 100%;
 `
 
@@ -135,7 +131,10 @@ const EnterpriseCarousel: React.FC<Props> = ({
   title,
   ...swiperProps
 }) => {
+  // 385 is the max width EnterpriseCard will ever get
+  const [cardWidth, setCardWidth] = useState(385)
   const [swiperRef, setSwiperRef] = useState<SwiperCore>()
+  const swiperWrapperRef = useRef<HTMLDivElement>(null)
 
   const showArrow = enterprises && enterprises.length > SLIDES_PER_VIEW
 
@@ -145,21 +144,30 @@ const EnterpriseCarousel: React.FC<Props> = ({
     if (swiperRef && swiperRef.activeIndex !== activeIndex) swiperRef.slideTo(activeIndex)
   }, [activeIndex, swiperRef])
 
-  const renderCards = useMemo(() => {
-    if (enterprises !== undefined && enterprises.length > 0 && isFirstEnterpriseLoaded(enterprises))
-      return enterprises.map((enterprise, index) => (
-        <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
-          {isEnterpriseLoaded(enterprise) ? (
-            <EnterpriseCard active={index === activeIndex} enterprise={enterprise} />
-          ) : (
-            <LoadingCarouselCard />
-          )}
-        </SwiperSlideComponent>
-      ))
+  useEffect(() => {
+    const getCardHeight = (): void => {
+      if (swiperWrapperRef.current) {
+        const WIDTH_MULTIPLIER = (100 - 2 * SWIPER_PADDING_PERCENTAGE) / 100
+        const width = swiperWrapperRef.current.clientWidth * WIDTH_MULTIPLIER
+        setCardWidth(Math.ceil(width))
+      }
+    }
+    getCardHeight()
+    window.addEventListener('resize', getCardHeight)
+    return () => {
+      window.removeEventListener('resize', getCardHeight)
+    }
+  }, [])
 
-    return placeholderEnterprises.map((id) => (
-      <SwiperSlideComponent key={id} style={SwiperStyle}>
-        <LoadingCarouselCard key={id} loading={enterprises === undefined || loading} />
+  const renderCards = useMemo(() => {
+    const enterpriseList =
+      enterprises !== undefined && enterprises.length > 0 && isFirstEnterpriseLoaded(enterprises)
+        ? enterprises
+        : placeholderEnterprises
+
+    return enterpriseList.map((enterprise, index) => (
+      <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
+        <EnterpriseCard active={index === activeIndex} enterprise={enterprise} loading={loading} />
       </SwiperSlideComponent>
     ))
   }, [activeIndex, enterprises, loading, placeholderEnterprises])
@@ -179,7 +187,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
         {showArrow && (
           <ArrowComponent direction="left" onClick={(): void => swiperRef?.slidePrev()} />
         )}
-        <SwiperWrapper>
+        <SwiperWrapper ref={swiperWrapperRef}>
           <SwiperComponent
             onActiveIndexChange={(swiper): void => {
               onActiveSlidesChange?.({
@@ -190,6 +198,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
             spaceBetween={20}
             slidesPerView={SLIDES_PER_VIEW}
             onSwiper={setSwiperRef}
+            width={cardWidth}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...swiperProps}
           >

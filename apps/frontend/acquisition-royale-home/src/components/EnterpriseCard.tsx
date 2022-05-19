@@ -4,11 +4,12 @@ import { formatPeriod } from '../utils/date-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { centered, spacingIncrement } from '../utils/theme/utils'
 import { Enterprise } from '../types/enterprise.types'
+import { isEnterpriseLoaded } from '../utils/enterprise-utils'
 
 type Props = {
   active?: boolean
-  enterprise?: Enterprise
-  isCompetitor?: boolean
+  enterprise: Enterprise
+  loading?: boolean
 }
 
 const Burnt = styled.p`
@@ -70,16 +71,8 @@ const StyledImage = styled.img`
   object-fit: cover;
 `
 
-const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
-  if (
-    !enterprise ||
-    !enterprise.art ||
-    enterprise.immune === undefined ||
-    enterprise.burned === undefined
-  ) {
-    return <LoadingCarouselCard />
-  }
-
+const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading }) => {
+  if (!isEnterpriseLoaded(enterprise)) return <LoadingCarouselCard loading={loading} />
   const { burned, id, art, immune, immuneUntil } = enterprise
 
   return (
@@ -108,7 +101,5 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise }) => {
 }
 
 export type EnterpriseCardProps = Props
-
-export type EnterpriseProps = Omit<EnterpriseCardProps, 'isCompetitor'>
 
 export default EnterpriseCard
