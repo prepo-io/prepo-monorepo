@@ -48,8 +48,6 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
     setLocalQuery,
     searchCompetition,
     searchDisabled,
-    searchLoading,
-    searchingRandom,
   } = competitionStore
 
   const handleSearch = (e: React.FormEvent): void => {
@@ -69,17 +67,12 @@ const SearchCompetition: React.FC<Props> = ({ label, hideRandom }) => {
             buttonProps={{
               children: 'Search',
               disabled: searchDisabled,
-              loading: searchLoading,
               onClick: searchCompetition,
             }}
           />
           {!hideRandom && (
             <StyledRandomButton>
-              <Button
-                disabled={competitionLoading}
-                loading={searchingRandom}
-                onClick={(): void => findRandomEnterprise()}
-              >
+              <Button disabled={competitionLoading} onClick={(): void => findRandomEnterprise()}>
                 🔀 Random
               </Button>
             </StyledRandomButton>
