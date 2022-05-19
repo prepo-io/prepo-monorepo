@@ -42,7 +42,7 @@ export class CompetitionStore {
       }),
       ({ randomIds, valid }) => {
         // fill ids when remaining ids are less than 50% of max
-        if (valid && randomIds < Math.ceil(MAX_IDS_PER_SEARCH / 2)) {
+        if (valid && randomIds < THRESHOLD) {
           this.generateIds()
         }
       }
@@ -286,11 +286,6 @@ export class CompetitionStore {
         if (details !== undefined) enterprise = { ...basic, ...details }
       }
       if (enterprise) enterprises.push(enterprise)
-    }
-    // retur
-    if (enterprises.length !== this.randomIds.length) {
-      if (enterprises.length <= THRESHOLD) return enterprises.splice(0, THRESHOLD)
-      return undefined
     }
     return enterprises
   }
