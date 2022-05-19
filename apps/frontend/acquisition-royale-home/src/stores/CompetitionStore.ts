@@ -7,6 +7,7 @@ import { Enterprise, Enterprises } from '../types/enterprise.types'
 import { generateRandomInt } from '../utils/number-utils'
 
 const MAX_IDS_PER_SEARCH = 80
+const THRESHOLD = Math.ceil(MAX_IDS_PER_SEARCH / 2)
 export class CompetitionStore {
   activeEnterpriseId?: number
   localQuery: string
@@ -286,7 +287,11 @@ export class CompetitionStore {
       }
       if (enterprise) enterprises.push(enterprise)
     }
-    if (enterprises.length !== this.randomIds.length) return undefined
+    // retur
+    if (enterprises.length !== this.randomIds.length) {
+      if (enterprises.length <= THRESHOLD) return enterprises.splice(0, THRESHOLD)
+      return undefined
+    }
     return enterprises
   }
 
