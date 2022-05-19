@@ -10,36 +10,39 @@ const MAX_IDS_PER_SEARCH = 80
 export class CompetitionStore {
   activeEnterpriseId?: number
   localQuery: string
-  randomId?: number
-  randomIds?: number[]
+  randomIds: number[] = []
   searchCompetitionQuery?: string
+  searchingRandom: boolean
   slides: number
-  useRandomEnterprises: boolean
   constructor(public root: RootStore) {
     this.slides = 1
     this.localQuery = ''
-    this.useRandomEnterprises = false
+    this.searchingRandom = false
     makeAutoObservable(this, {}, { autoBind: true })
     this.updateCompetitionActiveEnterprise()
 
     this.initRandomIds()
     this.filterRandomEnterprise()
+    this.selectAcquirableEnterprise()
   }
 
   initRandomIds(): void {
     const { acquisitionRoyaleContractStore, enterprisesStore } = this.root
-    const disposer = reaction(
-      () =>
-        // do not destructure these otherwise they will lose observability
-        enterprisesStore.foundedEnterprisesCount !== undefined &&
-        acquisitionRoyaleContractStore.auctionCount !== undefined &&
-        acquisitionRoyaleContractStore.freeCount !== undefined &&
-        acquisitionRoyaleContractStore.maxAuctioned !== undefined &&
-        acquisitionRoyaleContractStore.maxFree !== undefined,
-      (valid) => {
-        if (valid) {
+    reaction(
+      // do not destructure these otherwise they will lose observability
+      () => ({
+        valid:
+          enterprisesStore.foundedEnterprisesCount !== undefined &&
+          acquisitionRoyaleContractStore.auctionCount !== undefined &&
+          acquisitionRoyaleContractStore.freeCount !== undefined &&
+          acquisitionRoyaleContractStore.maxAuctioned !== undefined &&
+          acquisitionRoyaleContractStore.maxFree !== undefined,
+        randomIds: this.randomIds.length,
+      }),
+      ({ randomIds, valid }) => {
+        // fill ids when remaining ids are less than 50% of max
+        if (valid && randomIds < Math.ceil(MAX_IDS_PER_SEARCH / 2)) {
           this.generateIds()
-          disposer()
         }
       }
     )
@@ -58,12 +61,68 @@ export class CompetitionStore {
             const ids = randomIds
             randomEnterprises.forEach((enterprise, index) => {
               const owned = Boolean(signerAddress) && signerAddress === enterprise.ownerOf
-              if (enterprise.immune || enterprise.burned || owned) ids.splice(index, 1)
+              if (enterprise.burned || owned) ids.splice(index, 1)
             })
             runInAction(() => {
               this.randomIds = ids
             })
           }
+        })
+      }
+    )
+  }
+
+  selectAcquirableEnterprise(): void {
+    reaction(
+      () => ({
+        randomIds: this.randomIds,
+        randomEnterprises: this.randomEnterprises,
+        searchingRandom: this.searchingRandom,
+        signerAddress: this.root.web3Store.signerState?.address,
+      }),
+      ({ randomIds, randomEnterprises, searchingRandom, signerAddress }) => {
+        if (!searchingRandom || !randomEnterprises || randomEnterprises.length === 0) return
+        const { signerActiveEnterprise } = this.root.signerStore
+        let selectedIndex = 0
+        for (let i = 0; i < randomEnterprises.length; i++) {
+          const {
+            burned,
+            ownerOf,
+            immune,
+            stats: { rp },
+          } = randomEnterprises[i]
+          const insufficientRp =
+            Boolean(signerActiveEnterprise) && signerActiveEnterprise.stats.rp < rp
+          const owned = Boolean(signerAddress) && signerAddress === ownerOf
+          const selectedEnterprise = randomEnterprises[selectedIndex]
+          // minimum requirement for enterprise to be selected, otherwise they will be removed from the list by filterRandomEnterprise
+          if (!owned && !burned) {
+            // unprotected ones are prioritized
+            if (selectedEnterprise.immune && !immune) selectedIndex = i
+
+            // Acquirable Enterprise
+            if (!insufficientRp) {
+              selectedIndex = i
+              // Non-acquirable Enterprise (lowest RP difference order)
+            } else {
+              selectedIndex = selectedEnterprise.stats.rp > rp ? i : selectedIndex
+            }
+
+            // can stop the loop once we find acquirable unprotected enterprise
+            if (!immune && !insufficientRp) {
+              selectedIndex = i
+              break
+            }
+          }
+        }
+        const idString = `${randomEnterprises[selectedIndex]?.id}`
+        runInAction(() => {
+          this.localQuery = idString
+          this.searchCompetitionQuery = idString
+          this.searchingRandom = false
+          const ids = randomIds
+          ids.splice(selectedIndex, 1)
+          this.randomIds = ids
         })
       }
     )
@@ -90,28 +149,21 @@ export class CompetitionStore {
   }
 
   clearEnterprises(): void {
-    this.useRandomEnterprises = false
     this.activeEnterpriseId = undefined
     this.root.acquisitionRoyaleContractStore.setAcquireKeepId(undefined)
     this.slides = 1
   }
 
   findRandomEnterprise(): void {
-    if (this.randomEnterprise) {
-      const idString = `${this.randomEnterprise.id}`
-      this.localQuery = idString
-      this.searchCompetitionQuery = idString
-
-      const ids = this.randomIds
-      ids.shift()
-      this.randomIds = ids
-    }
+    this.clearEnterprises()
+    this.searchCompetitionQuery = ''
+    this.localQuery = ''
+    this.searchingRandom = true
   }
 
   generateIds(): void {
-    const maxSearch = Math.min(MAX_IDS_PER_SEARCH)
-    const ids = []
-    for (let i = 0; i < maxSearch; i++) {
+    const ids = this.randomIds
+    while (ids.length < MAX_IDS_PER_SEARCH) {
       let id = this.generateRandomId()
       while (ids.includes(id)) {
         id = this.generateRandomId()
@@ -217,7 +269,7 @@ export class CompetitionStore {
   }
 
   get competitionLoading(): boolean {
-    return this.searchLoading || this.randomLoading
+    return this.searchLoading || this.searchingRandom
   }
 
   get randomEnterprise(): Enterprise | undefined {
@@ -235,7 +287,7 @@ export class CompetitionStore {
       const basic = getEnterpriseById(BigNumber.from(this.randomIds[i]))
       let enterprise = basic
       // preload 5 enterprises so when random is clicked again, the next Enterprise's NFT is already loaded
-      if (i < 5 && enterprise) {
+      if (i < 5 && basic) {
         const details = getEnterpriseDetails(basic)
         if (details !== undefined) enterprise = { ...basic, ...details }
       }
@@ -245,15 +297,8 @@ export class CompetitionStore {
     return enterprises
   }
 
-  get randomLoading(): boolean {
-    const { maxAuctioned, maxFree } = this.root.acquisitionRoyaleContractStore
-    const { foundedEnterprisesCount } = this.root.enterprisesStore
-    return (
-      maxAuctioned === undefined ||
-      maxFree === undefined ||
-      foundedEnterprisesCount === undefined ||
-      !this.randomEnterprise
-    )
+  get searchDisabled(): boolean {
+    return this.competitionLoading || !this.validSearchQuery
   }
 
   get searchLoading(): boolean {
