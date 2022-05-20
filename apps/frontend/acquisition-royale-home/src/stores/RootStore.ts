@@ -14,6 +14,7 @@ import { CompeteV1ContractStore } from './CompeteV1ContractStore'
 import { CompetitionStore } from './CompetitionStore'
 import { ConsumablesContractStore } from './ConsumablesContractStore'
 import { MergeRPCostContractStore } from './MergeRPCostContract'
+import { MoatContractStore } from './MoatContractStore'
 import { RunwayPointsContractStore } from './RunwayPointsContractStore'
 import { SignerStore } from './SignerStore'
 import { InternContractStore } from './InternContractStore'
@@ -38,6 +39,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   consumablesContractStore: ConsumablesContractStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
+  moatContractStore: MoatContractStore
   uniswapV2RouterContractStore: UniswapV2RouterContractStore
   localStorageStore: LocalStorageStore
   runwayPointsContractStore: RunwayPointsContractStore
@@ -74,6 +76,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.signerStore = new SignerStore(this)
     this.mergeStore = new MergeStore(this)
     this.mergeRPCostContractStore = new MergeRPCostContractStore(this)
+    this.moatContractStore = new MoatContractStore(this)
     this.runwayPointsContractStore = new RunwayPointsContractStore(this)
     this.usdcStore = new Erc20Store(this, 'USDC')
     this.brandingContractStore = new BrandingContractStore(this)

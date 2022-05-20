@@ -1,8 +1,11 @@
-import { ContractStore } from '@prepo-io/stores'
+import { ContractReturn, ContractStore } from '@prepo-io/stores'
 import { makeObservable, reaction } from 'mobx'
 import { RootStore } from './RootStore'
-import { AcqrHookV1Abi__factory } from '../../generated'
+import { formatContractAddress } from './utils/common-utils'
+import { AcqrHookV1Abi as AcqrHookV1, AcqrHookV1Abi__factory } from '../../generated'
 import { SupportedContracts } from '../lib/supported-contracts'
+
+type GetMoat = AcqrHookV1['functions']['getMoat']
 
 export class AcqrHookV1Store extends ContractStore<RootStore, SupportedContracts> {
   constructor(public root: RootStore) {
@@ -20,5 +23,13 @@ export class AcqrHookV1Store extends ContractStore<RootStore, SupportedContracts
         disposer()
       }
     )
+  }
+
+  getMoat(...params: Parameters<GetMoat>): ContractReturn<GetMoat> {
+    return this.call<GetMoat>('getMoat', params)
+  }
+
+  get moat(): string | undefined {
+    return formatContractAddress(this.getMoat())
   }
 }
