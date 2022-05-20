@@ -1,11 +1,13 @@
 import styled, { keyframes } from 'styled-components'
+import { spacingIncrement } from '../utils/theme/utils'
 
 type Props = {
   loading?: boolean
+  size?: number
 }
 
-const StyledImage = styled.img`
-  height: auto;
+const StyledImage = styled.img<{ $height: number }>`
+  height: ${({ $height }): string => ($height === undefined ? 'auto' : spacingIncrement($height))};
   object-fit: cover;
 `
 
@@ -22,9 +24,9 @@ const Wrapper = styled.div<{ shouldAnimate: boolean }>`
   width: inherit;
 `
 
-const LoadingCarouselCard: React.FC<Props> = ({ loading }) => (
+const LoadingCarouselCard: React.FC<Props> = ({ loading, size }) => (
   <Wrapper shouldAnimate={loading}>
-    <StyledImage width="100%" src="/assets/nft-placeholder.svg" />
+    <StyledImage $height={size} width="100%" src="/assets/nft-placeholder.svg" />
   </Wrapper>
 )
 
