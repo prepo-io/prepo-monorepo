@@ -9,6 +9,7 @@ import { BrandingContractStore } from './BrandingContractStore'
 import { AcquireRPCostContractStore } from './AcquireRPCostContractStore'
 import { AcquisitionRoyaleContractStore } from './AcquisitionRoyaleContractStore'
 import { AcquisitionRoyaleRPShopContractStore } from './AcquisitionRoyaleRPShopContractStore'
+import { AcqrHookV1Store } from './AcqrHookV1Store'
 import { CompeteV1ContractStore } from './CompeteV1ContractStore'
 import { CompetitionStore } from './CompetitionStore'
 import { ConsumablesContractStore } from './ConsumablesContractStore'
@@ -31,6 +32,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   acquireRPCostContractStore: AcquireRPCostContractStore
   acquisitionRoyaleContractStore: AcquisitionRoyaleContractStore
   acquisitionRoyaleRPShopContractStore: AcquisitionRoyaleRPShopContractStore
+  acqrHookV1: AcqrHookV1Store
   competeV1ContractStore: CompeteV1ContractStore
   competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
@@ -62,6 +64,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.uniswapV2RouterContractStore = new UniswapV2RouterContractStore(this)
     this.localStorageStore = new LocalStorageStore(this)
     this.acquisitionRoyaleContractStore = new AcquisitionRoyaleContractStore(this)
+    this.acqrHookV1 = new AcqrHookV1Store(this)
     this.acquireRPCostContractStore = new AcquireRPCostContractStore(this)
     this.acquisitionRoyaleRPShopContractStore = new AcquisitionRoyaleRPShopContractStore(this)
     this.acquireStore = new AcquireStore(this)
