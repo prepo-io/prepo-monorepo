@@ -167,10 +167,15 @@ const EnterpriseCarousel: React.FC<Props> = ({
 
     return enterpriseList.map((enterprise, index) => (
       <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
-        <EnterpriseCard active={index === activeIndex} enterprise={enterprise} loading={loading} />
+        <EnterpriseCard
+          active={index === activeIndex}
+          enterprise={enterprise}
+          loading={loading}
+          size={cardWidth}
+        />
       </SwiperSlideComponent>
     ))
-  }, [activeIndex, enterprises, loading, placeholderEnterprises])
+  }, [activeIndex, cardWidth, enterprises, loading, placeholderEnterprises])
 
   return (
     <Wrapper>

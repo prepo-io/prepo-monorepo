@@ -10,6 +10,7 @@ type Props = {
   active?: boolean
   enterprise: Enterprise
   loading?: boolean
+  size?: number
 }
 
 const Burnt = styled.p`
@@ -66,18 +67,18 @@ const Wrapper = styled.div<{ $burned?: boolean }>`
   width: inherit;
 `
 
-const StyledImage = styled.img`
-  height: auto;
+const StyledImage = styled.img<{ $height?: number }>`
+  height: ${({ $height }): string => ($height === undefined ? 'auto' : spacingIncrement($height))};
   object-fit: cover;
 `
 
-const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading }) => {
-  if (!isEnterpriseLoaded(enterprise)) return <LoadingCarouselCard loading={loading} />
+const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading, size }) => {
+  if (!isEnterpriseLoaded(enterprise)) return <LoadingCarouselCard size={size} loading={loading} />
   const { burned, id, art, immune, immuneUntil } = enterprise
 
   return (
     <Wrapper $burned={burned}>
-      <StyledImage width="100%" alt={id.toString()} src={art.image} />
+      <StyledImage $height={size} width="100%" alt={id.toString()} src={art.image} />
       <TextWrapper active={active}>
         {burned && (
           <OverlayWrapper>
