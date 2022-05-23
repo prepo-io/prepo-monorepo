@@ -3,12 +3,13 @@ import { makeObservable, reaction } from 'mobx'
 import { RootStore } from './RootStore'
 import { SupportedContracts } from '../lib/supported-contracts'
 import { MoatAbi as Moat, MoatAbi__factory } from '../../generated'
-import { transformRawNumber } from '../utils/number-utils'
+import { transformRawEther, transformRawNumber } from '../utils/number-utils'
 
 type EnterpriseHasMoat = Moat['functions']['enterpriseHasMoat']
 type GetLastHadMoat = Moat['functions']['getLastHadMoat']
 type GetMoatCountdown = Moat['functions']['getMoatCountdown']
 type GetMoatImmunityPeriod = Moat['functions']['getMoatImmunityPeriod']
+type GetMoatThreshold = Moat['functions']['getMoatThreshold']
 
 export class MoatContractStore extends ContractStore<RootStore, SupportedContracts> {
   constructor(public root: RootStore) {
@@ -46,7 +47,15 @@ export class MoatContractStore extends ContractStore<RootStore, SupportedContrac
     return this.call<GetMoatImmunityPeriod>('getMoatImmunityPeriod', params)
   }
 
+  getMoatThreshold(...params: Parameters<GetMoatThreshold>): ContractReturn<GetMoatThreshold> {
+    return this.call<GetMoatThreshold>('getMoatThreshold', params)
+  }
+
   get moatImmunityPeriod(): number | undefined {
     return transformRawNumber(this.getMoatImmunityPeriod())
+  }
+
+  get moatThreshold(): number | undefined {
+    return transformRawEther(this.getMoatThreshold())
   }
 }
