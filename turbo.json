@@ -4,7 +4,7 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
-    "prepo-react-boilerplate#build": {
+    "react-boilerplate#build": {
       "dependsOn": [
         "^build",
         "$SENTRY_ORG",
@@ -13,21 +13,40 @@
         "$SENTRY_AUTH_TOKEN",
         "$NPM_RC"
       ],
-      "outputs": [".next/**"]
+      "outputs": [".next/**", "out/**"]
     },
-    "prepo-docs#build": {
+    "docs#build": {
       "dependsOn": ["^build", "$NPM_RC"],
       "outputs": ["build/**"]
     },
-    "prepo-website#build": {
+    "website#build": {
       "dependsOn": ["^build", "$NEXT_PUBLIC_RECAPTCHA_SITE_ID", "$NPM_RC"],
       "outputs": [".next/**", "out/**"]
     },
-    "prepo-simulator#build": {
+    "simulator#build": {
       "dependsOn": ["^build", "$NPM_RC"],
       "outputs": ["dist/**"]
     },
-    "test": {},
+    "acquisition-royale-home#build": {
+      "dependsOn": [
+        "^build",
+        "$NEXT_PUBLIC_NETWORK",
+        "$SENTRY_ORG",
+        "$SENTRY_PROJECT",
+        "$NEXT_PUBLIC_SENTRY_DSN",
+        "$SENTRY_AUTH_TOKEN",
+        "$NPM_RC"
+      ],
+      "outputs": [".next/**", "out/**"]
+    },
+    "acquisition-royale-landing-page#build": {
+      "dependsOn": ["^build", "$NEXT_PUBLIC_NETWORK", "$NPM_RC"],
+      "outputs": [".next/**", "out/**"]
+    },
+    "test": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts"]
+    },
     "lint": {
       "outputs": []
     },

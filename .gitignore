@@ -61,11 +61,19 @@ generated
 **/public/sitemap-0.xml
 **/public/robots.txt
 
+.test_output
+
+# -------- prePO monorepo CI --------
+changed_apps.json
+
 # --------- prepo-docs ---------
 # Generated files
 .docusaurus
 .cache-loader
 .vercel
+docs
+!docs/
+!apps/frontend/docs
 
 # --------- prepo-sdk ---------
 *-debug.log
@@ -73,13 +81,14 @@ generated
 .nyc_output
 packages/prepo-sdk/lib
 tmp
-docs
 
-# --------- prepo-core ---------
+# --------- smart-contracts ---------
 typechain/
-apps/core/artifacts*
-apps/core/cache*
-apps/core/deployments/localhost
-apps/core/deployments/goerli
-apps/core/.openzeppelin/unknown-31337.json
-apps/core/.openzeppelin/goerli.json
+artifacts*
+cache*
+cache
+
+## Ignores deployments/localhost across all the sub-folders
+**/deployments/localhost
+## Ignores .openzeppelin/unknown-31337.json across all the sub-folders
+**/.openzeppelin/unknown-31337.json

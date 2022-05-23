@@ -1,0 +1,120 @@
+name: Deploy production
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  check-merge:
+    name: Pull request merged to main branch
+    runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.set-branch-name.outputs.branch_name }}
+
+    steps:
+    # Helps us to check if a pull request is merged and not closed
+    - name: Check if pull request is merged
+      id: set-branch-name
+      if: github.event.pull_request.merged == 'true'
+      run: | 
+        echo Merged pull request
+
+  generate-artifact-key:
+      name: Generate artifact key
+      runs-on: ubuntu-latest
+      outputs:
+        artifact: ${{ steps.set-artifact-key.outputs.artifact }}
+
+      steps:
+      - name: Generate artifact key
+        id: set-artifact-key
+        # Replace possible / on the string to -
+        run: | 
+          github_head_ref="${{ github.head_ref }}"
+          echo $github_head_ref
+          artifact=$(echo "${github_head_ref}" | sed 's/\//\-/g')
+          echo $artifact
+          echo "::set-output name=artifact::$artifact"
+          
+  
+  checkout-repository:
+    name: Checkout repository
+    needs: [check-merge, generate-artifact-key]
+    runs-on: ubuntu-latest
+    outputs:
+        matrix: ${{ steps.set-matrix.outputs.matrix }}
+    env:
+      GITHUB_CONTEXT: ${{ toJson(github) }}
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: 'Restore node_modules cache'   
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: 'Use NodeJS 14'
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: 'Setup npm'
+      run: |
+        npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+        npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+    - name: Install Dependencies
+      run: |
+        yarn install --frozen-lockfile
+
+    - name: Turbo Cache
+      id: turbo-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules/.cache
+        key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+        restore-keys: |
+          turbo-${{ github.job }}-${{ github.ref_name }}-
+
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{ secrets.GH_PAT }}
+        workflow: deploy-preview-apps.yml
+        name: changed-apps-${{ needs.generate-artifact-key.outputs.artifact }}
+        search_artifacts: true
+
+    - name: Display files
+      run: ls -la
+    
+    - name: Set matrix value
+      id: set-matrix
+      run: |
+          matrix="{\"include\":$(cat changed_apps.json | jq -c -r .)}"
+          echo $matrix
+          echo $matrix | jq .
+          echo "::set-output name=matrix::$matrix"
+
+    - name: Install Vercel CLI
+      run: yarn global add vercel
+
+  deploy-apps:
+    name: Deploy apps
+    needs: checkout-repository
+    runs-on: ubuntu-latest
+    if: |
+      (needs.checkout-repository.outputs.matrix != '' && needs.checkout-repository.outputs.matrix != '[]')
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.checkout-repository.outputs.matrix)}} 
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Deploy to Vercel production
+        run: VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} VERCEL_PROJECT_ID=${{ matrix.projectId }} npx vercel deploy --confirm --prod --token ${{ secrets.VERCEL_TOKEN }}

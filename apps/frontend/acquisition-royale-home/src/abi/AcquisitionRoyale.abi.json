@@ -1,0 +1,865 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "callerId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "targetId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "burnedId", "type": "uint256" }
+    ],
+    "name": "Acquisition",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "owner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "approved", "type": "address" },
+      { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "owner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "operator", "type": "address" },
+      { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }
+    ],
+    "name": "ApprovalForAll",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "callerId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "targetId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "rpSpent", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "damage", "type": "uint256" }
+    ],
+    "name": "Compete",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "compete", "type": "address" }
+    ],
+    "name": "CompeteChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "acquireCost", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "mergeCost", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "acquireRpCost", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "mergeRpCost", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "acquireRpReward", "type": "address" }
+    ],
+    "name": "CostContractsChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "branding", "type": "address" }
+    ],
+    "name": "FallbackBrandingChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "startPrice", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "endPrice", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "startTime", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "endTime", "type": "uint256" }
+    ],
+    "name": "FoundingPriceAndTimeChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "Fundraise",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "startTime", "type": "uint256" }
+    ],
+    "name": "GameStartTimeChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "acquisition", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "merger", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "revival", "type": "uint256" }
+    ],
+    "name": "ImmunityPeriodsChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "callerId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "targetId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "burnedId", "type": "uint256" }
+    ],
+    "name": "Merger",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "percentage", "type": "uint256" }
+    ],
+    "name": "MergerBurnPercentageChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "max", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "base", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "acquisitions", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "mergers", "type": "uint256" }
+    ],
+    "name": "PassiveRpPerDayChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" },
+      { "indexed": false, "internalType": "address", "name": "branding", "type": "address" }
+    ],
+    "name": "Rebrand",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "name", "type": "string" }
+    ],
+    "name": "Rename",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" }
+    ],
+    "name": "Revival",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "branding", "type": "address" },
+      { "indexed": false, "internalType": "bool", "name": "supported", "type": "bool" }
+    ],
+    "name": "SupportForBrandingChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" },
+      { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "enterpriseId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amountAfterFee", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "fee", "type": "uint256" }
+    ],
+    "name": "Withdrawal",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "percentage", "type": "uint256" }
+    ],
+    "name": "WithdrawalBurnPercentageChanged",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "approve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_account", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "burnRP",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_callerId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_targetId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_rpToSpend", "type": "uint256" }
+    ],
+    "name": "compete",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_callerId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_targetId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_burnedId", "type": "uint256" }
+    ],
+    "name": "competeAndAcquire",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_quantity", "type": "uint256" }],
+    "name": "foundAuctioned",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_recipient", "type": "address" }],
+    "name": "foundReserved",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAdmin",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+    "name": "getApproved",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "getArtist",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAuctionCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAuctionPrice",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCompete",
+    "outputs": [{ "internalType": "contract ICompete", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getConsumables",
+    "outputs": [{ "internalType": "contract IERC1155Burnable", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCostContracts",
+    "outputs": [
+      { "internalType": "contract ICost", "name": "acquireCost_", "type": "address" },
+      { "internalType": "contract ICost", "name": "mergeCost_", "type": "address" },
+      { "internalType": "contract ICost", "name": "acquireRpCost_", "type": "address" },
+      { "internalType": "contract ICost", "name": "mergeRpCost_", "type": "address" },
+      { "internalType": "contract ICost", "name": "acquireRpReward_", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "getEnterprise",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint256", "name": "rp", "type": "uint256" },
+          { "internalType": "uint256", "name": "lastRpUpdateTime", "type": "uint256" },
+          { "internalType": "uint256", "name": "acquisitionImmunityStartTime", "type": "uint256" },
+          { "internalType": "uint256", "name": "mergerImmunityStartTime", "type": "uint256" },
+          { "internalType": "uint256", "name": "revivalImmunityStartTime", "type": "uint256" },
+          { "internalType": "uint256", "name": "competes", "type": "uint256" },
+          { "internalType": "uint256", "name": "acquisitions", "type": "uint256" },
+          { "internalType": "uint256", "name": "mergers", "type": "uint256" },
+          { "internalType": "contract IBranding", "name": "branding", "type": "address" },
+          { "internalType": "uint256", "name": "fundraiseRpTotal", "type": "uint256" },
+          { "internalType": "uint256", "name": "fundraiseWethTotal", "type": "uint256" },
+          { "internalType": "uint256", "name": "damageDealt", "type": "uint256" },
+          { "internalType": "uint256", "name": "damageTaken", "type": "uint256" },
+          { "internalType": "uint256", "name": "renames", "type": "uint256" },
+          { "internalType": "uint256", "name": "rebrands", "type": "uint256" },
+          { "internalType": "uint256", "name": "revives", "type": "uint256" }
+        ],
+        "internalType": "struct IAcquisitionRoyale.Enterprise",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "getEnterpriseVirtualBalance",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFallbackBranding",
+    "outputs": [{ "internalType": "contract IBranding", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFoundingPriceAndTime",
+    "outputs": [
+      { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "_endPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "_startTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "_endTime", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFreeCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFundingMode",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getGameStartTime",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getHook",
+    "outputs": [{ "internalType": "contract IAcqrHook", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getImmunityPeriods",
+    "outputs": [
+      { "internalType": "uint256", "name": "_acquisition", "type": "uint256" },
+      { "internalType": "uint256", "name": "_merger", "type": "uint256" },
+      { "internalType": "uint256", "name": "_revival", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxAuctioned",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxFree",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxReserved",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMergerBurnPercentage",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPassiveRpPerDay",
+    "outputs": [
+      { "internalType": "uint256", "name": "_max", "type": "uint256" },
+      { "internalType": "uint256", "name": "_base", "type": "uint256" },
+      { "internalType": "uint256", "name": "_acquisitions", "type": "uint256" },
+      { "internalType": "uint256", "name": "_mergers", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getReservedCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRunwayPoints",
+    "outputs": [{ "internalType": "contract IRunwayPoints", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWithdrawalBurnPercentage",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
+    "name": "hasFoundedFree",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_newName", "type": "string" },
+      { "internalType": "string", "name": "_newSymbol", "type": "string" },
+      { "internalType": "address", "name": "_newVerifier", "type": "address" },
+      { "internalType": "address", "name": "_newWeth", "type": "address" },
+      { "internalType": "address", "name": "_newRunwayPoints", "type": "address" },
+      { "internalType": "address", "name": "_newConsumables", "type": "address" }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "address", "name": "operator", "type": "address" }
+    ],
+    "name": "isApprovedForAll",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "contract IBranding", "name": "_branding", "type": "address" }],
+    "name": "isBrandingSupported",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "isEnterpriseImmune",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
+    "name": "isMinted",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "_name", "type": "string" }],
+    "name": "isNameInUse",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_callerId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_targetId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_burnedId", "type": "uint256" }
+    ],
+    "name": "merge",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "name",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
+    "name": "ownerOf",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" },
+      { "internalType": "contract IBranding", "name": "_branding", "type": "address" }
+    ],
+    "name": "rebrand",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reclaimFunds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" },
+      { "internalType": "string", "name": "_name", "type": "string" }
+    ],
+    "name": "rename",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "revive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_newAdmin", "type": "address" }],
+    "name": "setAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "operator", "type": "address" },
+      { "internalType": "bool", "name": "approved", "type": "bool" }
+    ],
+    "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_newCompete", "type": "address" }],
+    "name": "setCompete",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_newAcquireCost", "type": "address" },
+      { "internalType": "address", "name": "_newMergeCost", "type": "address" },
+      { "internalType": "address", "name": "_newAcquireRpCost", "type": "address" },
+      { "internalType": "address", "name": "_newMergeRpCost", "type": "address" },
+      { "internalType": "address", "name": "_newAcquireRpReward", "type": "address" }
+    ],
+    "name": "setCostContracts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_newFallbackBranding", "type": "address" }],
+    "name": "setFallbackBranding",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_newFoundingStartPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newFoundingEndPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newFoundingStartTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newFoundingEndTime", "type": "uint256" }
+    ],
+    "name": "setFoundingPriceAndTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "_mode", "type": "uint8" }],
+    "name": "setFundingMode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_startTime", "type": "uint256" }],
+    "name": "setGameStartTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_newHook", "type": "address" }],
+    "name": "setHook",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_acquisitionImmunityPeriod", "type": "uint256" },
+      { "internalType": "uint256", "name": "_mergerImmunityPeriod", "type": "uint256" },
+      { "internalType": "uint256", "name": "_revivalImmunityPeriod", "type": "uint256" }
+    ],
+    "name": "setImmunityPeriods",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_percentage", "type": "uint256" }],
+    "name": "setMergerBurnPercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_newMax", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newBase", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newAcquisitions", "type": "uint256" },
+      { "internalType": "uint256", "name": "_newMergers", "type": "uint256" }
+    ],
+    "name": "setPassiveRpPerDay",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_branding", "type": "address" },
+      { "internalType": "bool", "name": "_support", "type": "bool" }
+    ],
+    "name": "setSupportForBranding",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_percentage", "type": "uint256" }],
+    "name": "setWithdrawalBurnPercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }],
+    "name": "supportsInterface",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }],
+    "name": "tokenByIndex",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "tokenOfOwnerByIndex",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" }],
+    "name": "tokenURI",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "transferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_enterpriseId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  { "stateMutability": "payable", "type": "receive" }
+]
