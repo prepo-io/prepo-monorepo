@@ -1,6 +1,6 @@
 import { EMPTY_CONTRACT_ADDRESS } from '@prepo-io/constants'
 import { BigNumber, ethers } from 'ethers'
-import { Art, Enterprise, EnterpriseBasic, RawEnterprise } from '../../types/enterprise.types'
+import { EnterpriseBasic, RawEnterprise } from '../../types/enterprise.types'
 import { EnterpriseArray } from '../AcquisitionRoyaleContractStore'
 
 export const getRawEnterprise = (enterpriseData: EnterpriseArray): RawEnterprise | undefined => {
@@ -29,16 +29,22 @@ export const getRawEnterprise = (enterpriseData: EnterpriseArray): RawEnterprise
 }
 
 export const getReadableEnterpriseBasic = ({
+  enterpriseHasMoat,
   id,
   immuneUntil,
+  lastHadMoat,
+  moatCountdown,
   rawEnterprise,
   rawImmune,
   rawOwnerOf,
   rp,
   rpPerDay,
 }: {
+  enterpriseHasMoat: [boolean]
   id: BigNumber
   immuneUntil: number
+  lastHadMoat: [boolean]
+  moatCountdown: [BigNumber]
   rawEnterprise: RawEnterprise
   rawImmune: [boolean]
   rawOwnerOf: [string]
@@ -46,53 +52,16 @@ export const getReadableEnterpriseBasic = ({
   rpPerDay: number
 }): EnterpriseBasic => ({
   burned: rawOwnerOf[0] === EMPTY_CONTRACT_ADDRESS,
+  hasMoat: enterpriseHasMoat[0],
   id: id.toNumber(),
   immune: rawImmune[0],
   immuneUntil,
+  lastHadMoat: lastHadMoat[0],
+  moatCountdown: moatCountdown[0].toNumber(),
   name: rawEnterprise.name,
   ownerOf: rawOwnerOf[0],
   stats: {
     acquisitions: rawEnterprise.acquisitions.toNumber(),
-    competes: +ethers.utils.formatEther(rawEnterprise.competes),
-    mergers: rawEnterprise.mergers.toNumber(),
-    rp,
-    rpPerDay,
-  },
-  raw: rawEnterprise,
-})
-
-export const getReadableEnterprise = ({
-  id,
-  ownerOf,
-  rawEnterprise,
-  rp,
-  art,
-  rpPerDay,
-  burned,
-  immune,
-  immuneUntil,
-}: {
-  id: BigNumber
-  ownerOf: string
-  rawEnterprise: RawEnterprise
-  rp: number
-  art: Art
-  rpPerDay: number
-  burned: boolean
-  immune: boolean
-  immuneUntil: number
-}): Enterprise | undefined => ({
-  id: id.toNumber(),
-  name: rawEnterprise.name,
-  art,
-  burned,
-  immune,
-  immuneUntil,
-  ownerOf,
-  stats: {
-    acquisitions: rawEnterprise.acquisitions.toNumber(),
-    // seems like this needs format because it's value could be floating points
-    // if we just toNumber it, it might give values like 2000000000000
     competes: +ethers.utils.formatEther(rawEnterprise.competes),
     mergers: rawEnterprise.mergers.toNumber(),
     rp,

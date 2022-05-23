@@ -48,11 +48,14 @@ export type Art = {
 
 export type EnterpriseBasic = {
   burned: boolean
-  ownerOf: string
+  hasMoat: boolean
   id: number
   immune: boolean
   immuneUntil: number
+  lastHadMoat: boolean
+  moatCountdown: number
   name: string
+  ownerOf: string
   raw: RawEnterprise
   stats: {
     rpPerDay: number
