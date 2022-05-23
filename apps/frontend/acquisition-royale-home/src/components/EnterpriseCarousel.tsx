@@ -166,7 +166,11 @@ const EnterpriseCarousel: React.FC<Props> = ({
         : placeholderEnterprises
 
     return enterpriseList.map((enterprise, index) => (
-      <SwiperSlideComponent key={enterprise.id} style={SwiperStyle}>
+      <SwiperSlideComponent
+        // enterprise can be number when it is placeholder, check how enterpriseList is made
+        key={typeof enterprise === 'number' ? enterprise : enterprise.id}
+        style={SwiperStyle}
+      >
         <EnterpriseCard
           active={index === activeIndex}
           enterprise={enterprise}
