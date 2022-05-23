@@ -71,12 +71,12 @@ export const FeaturesSection: FC = ({ children }) => {
 
     const phTop = refTopPlaceholder.current as HTMLElement
     const featuresArea = refFeaturesArea.current as HTMLElement
+    const height =
+      (featuresArea.scrollHeight - featuresArea.clientHeight) / (features.length * features.length)
 
-    const scrollTop =
-      phTop.offsetTop +
-      ((i + 1) * (featuresArea.scrollHeight - featuresArea.clientHeight)) / features.length -
-      1
-    layoutScrollArea.scrollTo({ top: scrollTop })
+    // get to the beginging of next section, then remove 1 bar to fulfill clicked progressbar
+    const additionalHeight = height * (i + 1) - 1
+    layoutScrollArea.scrollTo({ top: phTop.offsetTop + additionalHeight })
   }, [])
 
   const { selectedFeature, prevFeature } = useMemo(
