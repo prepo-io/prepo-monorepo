@@ -1,19 +1,5 @@
 import { BigNumber } from 'ethers'
 
-// TODO: sycn with team to understand what kinds of stats should be in comparison chart
-// these keys should be same as they are on smart contract abi
-export type EnterpriseStatsName = 'rp' | 'competes' | 'acquisitions' | 'mergers'
-
-export type StatsKeyToName = Partial<Record<EnterpriseStatsName, string>>
-
-export type StatsProps = Partial<Record<EnterpriseStatsName, string | number>>
-
-export type EnterpriseProps = {
-  id: number
-  name: string
-  stats?: StatsProps
-}
-
 export type ImmunityPeriods = {
   acquisitionImmunityPeriod: BigNumber
   mergeImmunityPeriod: BigNumber
