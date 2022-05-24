@@ -1,11 +1,10 @@
 import { notification } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { useCallback, useState } from 'react'
-import { useInterval } from 'react-use'
 import styled from 'styled-components'
 import { useRootStore } from '../../../context/RootStoreProvider'
+import useCountdown from '../../../hooks/useCountdown'
 import { SEC_IN_MS } from '../../../lib/constants'
-import { formatPeriod, getNextStartDayTimestamp } from '../../../utils/date-utils'
+import { getNextStartDayTimestamp } from '../../../utils/date-utils'
 import { spacingIncrement } from '../../../utils/theme/utils'
 import ActionCard from '../ActionCard'
 import { internDescription } from '../Descriptions'
@@ -19,14 +18,8 @@ const MessageBelowButton = styled.p`
 
 // use a react component so we don't need to rerender the enter ActionCard every second, improving performance
 const DayResetCountdown: React.FC = () => {
-  const [resetPeriod, setResetPeriod] = useState('')
-  const handleResetPeriod = useCallback(() => {
-    const nextStartDay = getNextStartDayTimestamp()
-    const newResetPeriod = formatPeriod(nextStartDay * SEC_IN_MS, { withSec: true })
-    setResetPeriod(newResetPeriod)
-  }, [])
-
-  useInterval(handleResetPeriod, SEC_IN_MS)
+  const nextStartDay = getNextStartDayTimestamp() * SEC_IN_MS
+  const resetPeriod = useCountdown(nextStartDay, { withSec: true })
 
   return <MessageBelowButton>Day resets in {resetPeriod}</MessageBelowButton>
 }
