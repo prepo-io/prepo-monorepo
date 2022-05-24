@@ -16,6 +16,7 @@ import { Z_INDEX } from '../utils/theme/general-settings'
 import { Enterprises } from '../types/enterprise.types'
 
 const SWIPER_PADDING_PERCENTAGE = 12
+
 const SwiperStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
@@ -33,6 +34,7 @@ export type OverlayProps = {
 
 type Props = {
   activeIndex?: number
+  contentBelowCard?: React.ReactNode
   enterprises?: Enterprises
   loading?: boolean
   overlay?: OverlayProps
@@ -56,6 +58,16 @@ const ArrowWrapper = styled.div<Omit<ArrowProps, 'onClick'>>`
 const ArrowIconWrapper = styled(Icon)`
   ${centered};
   height: 100%;
+`
+
+const ContentBelowCard = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacingIncrement(4)};
+  justify-content: center;
+  padding: 0 ${SWIPER_PADDING_PERCENTAGE}%;
+  width: 100%;
 `
 
 const InnerWrapper = styled.div`
@@ -124,6 +136,7 @@ const SLIDES_PER_VIEW = 1
 
 const EnterpriseCarousel: React.FC<Props> = ({
   activeIndex,
+  contentBelowCard,
   enterprises,
   loading,
   onActiveSlidesChange,
@@ -218,6 +231,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
           <ArrowComponent direction="right" onClick={(): void => swiperRef?.slideNext()} />
         )}
       </InnerWrapper>
+      {Boolean(contentBelowCard) && <ContentBelowCard>{contentBelowCard}</ContentBelowCard>}
       {enterprises && enterprises.length > 1 && activeIndex !== undefined && (
         <Labels>
           {activeIndex + 1}/{enterprises.length}

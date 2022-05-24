@@ -7,6 +7,7 @@ type Props = {
   iconSize?: number
 }
 const StyledTooltip = styled(Tooltip)`
+  display: flex;
   &&& {
     .ant-tooltip-inner {
       background-color: ${({ theme }): string => theme.color.primary};
