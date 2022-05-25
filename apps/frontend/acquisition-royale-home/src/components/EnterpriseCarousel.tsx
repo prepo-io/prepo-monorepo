@@ -67,7 +67,7 @@ const ContentBelowCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacingIncrement(4)};
-  min-height: ${spacingIncrement(32)};
+  min-height: ${spacingIncrement(36)};
   padding: 0 ${SWIPER_PADDING_PERCENTAGE}%;
   width: 100%;
 `

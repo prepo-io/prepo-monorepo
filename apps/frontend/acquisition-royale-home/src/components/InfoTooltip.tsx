@@ -10,13 +10,11 @@ type Props = {
 const TooltipText = styled.div`
   font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.regular};
-  p {
-    margin-bottom: 0;
-  }
 `
 
 const StyledTooltip = styled(Tooltip)`
   display: flex;
+  margin-top: -2px;
   &&& {
     .ant-tooltip-inner {
       background-color: ${({ theme }): string => theme.color.primary};
