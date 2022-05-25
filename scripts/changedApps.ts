@@ -21,6 +21,10 @@ const FRONTEND_APPS: FrontendApp[] = [
     projectId: 'prj_NmTWdZatGYCtOoC6q8xZnUKkySNg',
   },
   {
+    name: 'core-dapp',
+    projectId: 'prj_JWVJ3WoV71UcOmB52qrcezjyBL3V',
+  },
+  {
     name: 'docs',
     projectId: 'prj_P9R3CtLzShfhpRDRTnvFqguGIvtB',
   },

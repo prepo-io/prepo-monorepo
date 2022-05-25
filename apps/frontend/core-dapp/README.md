@@ -4,7 +4,7 @@
 
 ## What is this?
 
-Frontend of the Core dApp of prePO.
+Frontend of the Core dApp of prePO
 
 ## How it was built
 
