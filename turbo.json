@@ -4,6 +4,19 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "core-dapp#build": {
+      "dependsOn": [
+        "^build",
+        "$NEXT_PUBLIC_HOST",
+        "$SENTRY_ORG",
+        "$SENTRY_PROJECT",
+        "$NEXT_PUBLIC_SENTRY_DSN",
+        "$SENTRY_AUTH_TOKEN",
+        "$SENTRY_LOG_LEVEL",
+        "$NPM_RC"
+      ],
+      "outputs": [".next/**", "out/**"]
+    },
     "react-boilerplate#build": {
       "dependsOn": [
         "^build",
