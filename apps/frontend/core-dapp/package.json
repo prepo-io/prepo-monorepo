@@ -78,5 +78,9 @@
     "babel-plugin-styled-components": "2.0.7",
     "typechain": "7.0.0",
     "tsconfig": "*" 
+  },
+  "engines": {
+    "node": "14.x",
+    "yarn": "1.x"
   }
 }
