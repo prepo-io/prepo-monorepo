@@ -7,7 +7,15 @@ import { Enterprise, Enterprises } from '../types/enterprise.types'
 import { generateRandomInt } from '../utils/number-utils'
 
 const MAX_IDS_PER_SEARCH = 80
-const THRESHOLD = Math.ceil(MAX_IDS_PER_SEARCH / 2)
+const THIRD_QUARTER_THRESHOLD = Math.ceil((MAX_IDS_PER_SEARCH / 4) * 3)
+const HALF_THRESHOLD = Math.ceil(MAX_IDS_PER_SEARCH / 2)
+const ONE_QUATER_THRESHOLD = Math.ceil((MAX_IDS_PER_SEARCH / 4) * 1)
+
+const RANDOM_ENTERPRISES_THRESHOLDS = [
+  THIRD_QUARTER_THRESHOLD,
+  HALF_THRESHOLD,
+  ONE_QUATER_THRESHOLD,
+]
 export class CompetitionStore {
   activeEnterpriseId?: number
   localQuery: string
@@ -42,7 +50,7 @@ export class CompetitionStore {
       }),
       ({ randomIds, valid }) => {
         // fill ids when remaining ids are less than 50% of max
-        if (valid && randomIds < THRESHOLD) {
+        if (valid && randomIds < HALF_THRESHOLD) {
           this.generateIds()
         }
       }
@@ -88,6 +96,7 @@ export class CompetitionStore {
         for (let i = 0; i < randomEnterprises.length; i++) {
           const {
             burned,
+            hasMoat,
             ownerOf,
             immune,
             stats: { rp },
@@ -98,8 +107,10 @@ export class CompetitionStore {
           const selectedEnterprise = randomEnterprises[selectedIndex]
           // minimum requirement for enterprise to be selected, otherwise they will be removed from the list by filterRandomEnterprise
           if (!owned && !burned) {
+            const enterpriseProtected = immune || hasMoat
             // unprotected ones are prioritized
-            if (selectedEnterprise.immune && !immune) selectedIndex = i
+            if ((selectedEnterprise.immune || selectedEnterprise.hasMoat) && !enterpriseProtected)
+              selectedIndex = i
 
             // Acquirable Enterprise
             if (!insufficientRp) {
@@ -110,7 +121,7 @@ export class CompetitionStore {
             }
 
             // can stop the loop once we find acquirable unprotected enterprise
-            if (!immune && !insufficientRp) {
+            if (!enterpriseProtected && !insufficientRp) {
               selectedIndex = i
               break
             }
@@ -287,7 +298,20 @@ export class CompetitionStore {
       }
       if (enterprise) enterprises.push(enterprise)
     }
-    return enterprises
+    // everything loaded
+    if (enterprises.length === this.randomIds.length) return enterprises
+
+    // we dont want to wait for everything to be loaded because it will slow down the UI
+    // if returns enterprises directly, every new enterprise loaded makes randomEnterprises a different value
+    // which will cause crazy amount of iterations for reactions
+    // but if return by batches, randomEnterprises is either 20, 40, 60 enterprises, or everything
+    for (let i = 0; i < RANDOM_ENTERPRISES_THRESHOLDS.length; i++) {
+      const threshold = RANDOM_ENTERPRISES_THRESHOLDS[i]
+      if (enterprises.length >= threshold) return enterprises.slice(0, threshold)
+    }
+
+    // if length less than minimum threshold, consider loading
+    return undefined
   }
 
   get searchDisabled(): boolean {
