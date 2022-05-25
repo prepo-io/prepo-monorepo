@@ -1,15 +1,16 @@
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import LoadingCarouselCard from './LoadingCarouselCard'
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { centered, spacingIncrement } from '../utils/theme/utils'
 import { Enterprise } from '../types/enterprise.types'
 import { isEnterpriseLoaded } from '../utils/enterprise-utils'
+import { useRootStore } from '../context/RootStoreProvider'
 
 type Props = {
   active?: boolean
   enterprise: Enterprise
   loading?: boolean
-  size?: number
 }
 
 const Burnt = styled.p`
@@ -56,16 +57,20 @@ const Wrapper = styled.div<{ $burned?: boolean }>`
 
 const StyledImage = styled.img<{ $height?: number }>`
   height: ${({ $height }): string => ($height === undefined ? 'auto' : spacingIncrement($height))};
+  min-height: ${spacingIncrement(1)};
   object-fit: cover;
 `
 
-const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading, size }) => {
-  if (!isEnterpriseLoaded(enterprise)) return <LoadingCarouselCard size={size} loading={loading} />
+const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading }) => {
+  const { uiStore } = useRootStore()
+  const { enterpriseCardWidth } = uiStore
+  if (!isEnterpriseLoaded(enterprise))
+    return <LoadingCarouselCard size={enterpriseCardWidth} loading={loading} />
   const { burned, id, art } = enterprise
 
   return (
     <Wrapper $burned={burned}>
-      <StyledImage $height={size} width="100%" alt={id.toString()} src={art.image} />
+      <StyledImage $height={enterpriseCardWidth} width="100%" alt={id.toString()} src={art.image} />
       <TextWrapper active={active}>
         {burned && (
           <OverlayWrapper>
@@ -85,4 +90,4 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading, 
 
 export type EnterpriseCardProps = Props
 
-export default EnterpriseCard
+export default observer(EnterpriseCard)
