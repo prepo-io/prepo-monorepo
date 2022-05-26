@@ -1,12 +1,5 @@
 import { BigNumber } from 'ethers'
-import { Enterprise, Enterprises, ImmunityPeriods, StatsKeyToName } from '../types/enterprise.types'
-
-export const statsDisplayName: StatsKeyToName = {
-  acquisitions: 'Acquisitions',
-  competes: 'Competes',
-  mergers: 'Mergers',
-  rp: 'RP',
-}
+import { Enterprise, Enterprises, ImmunityPeriods } from '../types/enterprise.types'
 
 export const generateDummyArray = (length: number): number[] => {
   const arr = []

@@ -32,18 +32,30 @@ export class EnterpriseStore {
   }
 
   getEnterpriseById(id: BigNumber): EnterpriseBasic | undefined {
-    const { acquisitionRoyaleContractStore } = this.root
+    const { acquisitionRoyaleContractStore, moatContractStore } = this.root
     const { passiveRpPerDay } = acquisitionRoyaleContractStore
-    if (passiveRpPerDay === undefined) return undefined
     const rawEnterprise = getRawEnterprise(acquisitionRoyaleContractStore.getEnterprise(id))
-    const virtualRpBalance = acquisitionRoyaleContractStore.getEnterpriseVirtualBalance(id)
     if (rawEnterprise === undefined) return undefined
+
+    // retrieve basic info on an enterprise
     const immuneUntil = acquisitionRoyaleContractStore.getEnterpriseImmunityUntil(rawEnterprise)
-    if (immuneUntil === undefined || !virtualRpBalance) return undefined
     const rawImmune = acquisitionRoyaleContractStore.isEnterpriseImmune(id)
-    if (rawImmune === undefined) return undefined
     const rawOwnerOf = acquisitionRoyaleContractStore.ownerOf(id)
-    if (rawOwnerOf === undefined) return undefined
+    const virtualRpBalance = acquisitionRoyaleContractStore.getEnterpriseVirtualBalance(id)
+    const enterpriseHasMoat = moatContractStore.enterpriseHasMoat(id)
+    const lastHadMoat = moatContractStore.getLastHadMoat(id)
+    const moatCountdown = moatContractStore.getMoatCountdown(id)
+    if (
+      passiveRpPerDay === undefined ||
+      immuneUntil === undefined ||
+      rawImmune === undefined ||
+      rawOwnerOf === undefined ||
+      virtualRpBalance === undefined ||
+      enterpriseHasMoat === undefined ||
+      lastHadMoat === undefined ||
+      moatCountdown === undefined
+    )
+      return undefined
     const rp = +ethers.utils.formatEther(virtualRpBalance[0])
     const rpPerDay = calculateRpPerDay(passiveRpPerDay, rawEnterprise)
 
@@ -55,6 +67,9 @@ export class EnterpriseStore {
       rawOwnerOf,
       rp,
       rpPerDay,
+      enterpriseHasMoat,
+      lastHadMoat,
+      moatCountdown,
     })
   }
 

@@ -33,6 +33,7 @@ type GetCostContracts = AcquisitionRoyale['functions']['getCostContracts']
 type GetEnterprise = AcquisitionRoyale['functions']['getEnterprise']
 type GetEnterpriseVirtualBalance = AcquisitionRoyale['functions']['getEnterpriseVirtualBalance']
 type GetFreeCount = AcquisitionRoyale['functions']['getFreeCount']
+type GetHook = AcquisitionRoyale['functions']['getHook']
 type GetImmunityPeriods = AcquisitionRoyale['functions']['getImmunityPeriods']
 type GetMaxAuctioned = AcquisitionRoyale['functions']['getMaxAuctioned']
 type GetMaxFree = AcquisitionRoyale['functions']['getMaxFree']
@@ -228,6 +229,10 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
 
   getFreeCount(...params: Parameters<GetFreeCount>): ContractReturn<GetFreeCount> {
     return this.call<GetFreeCount>('getFreeCount', params)
+  }
+
+  getHook(...params: Parameters<GetHook>): ContractReturn<GetHook> {
+    return this.call<GetHook>('getHook', params)
   }
 
   getImmunityPeriods(
@@ -551,6 +556,10 @@ export class AcquisitionRoyaleContractStore extends ContractStore<RootStore, Sup
 
   get freeCount(): number | undefined {
     return transformRawNumber(this.getFreeCount())
+  }
+
+  get hook(): string | undefined {
+    return formatContractAddress(this.getHook())
   }
 
   get immunityPeriods(): ImmunityPeriods | undefined {

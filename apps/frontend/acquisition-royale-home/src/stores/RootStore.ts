@@ -9,10 +9,12 @@ import { BrandingContractStore } from './BrandingContractStore'
 import { AcquireRPCostContractStore } from './AcquireRPCostContractStore'
 import { AcquisitionRoyaleContractStore } from './AcquisitionRoyaleContractStore'
 import { AcquisitionRoyaleRPShopContractStore } from './AcquisitionRoyaleRPShopContractStore'
+import { AcqrHookV1Store } from './AcqrHookV1Store'
 import { CompeteV1ContractStore } from './CompeteV1ContractStore'
 import { CompetitionStore } from './CompetitionStore'
 import { ConsumablesContractStore } from './ConsumablesContractStore'
 import { MergeRPCostContractStore } from './MergeRPCostContract'
+import { MoatContractStore } from './MoatContractStore'
 import { RunwayPointsContractStore } from './RunwayPointsContractStore'
 import { SignerStore } from './SignerStore'
 import { InternContractStore } from './InternContractStore'
@@ -31,11 +33,13 @@ export class RootStore extends PRootStore<SupportedContracts> {
   acquireRPCostContractStore: AcquireRPCostContractStore
   acquisitionRoyaleContractStore: AcquisitionRoyaleContractStore
   acquisitionRoyaleRPShopContractStore: AcquisitionRoyaleRPShopContractStore
+  acqrHookV1: AcqrHookV1Store
   competeV1ContractStore: CompeteV1ContractStore
   competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
+  moatContractStore: MoatContractStore
   uniswapV2RouterContractStore: UniswapV2RouterContractStore
   localStorageStore: LocalStorageStore
   runwayPointsContractStore: RunwayPointsContractStore
@@ -62,6 +66,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.uniswapV2RouterContractStore = new UniswapV2RouterContractStore(this)
     this.localStorageStore = new LocalStorageStore(this)
     this.acquisitionRoyaleContractStore = new AcquisitionRoyaleContractStore(this)
+    this.acqrHookV1 = new AcqrHookV1Store(this)
     this.acquireRPCostContractStore = new AcquireRPCostContractStore(this)
     this.acquisitionRoyaleRPShopContractStore = new AcquisitionRoyaleRPShopContractStore(this)
     this.acquireStore = new AcquireStore(this)
@@ -71,6 +76,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.signerStore = new SignerStore(this)
     this.mergeStore = new MergeStore(this)
     this.mergeRPCostContractStore = new MergeRPCostContractStore(this)
+    this.moatContractStore = new MoatContractStore(this)
     this.runwayPointsContractStore = new RunwayPointsContractStore(this)
     this.usdcStore = new Erc20Store(this, 'USDC')
     this.brandingContractStore = new BrandingContractStore(this)
