@@ -5617,17 +5617,6 @@
     mobx-state-tree "5.1.3"
     mst-gql "0.14.1"
 
-"@prepo-io/stores@0.24.6":
-  version "0.24.6"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.24.6/189fbbf7f91a458c886bec300fb1633b729260f65543fcd5340b928674555a87#9a8e80215dfb4967cfdc6496e5e6a0d606846d7b"
-  integrity sha512-+16JmvqfnGPtB8j+yP/J1fYP8ruw6qrZ6DBv1QB7VpvCDPw5astb4ZvhVKSDbRbahi66aylXQEYkWOBNNGnTMA==
-  dependencies:
-    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
-    graphql "16.3.0"
-    graphql-request "4.0.0"
-    mobx-state-tree "5.1.3"
-    mst-gql "0.14.1"
-
 "@prepo-io/ui@0.58.1":
   version "0.58.1"
   resolved "https://npm.pkg.github.com/download/@prepo-io/ui/0.58.1/37fa458b300ed6c3c9341b22d2ea4f28fb1f2a8a5548bc33a715a51d662640dd#13ab4eb526b86fd1387f831bb2bb0410a3db05d9"
