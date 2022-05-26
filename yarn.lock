@@ -15906,7 +15906,8 @@ ethereum-cryptography@^1.0.3:
 
 ethereum-multicall@2.10.0:
   version "2.10.0"
-  resolved "git+https://github.com/prepo-io/ethereum-multicall.git#359516f74e66bc6cda16bad8d8170f943765b467"
+  resolved "https://registry.yarnpkg.com/ethereum-multicall/-/ethereum-multicall-2.10.0.tgz#db8e41109e01c63058cf99a1b00770c93e8abb75"
+  integrity sha512-H5rYoNJ+ukV5Z932AkxsEzV9MveJgb1Y5aFfS5SmenFuUkTwx9gje1d1JSl44+Wa8PBLuu9+7BHIX1mdJdQLSg==
   dependencies:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"
@@ -15921,7 +15922,6 @@ ethereum-multicall@2.9.0:
 
 "ethereum-multicall@https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo":
   version "2.10.0"
-  uid "359516f74e66bc6cda16bad8d8170f943765b467"
   resolved "https://github.com/prepo-io/ethereum-multicall#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
     "@ethersproject/providers" "^5.0.10"
