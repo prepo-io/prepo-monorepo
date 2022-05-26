@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Icon, IconName, media, spacingIncrement, Typography } from '@prepo-io/ui'
 import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
-import { NetworkType } from '@prepo-io/constants'
+import { ChainId, NetworkType } from '@prepo-io/constants'
 import Dropdown from './Dropdown'
 import Menu, { MenuItem } from './Menu'
 import { useRootStore } from '../context/RootStoreProvider'
@@ -13,6 +13,7 @@ type NetworkRef = {
   supported: boolean
   name: string
   type: NetworkType
+  chainId: ChainId
 }
 
 const StyledDropdown = styled(Dropdown)`
@@ -72,7 +73,7 @@ const iconNetworkMap: Record<NetworkType, IconName> = {
 }
 
 const comingSoonNetworks: NetworkRef[] = [
-  { iconName: 'arbitrum', name: 'Arbitrum', supported: false, type: 'arbitrum' },
+  { iconName: 'arbitrum', name: 'Arbitrum', supported: false, type: 'arbitrum', chainId: -1 },
 ]
 
 const Item: React.FC<{ network: NetworkRef; selectedName: string }> = ({
@@ -100,17 +101,26 @@ const Item: React.FC<{ network: NetworkRef; selectedName: string }> = ({
 
 const NetworkDropdown: React.FC = () => {
   const {
-    web3Store: { network: selectedNetwork },
+    web3Store,
     config: { supportedNetworks },
   } = useRootStore()
+  const { network: selectedNetwork } = web3Store
+
+  const selectNetowrk = (id: ChainId): void => {
+    const network = supportedNetworks.find(({ chainId }) => chainId === id)
+    if (network) {
+      web3Store.setNetwork(network)
+    }
+  }
 
   const allNetworks = useMemo(
     () =>
       supportedNetworks
-        .map<NetworkRef>(({ name, type }) => ({
-          type: type ?? 'ethereum',
+        .map<NetworkRef>(({ name, chainId, type = 'ethereum' }) => ({
+          type,
+          chainId,
           name,
-          iconName: iconNetworkMap[type ?? 'ethereum'],
+          iconName: iconNetworkMap[type],
           supported: true,
         }))
         .concat(comingSoonNetworks),
@@ -121,7 +131,11 @@ const NetworkDropdown: React.FC = () => {
   const marketsDropdownMenu = (
     <StyledMenu size="md">
       {allNetworks.map((network) => (
-        <StyledMenuItem key={network.name} disabled={!network.supported}>
+        <StyledMenuItem
+          key={network.name}
+          disabled={!network.supported}
+          onClick={(): void => selectNetowrk(network.chainId)}
+        >
           <Item network={network} selectedName={selectedNetwork.name} />
         </StyledMenuItem>
       ))}
