@@ -7,6 +7,7 @@ import Dropdown from './Dropdown'
 import Menu, { MenuItem } from './Menu'
 import { useRootStore } from '../context/RootStoreProvider'
 import useResponsive from '../hooks/useResponsive'
+import { addNetworkToMetamask } from '../utils/metamask-utils'
 
 type NetworkRef = {
   iconName: IconName
@@ -106,10 +107,18 @@ const NetworkDropdown: React.FC = () => {
   } = useRootStore()
   const { network: selectedNetwork } = web3Store
 
-  const selectNetowrk = (id: ChainId): void => {
+  const selectNetowrk = async (id: ChainId): Promise<void> => {
     const network = supportedNetworks.find(({ chainId }) => chainId === id)
     if (network) {
-      web3Store.setNetwork(network)
+      const result = await addNetworkToMetamask({
+        chainId: network.chainId,
+        chainName: network.name,
+        rpcUrls: network.rpcUrls,
+        blockExplorerUrls: [network.blockExplorer],
+      })
+      if (result) {
+        web3Store.setNetwork(network)
+      }
     }
   }
 
@@ -134,7 +143,7 @@ const NetworkDropdown: React.FC = () => {
         <StyledMenuItem
           key={network.name}
           disabled={!network.supported}
-          onClick={(): void => selectNetowrk(network.chainId)}
+          onClick={(): Promise<void> => selectNetowrk(network.chainId)}
         >
           <Item network={network} selectedName={selectedNetwork.name} />
         </StyledMenuItem>
