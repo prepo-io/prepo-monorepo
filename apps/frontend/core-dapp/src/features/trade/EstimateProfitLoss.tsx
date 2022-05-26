@@ -131,6 +131,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
           tooltipBackgrounds={['sliderTooltipBackground', trackColor]}
           trackColor={trackColor}
           trackUnderlyingColor="neutral6"
+          disableSmallThumb
         />
       </SliderWrapper>
       <AlertWrapper>
