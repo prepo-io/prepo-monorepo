@@ -5580,11 +5580,6 @@
     pocket-js-core "0.0.3"
     web3-provider-engine "16.0.1"
 
-"@prepo-io/constants@0.10.3":
-  version "0.10.3"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.10.3/710a59aa659f9d50577d3ce2efee9f958b988b2928d776765fddcdc7eed4e2d9#312d13b3e42377c34cf4a1be9b72214462502ec0"
-  integrity sha512-WNkcnFKpgVYal/whLjxSmvFrik44Opawd5N6svqaWIz57uH0HKjCuQPsYMhGetK4hDOtr7UNP3dfv1+7aIBkKQ==
-
 "@prepo-io/constants@0.13.0":
   version "0.13.0"
   resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.13.0/af3a758f4ab24fc3e008aae2026410b46ea32ff957ad7b038a2b31060f1627d6#401476256e87ac4f9a43f3b88633e2dce2d6056b"
@@ -5599,17 +5594,6 @@
   version "0.23.0"
   resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.23.0/f008f22f4459afcdecb6012b9e508174ec0cd3658ebd011ed469c56a300d444a#941573753529057404c79a6a834614c006c1b455"
   integrity sha512-aIJar7Ny1VAU60iVZ0r/RkTGT8oBPVw6Dmey/qUzBSrKymemu0QSoXVuWBQUVQQRm68oRfTFzvwl9LJO831m+w==
-  dependencies:
-    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
-    graphql "16.3.0"
-    graphql-request "4.0.0"
-    mobx-state-tree "5.1.3"
-    mst-gql "0.14.1"
-
-"@prepo-io/stores@0.24.6":
-  version "0.24.6"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.24.6/189fbbf7f91a458c886bec300fb1633b729260f65543fcd5340b928674555a87#9a8e80215dfb4967cfdc6496e5e6a0d606846d7b"
-  integrity sha512-+16JmvqfnGPtB8j+yP/J1fYP8ruw6qrZ6DBv1QB7VpvCDPw5astb4ZvhVKSDbRbahi66aylXQEYkWOBNNGnTMA==
   dependencies:
     ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
     graphql "16.3.0"
@@ -5647,11 +5631,6 @@
   version "0.10.5"
   resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.5/b3275a1023f2842fcfe69b61c531336572a86dee0ff7b0c9580ddce68fea09ae#5e69e2cf179b46c8e8f0e181923eb68915f733fd"
   integrity sha512-ga6jOYCQxOHAOdzu6DesKCiMYsDTX3Od0DAwugicLFxFzeKjVs6tK99s0fTrl8TsmiJ7kzjqOPmUDl8PeksrxQ==
-
-"@prepo-io/utils@0.8.1":
-  version "0.8.1"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.8.1/511d2def625830e2f7b78b6fd4c1e38b290115455828412484514cf8ed866de3#b504fe3be16360e186b8cb75c337f4da802836cd"
-  integrity sha512-73HUmUVeTvCE20nRvAryeGz02OS2t8b4jsUAzE2XLvTdwohN3To+tvZj+VXAKArNRN5IexQcwLRwLRj0tRO4ZQ==
 
 "@reach/alert@0.13.2":
   version "0.13.2"
@@ -15620,42 +15599,6 @@ ethers@5.5.3:
     "@ethersproject/pbkdf2" "5.5.0"
     "@ethersproject/properties" "5.5.0"
     "@ethersproject/providers" "5.5.2"
-    "@ethersproject/random" "5.5.1"
-    "@ethersproject/rlp" "5.5.0"
-    "@ethersproject/sha2" "5.5.0"
-    "@ethersproject/signing-key" "5.5.0"
-    "@ethersproject/solidity" "5.5.0"
-    "@ethersproject/strings" "5.5.0"
-    "@ethersproject/transactions" "5.5.0"
-    "@ethersproject/units" "5.5.0"
-    "@ethersproject/wallet" "5.5.0"
-    "@ethersproject/web" "5.5.1"
-    "@ethersproject/wordlists" "5.5.0"
-
-ethers@5.5.4:
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.4.tgz#e1155b73376a2f5da448e4a33351b57a885f4352"
-  integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==
-  dependencies:
-    "@ethersproject/abi" "5.5.0"
-    "@ethersproject/abstract-provider" "5.5.1"
-    "@ethersproject/abstract-signer" "5.5.0"
-    "@ethersproject/address" "5.5.0"
-    "@ethersproject/base64" "5.5.0"
-    "@ethersproject/basex" "5.5.0"
-    "@ethersproject/bignumber" "5.5.0"
-    "@ethersproject/bytes" "5.5.0"
-    "@ethersproject/constants" "5.5.0"
-    "@ethersproject/contracts" "5.5.0"
-    "@ethersproject/hash" "5.5.0"
-    "@ethersproject/hdnode" "5.5.0"
-    "@ethersproject/json-wallets" "5.5.0"
-    "@ethersproject/keccak256" "5.5.0"
-    "@ethersproject/logger" "5.5.0"
-    "@ethersproject/networks" "5.5.2"
-    "@ethersproject/pbkdf2" "5.5.0"
-    "@ethersproject/properties" "5.5.0"
-    "@ethersproject/providers" "5.5.3"
     "@ethersproject/random" "5.5.1"
     "@ethersproject/rlp" "5.5.0"
     "@ethersproject/sha2" "5.5.0"
