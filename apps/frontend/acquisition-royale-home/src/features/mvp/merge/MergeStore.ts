@@ -87,6 +87,10 @@ export class MergeStore {
       }
     }
 
+    const rpPerDayComparison = []
+    if (newRpPerDay !== rpPerDay)
+      rpPerDayComparison.push(makeRpPerDayComparison(newRpPerDay, rpPerDay))
+
     return [
       {
         id: signerActiveEnterprise.id,
@@ -94,8 +98,7 @@ export class MergeStore {
         stats: [
           makeRPComparison(newRp, formattedRp),
           makeMergersComparison(mergers + 1, mergers),
-          // don't show if it's the same (e.g. already at max)
-          ...(newRpPerDay !== rpPerDay ? [makeRpPerDayComparison(newRpPerDay, rpPerDay)] : []),
+          ...rpPerDayComparison,
           immunityComparisons,
           ...moatComparison,
         ],
