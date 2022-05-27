@@ -4,6 +4,7 @@ import { RootStore } from '../../../stores/RootStore'
 import {
   INSUFFICIENT_RP,
   LOADING,
+  makeMoatLossMessage,
   makeRPComparison,
   makeRPCostBalance,
   WALLET_BALANCE,
@@ -43,6 +44,7 @@ export class WithdrawStore {
   }
 
   get withdrawComparisons(): ComparisonProps[] | undefined {
+    const { moatThreshold, moatImmunityPeriod } = this.root.moatContractStore
     const { balance } = this.root.runwayPointsContractStore
     const { signerActiveEnterprise } = this.root.signerStore
     const { withdrawAmount, withdrawalBurnPercentage } = this.root.acquisitionRoyaleContractStore
@@ -58,11 +60,15 @@ export class WithdrawStore {
     const newRp = rp - +withdrawAmount
     const newBalance = balance + +withdrawAmount * (1 - withdrawalBurnPercentage)
 
+    const moatComparison = []
+    if (rp >= moatThreshold && newRp < moatThreshold)
+      moatComparison.push(makeMoatLossMessage(moatImmunityPeriod))
+
     return [
       {
         id: signerActiveEnterprise?.id,
         name: signerActiveEnterprise.name,
-        stats: [makeRPComparison(newRp, rp)],
+        stats: [makeRPComparison(newRp, rp), ...moatComparison],
       },
       {
         // only purpose of this id is to provide a unique key to map
