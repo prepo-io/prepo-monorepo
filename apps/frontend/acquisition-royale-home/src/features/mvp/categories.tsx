@@ -1,5 +1,5 @@
 import Acquire from './acquire'
-import Compete from './actions/Compete'
+import Compete from './compete/Compete'
 import DepositRp from './actions/DepositRp'
 import Intern from './actions/Intern'
 import Rename from './actions/Rename'

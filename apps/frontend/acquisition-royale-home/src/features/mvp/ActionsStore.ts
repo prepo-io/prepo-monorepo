@@ -4,9 +4,7 @@ import { CostBalance } from './ActionCard'
 import { ComparisonProps } from './StatsComparison'
 import { RootStore } from '../../stores/RootStore'
 import {
-  ENTERPRISE_IMMUNE,
   INSUFFICIENT_RP,
-  makeImmunityRemoved,
   makeRebrandCostBalance,
   makeRenameCostBalance,
   makeReviveCostBalance,
@@ -30,37 +28,6 @@ export class ActionsStore {
   }
 
   // action props ...
-
-  get competeButtonProps(): ButtonProps {
-    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
-    const { competitionActiveEnterprise } = this.root.competitionStore
-    const { competeRp } = this.root.acquisitionRoyaleContractStore
-
-    if (signerEnterprises && signerEnterprises.length === 0) {
-      return { disabled: true, children: 'No owned Enterprise' }
-    }
-    if (!signerActiveEnterprise) {
-      return LOADING
-    }
-    if (!competitionActiveEnterprise) {
-      return { disabled: true, children: "Select a competitor's Enterprise" }
-    }
-    if (competitionActiveEnterprise.burned) {
-      return { disabled: true, children: 'Enterprise is burnt!' }
-    }
-    if (competitionActiveEnterprise.immune) {
-      return { disabled: true, children: ENTERPRISE_IMMUNE }
-    }
-    if (!competeRp) {
-      return { disabled: true, children: 'Enter compete amount' }
-    }
-    if (+competeRp > signerActiveEnterprise.stats.rp) {
-      return { disabled: true, children: INSUFFICIENT_RP }
-    }
-    return {
-      children: `Attack ${competitionActiveEnterprise.name} with ${competeRp} RP`,
-    }
-  }
 
   get depositButtonProps(): ButtonProps {
     const { balance } = this.root.runwayPointsContractStore
@@ -221,11 +188,6 @@ export class ActionsStore {
 
   // balances ...
 
-  get competeBalances(): CostBalance[] {
-    const { signerActiveEnterprise } = this.root.signerStore
-    return [makeRPCostBalance(signerActiveEnterprise?.stats.rp || 0)]
-  }
-
   get depositBalances(): CostBalance[] {
     const { balance } = this.root.runwayPointsContractStore
     return [makeRPCostBalance(balance || 0)]
@@ -256,11 +218,6 @@ export class ActionsStore {
 
   // costs ...
 
-  get competeCosts(): CostBalance[] {
-    const { competeRp } = this.root.acquisitionRoyaleContractStore
-    return [makeRPCostBalance(competeRp || 0)]
-  }
-
   get rebrandCosts(): CostBalance[] | undefined {
     const { rebrandBalance } = this.root.consumablesContractStore
     if (rebrandBalance === undefined) return undefined
@@ -280,43 +237,6 @@ export class ActionsStore {
   }
 
   // stats comparisons ...
-
-  get competeComparisons(): ComparisonProps[] | undefined {
-    const { signerActiveEnterprise } = this.root.signerStore
-    const { competitionActiveEnterprise } = this.root.competitionStore
-    const { competeRp } = this.root.acquisitionRoyaleContractStore
-    const { damage } = this.root.competeV1ContractStore
-    if (!signerActiveEnterprise || !competitionActiveEnterprise || damage === undefined)
-      return undefined
-    const formattedSignerAfter = formatNumberToNumber(signerActiveEnterprise.stats.rp - +competeRp)
-    const formattedSignerBefore = formatNumberToNumber(signerActiveEnterprise.stats.rp)
-    const formattedTargetAfter = formatNumberToNumber(competitionActiveEnterprise.stats.rp - damage)
-    const formattedTargetBefore = formatNumberToNumber(competitionActiveEnterprise.stats.rp)
-    if (
-      formattedSignerAfter === undefined ||
-      formattedSignerBefore === undefined ||
-      formattedTargetAfter === undefined ||
-      formattedTargetBefore === undefined
-    ) {
-      return undefined
-    }
-
-    return [
-      {
-        id: signerActiveEnterprise.id,
-        name: signerActiveEnterprise.name,
-        stats: [
-          makeRPComparison(formattedSignerAfter, formattedSignerBefore),
-          ...(signerActiveEnterprise.immune ? [makeImmunityRemoved()] : []),
-        ],
-      },
-      {
-        id: competitionActiveEnterprise.id,
-        name: competitionActiveEnterprise.name,
-        stats: [makeRPComparison(formattedTargetAfter, formattedTargetBefore)],
-      },
-    ]
-  }
 
   get depositComparisons(): ComparisonProps[] | undefined {
     const { signerActiveEnterprise } = this.root.signerStore

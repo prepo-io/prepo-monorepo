@@ -10,8 +10,8 @@ import MyEnterprises from '../MyEnterprises'
 import Competition from '../Competition'
 
 const CompeteAction: React.FC = () => {
-  const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
-  const { competeButtonProps, competeBalances, competeCosts, competeComparisons } = actionsStore
+  const { acquisitionRoyaleContractStore, competeStore } = useRootStore()
+  const { competeButtonProps, competeBalances, competeCosts, competeComparisons } = competeStore
   const { compete, competeRp, competing, setCompeteRp } = acquisitionRoyaleContractStore
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

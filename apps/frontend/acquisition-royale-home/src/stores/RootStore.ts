@@ -26,6 +26,7 @@ import { RpShopStore } from '../features/mvp/stores/RpShopStore'
 import { SupportedContracts } from '../lib/supported-contracts'
 import { MergeStore } from '../features/mvp/merge'
 import { AcquireStore } from '../features/mvp/acquire'
+import { CompeteStore } from '../features/mvp/compete/CompeteStore'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
@@ -34,6 +35,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   acquisitionRoyaleContractStore: AcquisitionRoyaleContractStore
   acquisitionRoyaleRPShopContractStore: AcquisitionRoyaleRPShopContractStore
   acqrHookV1: AcqrHookV1Store
+  competeStore: CompeteStore
   competeV1ContractStore: CompeteV1ContractStore
   competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
@@ -70,6 +72,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.acquireRPCostContractStore = new AcquireRPCostContractStore(this)
     this.acquisitionRoyaleRPShopContractStore = new AcquisitionRoyaleRPShopContractStore(this)
     this.acquireStore = new AcquireStore(this)
+    this.competeStore = new CompeteStore(this)
     this.consumablesContractStore = new ConsumablesContractStore(this)
     this.enterprisesStore = new EnterpriseStore(this)
     this.competitionStore = new CompetitionStore(this)
