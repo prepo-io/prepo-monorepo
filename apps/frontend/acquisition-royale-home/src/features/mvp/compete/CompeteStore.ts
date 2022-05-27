@@ -22,11 +22,12 @@ export class CompeteStore {
     const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
     const { competitionActiveEnterprise } = this.root.competitionStore
     const { competeRp } = this.root.acquisitionRoyaleContractStore
+    const { damage } = this.root.competeV1ContractStore
 
     if (signerEnterprises && signerEnterprises.length === 0) {
       return { disabled: true, children: 'No owned Enterprise' }
     }
-    if (!signerActiveEnterprise) {
+    if (!signerActiveEnterprise || damage === undefined) {
       return LOADING
     }
     if (!competitionActiveEnterprise) {
@@ -72,8 +73,8 @@ export class CompeteStore {
     const { rp: targetRp } = competitionActiveEnterprise.stats
 
     const signerRpAfter = signerRp - +competeRp
-    const targetRpAfter = competitionActiveEnterprise.stats.rp - damage
-
+    let targetRpAfter = competitionActiveEnterprise.stats.rp - damage
+    targetRpAfter = Math.max(targetRpAfter, 0)
     const signerMoat = []
     if (signerRp >= moatThreshold && signerRpAfter < moatThreshold)
       signerMoat.push(makeMoatLossMessage(moatImmunityPeriod))
