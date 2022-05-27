@@ -78,10 +78,14 @@ export class MergeStore {
       signerActiveEnterprise.immuneUntil
     )
     const moatComparison = []
+
     if (newRp >= moatThreshold) {
       if (!hasMoat) {
         moatComparison.push(makeMoatGainMessage())
-        // in recovery state if hasMoat but current RP is below threshold
+        // recovery state = rp < threshold && moatUntil is in the future
+        // hasMoat = rp > threshold || moatUntil is in the future
+        // which bring us to: moatUntil is in the future = rp < moatThreshold && hasMoat
+        // so if rp < moatThreshold && hasMoat, moatUntil is in the future && rp < threshold
       } else if (rp < moatThreshold) {
         moatComparison.push(makeMoatRecoverMessage())
       }

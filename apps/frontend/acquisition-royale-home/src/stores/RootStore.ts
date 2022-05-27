@@ -27,6 +27,7 @@ import { SupportedContracts } from '../lib/supported-contracts'
 import { MergeStore } from '../features/mvp/merge'
 import { AcquireStore } from '../features/mvp/acquire'
 import { CompeteStore } from '../features/mvp/compete/CompeteStore'
+import { DepositStore } from '../features/mvp/deposit/DepositStore'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
@@ -39,6 +40,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   competeV1ContractStore: CompeteV1ContractStore
   competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
+  depositStore: DepositStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
   moatContractStore: MoatContractStore
@@ -74,6 +76,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.acquireStore = new AcquireStore(this)
     this.competeStore = new CompeteStore(this)
     this.consumablesContractStore = new ConsumablesContractStore(this)
+    this.depositStore = new DepositStore(this)
     this.enterprisesStore = new EnterpriseStore(this)
     this.competitionStore = new CompetitionStore(this)
     this.signerStore = new SignerStore(this)

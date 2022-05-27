@@ -29,27 +29,6 @@ export class ActionsStore {
 
   // action props ...
 
-  get depositButtonProps(): ButtonProps {
-    const { balance } = this.root.runwayPointsContractStore
-    const { signerEnterprises, signerActiveEnterprise } = this.root.signerStore
-    const { depositAmount } = this.root.acquisitionRoyaleContractStore
-    if (signerEnterprises && signerEnterprises.length === 0) {
-      return { disabled: true, children: 'No owned Enterprise' }
-    }
-    if (!signerActiveEnterprise || balance === undefined) {
-      return LOADING
-    }
-    if (!depositAmount) {
-      return { disabled: true, children: 'Enter deposit amount' }
-    }
-    if (+depositAmount > balance) {
-      return { disabled: true, children: INSUFFICIENT_RP }
-    }
-    return {
-      children: `Deposit ${depositAmount} RP into ${signerActiveEnterprise.name}`,
-    }
-  }
-
   get internButtonProps(): ButtonProps {
     const { doingTask, randomTaskIndex } = this.root.internStore
     const {
@@ -188,11 +167,6 @@ export class ActionsStore {
 
   // balances ...
 
-  get depositBalances(): CostBalance[] {
-    const { balance } = this.root.runwayPointsContractStore
-    return [makeRPCostBalance(balance || 0)]
-  }
-
   get rebrandBalances(): CostBalance[] | undefined {
     const { rebrandBalance } = this.root.consumablesContractStore
     if (rebrandBalance === undefined) return undefined
@@ -237,22 +211,6 @@ export class ActionsStore {
   }
 
   // stats comparisons ...
-
-  get depositComparisons(): ComparisonProps[] | undefined {
-    const { signerActiveEnterprise } = this.root.signerStore
-    const { depositAmount } = this.root.acquisitionRoyaleContractStore
-    if (!signerActiveEnterprise || depositAmount === '') return undefined
-    const formattedRpBefore = formatNumberToNumber(signerActiveEnterprise.stats.rp)
-    const formattedRpAfter = formatNumberToNumber(signerActiveEnterprise.stats.rp + +depositAmount)
-    if (formattedRpAfter === undefined || formattedRpBefore === undefined) return undefined
-    return [
-      {
-        id: signerActiveEnterprise?.id,
-        name: signerActiveEnterprise.name,
-        stats: [makeRPComparison(formattedRpAfter, formattedRpBefore)],
-      },
-    ]
-  }
 
   get rebrandComparisons(): ComparisonProps[] | undefined {
     const { rebrandBalance } = this.root.consumablesContractStore

@@ -1,6 +1,6 @@
 import Acquire from './acquire'
 import Compete from './compete/Compete'
-import DepositRp from './actions/DepositRp'
+import DepositRp from './deposit/DepositRp'
 import Intern from './actions/Intern'
 import Rename from './actions/Rename'
 import Revive from './actions/Revive'
