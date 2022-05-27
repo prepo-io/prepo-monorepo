@@ -4,19 +4,14 @@ import { CostBalance } from './ActionCard'
 import { ComparisonProps } from './StatsComparison'
 import { RootStore } from '../../stores/RootStore'
 import {
-  INSUFFICIENT_RP,
   makeRebrandCostBalance,
   makeRenameCostBalance,
   makeReviveCostBalance,
-  makeRPComparison,
-  makeRPCostBalance,
   REBRAND_TOKENS,
   RENAME_TOKENS,
   REVIVE_TOKENS,
-  WALLET_BALANCE,
   LOADING,
 } from '../../utils/common-utils'
-import { formatNumberToNumber } from '../../utils/number-utils'
 import { tasks } from '../../lib/intern'
 import { SEC_IN_MS } from '../../lib/constants'
 import { formatPeriod } from '../../utils/date-utils'
@@ -144,27 +139,6 @@ export class ActionsStore {
     return { children: `Revive and own ${competitionActiveEnterprise.name}` }
   }
 
-  get withdrawButtonProps(): ButtonProps {
-    const { balance } = this.root.runwayPointsContractStore
-    const { signerActiveEnterprise, signerEnterprises } = this.root.signerStore
-    const { withdrawAmount } = this.root.acquisitionRoyaleContractStore
-    if (signerEnterprises && signerEnterprises.length === 0) {
-      return { disabled: true, children: 'No owned Enterprise' }
-    }
-    if (!signerActiveEnterprise || balance === undefined) {
-      return LOADING
-    }
-    if (!withdrawAmount) {
-      return { disabled: true, children: 'Enter withdrawal amount' }
-    }
-    if (+withdrawAmount > signerActiveEnterprise.stats.rp) {
-      return { disabled: true, children: INSUFFICIENT_RP }
-    }
-    return {
-      children: `Withdraw ${withdrawAmount} RP from ${signerActiveEnterprise.name}`,
-    }
-  }
-
   // balances ...
 
   get rebrandBalances(): CostBalance[] | undefined {
@@ -183,11 +157,6 @@ export class ActionsStore {
     const { reviveBalance } = this.root.consumablesContractStore
     if (reviveBalance === undefined) return undefined
     return [makeReviveCostBalance(reviveBalance)]
-  }
-
-  get withdrawBalances(): CostBalance[] {
-    const { signerActiveEnterprise } = this.root.signerStore
-    return [makeRPCostBalance(signerActiveEnterprise?.stats.rp || 0)]
   }
 
   // costs ...
@@ -250,46 +219,6 @@ export class ActionsStore {
         id: 0,
         name: REVIVE_TOKENS,
         stats: [{ after: reviveBalance - 1, before: reviveBalance }],
-      },
-    ]
-  }
-
-  get withdrawComparisons(): ComparisonProps[] | undefined {
-    const { balance } = this.root.runwayPointsContractStore
-    const { signerActiveEnterprise } = this.root.signerStore
-    const { withdrawAmount, withdrawalBurnPercentage } = this.root.acquisitionRoyaleContractStore
-    if (
-      !signerActiveEnterprise ||
-      withdrawAmount === '' ||
-      balance === undefined ||
-      withdrawalBurnPercentage === undefined
-    )
-      return undefined
-    const formattedRpBefore = formatNumberToNumber(signerActiveEnterprise.stats.rp)
-    const formattedRpAfter = formatNumberToNumber(signerActiveEnterprise.stats.rp - +withdrawAmount)
-    const formattedWalletRpAfter = formatNumberToNumber(
-      balance + +withdrawAmount * (1 - withdrawalBurnPercentage)
-    )
-    const formattedWalletRpBefore = formatNumberToNumber(balance)
-    if (
-      formattedRpAfter === undefined ||
-      formattedRpBefore === undefined ||
-      formattedWalletRpAfter === undefined ||
-      formattedWalletRpBefore === undefined
-    )
-      return undefined
-    return [
-      {
-        id: signerActiveEnterprise?.id,
-        name: signerActiveEnterprise.name,
-        stats: [makeRPComparison(formattedRpAfter, formattedRpBefore)],
-      },
-      {
-        // only purpose of this id is to provide a unique key to map
-        // it can be any value as long as not conflicting with other values in this list
-        id: signerActiveEnterprise?.id === 0 ? 1 : 0,
-        name: WALLET_BALANCE,
-        stats: [makeRPComparison(formattedWalletRpAfter, formattedWalletRpBefore)],
       },
     ]
   }

@@ -28,6 +28,7 @@ import { MergeStore } from '../features/mvp/merge'
 import { AcquireStore } from '../features/mvp/acquire'
 import { CompeteStore } from '../features/mvp/compete'
 import { DepositStore } from '../features/mvp/deposit'
+import { WithdrawStore } from '../features/mvp/withdraw'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
@@ -55,6 +56,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   internStore: InternStore
   rpShopStore: RpShopStore
   signerStore: SignerStore
+  withdrawStore: WithdrawStore
 
   constructor() {
     super({
@@ -91,5 +93,6 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.internContractStore = new InternContractStore(this)
     this.internStore = new InternStore(this)
     this.rpShopStore = new RpShopStore(this)
+    this.withdrawStore = new WithdrawStore(this)
   }
 }
