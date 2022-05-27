@@ -109,9 +109,7 @@ export const makeImmunityRemoved = (): CompareItem => ({
 })
 
 export const makeImmunityComaprison = (immunityPeriod: BigNumber, before: number): CompareItem => {
-  if (immunityPeriod.toNumber() === 0) {
-    return makeImmunityRemoved()
-  }
+  if (immunityPeriod.toNumber() === 0) return makeImmunityRemoved()
 
   const now = new Date().getTime()
   const after = immunityPeriod.toNumber() + now
@@ -124,6 +122,14 @@ export const makeImmunityComaprison = (immunityPeriod: BigNumber, before: number
     formatBefore: formatTimestamp,
   }
 }
+
+export const makeMoatGainMessage = (): CompareItem => ({
+  label: 'Enterprise will gain Moat protection.',
+})
+
+export const makeMoatRecoverMessage = (): CompareItem => ({
+  label: 'Moat protection will be recovered.',
+})
 
 export const makeRpPerDayComparison = (after: number, before: number): CompareItem => ({
   after,

@@ -7,6 +7,8 @@ import {
   LOADING,
   makeImmunityComaprison,
   makeMergersComparison,
+  makeMoatGainMessage,
+  makeMoatRecoverMessage,
   makeRPComparison,
   makeRPCostBalanceWallet,
   makeRpPerDayComparison,
@@ -49,17 +51,20 @@ export class MergeStore {
   }
 
   get mergeComparisons(): ComparisonProps[] | undefined {
+    const { moatThreshold } = this.root.moatContractStore
     const { mergeTargetEnterprise, signerActiveEnterprise } = this.root.signerStore
     const { getNewRpPerDay, mergerImmunityPeriod, passiveRpPerDay } =
       this.root.acquisitionRoyaleContractStore
     if (
       !mergeTargetEnterprise ||
       !signerActiveEnterprise ||
-      !passiveRpPerDay ||
-      !mergerImmunityPeriod
+      passiveRpPerDay === undefined ||
+      mergerImmunityPeriod === undefined ||
+      moatThreshold === undefined
     ) {
       return undefined
     }
+    const { hasMoat } = signerActiveEnterprise
     const { mergers, rp, rpPerDay } = signerActiveEnterprise.stats
     const { rp: targetRp } = mergeTargetEnterprise.stats
 
@@ -72,6 +77,16 @@ export class MergeStore {
       mergerImmunityPeriod.mul(SEC_IN_MS),
       signerActiveEnterprise.immuneUntil
     )
+    const moatComparison = []
+    if (newRp >= moatThreshold) {
+      if (!hasMoat) {
+        moatComparison.push(makeMoatGainMessage())
+        // in recovery state if hasMoat but current RP is below threshold
+      } else if (rp < moatThreshold) {
+        moatComparison.push(makeMoatRecoverMessage())
+      }
+    }
+
     return [
       {
         id: signerActiveEnterprise.id,
@@ -82,6 +97,7 @@ export class MergeStore {
           // don't show if it's the same (e.g. already at max)
           ...(newRpPerDay !== rpPerDay ? [makeRpPerDayComparison(newRpPerDay, rpPerDay)] : []),
           immunityComparisons,
+          ...moatComparison,
         ],
       },
       {
