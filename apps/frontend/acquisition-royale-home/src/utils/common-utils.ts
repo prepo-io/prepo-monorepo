@@ -1,3 +1,5 @@
+import { SEC_IN_MS } from '@prepo-io/constants'
+import { truncateAmountString } from '@prepo-io/utils'
 import { BigNumber } from 'ethers'
 import { formatTimestamp } from './date-utils'
 import { CostBalance } from '../features/mvp/ActionCard'
@@ -101,6 +103,8 @@ export const makeRPComparison = (after: number, before: number): CompareItem => 
   after,
   before,
   unit: 'RP',
+  formatAfter: (value) => truncateAmountString(`${value}`),
+  formatBefore: (value) => truncateAmountString(`${value}`),
 })
 
 export const makeImmunityRemoved = (): CompareItem => ({
@@ -130,6 +134,18 @@ export const makeMoatGainMessage = (): CompareItem => ({
 export const makeMoatRecoverMessage = (): CompareItem => ({
   label: 'Moat protection will be recovered.',
 })
+
+export const makeMoatLossMessage = (moatPeriod: number): CompareItem => {
+  const now = new Date().getTime()
+  const after = moatPeriod * SEC_IN_MS + now
+  return {
+    after,
+    before: after + 1,
+    hideBefore: true,
+    label: 'Moat protection will be lost after ',
+    formatAfter: formatTimestamp,
+  }
+}
 
 export const makeRpPerDayComparison = (after: number, before: number): CompareItem => ({
   after,
