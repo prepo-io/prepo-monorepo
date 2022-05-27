@@ -22,12 +22,12 @@ import { InternStore } from './InternStore'
 import { EnterpriseStore } from './EnterprisesStore'
 import { storeConfig } from './utils/stores-config'
 import { ActionsStore } from '../features/mvp/ActionsStore'
-import { RpShopStore } from '../features/mvp/stores/RpShopStore'
+import { RpShopStore } from '../features/mvp/rpshop'
 import { SupportedContracts } from '../lib/supported-contracts'
 import { MergeStore } from '../features/mvp/merge'
 import { AcquireStore } from '../features/mvp/acquire'
-import { CompeteStore } from '../features/mvp/compete/CompeteStore'
-import { DepositStore } from '../features/mvp/deposit/DepositStore'
+import { CompeteStore } from '../features/mvp/compete'
+import { DepositStore } from '../features/mvp/deposit'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
