@@ -1,6 +1,6 @@
 import { ButtonProps } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import Reward, { RewardConfig } from 'react-rewards'
 import { defaultRewardConfig } from './reward-constants'
@@ -16,6 +16,7 @@ import { RewardElements } from '../../stores/UiStore'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { CARDS_MAX_WIDTH } from '../../lib/constants'
 import { media } from '../../utils/theme/media'
+import Icon from '../../components/icon'
 
 export type CostBreakdown = {
   amount: string
@@ -45,6 +46,7 @@ type Props = {
   costLabel?: string
   costs?: CostBalance[]
   description?: React.ReactNode
+  expandable?: boolean
   loading?: boolean
   lowMatic?: boolean
   messageBelowButton?: React.ReactNode
@@ -108,19 +110,36 @@ const InputWrapper = styled.div`
   margin-top: ${spacingIncrement(12)};
 `
 
+const ExpandableContent = styled.form<{ expanded: boolean }>`
+  max-height: ${({ expanded }): string =>
+    expanded ? spacingIncrement(9999) : spacingIncrement(0)};
+  overflow: hidden;
+  transition: 0.3s;
+`
+
 const Description = styled.div`
   color: ${({ theme }): string => theme.color.grey};
   font-size: ${({ theme }): string => theme.fontSize.base};
   margin: 0;
-  margin-top: ${spacingIncrement(24)};
+  padding-top: ${spacingIncrement(24)};
   text-align: center;
   ${media.tablet`
   font-size: ${({ theme }): string => theme.fontSize.sm};
   `}
 `
 
+const ExpandIconWrapper = styled.div<{ expanded: boolean }>`
+  cursor: pointer;
+  transform: rotate(${({ expanded }): string => (expanded ? '180deg' : '0deg')});
+`
 const LowMaticWrapper = styled.div`
   margin-top: ${spacingIncrement(4)};
+`
+
+const Header = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${spacingIncrement(12)};
 `
 
 const SemiboldUnderlinedSmallText = styled.p`
@@ -171,6 +190,7 @@ const ActionCard: React.FC<Props> = ({
   costs,
   costLabel = 'Total Cost',
   description,
+  expandable,
   input,
   loading,
   lowMatic,
@@ -179,6 +199,8 @@ const ActionCard: React.FC<Props> = ({
   title,
 }) => {
   const { web3Store, uiStore } = useRootStore()
+  const [expanded, setExpanded] = useState(!expandable)
+
   const { connected } = web3Store
   const balance = useMemo(() => {
     if (!balances) return null
@@ -266,36 +288,47 @@ const ActionCard: React.FC<Props> = ({
     if (typeof action === 'function') action()
   }
 
+  const toggleExpanded = (): void => setExpanded(!expanded)
+
   return (
     <Wrapper>
-      <FancyTitle>{title}</FancyTitle>
-      <Description>{description}</Description>
-      {children}
-      <form onSubmit={handleSubmit}>
-        {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
-        {(cost !== null || balance !== null) && (
-          <SummaryWrapper>
-            {cost}
-            {balance}
-          </SummaryWrapper>
+      <Header>
+        <FancyTitle>{title}</FancyTitle>
+        {expandable && (
+          <ExpandIconWrapper expanded={expanded} onClick={toggleExpanded}>
+            <Icon name="downArrow" />
+          </ExpandIconWrapper>
         )}
-        {lowMatic && (
-          <LowMaticWrapper>
-            <LowMatic />
-          </LowMaticWrapper>
-        )}
-        <Center>{reward}</Center>
-        <ActionWrapper>{button}</ActionWrapper>
-      </form>
-      {messageBelowButton}
-      {comparisons &&
-        comparisons.map((comparison) => (
-          <ComparisonWrapper key={comparison.id.toString()}>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <StatsComparison {...comparison} />
-          </ComparisonWrapper>
-        ))}
-      {comingSoon && <ComingSoon>...Coming Soon...</ComingSoon>}
+      </Header>
+      <ExpandableContent expanded={expanded}>
+        <Description>{description}</Description>
+        {children}
+        <form onSubmit={handleSubmit}>
+          {Boolean(input) && <InputWrapper>{input}</InputWrapper>}
+          {(cost !== null || balance !== null) && (
+            <SummaryWrapper>
+              {cost}
+              {balance}
+            </SummaryWrapper>
+          )}
+          {lowMatic && (
+            <LowMaticWrapper>
+              <LowMatic />
+            </LowMaticWrapper>
+          )}
+          <Center>{reward}</Center>
+          <ActionWrapper>{button}</ActionWrapper>
+        </form>
+        {messageBelowButton}
+        {comparisons &&
+          comparisons.map((comparison) => (
+            <ComparisonWrapper key={comparison.id.toString()}>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <StatsComparison {...comparison} />
+            </ComparisonWrapper>
+          ))}
+        {comingSoon && <ComingSoon>...Coming Soon...</ComingSoon>}
+      </ExpandableContent>
     </Wrapper>
   )
 }
