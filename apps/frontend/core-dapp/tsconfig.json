@@ -15,10 +15,7 @@
     "jsx": "preserve",
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
-    "incremental": true,
-    "declaration": true,
-    "declarationDir": "./",
-    "baseUrl": "."
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
