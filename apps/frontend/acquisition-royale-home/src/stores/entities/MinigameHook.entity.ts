@@ -21,58 +21,58 @@ export class MinigameHookStore extends ContractStore<RootStore, SupportedContrac
   }
 
   private getMinAcquireCount(): ContractReturn<GetMinAcquireCount> {
-    return this.call<GetMinAcquireCount>('getMinAcquireCount', [], { subscribe: false })
+    return this.call<GetMinAcquireCount>('getMinAcquireCount', [])
   }
 
   private getMinCompeteCount(): ContractReturn<GetMinCompeteCount> {
-    return this.call<GetMinCompeteCount>('getMinCompeteCount', [], { subscribe: false })
+    return this.call<GetMinCompeteCount>('getMinCompeteCount', [])
   }
 
   private getMinEnterpriseCount(): ContractReturn<GetMinEnterpriseCount> {
-    return this.call<GetMinEnterpriseCount>('getMinEnterpriseCount', [], { subscribe: false })
+    return this.call<GetMinEnterpriseCount>('getMinEnterpriseCount', [])
   }
 
   private getMinMergeCount(): ContractReturn<GetMinMergeCount> {
-    return this.call<GetMinMergeCount>('getMinMergeCount', [], { subscribe: false })
+    return this.call<GetMinMergeCount>('getMinMergeCount', [])
   }
 
   private getMinReviveCount(): ContractReturn<GetMinReviveCount> {
-    return this.call<GetMinReviveCount>('getMinReviveCount', [], { subscribe: false })
+    return this.call<GetMinReviveCount>('getMinReviveCount', [])
   }
 
   private getMustBeRebranded(): ContractReturn<GetMustBeRebranded> {
-    return this.call<GetMustBeRebranded>('getMustBeRebranded', [], { subscribe: false })
+    return this.call<GetMustBeRebranded>('getMustBeRebranded', [])
   }
 
   private getMustBeRenamed(): ContractReturn<GetMustBeRenamed> {
-    return this.call<GetMustBeRenamed>('getMustBeRenamed', [], { subscribe: false })
+    return this.call<GetMustBeRenamed>('getMustBeRenamed', [])
   }
 
-  get minAcquireCount(): number {
+  get minAcquireCount(): number | undefined {
     return transformRawNumber(this.getMinAcquireCount())
   }
 
-  get minCompeteCount(): number {
+  get minCompeteCount(): number | undefined {
     return transformRawNumber(this.getMinCompeteCount())
   }
 
-  get minEnterpriseCount(): number {
+  get minEnterpriseCount(): number | undefined {
     return transformRawNumber(this.getMinEnterpriseCount())
   }
 
-  get minMergeCount(): number {
+  get minMergeCount(): number | undefined {
     return transformRawNumber(this.getMinMergeCount())
   }
 
-  get minReviveCount(): number {
+  get minReviveCount(): number | undefined {
     return transformRawNumber(this.getMinReviveCount())
   }
 
-  get mustBeRebranded(): boolean {
+  get mustBeRebranded(): boolean | undefined {
     return this.getMustBeRebranded()?.[0]
   }
 
-  get mustBeRenamed(): boolean {
+  get mustBeRenamed(): boolean | undefined {
     return this.getMustBeRenamed()?.[0]
   }
 }
