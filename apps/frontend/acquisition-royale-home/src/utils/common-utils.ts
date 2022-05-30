@@ -108,7 +108,7 @@ export const makeRPComparison = (after: number, before: number): CompareItem => 
 })
 
 export const makeImmunityRemoved = (): CompareItem => ({
-  label: 'Any immunity of your Enterprise will be removed.',
+  label: 'Immunity will be lost.',
   labelColor: 'error',
 })
 
