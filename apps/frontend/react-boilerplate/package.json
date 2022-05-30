@@ -13,7 +13,7 @@
     "mst-gql:generate": "./internals/mst-gql-generate.bash"
   },
   "dependencies": {
-    "@prepo-io/constants": "0.13.0",
+    "@prepo-io/constants": "0.17.0",
     "@prepo-io/stores": "0.23.0",
     "@prepo-io/utils": "0.10.0",
     "@sentry/nextjs": "6.19.6",

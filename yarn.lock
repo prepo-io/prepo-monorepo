@@ -6006,11 +6006,6 @@
     pocket-js-core "0.0.3"
     web3-provider-engine "16.0.1"
 
-"@prepo-io/constants@0.13.0":
-  version "0.13.0"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.13.0/af3a758f4ab24fc3e008aae2026410b46ea32ff957ad7b038a2b31060f1627d6#401476256e87ac4f9a43f3b88633e2dce2d6056b"
-  integrity sha512-7tUkuFbakk2EwBP6NI9A/QpIKAlW9PT7waYm8U3K70Hi/sXxrMTLkhK4VkLK2dZB7mmYw+sNZPPTHy8K1wgZEA==
-
 "@prepo-io/constants@0.17.0":
   version "0.17.0"
   resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.17.0/3d95b801df2bf713c602e039a8a69f1e920320c6eaf85a467d5411182fcf1378#431b8996df8298c0dfec68ad22063c7ea3ab9500"
