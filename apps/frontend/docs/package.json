@@ -51,10 +51,14 @@
     "tsconfig": "*"
   },
   "engines": {
-    "node": ">=16.14",
+    "node": "14.x",
     "yarn": "1.x"
   },
   "resolutions": {
-    "@types/react": "17.0.45"
+    "@types/react": "17.0.45",
+    "@docusaurus/core": "2.0.0-beta.18",
+    "@docusaurus/utils": "2.0.0-beta.18",
+    "@docusaurus/utils-validation": "2.0.0-beta.18",
+    "@docusaurus/logger": "2.0.0-beta.18"
   }
 }
