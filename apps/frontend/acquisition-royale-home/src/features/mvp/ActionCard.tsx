@@ -110,7 +110,7 @@ const InputWrapper = styled.div`
   margin-top: ${spacingIncrement(12)};
 `
 
-const ExpandableContent = styled.form<{ expanded: boolean }>`
+const ExpandableContent = styled.div<{ expanded: boolean }>`
   max-height: ${({ expanded }): string =>
     expanded ? spacingIncrement(9999) : spacingIncrement(0)};
   overflow: hidden;
@@ -236,7 +236,7 @@ const ActionCard: React.FC<Props> = ({
   }, [rewardOptions, uiStore])
 
   const button = useMemo(() => {
-    if (!buttonProps && !action && !buttonProps.href) {
+    if ((!buttonProps || !buttonProps.href) && !action) {
       return null
     }
     if (!connected) {

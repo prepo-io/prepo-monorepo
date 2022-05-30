@@ -2,8 +2,10 @@ import React from 'react'
 import { IconName } from '../../../components/icon/icon.types'
 import { SupportedMinigameContractName } from '../../../lib/minigames-contracts'
 
+export type SupportedMinigame = 'telemarketing'
+
 export type MiniGame = {
-  key: string
+  key: SupportedMinigame
   title: string
   description: React.ReactNode
   iconName: IconName

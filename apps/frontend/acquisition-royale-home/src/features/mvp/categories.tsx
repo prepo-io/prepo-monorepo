@@ -1,13 +1,13 @@
 import Acquire from './acquire'
 import Compete from './compete'
 import DepositRp from './deposit'
-import Intern from './actions/Intern'
 import Rename from './actions/Rename'
 import Revive from './actions/Revive'
 import RPShop from './rpshop'
 import WithdrawRp from './withdraw'
 import Merge from './merge'
 import Trade from './trade'
+import Minigames from './minigames/Minigames'
 import { SubtabProps } from '../../components/Subtabs'
 
 export const RP = [
@@ -59,7 +59,7 @@ const categories: { tab: string; subtabs?: SubtabProps[]; content?: React.ReactN
   },
   {
     tab: 'EARN',
-    content: <Intern />,
+    content: <Minigames />,
   },
   {
     tab: 'CUSTOMIZE',
