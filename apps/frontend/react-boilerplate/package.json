@@ -40,11 +40,14 @@
   },
   "devDependencies": {
     "@typechain/ethers-v5": "10.0.0",
-    "@types/react": "17.0.37",
+    "@types/react": "17.0.45",
     "@types/react-copy-to-clipboard": "5.0.2",
     "@types/styled-components": "5.1.25",
     "config": "*",
     "tsconfig": "*",
     "typechain": "8.0.0"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }

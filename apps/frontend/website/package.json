@@ -40,11 +40,14 @@
   "devDependencies": {
     "@types/canvas-confetti": "1.4.2",
     "@types/d3-ease": "3.0.0",
-    "@types/react": "17.0.38",
+    "@types/react": "17.0.45",
     "@types/react-lottie": "1.2.6",
     "autoprefixer": "10.4.4",
     "config": "*",
     "postcss": "8.4.12",
     "tsconfig": "*"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }

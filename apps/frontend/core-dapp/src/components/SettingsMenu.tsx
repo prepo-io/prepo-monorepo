@@ -28,7 +28,8 @@ const StyledDropdown = styled(Dropdown)`
   }
 `
 
-const StyledMenu = styled(Menu)`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const StyledMenu = styled(Menu as any)`
   background: ${({ theme }): string => theme.color.neutral9};
   display: flex;
   flex-direction: column;

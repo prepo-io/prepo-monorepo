@@ -52,11 +52,14 @@
     "@ethersproject/providers": "5.5.3",
     "@typechain/ethers-v5": "9.0.0",
     "@types/clone-deep": "4.0.1",
-    "@types/react": "17.0.37",
+    "@types/react": "17.0.45",
     "@types/react-copy-to-clipboard": "5.0.2",
     "@types/styled-components": "5.1.15",
     "config": "*",
     "tsconfig": "*",
     "typechain": "7.0.0"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }

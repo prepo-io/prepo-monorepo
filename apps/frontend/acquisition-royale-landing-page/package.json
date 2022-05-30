@@ -58,11 +58,14 @@
   "devDependencies": {
     "@typechain/ethers-v5": "7.1.1",
     "@types/lodash.throttle": "4.1.6",
-    "@types/react": "17.0.37",
+    "@types/react": "17.0.45",
     "@types/react-scroll": "1.8.3",
     "@types/styled-components": "5.1.18",
     "config": "*",
     "next-sitemap": "1.6.203",
     "typechain": "5.1.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }

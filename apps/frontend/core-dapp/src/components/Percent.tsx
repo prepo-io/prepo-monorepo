@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { coreDappTheme, media } from '@prepo-io/ui'
+import styled, { DefaultTheme } from 'styled-components'
+import { media } from '@prepo-io/ui'
 import { formatPercent } from '../utils/number-utils'
 
-const { fontSize, fontWeight } = coreDappTheme
-
 type StylesProps = {
-  fontSize?: keyof typeof fontSize
-  fontWeight?: keyof typeof fontWeight
+  fontSize?: keyof DefaultTheme['fontSize']
+  fontWeight?: keyof DefaultTheme['fontWeight']
 }
 
 type Props = {

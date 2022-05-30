@@ -65,7 +65,7 @@ const Table: React.FC<Props> = ({
     md: 12,
   }
 
-  const renderRightSide = (dataItem: RowData): React.ReactElement | null => {
+  const renderRightSide = (dataItem: RowData): React.ReactNode | null => {
     if (dataItem?.amount !== undefined) {
       return (
         <>

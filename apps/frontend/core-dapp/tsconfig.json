@@ -15,7 +15,10 @@
     "jsx": "preserve",
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
-    "incremental": true
+    "incremental": true,
+    "declaration": true,
+    "declarationDir": "./",
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
@@ -28,5 +31,5 @@
     "jest.config.ts",
     "jest.setup.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next", ".turbo"]
 }
