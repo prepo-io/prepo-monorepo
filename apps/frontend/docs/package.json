@@ -51,7 +51,7 @@
     "tsconfig": "*"
   },
   "engines": {
-    "node": "14.x",
+    "node": ">=16.0.0",
     "yarn": "1.x"
   },
   "resolutions": {

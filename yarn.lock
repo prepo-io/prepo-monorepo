@@ -15844,9 +15844,9 @@ ethereum-multicall@2.9.0:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"
 
-"ethereum-multicall@git+https://github.com/prepo-io/ethereum-multicall.git#1.0.1-prepo":
+"ethereum-multicall@https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo":
   version "2.10.0"
-  resolved "git+https://github.com/prepo-io/ethereum-multicall.git#359516f74e66bc6cda16bad8d8170f943765b467"
+  resolved "https://github.com/prepo-io/ethereum-multicall#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"

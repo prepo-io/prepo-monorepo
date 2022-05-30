@@ -76,7 +76,7 @@
   },
   "engines": {
     "npm": ">=8.0.0",
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "packageManager": "yarn@1.22.17",
   "resolutions": {
