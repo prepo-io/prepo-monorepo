@@ -6078,10 +6078,10 @@
     mobx-state-tree "5.1.3"
     mst-gql "0.14.1"
 
-"@prepo-io/stores@0.24.7":
-  version "0.24.7"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.24.7/1822681e365db75184bc58c16c64c88c9d896806702e51d4124a757c291383b7#1037cf5ea0e45af262692007d43c2a59098e270c"
-  integrity sha512-H7WqOwjs8olLiiwhdZAzvhtccvJIUBg/8dU5ycOKr6AjggUwHQOy+hqXFNvmXCHW7EQwbunj6JbhK8vG5IUrgw==
+"@prepo-io/stores@0.25.0":
+  version "0.25.0"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.25.0/048891b16ad2a90ef09d5ed9a503af48d7b9b5662fd2a9185315446bae27030d#bad0b39eaa106a7ed7fd795e90176bf3172c33f1"
+  integrity sha512-WhpxA4+ar/Jg7H3zCivBMYs0gTsZToBtMve3sAQckXtr1LrmV3rX2uhvp2vNxMu1cN9+y+0gIOik9WMWn6UvdQ==
   dependencies:
     ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
     graphql "16.3.0"
@@ -15879,6 +15879,14 @@ ethereum-multicall@2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/ethereum-multicall/-/ethereum-multicall-2.9.0.tgz#12ec9bda703a257b02c76c564f7e52038d06232c"
   integrity sha512-KCe51v42DDk3Ed0/DJaESymned4P9yQ6bJdpY+PlKGcPYmD6p/5yMThQr8G27V+REUVHY5L1zc7r0n4XAO/0mQ==
+  dependencies:
+    "@ethersproject/providers" "^5.0.10"
+    ethers "^5.0.15"
+
+"ethereum-multicall@https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo":
+  version "2.10.0"
+  uid "359516f74e66bc6cda16bad8d8170f943765b467"
+  resolved "https://github.com/prepo-io/ethereum-multicall#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
     "@ethersproject/providers" "^5.0.10"
     ethers "^5.0.15"
