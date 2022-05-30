@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@prepo-io/constants": "0.17.0",
-    "@prepo-io/stores": "0.24.7",
+    "@prepo-io/stores": "0.25.0",
     "@prepo-io/ui": "0.59.1",
     "@prepo-io/utils": "0.10.6",
     "@sentry/nextjs": "6.17.6",
