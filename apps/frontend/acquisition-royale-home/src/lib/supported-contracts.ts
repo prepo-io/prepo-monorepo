@@ -1,7 +1,8 @@
 import { SupportedNetworks } from 'prepo-constants'
 import { DYNAMIC_CONTRACT_ADDRESS } from '@prepo-io/stores'
+import { SupportedMinigameContractName, supportedMinigameContracts } from './minigames-contracts'
 
-type ContractAddresses = {
+export type ContractAddresses = {
   [key in SupportedNetworks]?: string
 }
 
@@ -19,6 +20,7 @@ export type SupportedContractName =
   | 'MOAT'
   | 'RUNWAY_POINTS'
   | 'BRANDING'
+  | SupportedMinigameContractName
 
 export type SupportedErc20Token = 'USDC'
 
@@ -108,6 +110,7 @@ export const supportedContracts: SupportedContracts = {
   MOAT: MOAT_ADDRESSES,
   RUNWAY_POINTS: RUNWAY_POINTS_ADDRESSES,
   BRANDING: BRANDING_ADDRESSES,
+  ...supportedMinigameContracts,
 }
 
 export const getContractAddress = (
