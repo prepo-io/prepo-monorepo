@@ -1,9 +1,9 @@
-/* 
+/*
   Tunnel for feature flags.
   Note: We are not naming it "feature" or anything implicit so ad blockers doesn't block it
 */
 
-import * as configCat from 'configcat-node'
+import * as configCat from 'configcat-js-ssr'
 import { NextApiRequest, NextApiResponse } from 'next'
 import config from '../../lib/config'
 
