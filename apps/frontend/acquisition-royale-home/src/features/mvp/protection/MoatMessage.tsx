@@ -51,7 +51,7 @@ const MoatMessage: React.FC<Props> = ({ competition, hasMoat, moatUntil }) => {
   if (moatUntil)
     return competition ? (
       <Wrapper>
-        <Label $competition={competition}>
+        <Label $competition>
           Moat protection will be lost if not restored within <NoWrap>{moatPeriod}</NoWrap>{' '}
           <TooltipContainer>
             <InfoTooltip iconSize={TOOLTIP_ICON_SIZE}>
@@ -64,8 +64,8 @@ const MoatMessage: React.FC<Props> = ({ competition, hasMoat, moatUntil }) => {
       </Wrapper>
     ) : (
       <Wrapper>
-        <Label $competition={competition}>
-          Moat protection lost! <NoWrap>{moatPeriod}</NoWrap> to restore{' '}
+        <Label $competition>
+          Moat protection in danger! <NoWrap>{moatPeriod}</NoWrap> to restore{' '}
           <TooltipContainer>
             <InfoTooltip iconSize={TOOLTIP_ICON_SIZE}>
               Restore your Enterprise&apos;s RP balance to <NoWrap>&gt;{moatThreshold} RP</NoWrap>{' '}

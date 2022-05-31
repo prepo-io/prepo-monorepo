@@ -9,10 +9,10 @@ import { withdrawActionDescription } from '../Descriptions'
 import MyEnterprises from '../MyEnterprises'
 
 const WithdrawRp: React.FC = () => {
-  const { acquisitionRoyaleContractStore, actionsStore } = useRootStore()
+  const { acquisitionRoyaleContractStore, withdrawStore } = useRootStore()
   const { setWithdrawAmount, withdrawing, withdraw, withdrawAmount, withdrawalBurnPercentage } =
     acquisitionRoyaleContractStore
-  const { withdrawButtonProps, withdrawBalances, withdrawComparisons } = actionsStore
+  const { withdrawButtonProps, withdrawBalances, withdrawComparisons } = withdrawStore
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target
