@@ -45,6 +45,7 @@ export class SignerStore {
 
   setSignerEnterpriseActiveId(id?: number): void {
     this.activeEnterpriseId = id
+    this.root.acquisitionRoyaleContractStore.setAcquireKeepId(undefined)
     if (id !== undefined && this.mergeTargetId === id) {
       this.setMergeTargetId(undefined)
     }

@@ -35,7 +35,7 @@ const Labels = styled.p`
 
 const Wrapper = styled.div`
   ${centered}
-  margin-bottom: ${spacingIncrement(18)};
+  margin-bottom: ${spacingIncrement(24)};
   width: 100%;
 `
 

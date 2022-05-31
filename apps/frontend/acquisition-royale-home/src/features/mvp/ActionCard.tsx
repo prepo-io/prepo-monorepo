@@ -105,7 +105,7 @@ const CostTooltipWrapper = styled.div`
 `
 
 const InputWrapper = styled.div`
-  margin-top: ${spacingIncrement(24)};
+  margin-top: ${spacingIncrement(12)};
 `
 
 const Description = styled.div`
@@ -252,9 +252,7 @@ const ActionCard: React.FC<Props> = ({
             )}
             {tooltip && (
               <CostTooltipWrapper>
-                <InfoTooltip iconSize={14}>
-                  <SmallText>{tooltip}</SmallText>
-                </InfoTooltip>
+                <InfoTooltip iconSize={14}>{tooltip}</InfoTooltip>
               </CostTooltipWrapper>
             )}
           </CostBalanceWrapper>
