@@ -28,40 +28,21 @@ const chainIds = {
   matic: 137,
 }
 
-// Ensure that we have all the environment variables we need.
-let mnemonic: string
-if (!process.env.MNEMONIC) {
-  throw new Error('Please set your MNEMONIC in a .env file')
-} else {
-  mnemonic = process.env.MNEMONIC
-}
-let infuraApiKey: string
-if (!process.env.INFURA_API_KEY) {
-  throw new Error('Please set your INFURA_API_KEY in a .env file')
-} else {
-  infuraApiKey = process.env.INFURA_API_KEY
-}
-let etherscanApiKey: string
-if (!process.env.ETHERSCAN_API_KEY) {
-  throw new Error('Please set your ETHERSCAN_API_KEY in a .env file')
-} else {
-  etherscanApiKey = process.env.ETHERSCAN_API_KEY
-}
-let coinmarketcapApiKey: string
-if (!process.env.COINMARKETCAP_API_KEY) {
-  throw new Error('Please set your COINMARKETCAP_API_KEY in a .env file')
-} else {
-  coinmarketcapApiKey = process.env.COINMARKETCAP_API_KEY
+const dotEnvVariables = {
+  mnemonic: process.env.MNEMONIC ?? 'test test test test test test test test test test test junk',
+  infuraApiKey: process.env.INFURA_API_KEY ?? 'empty',
+  etherscanApiKey: process.env.ETHERSCAN_API_KEY ?? 'empty',
+  coinmarketcapApiKey: process.env.COINMARKETCAP_API_KEY ?? 'empty',
 }
 
 export const accounts: HDAccountsUserConfig = {
   count: 10,
   initialIndex: 0,
-  mnemonic,
+  mnemonic: dotEnvVariables.mnemonic,
 }
 
 function createTestnetConfig(network: keyof typeof chainIds): NetworkUserConfig {
-  const url = `https://${network}.infura.io/v3/${infuraApiKey}`
+  const url = `https://${network}.infura.io/v3/${dotEnvVariables.infuraApiKey}`
   return {
     accounts,
     chainId: chainIds[network],
@@ -98,7 +79,7 @@ const config: HardhatUserConfig = {
       chainId: chainIds.matic,
       url: 'https://polygon-rpc.com/',
       accounts: {
-        mnemonic,
+        mnemonic: dotEnvVariables.mnemonic,
         initialIndex: 0,
         count: 1,
       },
@@ -124,7 +105,7 @@ const config: HardhatUserConfig = {
     target: 'ethers-v5',
   },
   etherscan: {
-    apiKey: etherscanApiKey,
+    apiKey: dotEnvVariables.etherscanApiKey,
   },
   contractSizer: {
     alphaSort: true,
@@ -133,7 +114,7 @@ const config: HardhatUserConfig = {
   },
   gasReporter: {
     currency: 'USD',
-    coinmarketcap: coinmarketcapApiKey,
+    coinmarketcap: dotEnvVariables.coinmarketcapApiKey,
   },
 }
 
