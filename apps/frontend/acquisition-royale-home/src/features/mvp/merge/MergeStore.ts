@@ -7,6 +7,8 @@ import {
   LOADING,
   makeImmunityComaprison,
   makeMergersComparison,
+  makeMoatGainMessage,
+  makeMoatRecoverMessage,
   makeRPComparison,
   makeRPCostBalanceWallet,
   makeRpPerDayComparison,
@@ -49,17 +51,20 @@ export class MergeStore {
   }
 
   get mergeComparisons(): ComparisonProps[] | undefined {
+    const { moatThreshold } = this.root.moatContractStore
     const { mergeTargetEnterprise, signerActiveEnterprise } = this.root.signerStore
     const { getNewRpPerDay, mergerImmunityPeriod, passiveRpPerDay } =
       this.root.acquisitionRoyaleContractStore
     if (
       !mergeTargetEnterprise ||
       !signerActiveEnterprise ||
-      !passiveRpPerDay ||
-      !mergerImmunityPeriod
+      passiveRpPerDay === undefined ||
+      mergerImmunityPeriod === undefined ||
+      moatThreshold === undefined
     ) {
       return undefined
     }
+    const { hasMoat } = signerActiveEnterprise
     const { mergers, rp, rpPerDay } = signerActiveEnterprise.stats
     const { rp: targetRp } = mergeTargetEnterprise.stats
 
@@ -72,6 +77,24 @@ export class MergeStore {
       mergerImmunityPeriod.mul(SEC_IN_MS),
       signerActiveEnterprise.immuneUntil
     )
+    const moatComparison = []
+
+    if (newRp >= moatThreshold) {
+      if (!hasMoat) {
+        moatComparison.push(makeMoatGainMessage())
+        // recovery state = rp < threshold && moatUntil is in the future
+        // hasMoat = rp > threshold || moatUntil is in the future
+        // which bring us to: moatUntil is in the future = rp < moatThreshold && hasMoat
+        // so if rp < moatThreshold && hasMoat, moatUntil is in the future && rp < threshold
+      } else if (rp < moatThreshold) {
+        moatComparison.push(makeMoatRecoverMessage())
+      }
+    }
+
+    const rpPerDayComparison = []
+    if (newRpPerDay !== rpPerDay)
+      rpPerDayComparison.push(makeRpPerDayComparison(newRpPerDay, rpPerDay))
+
     return [
       {
         id: signerActiveEnterprise.id,
@@ -79,9 +102,9 @@ export class MergeStore {
         stats: [
           makeRPComparison(newRp, formattedRp),
           makeMergersComparison(mergers + 1, mergers),
-          // don't show if it's the same (e.g. already at max)
-          ...(newRpPerDay !== rpPerDay ? [makeRpPerDayComparison(newRpPerDay, rpPerDay)] : []),
+          ...rpPerDayComparison,
           immunityComparisons,
+          ...moatComparison,
         ],
       },
       {

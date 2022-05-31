@@ -1,6 +1,5 @@
 import { notification } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
 import styled from 'styled-components'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import useCountdown from '../../../hooks/useCountdown'
@@ -20,8 +19,7 @@ const MessageBelowButton = styled.p`
 // use a react component so we don't need to rerender the enter ActionCard every second, improving performance
 const DayResetCountdown: React.FC = () => {
   const nextStartDay = getNextStartDayTimestamp() * SEC_IN_MS
-  const formatOptions = useMemo(() => ({ withSec: true }), [])
-  const resetPeriod = useCountdown(nextStartDay, formatOptions)
+  const resetPeriod = useCountdown(nextStartDay, { withSec: true })
 
   return <MessageBelowButton>Day resets in {resetPeriod}</MessageBelowButton>
 }

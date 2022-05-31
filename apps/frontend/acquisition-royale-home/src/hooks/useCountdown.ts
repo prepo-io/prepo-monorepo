@@ -1,20 +1,20 @@
 import { SEC_IN_MS } from '@prepo-io/constants'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useInterval } from 'react-use'
 import { formatPeriod, FormatPeriodOptions } from '../utils/date-utils'
 
 const useCountdown = (deadlineInMs: number, formatOptions?: FormatPeriodOptions): string => {
   const [period, setPeriod] = useState(formatPeriod(deadlineInMs, formatOptions))
-  const handleResetPeriod = useCallback(() => {
+
+  useInterval(() => {
     const newResetPeriod = formatPeriod(deadlineInMs, formatOptions)
     setPeriod(newResetPeriod)
-  }, [deadlineInMs, formatOptions])
+  }, SEC_IN_MS)
 
   useEffect(() => {
-    setPeriod(formatPeriod(deadlineInMs, formatOptions))
-  }, [deadlineInMs, formatOptions])
-
-  useInterval(handleResetPeriod, SEC_IN_MS)
+    const latestPeriod = formatPeriod(deadlineInMs, formatOptions)
+    if (latestPeriod !== period) setPeriod(latestPeriod)
+  }, [deadlineInMs, formatOptions, period])
 
   return period
 }

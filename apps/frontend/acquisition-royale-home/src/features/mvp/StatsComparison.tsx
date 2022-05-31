@@ -25,7 +25,7 @@ const BoldText = styled.span`
   font-weight: ${({ theme }): number => theme.fontWeight.bold};
 `
 
-const Before = styled.p`
+const Before = styled.span`
   color: ${({ theme }): string => theme.color.grey};
   margin-bottom: 0;
   text-decoration: line-through;
@@ -39,7 +39,7 @@ const GreenText = styled(BoldText)`
   color: ${({ theme }): string => theme.color.success};
 `
 
-const Label = styled.p<{ color: keyof Color }>`
+const Label = styled.span<{ color: keyof Color }>`
   color: ${({ color, theme }): string => theme.color[color]};
   margin-bottom: 0;
 `
@@ -54,8 +54,8 @@ const NameText = styled.p`
   margin-bottom: 0;
 `
 
-const ComparisonWrapper = styled.div<{ singleLine?: boolean }>`
-  display: flex;
+const ComparisonWrapper = styled.p<{ singleLine?: boolean }>`
+  margin-bottom: 0;
   margin-top: ${({ singleLine }): string => (singleLine ? '0' : spacingIncrement(6))};
 `
 

@@ -1,4 +1,5 @@
 /* eslint-disable import/no-unresolved */
+import { observer } from 'mobx-react-lite'
 import {
   Swiper as SwiperComponent,
   SwiperSlide as SwiperSlideComponent,
@@ -14,8 +15,10 @@ import { centered, spacingIncrement } from '../utils/theme/utils'
 import { generateDummyArray, isFirstEnterpriseLoaded } from '../utils/enterprise-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { Enterprises } from '../types/enterprise.types'
+import { useRootStore } from '../context/RootStoreProvider'
 
 const SWIPER_PADDING_PERCENTAGE = 12
+
 const SwiperStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
@@ -33,6 +36,7 @@ export type OverlayProps = {
 
 type Props = {
   activeIndex?: number
+  contentBelowCard?: React.ReactNode
   enterprises?: Enterprises
   loading?: boolean
   overlay?: OverlayProps
@@ -56,6 +60,16 @@ const ArrowWrapper = styled.div<Omit<ArrowProps, 'onClick'>>`
 const ArrowIconWrapper = styled(Icon)`
   ${centered};
   height: 100%;
+`
+
+const ContentBelowCard = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacingIncrement(4)};
+  min-height: ${spacingIncrement(36)};
+  padding: 0 ${SWIPER_PADDING_PERCENTAGE}%;
+  width: 100%;
 `
 
 const InnerWrapper = styled.div`
@@ -124,6 +138,7 @@ const SLIDES_PER_VIEW = 1
 
 const EnterpriseCarousel: React.FC<Props> = ({
   activeIndex,
+  contentBelowCard,
   enterprises,
   loading,
   onActiveSlidesChange,
@@ -131,8 +146,8 @@ const EnterpriseCarousel: React.FC<Props> = ({
   title,
   ...swiperProps
 }) => {
-  // 385 is the max width EnterpriseCard will ever get
-  const [cardWidth, setCardWidth] = useState(385)
+  const { uiStore } = useRootStore()
+  const { enterpriseCardWidth, setEnterpriseCardWidth } = uiStore
   const [swiperRef, setSwiperRef] = useState<SwiperCore>()
   const swiperWrapperRef = useRef<HTMLDivElement>(null)
 
@@ -149,7 +164,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
       if (swiperWrapperRef.current) {
         const WIDTH_MULTIPLIER = (100 - 2 * SWIPER_PADDING_PERCENTAGE) / 100
         const width = swiperWrapperRef.current.clientWidth * WIDTH_MULTIPLIER
-        setCardWidth(Math.ceil(width))
+        setEnterpriseCardWidth(Math.ceil(width))
       }
     }
     getCardHeight()
@@ -157,7 +172,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
     return () => {
       window.removeEventListener('resize', getCardHeight)
     }
-  }, [])
+  }, [setEnterpriseCardWidth])
 
   const renderCards = useMemo(() => {
     const enterpriseList =
@@ -171,28 +186,23 @@ const EnterpriseCarousel: React.FC<Props> = ({
         key={typeof enterprise === 'number' ? enterprise : enterprise.id}
         style={SwiperStyle}
       >
-        <EnterpriseCard
-          active={index === activeIndex}
-          enterprise={enterprise}
-          loading={loading}
-          size={cardWidth}
-        />
+        <EnterpriseCard active={index === activeIndex} enterprise={enterprise} loading={loading} />
       </SwiperSlideComponent>
     ))
-  }, [activeIndex, cardWidth, enterprises, loading, placeholderEnterprises])
+  }, [activeIndex, enterprises, loading, placeholderEnterprises])
 
   return (
     <Wrapper>
-      {overlay && (
-        <MessageOverlay>
-          <Message>{overlay.message}</Message>
-          {overlay.action !== undefined && (
-            <OverlayActionWrapper>{overlay.action}</OverlayActionWrapper>
-          )}
-        </MessageOverlay>
-      )}
       {Boolean(title) && <Labels>{title}</Labels>}
       <InnerWrapper>
+        {overlay && (
+          <MessageOverlay>
+            <Message>{overlay.message}</Message>
+            {overlay.action !== undefined && (
+              <OverlayActionWrapper>{overlay.action}</OverlayActionWrapper>
+            )}
+          </MessageOverlay>
+        )}
         {showArrow && (
           <ArrowComponent direction="left" onClick={(): void => swiperRef?.slidePrev()} />
         )}
@@ -207,7 +217,7 @@ const EnterpriseCarousel: React.FC<Props> = ({
             spaceBetween={20}
             slidesPerView={SLIDES_PER_VIEW}
             onSwiper={setSwiperRef}
-            width={cardWidth}
+            width={enterpriseCardWidth}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...swiperProps}
           >
@@ -223,8 +233,9 @@ const EnterpriseCarousel: React.FC<Props> = ({
           {activeIndex + 1}/{enterprises.length}
         </Labels>
       )}
+      <ContentBelowCard>{contentBelowCard}</ContentBelowCard>
     </Wrapper>
   )
 }
 
-export default EnterpriseCarousel
+export default observer(EnterpriseCarousel)
