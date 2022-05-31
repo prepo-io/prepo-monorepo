@@ -9,9 +9,9 @@ import { depositActionDescription } from '../Descriptions'
 import MyEnterprises from '../MyEnterprises'
 
 const DepositRp: React.FC = () => {
-  const { actionsStore, acquisitionRoyaleContractStore } = useRootStore()
+  const { acquisitionRoyaleContractStore, depositStore } = useRootStore()
   const { deposit, depositing, depositAmount, setDepositAmount } = acquisitionRoyaleContractStore
-  const { depositButtonProps, depositBalances, depositComparisons } = actionsStore
+  const { depositButtonProps, depositBalances, depositComparisons } = depositStore
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target

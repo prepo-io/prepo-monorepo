@@ -34,6 +34,7 @@ export const getReadableEnterpriseBasic = ({
   immuneUntil,
   lastHadMoat,
   moatCountdown,
+  moatUntil,
   rawEnterprise,
   rawImmune,
   rawOwnerOf,
@@ -45,6 +46,7 @@ export const getReadableEnterpriseBasic = ({
   immuneUntil: number
   lastHadMoat: [boolean]
   moatCountdown: [BigNumber]
+  moatUntil: number
   rawEnterprise: RawEnterprise
   rawImmune: [boolean]
   rawOwnerOf: [string]
@@ -58,6 +60,7 @@ export const getReadableEnterpriseBasic = ({
   immuneUntil,
   lastHadMoat: lastHadMoat[0],
   moatCountdown: moatCountdown[0].toNumber(),
+  moatUntil,
   name: rawEnterprise.name,
   ownerOf: rawOwnerOf[0],
   stats: {

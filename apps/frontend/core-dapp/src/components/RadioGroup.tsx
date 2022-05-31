@@ -125,8 +125,10 @@ const RadioGroup: React.FC<Props> = forwardRef(
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         >
-          {renderChildren()}
-          {renderChildRadioGroup()}
+          <>
+            {renderChildren()}
+            {renderChildRadioGroup()}
+          </>
         </RadioGroupWrapper>
       </>
     )

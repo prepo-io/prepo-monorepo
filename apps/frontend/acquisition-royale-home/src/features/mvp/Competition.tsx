@@ -1,5 +1,8 @@
+import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import MoatMessage from './protection/MoatMessage'
+import ImmunityMessage from './protection/ImmunityMessage'
 import SearchCompetition from './SearchCompetition'
 import EnterpriseCarousel, { OverlayProps } from '../../components/EnterpriseCarousel'
 import { useRootStore } from '../../context/RootStoreProvider'
@@ -10,7 +13,7 @@ type Props = {
   hideRandom?: boolean
 }
 const Wrapper = styled.div`
-  margin-top: ${spacingIncrement(44)};
+  margin-top: ${spacingIncrement(20)};
   position: relative;
   width: 100%;
 `
@@ -21,6 +24,7 @@ const Competition: React.FC<Props> = ({ label, hideRandom }) => {
     activeIndex,
     competitionLoading,
     competitionEnterprises,
+    competitionActiveEnterprise,
     searchCompetitionQuery,
     onSlidesChange,
   } = competitionStore
@@ -45,11 +49,24 @@ const Competition: React.FC<Props> = ({ label, hideRandom }) => {
     return undefined
   }
 
+  const protectionContent = useMemo(() => {
+    if (!competitionActiveEnterprise) return null
+    const { immune, immuneUntil, hasMoat, moatUntil } = competitionActiveEnterprise
+    if (!immune && !hasMoat) return null
+    return (
+      <>
+        <ImmunityMessage competition immune={immune} immuneUntil={immuneUntil} />
+        <MoatMessage competition hasMoat={hasMoat} moatUntil={moatUntil} />
+      </>
+    )
+  }, [competitionActiveEnterprise])
+
   return (
     <Wrapper>
       <SearchCompetition label={label} hideRandom={hideRandom} />
       <EnterpriseCarousel
         activeIndex={activeIndex}
+        contentBelowCard={protectionContent}
         enterprises={competitionEnterprises}
         loading={competitionLoading}
         onActiveSlidesChange={onSlidesChange}

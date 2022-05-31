@@ -1,11 +1,9 @@
-import { ButtonColors, media, spacingIncrement, coreDappTheme } from '@prepo-io/ui'
-import styled, { Color, css } from 'styled-components'
+import { ButtonColors, media, spacingIncrement } from '@prepo-io/ui'
+import styled, { Color, css, DefaultTheme } from 'styled-components'
 import ButtonLink, { ButtonLinkProps } from './ButtonLink'
 import { lightPurpleButtonStyles } from './ppo-button-styles'
 import useResponsive from '../../hooks/useResponsive'
 import { IconSizeResponsive } from '../../types/general.types'
-
-const { fontSize, fontWeight } = coreDappTheme
 
 export type ButtonGridItem = Pick<ButtonLinkProps, 'title' | 'href' | 'target' | 'iconName'>
 
@@ -23,12 +21,12 @@ export type ButtonGridStyles = ButtonColors & {
     }
   }
   fontSize?: {
-    desktop: keyof typeof fontSize
-    mobile: keyof typeof fontSize
+    desktop: keyof DefaultTheme['fontSize']
+    mobile: keyof DefaultTheme['fontSize']
   }
   fontWeight?: {
-    desktop: keyof typeof fontWeight
-    mobile: keyof typeof fontWeight
+    desktop: keyof DefaultTheme['fontWeight']
+    mobile: keyof DefaultTheme['fontWeight']
   }
 }
 
