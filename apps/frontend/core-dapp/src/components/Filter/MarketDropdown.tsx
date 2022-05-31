@@ -40,7 +40,7 @@ const MarketDropdown: React.FC = () => {
   const getMenuItems = (
     <Menu size="sm" onClick={onClick}>
       <StyledMenuItem key="all">All</StyledMenuItem>
-      {markets.map((market, index) => (
+      {markets.map((market) => (
         <StyledMenuItem key={market.name}>{market.name}</StyledMenuItem>
       ))}
     </Menu>

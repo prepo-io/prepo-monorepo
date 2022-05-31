@@ -1,26 +1,22 @@
-import styled, { Color, css } from 'styled-components'
+import styled, { Color, css, Weight, DefaultTheme } from 'styled-components'
 import { Select as ASelect, SelectProps as ASelectProps } from 'antd'
 import { coreDappTheme, spacingIncrement, Icon, IconName } from '@prepo-io/ui'
+import { DefaultOptionType } from 'antd/lib/select'
 import IconTitle from './IconTitle'
 
-const { borderRadius, fontSize, fontWeight } = coreDappTheme
+const { borderRadius } = coreDappTheme
 
 type SelectStyles = {
   arrowColor?: keyof Color
   color?: keyof Color
-  fontWeight?: keyof typeof fontWeight
-  fontSize?: keyof typeof fontSize
+  fontWeight?: keyof Weight
+  fontSize?: keyof DefaultTheme['fontSize']
 }
 
 type OptionWithIconProps = {
   iconName: IconName
   id: string
   name: string
-}
-
-type OptionProps = {
-  value: string
-  label: React.ReactNode
 }
 
 export type SelectProps = ASelectProps<string> & {
@@ -92,7 +88,7 @@ const Select: React.FC<SelectProps> = ({
   styles = {},
   ...props
 }) => {
-  const transformIcons = (optionsWithIcon: OptionWithIconProps[]): OptionProps[] =>
+  const transformIcons = (optionsWithIcon: OptionWithIconProps[]): DefaultOptionType[] =>
     optionsWithIcon.map(({ iconName, id, name }) => ({
       value: id,
       label: iconName ? (
