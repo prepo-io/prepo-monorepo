@@ -22,10 +22,11 @@ export const minigames: MiniGame[] = [
       <span>
         Sales is a numbers game.
         <br />
+        <br />
         Earn your share of hourly RP based on how many calls you make.
       </span>
     ),
-    iconName: 'coffeeCup',
+    iconName: 'phone',
     hookAddress: 'TELEMARKETING_HOOK',
     proRataAddress: 'TELEMARKETING_PRORATA',
     buttonText: 'Do telemarketing',

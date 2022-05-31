@@ -10,6 +10,7 @@ import { transformRawEther, transformRawNumber } from '../../utils/number-utils'
 import { RootStore } from '../RootStore'
 import { formatContractAddress } from '../utils/common-utils'
 
+type Action = MinigameProRata['functions']['action']
 type GetActionHook = MinigameProRata['functions']['getActionHook']
 type GetCurrActionCount = MinigameProRata['functions']['getCurrActionCount']
 type GetPeriodLength = MinigameProRata['functions']['getPeriodLength']
@@ -21,8 +22,10 @@ type GetTotalPrevActionCount = MinigameProRata['functions']['getTotalPrevActionC
 type GetUserActionLimitPerPeriod = MinigameProRata['functions']['getUserActionLimitPerPeriod']
 
 export class MinigameProRataStore extends ContractStore<RootStore, SupportedContracts> {
-  constructor(root: RootStore, contractName: SupportedMinigameContractName) {
+  name: string
+  constructor(root: RootStore, contractName: SupportedMinigameContractName, minigameName: string) {
     super(root, contractName, MinigameProRataAbi__factory)
+    this.name = minigameName
     makeObservable(this, {})
   }
 
@@ -64,6 +67,19 @@ export class MinigameProRataStore extends ContractStore<RootStore, SupportedCont
 
   private getUserActionLimitPerPeriod(): ContractReturn<GetUserActionLimitPerPeriod> {
     return this.call<GetUserActionLimitPerPeriod>('getUserActionLimitPerPeriod', [])
+  }
+
+  async action(onHash?: (string) => unknown): Promise<boolean> {
+    try {
+      const tx = await this.sendTransaction<Action>('action', [])
+      if (onHash) onHash(tx.hash)
+      await tx.wait()
+      this.root.toastStore.successToast(`Completed ${this.name}`)
+      return true
+    } catch (error) {
+      this.root.toastStore.errorToast(this.name, error)
+      return false
+    }
   }
 
   get actionHook(): string | undefined {

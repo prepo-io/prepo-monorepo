@@ -49,6 +49,7 @@ type Props = {
   expandable?: boolean
   loading?: boolean
   lowMatic?: boolean
+  messageAboveButton?: React.ReactNode
   messageBelowButton?: React.ReactNode
   rewardOptions?: RewardOptions
   title?: string
@@ -194,6 +195,7 @@ const ActionCard: React.FC<Props> = ({
   input,
   loading,
   lowMatic,
+  messageAboveButton,
   messageBelowButton,
   rewardOptions,
   title,
@@ -317,6 +319,7 @@ const ActionCard: React.FC<Props> = ({
             </LowMaticWrapper>
           )}
           <Center>{reward}</Center>
+          {messageAboveButton}
           <ActionWrapper>{button}</ActionWrapper>
         </form>
         {messageBelowButton}
