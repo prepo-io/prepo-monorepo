@@ -1,16 +1,16 @@
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import LoadingCarouselCard from './LoadingCarouselCard'
-import { formatPeriod } from '../utils/date-utils'
 import { Z_INDEX } from '../utils/theme/general-settings'
 import { centered, spacingIncrement } from '../utils/theme/utils'
 import { Enterprise } from '../types/enterprise.types'
 import { isEnterpriseLoaded } from '../utils/enterprise-utils'
+import { useRootStore } from '../context/RootStoreProvider'
 
 type Props = {
   active?: boolean
   enterprise: Enterprise
   loading?: boolean
-  size?: number
 }
 
 const Burnt = styled.p`
@@ -20,18 +20,6 @@ const Burnt = styled.p`
   margin-bottom: 0;
   text-align: center;
   z-index: ${Z_INDEX.enterpriseBurnt};
-`
-
-const ImmunityLabel = styled.p`
-  color: ${({ theme }): string => theme.color.error};
-  font-family: ${({ theme }): string => theme.fontFamily.secondary};
-  margin-bottom: 0;
-  margin-top: ${spacingIncrement(12)};
-  text-align: center;
-`
-
-const NoWrap = styled.span`
-  white-space: nowrap;
 `
 
 const OverlayWrapper = styled.div`
@@ -69,16 +57,20 @@ const Wrapper = styled.div<{ $burned?: boolean }>`
 
 const StyledImage = styled.img<{ $height?: number }>`
   height: ${({ $height }): string => ($height === undefined ? 'auto' : spacingIncrement($height))};
+  min-height: ${spacingIncrement(1)};
   object-fit: cover;
 `
 
-const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading, size }) => {
-  if (!isEnterpriseLoaded(enterprise)) return <LoadingCarouselCard size={size} loading={loading} />
-  const { burned, id, art, immune, immuneUntil } = enterprise
+const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading }) => {
+  const { uiStore } = useRootStore()
+  const { enterpriseCardWidth } = uiStore
+  if (!isEnterpriseLoaded(enterprise))
+    return <LoadingCarouselCard size={enterpriseCardWidth} loading={loading} />
+  const { burned, id, art } = enterprise
 
   return (
     <Wrapper $burned={burned}>
-      <StyledImage $height={size} width="100%" alt={id.toString()} src={art.image} />
+      <StyledImage $height={enterpriseCardWidth} width="100%" alt={id.toString()} src={art.image} />
       <TextWrapper active={active}>
         {burned && (
           <OverlayWrapper>
@@ -92,15 +84,10 @@ const EnterpriseCard: React.FC<Props> = ({ active = false, enterprise, loading, 
           </OverlayWrapper>
         )}
       </TextWrapper>
-      {immune && (
-        <ImmunityLabel>
-          Enterprise immune for <NoWrap>{formatPeriod(immuneUntil)}</NoWrap>
-        </ImmunityLabel>
-      )}
     </Wrapper>
   )
 }
 
 export type EnterpriseCardProps = Props
 
-export default EnterpriseCard
+export default observer(EnterpriseCard)

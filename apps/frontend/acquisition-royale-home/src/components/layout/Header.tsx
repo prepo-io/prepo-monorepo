@@ -1,4 +1,5 @@
 import { Layout } from 'antd'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { contentCss } from './utils'
@@ -135,4 +136,4 @@ const Header: React.FC = () => {
   )
 }
 
-export default Header
+export default observer(Header)

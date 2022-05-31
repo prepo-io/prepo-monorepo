@@ -40,6 +40,7 @@ export type EnterpriseBasic = {
   immuneUntil: number
   lastHadMoat: boolean
   moatCountdown: number
+  moatUntil: number
   name: string
   ownerOf: string
   raw: RawEnterprise

@@ -1,6 +1,10 @@
 import { DAY_IN_SEC, SEC_IN_MS } from '../lib/constants'
 
-export const formatPeriod = (timestamp: number, options?: { withSec?: boolean }): string => {
+export type FormatPeriodOptions = {
+  withSec?: boolean
+}
+
+export const formatPeriod = (timestamp: number, options?: FormatPeriodOptions): string => {
   const curTimestamp = new Date().getTime()
 
   const timeDiff = (timestamp - curTimestamp) / SEC_IN_MS

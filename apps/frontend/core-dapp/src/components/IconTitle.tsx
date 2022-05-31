@@ -1,7 +1,5 @@
-import styled, { Color, Weight } from 'styled-components'
-import { spacingIncrement, media, coreDappTheme, IconName, Icon } from '@prepo-io/ui'
-
-const { fontSize } = coreDappTheme
+import styled, { Color, DefaultTheme, Weight } from 'styled-components'
+import { spacingIncrement, media, IconName, Icon } from '@prepo-io/ui'
 
 type StyleProps = {
   spacingValue: number
@@ -10,7 +8,7 @@ type StyleProps = {
 type MarketNameStyleProps = {
   color?: keyof Color
   weight?: keyof Weight
-  labelFontSize?: keyof typeof fontSize
+  labelFontSize?: keyof DefaultTheme['fontSize']
 }
 
 const Wrapper = styled.div`

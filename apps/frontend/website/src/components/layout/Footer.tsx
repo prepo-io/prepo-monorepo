@@ -181,7 +181,7 @@ export const Footer: FC = () => (
       </div>
       <div className="flex flex-col flex-wrap gap-5 items-center p-5 text-sm text-center sm:py-12 lg:flex-row lg:justify-between xl:px-0">
         <div className="text-sm font-semibold text-secondary sm:text-lg text-opacity-60">
-          &copy; prePO 2021. All rights reserved.
+          &copy; prePO {new Date().getFullYear()}. All rights reserved.
         </div>
         <SocialLinks />
       </div>

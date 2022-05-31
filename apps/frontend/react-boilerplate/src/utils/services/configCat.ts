@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import * as configcat from 'configcat-js'
+import * as configcat from 'configcat-js-ssr'
 import config from '../../lib/config'
 
 const LOG_LEVEL_INFO = 3

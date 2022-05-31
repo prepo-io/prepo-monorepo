@@ -1,3 +1,5 @@
+import { SEC_IN_MS } from '@prepo-io/constants'
+import { truncateAmountString } from '@prepo-io/utils'
 import { BigNumber } from 'ethers'
 import { formatTimestamp } from './date-utils'
 import { CostBalance } from '../features/mvp/ActionCard'
@@ -101,17 +103,17 @@ export const makeRPComparison = (after: number, before: number): CompareItem => 
   after,
   before,
   unit: 'RP',
+  formatAfter: (value) => truncateAmountString(`${value}`),
+  formatBefore: (value) => truncateAmountString(`${value}`),
 })
 
 export const makeImmunityRemoved = (): CompareItem => ({
-  label: 'Any immunity of your Enterprise will be removed.',
+  label: 'Immunity will be lost.',
   labelColor: 'error',
 })
 
 export const makeImmunityComaprison = (immunityPeriod: BigNumber, before: number): CompareItem => {
-  if (immunityPeriod.toNumber() === 0) {
-    return makeImmunityRemoved()
-  }
+  if (immunityPeriod.toNumber() === 0) return makeImmunityRemoved()
 
   const now = new Date().getTime()
   const after = immunityPeriod.toNumber() + now
@@ -122,6 +124,26 @@ export const makeImmunityComaprison = (immunityPeriod: BigNumber, before: number
     label: 'Immune until ',
     formatAfter: formatTimestamp,
     formatBefore: formatTimestamp,
+  }
+}
+
+export const makeMoatGainMessage = (): CompareItem => ({
+  label: 'Enterprise will gain Moat protection.',
+})
+
+export const makeMoatRecoverMessage = (): CompareItem => ({
+  label: 'Moat protection will be recovered.',
+})
+
+export const makeMoatLossMessage = (moatPeriod: number): CompareItem => {
+  const now = new Date().getTime()
+  const after = moatPeriod * SEC_IN_MS + now
+  return {
+    after,
+    before: after + 1,
+    hideBefore: true,
+    label: 'Moat protection will be lost after ',
+    formatAfter: formatTimestamp,
   }
 }
 

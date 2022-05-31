@@ -56,7 +56,7 @@
       "dependsOn": ["^build", "$NEXT_PUBLIC_NETWORK", "$NPM_RC"],
       "outputs": [".next/**", "out/**"]
     },
-    "test": {
+    "test:ci": {
       "outputs": [],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts"]
     },

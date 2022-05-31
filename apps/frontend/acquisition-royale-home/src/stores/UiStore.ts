@@ -13,6 +13,7 @@ export type RewardElements = {
 export class UiStore {
   root: RootStore
   accountModalOpen = false
+  enterpriseCardWidth: number
   rewardElements: RewardElements
   selectedTheme: SupportedThemes
   message: typeof message
@@ -20,10 +21,11 @@ export class UiStore {
 
   constructor(root: RootStore) {
     this.root = root
+    this.enterpriseCardWidth = 385 // 385 is the max width EnterpriseCard will ever get
     this.message = message
     this.rewardElements = {}
     this.selectedTheme = 'light'
-    makeAutoObservable(this)
+    makeAutoObservable(this, {}, { autoBind: true })
   }
 
   setTheme(selectedTheme: SupportedThemes): void {
@@ -54,6 +56,10 @@ export class UiStore {
 
   setAccountModalOpen(value: boolean): void {
     this.accountModalOpen = value
+  }
+
+  setEnterpriseCardWidth(value: number): void {
+    if (value > 0) this.enterpriseCardWidth = value
   }
 
   setRewardRef(key: keyof RewardElements, element: RewardElement): void {

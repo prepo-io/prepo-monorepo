@@ -8,6 +8,7 @@ import {
   LOADING,
   makeAcquisitionComparison,
   makeImmunityComaprison,
+  makeMoatLossMessage,
   makeRPComparison,
   makeRPCostBalanceEnterprise,
   makeRPCostBalanceWallet,
@@ -43,17 +44,22 @@ export class AcquireStore {
 
     if (signerEnterprises && signerEnterprises.length === 0)
       return { disabled: true, children: 'No owned Enterprise' }
+
     if (
       balance === undefined ||
       !signerActiveEnterprise ||
       acquireCost === undefined ||
+      competitionActiveEnterprise?.hasMoat === undefined ||
       (competitionActiveEnterprise && rpRequiredForDamage === undefined)
     )
       return LOADING
     if (!competitionActiveEnterprise)
       return { disabled: true, children: "Select a competitor's Enterprise" }
+
+    const { hasMoat } = competitionActiveEnterprise
     if (competitionActiveEnterprise.burned)
       return { disabled: true, children: 'Enterprise is burnt!' }
+    if (hasMoat) return { disabled: true, children: 'Enterprise has Moat' }
     if (competitionActiveEnterprise.immune) return { disabled: true, children: ENTERPRISE_IMMUNE }
     if (balance < acquireCost) return { disabled: true, children: INSUFFICIENT_RP_FROM_WALLET }
 
@@ -75,6 +81,7 @@ export class AcquireStore {
   }
 
   get acquireComparisons(): ComparisonProps[] | undefined {
+    const { moatImmunityPeriod, moatThreshold } = this.root.moatContractStore
     const { signerActiveEnterprise } = this.root.signerStore
     const { competitionActiveEnterprise } = this.root.competitionStore
     const { acquireKeepId, getNewRpPerDay, passiveRpPerDay, acquisitionImmunityPeriod } =
@@ -86,22 +93,25 @@ export class AcquireStore {
       acquireKeepId === undefined ||
       rpRequiredForDamage === undefined ||
       passiveRpPerDay === undefined ||
-      acquisitionImmunityPeriod === undefined
+      acquisitionImmunityPeriod === undefined ||
+      moatImmunityPeriod === undefined ||
+      moatThreshold === undefined
     )
       return undefined
 
-    const formattedSignerRpAfter = formatNumberToNumber(
-      signerActiveEnterprise.stats.rp - rpRequiredForDamage
-    )
-    const formattedSignerRpBefore = formatNumberToNumber(signerActiveEnterprise.stats.rp)
-    if (formattedSignerRpAfter === undefined || formattedSignerRpBefore === undefined) {
-      return undefined
+    const { hasMoat } = signerActiveEnterprise
+    const { acquisitions, rp: signerRp, rpPerDay: signerRpPerDay } = signerActiveEnterprise.stats
+    const { rpPerDay: targetRpPerDay } = competitionActiveEnterprise.stats
+    const signerRpAfter = signerRp - rpRequiredForDamage
+
+    const moatMessage = []
+    // if Enterprise has moat and is not in countdown state
+    if (hasMoat && signerRp >= moatThreshold && signerRpAfter < moatThreshold) {
+      moatMessage.push(makeMoatLossMessage(moatImmunityPeriod))
     }
-    const { acquisitions, rpPerDay } = signerActiveEnterprise.stats
-    const signerNewRpPerDay = getNewRpPerDay(rpPerDay + passiveRpPerDay.acquisitions)
-    const competitionNewRpPerDay = getNewRpPerDay(
-      competitionActiveEnterprise.stats.rpPerDay + passiveRpPerDay.acquisitions
-    )
+
+    const signerNewRpPerDay = getNewRpPerDay(signerRpPerDay + passiveRpPerDay.acquisitions)
+    const targetNewRpPerDay = getNewRpPerDay(targetRpPerDay + passiveRpPerDay.acquisitions)
 
     const oldImmunity =
       acquireKeepId === signerActiveEnterprise.id
@@ -113,7 +123,16 @@ export class AcquireStore {
       oldImmunity
     )
 
-    const rpComparison = makeRPComparison(formattedSignerRpAfter, formattedSignerRpBefore)
+    const rpComparison = makeRPComparison(signerRpAfter, signerRp)
+
+    const signerRpPerDayComparison = []
+    if (signerNewRpPerDay !== signerRpPerDay)
+      signerRpPerDayComparison.push(makeRpPerDayComparison(signerNewRpPerDay, signerRpPerDay))
+
+    const targetRpPerDayComparison = []
+    if (targetNewRpPerDay !== signerRpPerDay)
+      targetRpPerDayComparison.push(makeRpPerDayComparison(targetNewRpPerDay, targetRpPerDay))
+
     return [
       {
         id: signerActiveEnterprise.id,
@@ -122,11 +141,9 @@ export class AcquireStore {
         stats: [
           rpComparison,
           makeAcquisitionComparison(acquisitions + 1, acquisitions),
-          // don't show if it's the same (e.g. already at max)
-          ...(signerNewRpPerDay !== rpPerDay
-            ? [makeRpPerDayComparison(signerNewRpPerDay, rpPerDay)]
-            : []),
+          ...signerRpPerDayComparison,
           immunityComparison,
+          ...moatMessage,
         ],
       },
       {
@@ -139,15 +156,7 @@ export class AcquireStore {
             competitionActiveEnterprise.stats.acquisitions + 1,
             competitionActiveEnterprise.stats.acquisitions
           ),
-          // don't show if it's the same (e.g. already at max)
-          ...(competitionNewRpPerDay !== rpPerDay
-            ? [
-                makeRpPerDayComparison(
-                  competitionNewRpPerDay,
-                  competitionActiveEnterprise.stats.rpPerDay
-                ),
-              ]
-            : []),
+          ...targetRpPerDayComparison,
           immunityComparison,
         ],
       },
