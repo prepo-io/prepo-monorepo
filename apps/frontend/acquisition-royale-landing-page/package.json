@@ -7,6 +7,7 @@
     "dev": "npx next",
     "build": "next build && next-sitemap && next export",
     "test": "jest -w 1",
+    "test:ci": "yarn generate-types && yarn test",
     "start": "next start",
     "pre-commit": "lint-staged",
     "lint": "eslint . --ext .tsx,.ts",

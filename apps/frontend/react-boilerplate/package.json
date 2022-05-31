@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",
-    "postinstall": "yarn generate-types && yarn mst-gql:generate",
+    "generate": "yarn generate-types && yarn mst-gql:generate",
+    "postinstall": "yarn generate",
     "dev": "npx next",
     "build": "next build && next-sitemap",
     "test": "jest -w 1",
+    "test:ci": "yarn generate && yarn test",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext ts,tsx",
     "lint:fix": "yarn lint --fix",

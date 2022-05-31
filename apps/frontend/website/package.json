@@ -5,6 +5,7 @@
     "dev": "npx next",
     "build": "next build && next-sitemap && next export",
     "test": "jest -w 1",
+    "test:ci": "yarn test",
     "start": "next start",
     "pre-commit": "lint-staged",
     "lint": "eslint . --max-warnings 0 --ext ts,tsx",
