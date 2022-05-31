@@ -22,10 +22,13 @@ import { InternStore } from './InternStore'
 import { EnterpriseStore } from './EnterprisesStore'
 import { storeConfig } from './utils/stores-config'
 import { ActionsStore } from '../features/mvp/ActionsStore'
-import { RpShopStore } from '../features/mvp/stores/RpShopStore'
+import { RpShopStore } from '../features/mvp/rpshop'
 import { SupportedContracts } from '../lib/supported-contracts'
 import { MergeStore } from '../features/mvp/merge'
 import { AcquireStore } from '../features/mvp/acquire'
+import { CompeteStore } from '../features/mvp/compete'
+import { DepositStore } from '../features/mvp/deposit'
+import { WithdrawStore } from '../features/mvp/withdraw'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
@@ -34,9 +37,11 @@ export class RootStore extends PRootStore<SupportedContracts> {
   acquisitionRoyaleContractStore: AcquisitionRoyaleContractStore
   acquisitionRoyaleRPShopContractStore: AcquisitionRoyaleRPShopContractStore
   acqrHookV1: AcqrHookV1Store
+  competeStore: CompeteStore
   competeV1ContractStore: CompeteV1ContractStore
   competitionStore: CompetitionStore
   consumablesContractStore: ConsumablesContractStore
+  depositStore: DepositStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
   moatContractStore: MoatContractStore
@@ -51,6 +56,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   internStore: InternStore
   rpShopStore: RpShopStore
   signerStore: SignerStore
+  withdrawStore: WithdrawStore
 
   constructor() {
     super({
@@ -70,7 +76,9 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.acquireRPCostContractStore = new AcquireRPCostContractStore(this)
     this.acquisitionRoyaleRPShopContractStore = new AcquisitionRoyaleRPShopContractStore(this)
     this.acquireStore = new AcquireStore(this)
+    this.competeStore = new CompeteStore(this)
     this.consumablesContractStore = new ConsumablesContractStore(this)
+    this.depositStore = new DepositStore(this)
     this.enterprisesStore = new EnterpriseStore(this)
     this.competitionStore = new CompetitionStore(this)
     this.signerStore = new SignerStore(this)
@@ -85,5 +93,6 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.internContractStore = new InternContractStore(this)
     this.internStore = new InternStore(this)
     this.rpShopStore = new RpShopStore(this)
+    this.withdrawStore = new WithdrawStore(this)
   }
 }

@@ -34,8 +34,9 @@ export class EnterpriseStore {
   getEnterpriseById(id: BigNumber): EnterpriseBasic | undefined {
     const { acquisitionRoyaleContractStore, moatContractStore } = this.root
     const { passiveRpPerDay } = acquisitionRoyaleContractStore
+    const { moatImmunityPeriod } = moatContractStore
     const rawEnterprise = getRawEnterprise(acquisitionRoyaleContractStore.getEnterprise(id))
-    if (rawEnterprise === undefined) return undefined
+    if (rawEnterprise === undefined || moatImmunityPeriod === undefined) return undefined
 
     // retrieve basic info on an enterprise
     const immuneUntil = acquisitionRoyaleContractStore.getEnterpriseImmunityUntil(rawEnterprise)
@@ -58,10 +59,13 @@ export class EnterpriseStore {
       return undefined
     const rp = +ethers.utils.formatEther(virtualRpBalance[0])
     const rpPerDay = calculateRpPerDay(passiveRpPerDay, rawEnterprise)
-
+    // moatCountdown is unix timestamp of when the countdown starts
+    // add moatImmunityPeriod to get when moat will end in unix
+    const moatUntil = moatCountdown[0].gt(0) ? moatCountdown[0].toNumber() + moatImmunityPeriod : 0
     return getReadableEnterpriseBasic({
       id,
       immuneUntil: immuneUntil * SEC_IN_MS,
+      moatUntil: moatUntil * SEC_IN_MS,
       rawEnterprise,
       rawImmune,
       rawOwnerOf,

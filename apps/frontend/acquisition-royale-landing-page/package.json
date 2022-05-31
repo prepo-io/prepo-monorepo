@@ -7,6 +7,7 @@
     "dev": "npx next",
     "build": "next build && next-sitemap && next export",
     "test": "jest -w 1",
+    "test:ci": "yarn generate-types && yarn test",
     "start": "next start",
     "pre-commit": "lint-staged",
     "lint": "eslint . --ext .tsx,.ts",
@@ -31,7 +32,7 @@
     "@uniswap/sdk": "3.0.3",
     "antd": "4.17.4",
     "bnc-onboard": "1.37.0",
-    "configcat-js": "5.7.1",
+    "configcat-js-ssr": "3.10.0",
     "date-fns": "2.27.0",
     "decimal.js": "10.3.1",
     "ethereum-multicall": "2.9.0",
@@ -43,7 +44,7 @@
     "merkletreejs": "0.2.27",
     "mobx": "6.3.9",
     "mobx-react-lite": "3.2.2",
-    "next": "11.1.2",
+    "next": "12.1.6",
     "react": "17.0.2",
     "react-div-100vh": "0.7.0",
     "react-dom": "17.0.2",
@@ -58,11 +59,14 @@
   "devDependencies": {
     "@typechain/ethers-v5": "7.1.1",
     "@types/lodash.throttle": "4.1.6",
-    "@types/react": "17.0.37",
+    "@types/react": "17.0.45",
     "@types/react-scroll": "1.8.3",
     "@types/styled-components": "5.1.18",
     "config": "*",
     "next-sitemap": "1.6.203",
     "typechain": "5.1.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.45"
   }
 }

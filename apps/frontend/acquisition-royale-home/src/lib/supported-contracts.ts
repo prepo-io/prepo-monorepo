@@ -1,5 +1,5 @@
+import { SupportedNetworks } from '@prepo-io/constants'
 import { DYNAMIC_CONTRACT_ADDRESS } from '@prepo-io/stores'
-import { SupportedNetworks } from './constants'
 
 type ContractAddresses = {
   [key in SupportedNetworks]?: string

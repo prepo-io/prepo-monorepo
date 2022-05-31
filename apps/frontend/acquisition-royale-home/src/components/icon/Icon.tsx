@@ -16,10 +16,12 @@ import Uniswap from './iconComponents/Uniswap'
 import Info from './iconComponents/Info'
 import CoffeeCup from './iconComponents/CoffeeCup'
 import Shop from './iconComponents/Shop'
+import External from './iconComponents/External'
 
 export const applicationIcons = {
   close: Close,
   coffeeCup: CoffeeCup,
+  external: External,
   logo: Logo,
   discord: Discord,
   info: Info,
@@ -36,7 +38,7 @@ export const applicationIcons = {
 }
 
 type Props = IconProps &
-  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & { color?: keyof Color }
+  DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & { color?: keyof Color }
 
 const Icon: React.FC<Props> = ({
   name,
@@ -53,7 +55,7 @@ const Icon: React.FC<Props> = ({
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <div {...otherProps}>
+    <span {...otherProps}>
       <IconComponent
         onClick={onClick}
         color={iconColor}
@@ -61,7 +63,7 @@ const Icon: React.FC<Props> = ({
         width={width}
         disabled={disabled}
       />
-    </div>
+    </span>
   )
 }
 
