@@ -2,12 +2,12 @@ import { GasSpeed } from '@prepo-io/constants'
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from '../../stores/RootStore'
 
-const ZERO_PERCENT = 0
+const POINT_ONE_PERCENT = 0.001
 const FIVE_PERCENT = 0.05
 const ONE_POINT_FIVE_PERCENT = 0.015
 
 export const SLIPPAGE_SETTINGS = {
-  MINIMUM_SLIPPAGE: ZERO_PERCENT,
+  MINIMUM_SLIPPAGE: POINT_ONE_PERCENT,
   MAXIMUM_SLIPPAGE: FIVE_PERCENT,
   INITIAL_SLIPPAGE: ONE_POINT_FIVE_PERCENT,
 }
