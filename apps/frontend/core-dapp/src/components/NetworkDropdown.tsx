@@ -72,8 +72,16 @@ const iconNetworkMap: Record<NetworkType, IconName> = {
   dai: 'dai',
 }
 
+const NOT_SUPPORTED_CHAIN_ID = -1
+
 const comingSoonNetworks: NetworkRef[] = [
-  { iconName: 'arbitrum', name: 'Arbitrum', supported: false, type: 'arbitrum', chainId: -1 },
+  {
+    iconName: 'arbitrum',
+    name: 'Arbitrum',
+    supported: false,
+    type: 'arbitrum',
+    chainId: NOT_SUPPORTED_CHAIN_ID,
+  },
 ]
 
 const Item: React.FC<{ network: NetworkRef; selectedName: string }> = ({
@@ -106,7 +114,7 @@ const NetworkDropdown: React.FC = () => {
   } = useRootStore()
   const { network: selectedNetwork } = web3Store
 
-  const selectNetowrk = (id: ChainId): void => {
+  const selectNetwork = (id: ChainId): void => {
     const network = supportedNetworks.find(({ chainId }) => chainId === id)
     if (network) {
       web3Store.setNetwork(network)
@@ -134,7 +142,7 @@ const NetworkDropdown: React.FC = () => {
         <StyledMenuItem
           key={network.name}
           disabled={!network.supported}
-          onClick={(): void => selectNetowrk(network.chainId)}
+          onClick={(): void => selectNetwork(network.chainId)}
         >
           <Item network={network} selectedName={selectedNetwork.name} />
         </StyledMenuItem>
