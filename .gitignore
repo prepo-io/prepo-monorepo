@@ -88,6 +88,9 @@ artifacts*
 cache*
 cache
 
+# --------- prepo-constants --------- 
+packages/constants/lib/**
+
 ## Ignores deployments/localhost across all the sub-folders
 **/deployments/localhost
 ## Ignores .openzeppelin/unknown-31337.json across all the sub-folders
