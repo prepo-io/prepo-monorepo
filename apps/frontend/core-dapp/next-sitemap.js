@@ -1,6 +1,6 @@
 const siteUrl = 'https://app.prepo.io/'
 
 module.exports = {
-  siteUrl,
+  siteUrl: process.env.SITE_URL ?? siteUrl,
   generateRobotsTxt: true,
 }
