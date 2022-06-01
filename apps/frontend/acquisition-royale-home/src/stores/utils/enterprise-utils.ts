@@ -1,4 +1,4 @@
-import { EMPTY_CONTRACT_ADDRESS } from '@prepo-io/constants'
+import { EMPTY_CONTRACT_ADDRESS } from 'prepo-constants'
 import { BigNumber, ethers } from 'ethers'
 import { EnterpriseBasic, RawEnterprise } from '../../types/enterprise.types'
 import { EnterpriseArray } from '../AcquisitionRoyaleContractStore'

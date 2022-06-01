@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
+const withTM = require('next-transpile-modules')(['prepo-constants'])
 
 const root = process.cwd()
 const path = require('path')
@@ -28,4 +29,4 @@ const sentryWebpackPluginOptions = {
   silent: true,
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+module.exports = withTM(withSentryConfig(nextConfig, sentryWebpackPluginOptions))

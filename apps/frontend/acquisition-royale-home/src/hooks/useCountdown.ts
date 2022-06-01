@@ -1,4 +1,4 @@
-import { SEC_IN_MS } from '@prepo-io/constants'
+import { SEC_IN_MS } from 'prepo-constants'
 import { useEffect, useState } from 'react'
 import { useInterval } from 'react-use'
 import { formatPeriod, FormatPeriodOptions } from '../utils/date-utils'

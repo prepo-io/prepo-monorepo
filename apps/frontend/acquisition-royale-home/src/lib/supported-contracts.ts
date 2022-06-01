@@ -1,4 +1,4 @@
-import { SupportedNetworks } from '@prepo-io/constants'
+import { SupportedNetworks } from 'prepo-constants'
 import { DYNAMIC_CONTRACT_ADDRESS } from '@prepo-io/stores'
 
 type ContractAddresses = {
