@@ -20,7 +20,6 @@
   "license": "ISC",
   "dependencies": {
     "@panelbear/panelbear-nextjs": "1.0.3",
-    "@prepo-io/constants": "0.17.0",
     "@prepo-io/stores": "0.25.0",
     "@prepo-io/ui": "0.59.1",
     "@prepo-io/utils": "0.10.6",
@@ -48,6 +47,7 @@
     "mobx-state-tree": "5.1.4",
     "mst-gql": "0.14.1",
     "next": "12.1.6",
+    "prepo-constants": "*",
     "react": "17.0.2",
     "react-calendar": "3.6.0",
     "react-copy-to-clipboard": "5.0.4",
@@ -76,6 +76,7 @@
     "@types/styled-system": "5.1.15",
     "babel-jest": "27.4.6",
     "babel-plugin-styled-components": "2.0.7",
+    "next-transpile-modules": "9.0.0",
     "config": "*",
     "jest": "27.4.7",
     "ts-jest": "27.1.3",

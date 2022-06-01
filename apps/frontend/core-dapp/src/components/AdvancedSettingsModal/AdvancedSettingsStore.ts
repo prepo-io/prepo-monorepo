@@ -1,4 +1,4 @@
-import { GasSpeed } from '@prepo-io/constants'
+import { GasSpeed } from 'prepo-constants'
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from '../../stores/RootStore'
 

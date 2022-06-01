@@ -1,4 +1,4 @@
-import { SEC_IN_MS } from '@prepo-io/constants'
+import { SEC_IN_MS } from 'prepo-constants'
 import { TickMarkFormatter, Time } from 'lightweight-charts'
 import { ChartTimeframe } from '../../types/market.types'
 import {

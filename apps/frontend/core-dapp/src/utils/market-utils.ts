@@ -1,4 +1,4 @@
-import { SEC_IN_MS } from '@prepo-io/constants'
+import { SEC_IN_MS } from 'prepo-constants'
 import getUnixTime from 'date-fns/getUnixTime'
 import { getEndOfHour, getMilisecondsByHours, getUTCEndOfDay } from './date-utils'
 import { getMultiplier } from './mafs-utils'

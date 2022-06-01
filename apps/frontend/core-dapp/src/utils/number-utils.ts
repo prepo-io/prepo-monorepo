@@ -1,4 +1,4 @@
-import { CURRENCY_PRECISION } from '@prepo-io/constants'
+import { CURRENCY_PRECISION } from 'prepo-constants'
 import { format } from 'd3'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'

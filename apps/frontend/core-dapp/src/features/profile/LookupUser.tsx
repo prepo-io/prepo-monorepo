@@ -1,7 +1,7 @@
 import { Flex, Input, media, spacingIncrement } from '@prepo-io/ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { EMPTY_CONTRACT_ADDRESS } from '@prepo-io/constants'
+import { EMPTY_CONTRACT_ADDRESS } from 'prepo-constants'
 import { CUSTOM_STYLE } from './TotalEarned'
 import ButtonLink from '../ppo/ButtonLink'
 import { Routes } from '../../lib/routes'

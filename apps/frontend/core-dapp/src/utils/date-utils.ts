@@ -1,4 +1,4 @@
-import { MIN_IN_MS, SEC_IN_MS } from '@prepo-io/constants'
+import { MIN_IN_MS, SEC_IN_MS } from 'prepo-constants'
 import endOfHour from 'date-fns/endOfHour'
 import endOfDay from 'date-fns/endOfDay'
 import format from 'date-fns/format'

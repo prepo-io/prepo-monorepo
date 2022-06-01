@@ -1,4 +1,4 @@
-import { SupportedNetworks } from '@prepo-io/constants'
+import { SupportedNetworks } from 'prepo-constants'
 
 const config = {
   HOST: process.env.NEXT_PUBLIC_HOST ?? 'http://localhost:3000',
