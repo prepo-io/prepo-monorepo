@@ -1,4 +1,4 @@
-import { SupportedNetworks } from '@prepo-io/constants'
+import { SupportedNetworks } from 'prepo-constants'
 
 const config = {
   NETWORK: (process.env.NETWORK as unknown as SupportedNetworks) ?? 'goerli',

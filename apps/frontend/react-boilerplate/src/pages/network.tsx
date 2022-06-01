@@ -1,4 +1,4 @@
-import { NETWORKS } from '@prepo-io/constants'
+import { NETWORKS } from 'prepo-constants'
 import { useEffect } from 'react'
 import { useRootStore } from '../context/RootStoreProvider'
 

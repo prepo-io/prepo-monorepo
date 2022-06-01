@@ -4,6 +4,7 @@
 const root = process.cwd()
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
+const withTM = require('next-transpile-modules')(['prepo-constants'])
 
 const nextConfig = {
   experimental: {
@@ -31,4 +32,4 @@ const sentryWebpackPluginOptions = {
   silent: true,
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+module.exports = withTM(withSentryConfig(nextConfig, sentryWebpackPluginOptions))
