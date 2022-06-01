@@ -10,8 +10,8 @@ import Modal from '../Modal'
 import Radio from '../Radio'
 import RadioGroup from '../RadioGroup'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { formatPercent } from '../../utils/number-utils'
 import useResponsive from '../../hooks/useResponsive'
+import { formatPercent } from '../../utils/number-utils'
 
 const Wrapper = styled.div``
 
@@ -128,26 +128,22 @@ const AdvancedSettingsModal: React.FC = () => {
       visible={isSettingsOpen}
     >
       <Wrapper>
-        <CollapsibleItem
-          title={<MaxSlippageTitle slippage={slippage} />}
-          description={
-            <SliderWrapper>
-              <Slider
-                labelSpacing="normal"
-                value={slippage}
-                min={SLIPPAGE_SETTINGS.MINIMUM_SLIPPAGE}
-                max={SLIPPAGE_SETTINGS.MAXIMUM_SLIPPAGE}
-                step={0.001}
-                onChange={onChangeSlippage}
-                trackColor="primary"
-                trackUnderlyingColor="neutral7"
-                labelPosition="none"
-                thumbStyles={['circle', 'circle']}
-                thickness="small"
-              />
-            </SliderWrapper>
-          }
-        />
+        <MaxSlippageTitle slippage={slippage} />
+        <SliderWrapper>
+          <Slider
+            labelSpacing="normal"
+            value={slippage}
+            min={SLIPPAGE_SETTINGS.MINIMUM_SLIPPAGE}
+            max={SLIPPAGE_SETTINGS.MAXIMUM_SLIPPAGE}
+            step={0.001}
+            onChange={onChangeSlippage}
+            trackColor="primary"
+            trackUnderlyingColor="neutral7"
+            labelPosition="none"
+            thumbStyles={['circle', 'circle']}
+            thickness="small"
+          />
+        </SliderWrapper>
         <CollapsibleItem
           title={<GasPriceTitle secondaryTitle={`${gasSpeed} (${gasPrice} Gwei)`} />}
           onChange={(collapsed): void => setGasPriceCollapsed(collapsed)}
