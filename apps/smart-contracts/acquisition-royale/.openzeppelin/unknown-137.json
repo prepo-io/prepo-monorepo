@@ -1,0 +1,1045 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x9dBD39E9d476773A7d7e71F2912B0a2D96D52020"
+  },
+  "proxies": [
+    {
+      "address": "0xa46afF3aB117b51f33dB178593552d0ca0B1365e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xCb4E5887A2e92F2Df17e4FD2AbD71ce39224FB97",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x140aE84b315fA7639bfAAAa58E05329053195606",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "cd41af5b5fe04f5b611090b76e9e149ed2851d8bb6e650b75b8d18d9f65a3ea6": {
+      "address": "0x5FCe26589E61cDa3B94b74fEA5d59044d9b5467c",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:35"
+          },
+          {
+            "label": "_name",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_string_storage",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:24"
+          },
+          {
+            "label": "_symbol",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_string_storage",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:27"
+          },
+          {
+            "label": "_owners",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_mapping(t_uint256,t_address)",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:30"
+          },
+          {
+            "label": "_balances",
+            "offset": 0,
+            "slot": "204",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:33"
+          },
+          {
+            "label": "_tokenApprovals",
+            "offset": 0,
+            "slot": "205",
+            "type": "t_mapping(t_uint256,t_address)",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:36"
+          },
+          {
+            "label": "_operatorApprovals",
+            "offset": 0,
+            "slot": "206",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:39"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "207",
+            "type": "t_array(t_uint256)44_storage",
+            "contract": "ERC721Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:418"
+          },
+          {
+            "label": "_ownedTokens",
+            "offset": 0,
+            "slot": "251",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
+            "contract": "ERC721EnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:24"
+          },
+          {
+            "label": "_ownedTokensIndex",
+            "offset": 0,
+            "slot": "252",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "ERC721EnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:27"
+          },
+          {
+            "label": "_allTokens",
+            "offset": 0,
+            "slot": "253",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "ERC721EnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:30"
+          },
+          {
+            "label": "_allTokensIndex",
+            "offset": 0,
+            "slot": "254",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "ERC721EnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:33"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "255",
+            "type": "t_array(t_uint256)46_storage",
+            "contract": "ERC721EnumerableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:171"
+          },
+          {
+            "label": "_gameStartTime",
+            "offset": 0,
+            "slot": "301",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:39"
+          },
+          {
+            "label": "_mergerBurnPercentage",
+            "offset": 0,
+            "slot": "302",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:40"
+          },
+          {
+            "label": "_withdrawalBurnPercentage",
+            "offset": 0,
+            "slot": "303",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:41"
+          },
+          {
+            "label": "_immunityPeriods",
+            "offset": 0,
+            "slot": "304",
+            "type": "t_struct(ImmunityPeriods)7645_storage",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:42"
+          },
+          {
+            "label": "_foundingParameters",
+            "offset": 0,
+            "slot": "307",
+            "type": "t_struct(FoundingParameters)7654_storage",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:43"
+          },
+          {
+            "label": "_passiveRpPerDay",
+            "offset": 0,
+            "slot": "311",
+            "type": "t_struct(PassiveRpParameters)7663_storage",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:44"
+          },
+          {
+            "label": "_verifier",
+            "offset": 0,
+            "slot": "315",
+            "type": "t_contract(IMerkleProofVerifier)16059",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:45"
+          },
+          {
+            "label": "_weth",
+            "offset": 0,
+            "slot": "316",
+            "type": "t_contract(IERC20)4659",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:46"
+          },
+          {
+            "label": "_runwayPoints",
+            "offset": 0,
+            "slot": "317",
+            "type": "t_contract(IRunwayPoints)16160",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:47"
+          },
+          {
+            "label": "_compete",
+            "offset": 0,
+            "slot": "318",
+            "type": "t_contract(ICompete)15908",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:48"
+          },
+          {
+            "label": "_acquireCost",
+            "offset": 0,
+            "slot": "319",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:49"
+          },
+          {
+            "label": "_mergeCost",
+            "offset": 0,
+            "slot": "320",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:50"
+          },
+          {
+            "label": "_fundraiseCost",
+            "offset": 0,
+            "slot": "321",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:51"
+          },
+          {
+            "label": "_consumables",
+            "offset": 0,
+            "slot": "322",
+            "type": "t_contract(IERC1155Burnable)16046",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:52"
+          },
+          {
+            "label": "_fallbackBranding",
+            "offset": 0,
+            "slot": "323",
+            "type": "t_contract(IBranding)15883",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:53"
+          },
+          {
+            "label": "_hasFoundedFree",
+            "offset": 0,
+            "slot": "324",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:54"
+          },
+          {
+            "label": "_nameInUse",
+            "offset": 0,
+            "slot": "325",
+            "type": "t_mapping(t_string_memory_ptr,t_bool)",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:55"
+          },
+          {
+            "label": "_supportForBranding",
+            "offset": 0,
+            "slot": "326",
+            "type": "t_mapping(t_contract(IBranding)15883,t_bool)",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:56"
+          },
+          {
+            "label": "_enterprises",
+            "offset": 0,
+            "slot": "327",
+            "type": "t_mapping(t_uint256,t_struct(Enterprise)15256_storage)",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:58"
+          },
+          {
+            "label": "_reservedCount",
+            "offset": 0,
+            "slot": "328",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:59"
+          },
+          {
+            "label": "_freeCount",
+            "offset": 0,
+            "slot": "329",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:60"
+          },
+          {
+            "label": "_auctionCount",
+            "offset": 0,
+            "slot": "330",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:61"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "331",
+            "type": "t_address",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:72"
+          },
+          {
+            "label": "_acquireRpCost",
+            "offset": 0,
+            "slot": "332",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:73"
+          },
+          {
+            "label": "_mergeRpCost",
+            "offset": 0,
+            "slot": "333",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:74"
+          },
+          {
+            "label": "_acquireRpReward",
+            "offset": 0,
+            "slot": "334",
+            "type": "t_contract(ICost)15939",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:75"
+          },
+          {
+            "label": "_fundingMode",
+            "offset": 20,
+            "slot": "334",
+            "type": "t_uint8",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:76"
+          },
+          {
+            "label": "_hook",
+            "offset": 0,
+            "slot": "335",
+            "type": "t_contract(IAcqrHook)15204",
+            "contract": "AcquisitionRoyale",
+            "src": "contracts/AcquisitionRoyale.sol:77"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)44_storage": {
+            "label": "uint256[44]",
+            "numberOfBytes": "1408"
+          },
+          "t_array(t_uint256)46_storage": {
+            "label": "uint256[46]",
+            "numberOfBytes": "1472"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IAcqrHook)15204": {
+            "label": "contract IAcqrHook",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IBranding)15883": {
+            "label": "contract IBranding",
+            "numberOfBytes": "20"
+          },
+          "t_contract(ICompete)15908": {
+            "label": "contract ICompete",
+            "numberOfBytes": "20"
+          },
+          "t_contract(ICost)15939": {
+            "label": "contract ICost",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IERC1155Burnable)16046": {
+            "label": "contract IERC1155Burnable",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IERC20)4659": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IMerkleProofVerifier)16059": {
+            "label": "contract IMerkleProofVerifier",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IRunwayPoints)16160": {
+            "label": "contract IRunwayPoints",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_bool))": {
+            "label": "mapping(address => mapping(address => bool))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_uint256))": {
+            "label": "mapping(address => mapping(uint256 => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_contract(IBranding)15883,t_bool)": {
+            "label": "mapping(contract IBranding => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bool)": {
+            "label": "mapping(string => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_address)": {
+            "label": "mapping(uint256 => address)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Enterprise)15256_storage)": {
+            "label": "mapping(uint256 => struct IAcquisitionRoyale.Enterprise)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Enterprise)15256_storage": {
+            "label": "struct IAcquisitionRoyale.Enterprise",
+            "members": [
+              {
+                "label": "name",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "rp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastRpUpdateTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "acquisitionImmunityStartTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "mergerImmunityStartTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "revivalImmunityStartTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "competes",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "acquisitions",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "mergers",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "branding",
+                "type": "t_contract(IBranding)15883",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "fundraiseRpTotal",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              },
+              {
+                "label": "fundraiseWethTotal",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "11"
+              },
+              {
+                "label": "damageDealt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "12"
+              },
+              {
+                "label": "damageTaken",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "13"
+              },
+              {
+                "label": "renames",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "14"
+              },
+              {
+                "label": "rebrands",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "15"
+              },
+              {
+                "label": "revives",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "16"
+              }
+            ],
+            "numberOfBytes": "544"
+          },
+          "t_struct(FoundingParameters)7654_storage": {
+            "label": "struct AcquisitionRoyale.FoundingParameters",
+            "members": [
+              {
+                "label": "startPrice",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "endPrice",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "endTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(ImmunityPeriods)7645_storage": {
+            "label": "struct AcquisitionRoyale.ImmunityPeriods",
+            "members": [
+              {
+                "label": "acquisition",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "merger",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "revival",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_struct(PassiveRpParameters)7663_storage": {
+            "label": "struct AcquisitionRoyale.PassiveRpParameters",
+            "members": [
+              {
+                "label": "max",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "base",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "acquisitions",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "mergers",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "f82e20471a7d575554b2cc8f34dc5769db8b7ae4eb8180220f085e3b5b1e4956": {
+      "address": "0x01Ab197622CD59b159E58799DF7F4E5009E19FDA",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "label": "_runwayPoints",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_contract(IERC20Upgradeable)306",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:17"
+          },
+          {
+            "label": "_tasksPerDay",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:19"
+          },
+          {
+            "label": "_rpPerInternPerDay",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:20"
+          },
+          {
+            "label": "_globalRpLimitPerDay",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:21"
+          },
+          {
+            "label": "_globalDayStartTime",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:22"
+          },
+          {
+            "label": "_claimDelay",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:23"
+          },
+          {
+            "label": "_globalRpClaimedToday",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:25"
+          },
+          {
+            "label": "_internToDayStartTime",
+            "offset": 0,
+            "slot": "158",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:26"
+          },
+          {
+            "label": "_internToLastClaimTime",
+            "offset": 0,
+            "slot": "159",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:27"
+          },
+          {
+            "label": "_internToTasksCompletedToday",
+            "offset": 0,
+            "slot": "160",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "AcquisitionRoyaleInternship",
+            "src": "contracts/AcquisitionRoyaleInternship.sol:28"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IERC20Upgradeable)306": {
+            "label": "contract IERC20Upgradeable",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "af8203aa97a30f3da2b122ffe947e17fb33751b0b63eee038743f56250326e5e": {
+      "address": "0x3D2341a1047C28b255E50E24217C6Aa8d44a5D0C",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "label": "_runwayPoints",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_contract(IERC20)4659",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:19"
+          },
+          {
+            "label": "_acquisitionRoyale",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_contract(IAcquisitionRoyale)15800",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:20"
+          },
+          {
+            "label": "_consumables",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_contract(IAcquisitionRoyaleConsumables)15868",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:21"
+          },
+          {
+            "label": "_renameTokenRpPrice",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:23"
+          },
+          {
+            "label": "_rebrandTokenRpPrice",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:24"
+          },
+          {
+            "label": "_reviveTokenRpPrice",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:25"
+          },
+          {
+            "label": "_enterpriseRpPrice",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_uint256",
+            "contract": "AcquisitionRoyaleRPShop",
+            "src": "contracts/AcquisitionRoyaleRPShop.sol:26"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IAcquisitionRoyale)15800": {
+            "label": "contract IAcquisitionRoyale",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IAcquisitionRoyaleConsumables)15868": {
+            "label": "contract IAcquisitionRoyaleConsumables",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IERC20)4659": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    }
+  }
+}

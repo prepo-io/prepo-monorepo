@@ -116,6 +116,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
           value={lineSliderValue as [number, number]}
           min={sliderSettings.min}
           max={sliderSettings.max}
+          disableSmallThumb
           step={getStepWithTwoDecimals(lineSliderValue[1])}
           onChange={(n: SliderValue): void => {
             if (Array.isArray(n)) {
