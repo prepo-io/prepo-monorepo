@@ -14,7 +14,7 @@
         "pret": "yarn c && yarn l",
         "t": "yarn test",
         "test:ci": "yarn c && npx hardhat test",
-        "typechain": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat typechain", 
+        "typechain": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat typechain",
         "pret:coverage": "yarn c && yarn l",
         "t:coverage": "npx hardhat coverage",
         "lint": "eslint . --max-warnings 0 --ext ts,tsx",
