@@ -31,6 +31,7 @@ const SEO: React.FC<Props> = ({
 
     <meta name="msapplication-TileColor" content="#000000" />
     <meta name="theme-color" content="#000" />
+    <meta name="robots" content="noindex,nofollow" />
 
     {/* Twitter */}
     <meta property="twitter:card" content="summary_large_image" />

@@ -132,12 +132,7 @@ const NetworkDropdown: React.FC = () => {
   const iconName = iconNetworkMap[selectedNetwork.type ?? 'ethereum']
 
   return (
-    <StyledDropdown
-      overlay={marketsDropdownMenu}
-      variant="outline"
-      size="md"
-      placement="bottomCenter"
-    >
+    <StyledDropdown overlay={marketsDropdownMenu} variant="outline" size="md" placement="bottom">
       <Typography
         variant="text-medium-base"
         display="flex"
