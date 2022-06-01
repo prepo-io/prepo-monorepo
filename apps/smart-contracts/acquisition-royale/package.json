@@ -13,7 +13,7 @@
         "l": "yarn prettier --write './deploy/*.ts' './test/**/*.ts' './hardhat.config.ts'",
         "pret": "yarn c && yarn l",
         "t": "npx hardhat test",
-        "test": "yarn c && npx hardhat test",
+        "test:ci": "yarn c && npx hardhat test",
         "typechain": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat typechain",
         "server": "npx hardhat node --watch",
         "deploy": "npx hardhat --network hardhat deploy",
