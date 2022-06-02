@@ -20,7 +20,6 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "@panelbear/panelbear-nextjs": "1.0.3",
-    "@prepo-io/constants": "0.17.0",
     "@prepo-io/stores": "0.24.6",
     "@prepo-io/utils": "0.10.5",
     "@sentry/nextjs": "6.17.7",
@@ -47,7 +46,8 @@
     "styled-components": "5.3.3",
     "swiper": "^7.2.0",
     "web3": "1.6.1",
-    "web3modal": "1.9.4"
+    "web3modal": "1.9.4",
+    "prepo-constants": "*"
   },
   "devDependencies": {
     "@ethersproject/providers": "5.5.3",
@@ -56,6 +56,7 @@
     "@types/react": "17.0.45",
     "@types/react-copy-to-clipboard": "5.0.2",
     "@types/styled-components": "5.1.15",
+    "next-transpile-modules": "9.0.0",
     "config": "*",
     "tsconfig": "*",
     "typechain": "7.0.0"

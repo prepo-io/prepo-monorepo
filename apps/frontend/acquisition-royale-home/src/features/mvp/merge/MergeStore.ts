@@ -1,4 +1,4 @@
-import { SEC_IN_MS } from '@prepo-io/constants'
+import { SEC_IN_MS } from 'prepo-constants'
 import { ButtonProps } from 'antd'
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from '../../../stores/RootStore'
