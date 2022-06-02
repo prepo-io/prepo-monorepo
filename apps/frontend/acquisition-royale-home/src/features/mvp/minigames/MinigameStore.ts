@@ -1,3 +1,4 @@
+import { DYNAMIC_CONTRACT_ADDRESS } from '@prepo-io/stores'
 import { ButtonProps } from 'antd'
 import { makeAutoObservable } from 'mobx'
 import { MiniGame } from './games'
@@ -5,16 +6,21 @@ import { MinigameHookStore } from '../../../stores/entities/MinigameHook.entity'
 import { MinigameProRataStore } from '../../../stores/entities/MinigameProRata.entity'
 import { RootStore } from '../../../stores/RootStore'
 import { LOADING } from '../../../utils/common-utils'
+import { RewardTokenStore } from '../../../stores/entities/RewardToken.entity'
+import { formatContractAddress } from '../../../stores/utils/common-utils'
+import { transformRawEther } from '../../../utils/number-utils'
 
 export class MinigameStore {
   loading = false
   details: MiniGame
   hook: MinigameHookStore
   proRata: MinigameProRataStore
+  rewardToken: RewardTokenStore
   constructor(public root: RootStore, details: MiniGame) {
     this.details = details
     this.proRata = new MinigameProRataStore(root, details.proRataAddress, details.title)
     this.hook = new MinigameHookStore(root, details.hookAddress, this.proRata)
+    this.rewardToken = new RewardTokenStore(root, this.proRata)
     makeAutoObservable(this, {}, { autoBind: true })
   }
 
@@ -52,15 +58,20 @@ export class MinigameStore {
       this.eligible === undefined ||
       this.limitReached === undefined ||
       this.prevPeriodPayout === undefined ||
-      this.curPeriodPayout === undefined
+      this.curPeriodPayout === undefined ||
+      this.rewardTokenBalance === undefined ||
+      this.rewardTokenSymbol === undefined
     )
       return LOADING
+
+    if (this.rewardTokenBalance < this.prevPeriodPayout)
+      return { disabled: true, children: `Out of ${this.rewardTokenSymbol}! Check back later!` }
     if (this.prevPeriodPayout > 0)
       return {
-        children: `Claim ${this.prevPeriodPayout.toFixed(4)} RP`,
+        children: `Claim ${this.prevPeriodPayout.toFixed(4)} ${this.rewardTokenSymbol}`,
         disabled: this.loading,
         loading: this.loading,
-      } // TODO: use dynamic currency symbol
+      }
     if (!this.eligible) return { disabled: true, children: 'Ineligible for this task!' }
     if (this.curPeriodPayout === 0) return { disabled: true, children: 'No payout available yet!' }
     if (this.limitReached) return { disabled: true, children: 'Earn limit reached!' }
@@ -122,7 +133,6 @@ export class MinigameStore {
 
   get hasClaim(): boolean | undefined {
     if (this.prevPeriodPayout === undefined) return undefined
-
     return this.prevPeriodPayout > 0
   }
 
@@ -138,10 +148,13 @@ export class MinigameStore {
     return +((rewardAmountPerPeriod / totalPrevActionCount) * prevActionCount).toFixed(4)
   }
 
-  // TODO: fetch actual RP symbol from rewardToken address from ProRata contract
+  get rewardTokenSymbol(): string | undefined {
+    return formatContractAddress(this.rewardToken.symbol())
+  }
 
-  // eslint-disable-next-line class-methods-use-this
-  get rewardTokenSymbol(): string {
-    return 'RP'
+  get rewardTokenBalance(): number | undefined {
+    if (this.proRata.address === undefined || this.proRata.address === DYNAMIC_CONTRACT_ADDRESS)
+      return undefined
+    return transformRawEther(this.rewardToken.balanceOf(this.proRata.address))
   }
 }

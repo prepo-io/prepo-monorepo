@@ -22,7 +22,7 @@ export type SupportedContractName =
   | 'BRANDING'
   | SupportedMinigameContractName
 
-export type SupportedErc20Token = 'USDC'
+export type SupportedErc20Token = 'USDC' | 'REWARD_TOKEN'
 
 export type SupportedContracts = {
   [key in SupportedContractName]: ContractAddresses
