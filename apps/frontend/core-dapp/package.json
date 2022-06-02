@@ -20,8 +20,10 @@
   "license": "ISC",
   "dependencies": {
     "@panelbear/panelbear-nextjs": "1.0.3",
+    "@prepo-io/constants": "0.17.0",
     "@prepo-io/stores": "0.25.0",
     "@prepo-io/ui": "0.59.1",
+    "@prepo-io/utils": "0.10.6",
     "@sentry/nextjs": "6.17.6",
     "@uniswap/sdk": "3.0.3",
     "@uniswap/v3-core": "1.0.1",

@@ -5760,6 +5760,11 @@
     pocket-js-core "0.0.3"
     web3-provider-engine "16.0.1"
 
+"@prepo-io/constants@0.17.0":
+  version "0.17.0"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.17.0/3d95b801df2bf713c602e039a8a69f1e920320c6eaf85a467d5411182fcf1378#431b8996df8298c0dfec68ad22063c7ea3ab9500"
+  integrity sha512-eQbrlvnG6W457i+IdgYbrrLbTNQQXB86sMQbht+L5kCAmFaIjzUgiWKqLTZ4pDyYzoD7+XZgJwA58dl7w2cp9Q==
+
 "@prepo-io/stores@0.23.0":
   version "0.23.0"
   resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.23.0/f008f22f4459afcdecb6012b9e508174ec0cd3658ebd011ed469c56a300d444a#941573753529057404c79a6a834614c006c1b455"
@@ -5812,6 +5817,11 @@
   version "0.10.5"
   resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.5/b3275a1023f2842fcfe69b61c531336572a86dee0ff7b0c9580ddce68fea09ae#5e69e2cf179b46c8e8f0e181923eb68915f733fd"
   integrity sha512-ga6jOYCQxOHAOdzu6DesKCiMYsDTX3Od0DAwugicLFxFzeKjVs6tK99s0fTrl8TsmiJ7kzjqOPmUDl8PeksrxQ==
+
+"@prepo-io/utils@0.10.6":
+  version "0.10.6"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.6/2b30f0286796830388eb1955dca7756876528ba6486a92a20a558d6390e6b11f#5e5eb2eab98b080e5b737e2bf8c32b9f517ddc33"
+  integrity sha512-Bi9VPEWW5IMGnWC0W9ib5nMyB87PvF7QzdfVIzRIXXw+QdrWDmb96QYq4dSzI1zOrugq5W7Y7uEthcVc4uAuaQ==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
