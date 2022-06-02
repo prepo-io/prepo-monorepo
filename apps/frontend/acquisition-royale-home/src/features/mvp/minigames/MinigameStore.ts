@@ -13,8 +13,8 @@ export class MinigameStore {
   proRata: MinigameProRataStore
   constructor(public root: RootStore, details: MiniGame) {
     this.details = details
-    this.hook = new MinigameHookStore(root, details.hookAddress)
     this.proRata = new MinigameProRataStore(root, details.proRataAddress, details.title)
+    this.hook = new MinigameHookStore(root, details.hookAddress, this.proRata)
     makeAutoObservable(this, {}, { autoBind: true })
   }
 

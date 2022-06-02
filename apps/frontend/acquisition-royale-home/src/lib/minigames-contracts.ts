@@ -8,7 +8,7 @@ const TELEMARKETING_HOOK: ContractAddresses = {
 }
 
 const TELEMARKETING_PRORATA: ContractAddresses = {
-  goerli: DYNAMIC_CONTRACT_ADDRESS,
+  goerli: '0xBeA0bdc7A83481f49655a3D57c71b8F5ac6856b6',
 }
 
 export type SupportedMinigameContracts = {

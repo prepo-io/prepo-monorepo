@@ -1,5 +1,6 @@
 import { ContractReturn, ContractStore } from '@prepo-io/stores'
-import { makeObservable } from 'mobx'
+import { makeObservable, reaction } from 'mobx'
+import { MinigameProRataStore } from './MinigameProRata.entity'
 import { MinigameHookAbi__factory, MinigameHookAbi as MinigameHook } from '../../../generated'
 import { SupportedMinigameContractName } from '../../lib/minigames-contracts'
 import { SupportedContracts } from '../../lib/supported-contracts'
@@ -15,9 +16,28 @@ type GetMustBeRebranded = MinigameHook['functions']['getMustBeRebranded']
 type GetMustBeRenamed = MinigameHook['functions']['getMustBeRenamed']
 
 export class MinigameHookStore extends ContractStore<RootStore, SupportedContracts> {
-  constructor(root: RootStore, contractName: SupportedMinigameContractName) {
+  proRata: MinigameProRataStore
+  constructor(
+    root: RootStore,
+    contractName: SupportedMinigameContractName,
+    proRata: MinigameProRataStore
+  ) {
     super(root, contractName, MinigameHookAbi__factory)
+    this.proRata = proRata
     makeObservable(this, {})
+    this.initContract()
+  }
+
+  initContract(): void {
+    const disposer = reaction(
+      () => this.proRata.actionHook,
+      (hook) => {
+        if (hook) {
+          this.updateAddress(hook)
+          disposer()
+        }
+      }
+    )
   }
 
   private getMinAcquireCount(): ContractReturn<GetMinAcquireCount> {
