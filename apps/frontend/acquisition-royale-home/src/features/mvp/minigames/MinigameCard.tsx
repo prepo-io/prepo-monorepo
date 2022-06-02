@@ -2,7 +2,7 @@ import { SEC_IN_MS } from 'prepo-constants'
 import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { MiniGame } from './games'
+import { MiniGame, minigames as games } from './games'
 import ActionCard from '../ActionCard'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import { DescriptionWithIcon } from '../Descriptions'
@@ -90,7 +90,7 @@ const MinigameCard: React.FC<Props> = ({ game: { key, title, description, iconNa
       action={(): Promise<void> => callToAction()}
       description={renderDescription}
       buttonProps={buttonProps}
-      expandable
+      expandable={games.length > 1}
       messageAboveButton={currentPayoutMessage}
       messageBelowButton={messageBelowButton}
       title={title}
