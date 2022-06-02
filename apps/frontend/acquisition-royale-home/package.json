@@ -47,7 +47,8 @@
     "swiper": "^7.2.0",
     "web3": "1.6.1",
     "web3modal": "1.9.4",
-    "prepo-constants": "*"
+    "prepo-constants": "*",
+    "prepo-utils": "*"
   },
   "devDependencies": {
     "@ethersproject/providers": "5.5.3",
