@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Table } from 'antd'
 import styled from 'styled-components'
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { spacingIncrement } from '../../utils/theme/utils'
 import Heading from '../../components/Heading'

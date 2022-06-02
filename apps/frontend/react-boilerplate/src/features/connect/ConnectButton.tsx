@@ -1,7 +1,7 @@
 import { Button } from 'antd'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import Identicon from './Identicon'
 import Balance from './Balance'
 import AccountModal from './AccountModal'
