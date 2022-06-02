@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { minigames } from './games'
 import MinigameCard from './MinigameCard'
-import Intern from '../actions/Intern'
 import { spacingIncrement } from '../../../utils/theme/utils'
 
 const ComingSoon = styled.p`
@@ -20,7 +19,6 @@ const Wrapper = styled.div`
 
 const Minigames: React.FC = () => (
   <Wrapper>
-    <Intern />
     {minigames.map((game) => (
       <MinigameCard key={game.key} game={game} />
     ))}
