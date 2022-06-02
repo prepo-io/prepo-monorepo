@@ -29,6 +29,6 @@ export const minigames: MiniGame[] = [
     iconName: 'phone',
     hookAddress: 'TELEMARKETING_HOOK',
     proRataAddress: 'TELEMARKETING_PRORATA',
-    buttonText: 'Do telemarketing',
+    buttonText: 'Make a Call',
   },
 ]

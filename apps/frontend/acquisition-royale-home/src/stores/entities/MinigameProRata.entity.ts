@@ -11,6 +11,7 @@ import { RootStore } from '../RootStore'
 import { formatContractAddress } from '../utils/common-utils'
 
 type Action = MinigameProRata['functions']['action']
+type Claim = MinigameProRata['functions']['claim']
 type GetActionHook = MinigameProRata['functions']['getActionHook']
 type GetCurrActionCount = MinigameProRata['functions']['getCurrActionCount']
 type GetPeriodLength = MinigameProRata['functions']['getPeriodLength']
@@ -78,6 +79,19 @@ export class MinigameProRataStore extends ContractStore<RootStore, SupportedCont
       return true
     } catch (error) {
       this.root.toastStore.errorToast(this.name, error)
+      return false
+    }
+  }
+
+  async claim(onHash?: (string) => unknown): Promise<boolean> {
+    try {
+      const tx = await this.sendTransaction<Claim>('claim', [])
+      if (onHash) onHash(tx.hash)
+      await tx.wait()
+      this.root.toastStore.successToast(`Claimed reward for ${this.name}`)
+      return true
+    } catch (error) {
+      this.root.toastStore.errorToast(`Claim ${this.name}`, error)
       return false
     }
   }

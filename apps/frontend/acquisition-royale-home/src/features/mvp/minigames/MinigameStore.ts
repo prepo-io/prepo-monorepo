@@ -30,29 +30,56 @@ export class MinigameStore {
     }
   }
 
+  async claimReward(): Promise<void> {
+    if (!this.loading) {
+      this.setLoading(true)
+      await this.proRata.claim()
+      this.setLoading(false)
+    }
+  }
+
+  callToAction(): Promise<void> {
+    if (this.prevPeriodPayout > 0) {
+      return this.claimReward()
+    }
+    return this.doAction()
+  }
+
   get buttonProps(): ButtonProps {
     const { currActionCount, userActionLimitPerPeriod } = this.proRata
     if (
       userActionLimitPerPeriod === undefined ||
       this.eligible === undefined ||
-      this.limitReached ||
-      this.prevPeriodPayout
+      this.limitReached === undefined ||
+      this.prevPeriodPayout === undefined ||
+      this.curPeriodPayout === undefined
     )
       return LOADING
     if (this.prevPeriodPayout > 0)
-      return { children: `Claim ${this.prevPeriodPayout.toFixed(4)} RP` } // TODO: use dynamic currency symbol
+      return {
+        children: `Claim ${this.prevPeriodPayout.toFixed(4)} RP`,
+        disabled: this.loading,
+        loading: this.loading,
+      } // TODO: use dynamic currency symbol
     if (!this.eligible) return { disabled: true, children: 'Ineligible for this task!' }
+    if (this.curPeriodPayout === 0) return { disabled: true, children: 'No payout available yet!' }
     if (this.limitReached) return { disabled: true, children: 'Earn limit reached!' }
     let children = this.details.buttonText
     if (userActionLimitPerPeriod > 0)
       children = `${children} (${currActionCount}/${userActionLimitPerPeriod})`
-    return { children }
+    return { children, disabled: this.loading, loading: this.loading }
+  }
+
+  get claimableRewardAmount(): number | undefined {
+    const { currActionCount } = this.proRata
+    if (currActionCount === undefined || this.curPeriodPayout === undefined) return undefined
+    return currActionCount * this.curPeriodPayout
   }
 
   get curPeriodPayout(): number | undefined {
     const { rewardAmountPerPeriod, totalCurrActionCount } = this.proRata
     if (rewardAmountPerPeriod === undefined || totalCurrActionCount === undefined) return undefined
-    return +(rewardAmountPerPeriod / totalCurrActionCount).toFixed(4)
+    return +(rewardAmountPerPeriod / (totalCurrActionCount || 1)).toFixed(4)
   }
 
   get eligible(): boolean | undefined {
@@ -109,5 +136,12 @@ export class MinigameStore {
     const { prevActionCount, rewardAmountPerPeriod, totalPrevActionCount } = this.proRata
     if (prevActionCount === undefined || totalPrevActionCount === undefined) return undefined
     return +((rewardAmountPerPeriod / totalPrevActionCount) * prevActionCount).toFixed(4)
+  }
+
+  // TODO: fetch actual RP symbol from rewardToken address from ProRata contract
+
+  // eslint-disable-next-line class-methods-use-this
+  get rewardTokenSymbol(): string {
+    return 'RP'
   }
 }
