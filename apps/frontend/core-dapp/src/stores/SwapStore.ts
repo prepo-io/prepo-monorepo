@@ -1,4 +1,4 @@
-import { makeError } from '@prepo-io/utils'
+import { makeError } from 'prepo-utils'
 import { parseEther } from 'ethers/lib/utils'
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from './RootStore'

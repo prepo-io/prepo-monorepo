@@ -1,6 +1,6 @@
 import { useState, ChangeEventHandler, useMemo } from 'react'
 import { centered, media, spacingIncrement, Switch, Icon } from '@prepo-io/ui'
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import styled from 'styled-components'
 import CurrencyTitleIcon from './CurrencyTitleIcon'
 import Modal from '../Modal'
