@@ -6,11 +6,8 @@
   "main": "src/index.ts",
   "files": ["src/index.ts", "src/types.ts"],
   "scripts": {
-    "dev": "yarn rollup:watch",
-    "build": "yarn compile",
-    "compile": "rollup -c",
-    "test": "npx jest",
-    "rollup:watch": "rollup -w -c"
+    "build": "tsc",
+    "build:watch": "yarn build --watch"
   },
   "dependencies": {
     "prepo-constants": "*",
