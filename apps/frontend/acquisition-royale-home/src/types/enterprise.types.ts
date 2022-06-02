@@ -49,6 +49,9 @@ export type EnterpriseBasic = {
     acquisitions: number
     competes: number
     mergers: number
+    revives: number
+    rebrands: number
+    renames: number
     rp: number
   }
 }
@@ -64,3 +67,13 @@ export type UseEnterprise = {
 }
 
 export type Enterprises = Enterprise[]
+
+export type SignerHookStats = {
+  acquisitions: number
+  competes: number
+  enterpriseCount: number
+  mergers: number
+  revives: number
+  rebranded: boolean
+  renamed: boolean
+}

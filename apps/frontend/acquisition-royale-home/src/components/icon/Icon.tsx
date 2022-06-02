@@ -17,6 +17,7 @@ import Info from './iconComponents/Info'
 import CoffeeCup from './iconComponents/CoffeeCup'
 import Shop from './iconComponents/Shop'
 import External from './iconComponents/External'
+import Phone from './iconComponents/Phone'
 
 export const applicationIcons = {
   close: Close,
@@ -28,6 +29,7 @@ export const applicationIcons = {
   medium: Medium,
   twitter: Twitter,
   matic: Matic,
+  phone: Phone,
   leftArrow: LeftArrow,
   rightArrow: RightArrow,
   downArrow: DownArrow,

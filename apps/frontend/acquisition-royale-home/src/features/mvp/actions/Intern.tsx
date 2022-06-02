@@ -45,6 +45,7 @@ const Intern: React.FC = () => {
       action={handleDoTask}
       buttonProps={internButtonProps}
       description={internDescription}
+      expandable
       title="Intern Tasks"
       messageBelowButton={<DayResetCountdown />}
     />

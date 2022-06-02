@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { action, makeObservable, observable, runInAction, computed } from 'mobx'
 import { utils } from 'ethers'
-import { ContractStore, Factory } from '@prepo-io/stores'
+import { ContractStore, DYNAMIC_CONTRACT_ADDRESS, Factory } from '@prepo-io/stores'
 import { RootStore } from '../RootStore'
 import { ContractReturn } from '../utils/class-utils'
 import {
@@ -46,6 +46,7 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
   initContract(tokenName: SupportedErc20Token): void {
     const network = this.root.web3Store.network.name
     const address = getContractAddress(tokenName, network)
+    if (address === DYNAMIC_CONTRACT_ADDRESS) return
     if (typeof address === 'undefined') throw Error(`no address set for ${tokenName} on ${network}`)
     this.address = address
     this.contract = this.factory.connect(this.address, this.root.web3Store.coreProvider)

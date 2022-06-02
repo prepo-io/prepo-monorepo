@@ -1,6 +1,6 @@
 import { makeAutoObservable, reaction } from 'mobx'
 import { RootStore } from './RootStore'
-import { Enterprise, Enterprises } from '../types/enterprise.types'
+import { Enterprise, SignerHookStats, Enterprises } from '../types/enterprise.types'
 import { transformRawNumber } from '../utils/number-utils'
 
 export class SignerStore {
@@ -85,5 +85,33 @@ export class SignerStore {
     const { address } = this.root.web3Store
     if (!address) return []
     return this.root.enterprisesStore.lazyLoad(address, this.slides)
+  }
+
+  get signerHookStats(): SignerHookStats | undefined {
+    if (this.signerEnterprises === undefined) return undefined
+    let acquisitions = 0
+    let competes = 0
+    let mergers = 0
+    let rebrands = 0
+    let renames = 0
+    let revives = 0
+    this.signerEnterprises.forEach((enterprise) => {
+      acquisitions = Math.max(acquisitions, enterprise.stats.acquisitions)
+      competes = Math.max(competes, enterprise.stats.competes)
+      mergers = Math.max(mergers, enterprise.stats.mergers)
+      rebrands = Math.max(rebrands, enterprise.stats.rebrands)
+      renames = Math.max(renames, enterprise.stats.renames)
+      revives = Math.max(revives, enterprise.stats.revives)
+    })
+
+    return {
+      acquisitions,
+      competes,
+      mergers,
+      enterpriseCount: this.signerEnterprises.length,
+      rebranded: rebrands > 0,
+      renamed: renames > 0,
+      revives,
+    }
   }
 }

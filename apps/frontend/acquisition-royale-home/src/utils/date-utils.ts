@@ -25,6 +25,8 @@ export const formatPeriod = (timestamp: number, options?: FormatPeriodOptions): 
   if (options?.withSec) {
     const secsLeft = Math.floor(timeDiff % 60)
     parts.push(`${secsLeft}s`)
+  } else if (parts.length === 0) {
+    parts.push('< 60s')
   }
   return parts.join(' ')
 }

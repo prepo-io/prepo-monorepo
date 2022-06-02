@@ -29,6 +29,7 @@ import { AcquireStore } from '../features/mvp/acquire'
 import { CompeteStore } from '../features/mvp/compete'
 import { DepositStore } from '../features/mvp/deposit'
 import { WithdrawStore } from '../features/mvp/withdraw'
+import { makeMinigameStores, MinigameStores } from '../features/mvp/minigames/utils'
 
 export class RootStore extends PRootStore<SupportedContracts> {
   uiStore: UiStore
@@ -44,6 +45,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   depositStore: DepositStore
   mergeStore: MergeStore
   mergeRPCostContractStore: MergeRPCostContractStore
+  minigames: MinigameStores
   moatContractStore: MoatContractStore
   uniswapV2RouterContractStore: UniswapV2RouterContractStore
   localStorageStore: LocalStorageStore
@@ -94,5 +96,6 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.internStore = new InternStore(this)
     this.rpShopStore = new RpShopStore(this)
     this.withdrawStore = new WithdrawStore(this)
+    this.minigames = makeMinigameStores(this)
   }
 }

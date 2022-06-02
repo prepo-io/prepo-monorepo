@@ -23,6 +23,9 @@ const arrowStyles = css`
 
 const Wrapper = styled.div<{ $showSubtabArrow: boolean }>`
   &&& {
+    .ant-tabs {
+      padding-bottom: ${spacingIncrement(30)};
+    }
     .ant-tabs-top > .ant-tabs-nav {
       margin-bottom: 0;
     }
