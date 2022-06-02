@@ -1,9 +1,14 @@
 import type { Config } from '@jest/types'
+import base from 'config/jest-server'
+import path from 'path'
+
+const fromRoot = (d): string => path.join(__dirname, d)
 
 const config: Config.InitialOptions = {
-  testPathIgnorePatterns: ['/node_modules/'],
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  ...base,
+  roots: [fromRoot('.')],
+  name: 'prepo-utils',
+  displayName: 'prepo-utils tests',
   coverageThreshold: {
     global: {
       statements: 80,
