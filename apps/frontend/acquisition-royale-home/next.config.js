@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
-const withTM = require('next-transpile-modules')(['prepo-constants'])
+const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils'])
 
 const root = process.cwd()
 const path = require('path')
