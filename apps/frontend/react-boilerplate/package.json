@@ -28,7 +28,7 @@
     "mobx": "6.6.0",
     "mobx-react-lite": "3.4.0",
     "mobx-state-tree": "5.1.5",
-    "mst-gql": "0.14.1",
+    "mst-gql": "0.15.0",
     "next": "12.1.6",
     "next-sitemap": "2.5.19",
     "react": "17.0.2",
