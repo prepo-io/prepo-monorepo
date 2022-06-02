@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "@reduxjs/toolkit": "1.8.1",
-    "antd": "4.19.5",
+    "antd": "4.20.7",
     "lodash.throttle": "4.1.1",
     "prepo-sdk": "*",
     "react": "17.0.2",
