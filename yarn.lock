@@ -5808,6 +5808,11 @@
     react-loading-skeleton "3.0.3"
     react-slider "1.3.1"
 
+"@prepo-io/utils@0.10.5":
+  version "0.10.5"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.5/b3275a1023f2842fcfe69b61c531336572a86dee0ff7b0c9580ddce68fea09ae#5e69e2cf179b46c8e8f0e181923eb68915f733fd"
+  integrity sha512-ga6jOYCQxOHAOdzu6DesKCiMYsDTX3Od0DAwugicLFxFzeKjVs6tK99s0fTrl8TsmiJ7kzjqOPmUDl8PeksrxQ==
+
 "@prepo-io/utils@0.10.6":
   version "0.10.6"
   resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.6/2b30f0286796830388eb1955dca7756876528ba6486a92a20a558d6390e6b11f#5e5eb2eab98b080e5b737e2bf8c32b9f517ddc33"
