@@ -1,4 +1,4 @@
-import { GasSpeed } from '@prepo-io/constants'
+import { GasSpeed } from 'prepo-constants'
 import { spacingIncrement, Slider, Button, SliderValue } from '@prepo-io/ui'
 import { useState } from 'react'
 import styled from 'styled-components'

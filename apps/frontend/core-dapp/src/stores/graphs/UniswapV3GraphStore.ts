@@ -1,4 +1,4 @@
-import { SEC_IN_MS } from '@prepo-io/constants'
+import { SEC_IN_MS } from 'prepo-constants'
 import { GraphStore, OnNewDataOptions, OnNewDataOutput } from '@prepo-io/stores'
 import { makeObservable, observable } from 'mobx'
 import {

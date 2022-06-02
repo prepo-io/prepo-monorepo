@@ -1,7 +1,7 @@
 import { makeObservable, observable, runInAction, computed, action } from 'mobx'
 import { BigNumber, utils } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
-import { UNLIMITED_AMOUNT_APPROVAL } from '@prepo-io/constants'
+import { UNLIMITED_AMOUNT_APPROVAL } from 'prepo-constants'
 import { ContractReturn, ContractStore, Factory } from '@prepo-io/stores'
 import { RootStore } from '../RootStore'
 import { SupportedContracts, SupportedContractsNames } from '../../lib/contract.types'
