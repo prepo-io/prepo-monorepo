@@ -51,7 +51,7 @@ const DepositTransactionSummary: React.FC = () => {
     {
       label: 'Deposit Fees',
       tooltip: <TransactionFee />,
-      amount: balanceToNumber(depositFees),
+      amount: preCTTokenStore.formatUnits(depositFees),
     },
     {
       label: 'Estimated Received Amount',
