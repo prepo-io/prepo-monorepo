@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@prepo-io/stores": "0.23.0",
-    "@prepo-io/utils": "0.10.0",
     "@sentry/nextjs": "6.19.6",
     "antd": "4.19.5",
     "bnc-onboard": "1.38.2",
@@ -38,7 +37,8 @@
     "react-jazzicon": "0.1.3",
     "react-use": "17.3.2",
     "styled-components": "5.3.5",
-    "prepo-constants": "*"
+    "prepo-constants": "*",
+    "prepo-utils": "*"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "10.0.0",
