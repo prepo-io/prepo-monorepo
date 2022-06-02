@@ -6,7 +6,7 @@ const Index: NextPage = () => null
 // eslint-disable-next-line require-await
 export const getServerSideProps: GetServerSideProps = async () => ({
   redirect: {
-    permanent: false,
+    permanent: true, // https://nextjs.org/learn/seo/crawling-and-indexing/status-codes
     destination: Routes.Markets,
   },
   props: {},

@@ -95,7 +95,7 @@ const PpoDropdown: React.FC = () => {
       variant="standard"
       size="md"
       trigger={['hover']}
-      placement="bottomCenter"
+      placement="bottom"
     >
       <PpoLabel />
     </DropDownWrapper>
