@@ -1,7 +1,7 @@
 import { autorun, makeAutoObservable, reaction, runInAction } from 'mobx'
 import gql from 'graphql-tag'
 import { createHttpClient, Query } from 'mst-gql'
-import { SupportedNetworks } from '@prepo-io/constants'
+import { SupportedNetworks } from 'prepo-constants'
 import { DocumentNode } from 'graphql'
 import { RootStore } from './RootStore'
 import {

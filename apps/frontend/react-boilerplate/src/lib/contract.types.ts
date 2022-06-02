@@ -1,4 +1,4 @@
-import { SupportedNetworks } from '@prepo-io/constants'
+import { SupportedNetworks } from 'prepo-constants'
 import { AppContractNames } from './app-contracts'
 import { SupportedExternalTokenContractsNames } from './external-contracts'
 
