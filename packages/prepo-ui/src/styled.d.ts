@@ -1,4 +1,4 @@
-import { ThemeModes } from '@prepo-io/ui'
+import { ThemeModes, coreDappTheme } from './index'
 import 'styled-components'
 
 declare module 'styled-components' {
@@ -128,7 +128,7 @@ declare module 'styled-components' {
     preacherIconFill: string
     preacherTextColor: string
     profileBorderColor: string
-    transparent: string
+    transparent: 'transparent'
   }
 
   export interface Weight {
