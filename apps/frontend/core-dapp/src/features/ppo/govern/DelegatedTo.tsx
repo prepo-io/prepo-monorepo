@@ -1,4 +1,4 @@
-import { Box, Button, Flex, spacingIncrement, Typography } from '@prepo-io/ui'
+import { Box, Button, Flex, spacingIncrement, Typography } from 'prepo-ui'
 import { getShortAccount } from 'prepo-utils'
 import { Label } from './FromPower'
 import { Routes } from '../../../lib/routes'

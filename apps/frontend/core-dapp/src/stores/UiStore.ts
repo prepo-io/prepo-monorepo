@@ -1,6 +1,6 @@
 import { message } from 'antd'
 import { makeAutoObservable } from 'mobx'
-import { ThemeModes } from '@prepo-io/ui'
+import { ThemeModes } from 'prepo-ui'
 import { RootStore } from './RootStore'
 import { Language } from '../types/general.types'
 

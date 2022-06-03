@@ -4,10 +4,14 @@
 const root = process.cwd()
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
-const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils'])
+const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils', 'prepo-ui'])
 
 const nextConfig = {
   experimental: { esmExternals: 'loose' },
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

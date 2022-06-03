@@ -1,6 +1,6 @@
 import { Area, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Line } from 'recharts'
 import styled, { useTheme } from 'styled-components'
-import { spacingIncrement, media } from '@prepo-io/ui'
+import { spacingIncrement, media } from 'prepo-ui'
 import { useMemo, FC } from 'react'
 import {
   generateMultiplierData,

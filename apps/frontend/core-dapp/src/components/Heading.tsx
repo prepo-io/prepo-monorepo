@@ -1,5 +1,5 @@
 import styled, { Color, useTheme } from 'styled-components'
-import { media, coreDappTheme } from '@prepo-io/ui'
+import { media, coreDappTheme } from 'prepo-ui'
 
 type HeadingSize = 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
 

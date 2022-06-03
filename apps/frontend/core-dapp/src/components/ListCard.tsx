@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled, { Color } from 'styled-components'
-import { media, spacingIncrement, Button, Icon, IconName } from '@prepo-io/ui'
+import { media, spacingIncrement, Button, Icon, IconName } from 'prepo-ui'
 import IconTitle from './IconTitle'
 import useResponsive from '../hooks/useResponsive'
 

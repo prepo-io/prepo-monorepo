@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
-import { media, Button, Icon, Flex } from '@prepo-io/ui'
+import { media, Button, Icon, Flex } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import Skeleton from 'react-loading-skeleton'
 import SelectedMarketColumn from './SelectedMarketColumn'

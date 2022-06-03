@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Typography } from '@prepo-io/ui'
+import { Box, Button, Flex, Typography } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import PositionItem, { PositionItemSkeleton } from './PositionItem'
 import ClosePositionSummary from './ClosePositionSummary'

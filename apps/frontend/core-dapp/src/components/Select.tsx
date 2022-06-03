@@ -1,6 +1,6 @@
 import styled, { Color, css, Weight, DefaultTheme } from 'styled-components'
 import { Select as ASelect, SelectProps as ASelectProps } from 'antd'
-import { coreDappTheme, spacingIncrement, Icon, IconName } from '@prepo-io/ui'
+import { coreDappTheme, spacingIncrement, Icon, IconName } from 'prepo-ui'
 import { DefaultOptionType } from 'antd/lib/select'
 import IconTitle from './IconTitle'
 

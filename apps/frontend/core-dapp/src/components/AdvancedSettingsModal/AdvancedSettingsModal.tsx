@@ -1,5 +1,5 @@
 import { GasSpeed } from 'prepo-constants'
-import { spacingIncrement, Slider, Button, SliderValue } from '@prepo-io/ui'
+import { spacingIncrement, Slider, Button, SliderValue } from 'prepo-ui'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'

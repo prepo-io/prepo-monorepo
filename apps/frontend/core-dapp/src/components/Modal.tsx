@@ -1,6 +1,6 @@
 import { Modal as AModal, ModalProps } from 'antd'
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
-import { centered, Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useRef } from 'react'
 import { useRootStore } from '../context/RootStoreProvider'

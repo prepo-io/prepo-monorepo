@@ -1,4 +1,4 @@
-import { Alert, media } from '@prepo-io/ui'
+import { Alert, media } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { useRootStore } from '../../context/RootStoreProvider'

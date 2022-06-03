@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, IconName, Typography } from '@prepo-io/ui'
+import { Box, Flex, Icon, IconName, Typography } from 'prepo-ui'
 import { truncateAmountString } from 'prepo-utils'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'

@@ -1,7 +1,7 @@
 import { DefaultOptionType } from 'antd/lib/select'
 import { AutoComplete, AutoCompleteProps, Input } from 'antd'
 import styled, { css } from 'styled-components'
-import { spacingIncrement, media, Icon, centered } from '@prepo-io/ui'
+import { spacingIncrement, media, Icon, centered } from 'prepo-ui'
 import useResponsive from '../hooks/useResponsive'
 
 export type SearchProps = AutoCompleteProps & {

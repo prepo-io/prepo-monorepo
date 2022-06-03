@@ -1,4 +1,4 @@
-import { Button, media, spacingIncrement } from '@prepo-io/ui'
+import { Button, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled, { css } from 'styled-components'
 import { useRef } from 'react'

@@ -1,7 +1,7 @@
 import { max, scaleLinear, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { centered, media } from '@prepo-io/ui'
+import { centered, media } from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import { Area } from './Area'
 import { AxisBottom } from './AxisBottom'

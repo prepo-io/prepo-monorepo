@@ -1,4 +1,4 @@
-import { Box, Flex, Icon } from '@prepo-io/ui'
+import { Box, Flex, Icon } from 'prepo-ui'
 import React, { useEffect } from 'react'
 import { Color, useTheme } from 'styled-components'
 import { observer } from 'mobx-react-lite'

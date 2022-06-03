@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import Link from '../../components/Link'
 import MarketIconTitle from '../../components/MarketIconTitle'
 import { Market } from '../../types/market.types'

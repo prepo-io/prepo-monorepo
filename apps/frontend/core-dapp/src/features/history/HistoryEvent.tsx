@@ -1,4 +1,4 @@
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import styled, { Color } from 'styled-components'
 import { HistoryEventType, HistoryEventItemType } from './history.types'
 

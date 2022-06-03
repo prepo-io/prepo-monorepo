@@ -1,4 +1,4 @@
-import { ButtonColors, Flex, IconName, media, spacingIncrement, Typography } from '@prepo-io/ui'
+import { ButtonColors, Flex, IconName, media, spacingIncrement, Typography } from 'prepo-ui'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import SectionAccordion from './SectionAccordion'

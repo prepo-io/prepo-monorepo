@@ -1,4 +1,4 @@
-import { ButtonProps } from '@prepo-io/ui'
+import { ButtonProps } from 'prepo-ui'
 import TransactionSummaryLayout from '../Layout'
 
 type Props = {

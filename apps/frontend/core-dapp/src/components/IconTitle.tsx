@@ -1,5 +1,5 @@
 import styled, { Color, DefaultTheme, Weight } from 'styled-components'
-import { spacingIncrement, media, IconName, Icon } from '@prepo-io/ui'
+import { spacingIncrement, media, IconName, Icon } from 'prepo-ui'
 
 type StyleProps = {
   spacingValue: number

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import { Alert, Icon, media, spacingIncrement, TokenInput } from '@prepo-io/ui'
+import { Alert, Icon, media, spacingIncrement, TokenInput } from 'prepo-ui'
 import { useEffect } from 'react'
 import DepositTransactionSummary from './DepositTransactionSummary'
 import SecondaryNavigation from '../../components/SecondaryNavigation'

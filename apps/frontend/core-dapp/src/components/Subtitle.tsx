@@ -1,6 +1,6 @@
 import { Tooltip } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement, media, Icon, centered } from '@prepo-io/ui'
+import { spacingIncrement, media, Icon, centered } from 'prepo-ui'
 
 const Wrapper = styled.div`
   align-items: center;

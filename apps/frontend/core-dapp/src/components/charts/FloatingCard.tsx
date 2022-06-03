@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode, RefObject, forwardRef } from 'react'
 import styled, { CSSProperties } from 'styled-components'
-import { coreDappTheme, spacingIncrement } from '@prepo-io/ui'
+import { coreDappTheme, spacingIncrement } from 'prepo-ui'
 import { FormatPrice, FormatTime, DetailsProps } from './chart-types'
 import { formatChartTooltipTime } from './utils'
 import { formatUsd } from '../../utils/number-utils'
