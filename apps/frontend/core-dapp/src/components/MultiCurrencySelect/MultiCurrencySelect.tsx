@@ -1,4 +1,4 @@
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import { observer } from 'mobx-react-lite'
 import Skeleton from 'react-loading-skeleton'
 import styled, { Color } from 'styled-components'

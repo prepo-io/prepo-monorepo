@@ -1,5 +1,5 @@
 import { Icon, spacingIncrement, TokenInput } from '@prepo-io/ui'
-import { truncateAmountString } from '@prepo-io/utils'
+import { truncateAmountString } from 'prepo-utils'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import styled from 'styled-components'

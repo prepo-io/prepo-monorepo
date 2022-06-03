@@ -6,5 +6,8 @@ export const getContractAddress = <SupportedContracts>(
   supportedContracts: SupportedContracts
 ): string | undefined => {
   const externalContract = supportedContracts[contract]
-  return externalContract[currentNetwork]
+  // Ignoring typescript here since it creates issues with unitests and mobx not sending types when mocking ContractStore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return externalContract[currentNetwork] as string | undefined
 }
