@@ -28,8 +28,6 @@ const items: FlatCarouselItemData[] = [
       <>
         <span>Core Dapp Smart Contracts</span>
         <br />
-        <span>Acquisition Royale</span>
-        <br />
         <span>Website Relaunch</span>
         <br />
         <span>Tokenomics Design</span>
