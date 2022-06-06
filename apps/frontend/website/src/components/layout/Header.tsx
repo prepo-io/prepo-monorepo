@@ -38,10 +38,6 @@ const externalLinks: MobileMenuLinkProps[] = [
     href: 'https://prepo.io/blog',
     title: 'Blog',
   },
-  {
-    href: 'https://acquisitionroyale.com',
-    title: 'NFT Game',
-  },
 ]
 
 const IconButtonSized: FC<IconButtonProps> = (props) => (
