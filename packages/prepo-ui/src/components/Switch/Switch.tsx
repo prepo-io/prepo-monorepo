@@ -6,7 +6,7 @@ type Props = {
   color?: keyof Color
 }
 
-const Wrapper = styled.div<Props>`
+const Wrapper = styled.div<Required<Props>>`
   &&& {
     .ant-switch {
       height: ${spacingIncrement(14)};

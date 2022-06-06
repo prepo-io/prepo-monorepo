@@ -1,6 +1,6 @@
 import styled, { Color, SimpleInterpolation } from 'styled-components'
 import { Thickness } from './Slider'
-import { sliderTrackBorderRadius } from './slider-settings'
+import { SLIDER_DEFAULT_SETTINGS, sliderTrackBorderRadius } from './slider-settings'
 import { getResponsiveHeight } from './slider-utils'
 
 type Props = {
@@ -19,7 +19,11 @@ const Wrapper = styled.div<Props>`
     }
 
     return `
-      background-color: ${theme.color[trackUnderlyingColor]};
+      background-color: ${
+        trackUnderlyingColor
+          ? theme.color[trackUnderlyingColor]
+          : SLIDER_DEFAULT_SETTINGS.trackUnderlyingColor
+      };
     `
   }}
 `

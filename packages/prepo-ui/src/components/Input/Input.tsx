@@ -3,6 +3,7 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext'
 import { FocusEvent, useState } from 'react'
 import styled, { Color, css, FlattenSimpleInterpolation } from 'styled-components'
 import { media, spacingIncrement } from '../../common-utils'
+import { fontSize } from '../../themes/core-dapp/font-utils'
 
 export type Alignment = 'left' | 'center' | 'right'
 
@@ -20,7 +21,19 @@ type Props = InputProps & {
   shadowSuffix?: string
 }
 
-const inputSizes = {
+type InputSize = {
+  fontSize: [keyof typeof fontSize, keyof typeof fontSize]
+  padding: [[number, number], [number, number]]
+  name: 'lg' | 'md' | 'sm'
+}
+
+type InputSizes = {
+  large: InputSize
+  middle: InputSize
+  small: InputSize
+}
+
+const inputSizes: InputSizes = {
   large: {
     fontSize: ['md', 'xl'],
     padding: [
@@ -70,7 +83,7 @@ const InputContainer = styled.div<{ customStyles?: CustomStyles; size: SizeType 
   padding: ${spacingIncrement(6)} ${spacingIncrement(12)};
   transition: border 0.3s;
   ${({ size, theme }): FlattenSimpleInterpolation => {
-    const inputSize = inputSizes[size]
+    const inputSize = inputSizes[size ?? 'middle']
     const className = size === 'middle' ? 'ant-input' : `ant-input-${inputSize.name}`
     return css`
       padding: ${formatPadding(inputSize.padding[0])};

@@ -62,5 +62,7 @@ export function responsiveAdapter<T>({
   desktop?: T
   largeDesktop?: T
 }): [T, T, T, T] {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return [phone, tablet, desktop, largeDesktop]
 }

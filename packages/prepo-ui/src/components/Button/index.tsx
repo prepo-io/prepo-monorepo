@@ -1,5 +1,4 @@
-import Button, { ButtonColors, ButtonProps } from './Button'
+import Button from './Button'
 
-export { ButtonColors, ButtonProps }
-
+export * from './Button'
 export default Button
