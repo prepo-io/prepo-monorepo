@@ -1,7 +1,7 @@
 import styled, { Color } from 'styled-components'
 import { useRouter } from 'next/router'
 import { observer } from 'mobx-react-lite'
-import { centered, spacingIncrement, IconName, Icon, media } from '@prepo-io/ui'
+import { centered, spacingIncrement, IconName, Icon, media } from 'prepo-ui'
 import { useEffect, useRef } from 'react'
 import Link from './Link'
 import Tooltip from './Tooltip'

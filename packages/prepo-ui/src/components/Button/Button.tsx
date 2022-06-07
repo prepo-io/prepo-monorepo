@@ -86,7 +86,7 @@ const buttonStyles = ({
   fontSize,
   height,
 }: {
-  colors: ButtonColors
+  colors: Required<ButtonColors>
 } & StyleProps): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
   ${centered}
   background-color: ${({ theme }): string => theme.color[colors.background]};
@@ -120,7 +120,7 @@ const IconWrapper = styled.div`
   margin-right: ${spacingIncrement(10)};
 `
 
-const Wrapper = styled.div<{ colors: ButtonColors } & StyleProps>`
+const Wrapper = styled.div<{ colors: Required<ButtonColors> } & StyleProps>`
   &&& {
     .ant-btn,
     .ant-btn-primary,
@@ -131,7 +131,7 @@ const Wrapper = styled.div<{ colors: ButtonColors } & StyleProps>`
   }
 `
 
-const Anchor = styled.a<ButtonProps & StyleProps & { colors: ButtonColors }>`
+const Anchor = styled.a<ButtonProps & StyleProps & { colors: Required<ButtonColors> }>`
   ${({ colors, fontSize, height }): FlattenInterpolation<ThemeProps<DefaultTheme>> =>
     buttonStyles({ colors, fontSize, height })};
   line-height: 1.2;
@@ -156,7 +156,7 @@ const Button: React.FC<ButtonProps> = ({
   const fontSize = sizes ? sizes[sizeKey].fontSize : sizeObject.fontSize[size]
   const height = sizes ? sizes[sizeKey].height : sizeObject.height[size]
 
-  const defaultColors = useMemo((): ButtonColors => {
+  const defaultColors = useMemo((): Required<ButtonColors> => {
     switch (type) {
       case 'text':
         return {

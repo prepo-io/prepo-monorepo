@@ -4,7 +4,7 @@ import { Col, Row } from 'antd'
 import Icon from '../Icon'
 import Subtitle from '../Subtitle'
 import { centered, media, spacingIncrement } from '../../common-utils'
-import Slider from '../Slider'
+import Slider, { SliderValue } from '../Slider'
 import { IconName } from '../Icon/icon.types'
 
 const Wrapper = styled.div``
@@ -92,12 +92,12 @@ const CharityDonation: React.FC<Props> = ({
   balance,
 }) => {
   const theme = useTheme()
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState<SliderValue>(0)
   const [emojiName, setEmojiName] = useState<IconName>('emojiSmile')
 
-  const onChangeSlider = (newValue: number): void => {
+  const onChangeSlider = (newValue: SliderValue): void => {
     setValue(newValue)
-    if (onChange) onChange(newValue)
+    if (onChange) onChange(newValue as number)
   }
 
   useEffect(() => {

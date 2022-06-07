@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import { spacingIncrement, Button, Icon, centered, ButtonProps } from '@prepo-io/ui'
+import { spacingIncrement, Button, Icon, centered, ButtonProps } from 'prepo-ui'
 import { truncateAmountString } from 'prepo-utils'
 import LoadingLottie from './lottie-animations/LoadingLottie'
 import { Erc20Store } from '../stores/entities/Erc20.entity'

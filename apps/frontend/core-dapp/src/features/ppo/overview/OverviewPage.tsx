@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import { Icon } from '@prepo-io/ui'
+import { Icon } from 'prepo-ui'
 import { ButtonGrid } from '../ButtonGrid'
 import useResponsive from '../../../hooks/useResponsive'
 import PageTitle from '../PageTitle'

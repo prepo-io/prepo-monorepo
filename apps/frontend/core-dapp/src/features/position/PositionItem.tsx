@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { media, spacingIncrement, Subtitle, Button } from '@prepo-io/ui'
+import { media, spacingIncrement, Subtitle, Button } from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import PositionLabel from './PositionLabel'
 import Table from '../../components/Table'

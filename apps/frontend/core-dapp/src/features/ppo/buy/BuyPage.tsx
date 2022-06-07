@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import { buyPageItems } from './buyPageItems'
 import { ButtonGrid, ButtonGridStyles } from '../ButtonGrid'
 import PageTitle from '../PageTitle'

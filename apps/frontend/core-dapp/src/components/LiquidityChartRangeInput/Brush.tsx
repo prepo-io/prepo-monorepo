@@ -1,7 +1,7 @@
 import { BrushBehavior, brushX, D3BrushEvent, ScaleLinear, select } from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled, { Color, useTheme } from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import { brushHandleAccentPath, brushHandlePath, OffScreenHandle } from './svg'
 import { BrushLabelValueType } from './types'
 

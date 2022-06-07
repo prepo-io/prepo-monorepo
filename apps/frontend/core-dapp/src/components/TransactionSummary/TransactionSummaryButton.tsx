@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@prepo-io/ui'
+import { Button, ButtonProps } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import { UnlockOptions } from '../UnlockTokens'
 import { useRootStore } from '../../context/RootStoreProvider'

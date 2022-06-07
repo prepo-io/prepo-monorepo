@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Sizes } from '@prepo-io/ui'
+import { Sizes } from 'prepo-ui'
 import { useWindowSize } from './useWindowSize'
 
 export type Responsive = {

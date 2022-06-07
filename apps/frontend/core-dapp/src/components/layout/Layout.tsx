@@ -1,6 +1,6 @@
 import { Layout as ALayout } from 'antd'
 import styled from 'styled-components'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import Header from './Header'
 
 const Wrapper = styled.div`

@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, spacingIncrement, media } from '@prepo-io/ui'
+import { Box, Flex, Icon, spacingIncrement, media } from 'prepo-ui'
 import styled from 'styled-components'
 import { PpoHistoryItem } from './ppo-history.types'
 import PpoHistoryEvent from './PpoHistoryEvent'

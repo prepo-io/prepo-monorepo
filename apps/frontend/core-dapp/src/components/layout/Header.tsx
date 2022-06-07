@@ -1,6 +1,6 @@
 import { Layout } from 'antd'
 import styled, { css } from 'styled-components'
-import { coreDappTheme, Flex, media, spacingIncrement } from '@prepo-io/ui'
+import { coreDappTheme, Flex, media, spacingIncrement } from 'prepo-ui'
 import Navigation from '../Navigation'
 import ConnectButton from '../../features/connect/ConnectButton'
 import PrePOLogo from '../PrePOLogo'

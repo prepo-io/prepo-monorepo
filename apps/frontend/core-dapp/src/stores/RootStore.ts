@@ -1,6 +1,6 @@
 import notification from 'antd/lib/notification'
 import { RootStore as PRootStore, LocalStorageStore } from '@prepo-io/stores'
-import { ThemeModes } from '@prepo-io/ui'
+import { ThemeModes } from 'prepo-ui'
 import { UiStore } from './UiStore'
 import { MarketStore } from './MarketStore'
 import { Erc20Store } from './entities/Erc20.entity'

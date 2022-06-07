@@ -1,4 +1,4 @@
-import { media } from '@prepo-io/ui'
+import { media } from 'prepo-ui'
 import { css } from 'styled-components'
 
 // Brings the widget a bit more down on mobile to avoid blocking

@@ -1,4 +1,4 @@
-import { centered, Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'

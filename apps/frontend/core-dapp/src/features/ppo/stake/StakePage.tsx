@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Checkbox, Flex, Icon, media, spacingIncrement, TokenInput } from '@prepo-io/ui'
+import { Checkbox, Flex, Icon, media, spacingIncrement, TokenInput } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import StakeUnstakeLayout from './StakeUnstakeLayout'

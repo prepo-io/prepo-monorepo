@@ -1,4 +1,4 @@
-import { Button, Icon, media, spacingIncrement, Switch } from '@prepo-io/ui'
+import { Button, Icon, media, spacingIncrement, Switch } from 'prepo-ui'
 import { getShortAccount } from 'prepo-utils'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'

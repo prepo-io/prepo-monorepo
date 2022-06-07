@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { centered, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, media, spacingIncrement } from 'prepo-ui'
 
 const WrapperCard = styled.div`
   ${centered}

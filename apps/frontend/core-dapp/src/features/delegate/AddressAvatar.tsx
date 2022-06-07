@@ -1,4 +1,4 @@
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import Identicon from '../connect/Identicon'
 import LoadingLottie from '../../components/lottie-animations/LoadingLottie'

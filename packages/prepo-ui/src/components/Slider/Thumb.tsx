@@ -4,6 +4,7 @@ import { Tooltip } from 'antd'
 import styled, { Color, css, FlattenSimpleInterpolation } from 'styled-components'
 import { Thickness, ThumbStyle } from './Slider'
 import SliderThumbContents from './ThumbContents'
+import { SLIDER_DEFAULT_SETTINGS } from './slider-settings'
 import { absoluteCenterY, media, spacingIncrement } from '../../common-utils'
 
 type StyledThumbProps = {
@@ -28,20 +29,26 @@ const StyledThumb = styled.div<StyledThumbProps>`
         text-align: center;
         width: 0.8rem;
         :focus-visible {
-          outline-color: ${theme.color[focusColor]};
+          outline-color: ${focusColor
+            ? theme.color[focusColor]
+            : SLIDER_DEFAULT_SETTINGS.focusColor};
         }
       `
 
     if (thumbStyle === 'circle')
       return css`
-        background-color: ${theme.color[trackColor]};
+        background-color: ${trackColor
+          ? theme.color[trackColor]
+          : SLIDER_DEFAULT_SETTINGS.trackColor};
         border-radius: 1rem;
         box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
         cursor: grab;
         height: ${spacingIncrement(20)};
         width: ${spacingIncrement(20)};
         :focus-visible {
-          outline-color: ${theme.color[focusColor]};
+          outline-color: ${focusColor
+            ? theme.color[focusColor]
+            : SLIDER_DEFAULT_SETTINGS.focusColor};
         }
         ${media.desktop`
           height: ${spacingIncrement(32)};

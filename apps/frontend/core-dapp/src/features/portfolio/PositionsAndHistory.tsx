@@ -1,4 +1,4 @@
-import { Box, centered, media, spacingIncrement } from '@prepo-io/ui'
+import { Box, centered, media, spacingIncrement } from 'prepo-ui'
 import { useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import FilterButton from '../../components/Filter/FilterButton'

@@ -1,4 +1,4 @@
-import { spacingIncrement, media, Button, ButtonColors } from '@prepo-io/ui'
+import { spacingIncrement, media, Button, ButtonColors } from 'prepo-ui'
 import styled from 'styled-components'
 import { lightPurpleButtonStyles } from '../ppo-button-styles'
 

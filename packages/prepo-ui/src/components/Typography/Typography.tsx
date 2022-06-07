@@ -228,6 +228,8 @@ const transform = (
 ): Record<TextTypes, StyleArrayType> => {
   const result = {} as any
   Object.keys(target).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const style = target[key]
     result[key] = {}
     Object.keys(style).forEach((styleKey) => {

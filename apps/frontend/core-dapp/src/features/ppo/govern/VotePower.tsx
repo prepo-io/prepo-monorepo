@@ -1,4 +1,4 @@
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import TotalVotingPower from './TotalVotingPower'

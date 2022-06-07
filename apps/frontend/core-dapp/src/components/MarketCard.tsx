@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Row, Col } from 'antd'
 import styled from 'styled-components'
-import { centered, spacingIncrement, media, Icon } from '@prepo-io/ui'
+import { centered, spacingIncrement, media, Icon } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import Skeleton from 'react-loading-skeleton'
 import Link from './Link'

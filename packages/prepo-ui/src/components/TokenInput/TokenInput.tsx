@@ -148,7 +148,7 @@ const TokenInput: React.FC<Props> = ({
       <BalanceText
         $clickable={canInteract && !disableClickBalance}
         onClick={(): void => {
-          if (canInteract) handleClickBalance(balance)
+          if (canInteract) handleClickBalance(balance ?? 0)
         }}
       >
         Balance:&nbsp;

@@ -1,5 +1,5 @@
 import styled, { Color } from 'styled-components'
-import { coreDappTheme } from '@prepo-io/ui'
+import { coreDappTheme } from 'prepo-ui'
 
 const { sliderTrackBorderRadius } = coreDappTheme
 

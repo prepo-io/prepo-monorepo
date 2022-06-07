@@ -7,6 +7,7 @@ import { getResponsiveHeight } from './slider-utils'
 import SliderTrack from './DualTrack'
 import SliderThumb from './Thumb'
 import SingleSliderTrack from './SingleTrack'
+import { SLIDER_DEFAULT_SETTINGS } from './slider-settings'
 import { centered, spacingIncrement } from '../../common-utils'
 
 type LabelPosition = 'top' | 'side' | 'none'
@@ -96,9 +97,9 @@ const Slider: React.FC<Props> = ({
   min,
   max,
   value,
-  trackColor = 'success',
-  focusColor = 'success',
-  trackUnderlyingColor = 'stroke',
+  trackColor = SLIDER_DEFAULT_SETTINGS.trackColor,
+  focusColor = SLIDER_DEFAULT_SETTINGS.focusColor,
+  trackUnderlyingColor = SLIDER_DEFAULT_SETTINGS.trackUnderlyingColor,
   onChange,
   thickness = 'normal',
   labelPosition = 'top',
@@ -114,7 +115,7 @@ const Slider: React.FC<Props> = ({
   disableSmallThumb = false,
 }) => {
   const thumbsRef = useRef<HTMLDivElement[]>([])
-  const [localValue, setLocalValue] = useState<SliderValue>(value)
+  const [localValue, setLocalValue] = useState<SliderValue>(value as SliderValue)
   const [backdropState, setBackdropState] = useState<{ left: string; width: string }>({
     left: '0',
     width: '0',
@@ -142,7 +143,7 @@ const Slider: React.FC<Props> = ({
 
   // // update slider when value is changed from parent component
   useEffect(() => {
-    if (localValue !== value) setLocalValue(value)
+    if (localValue !== value) setLocalValue(value as SliderValue)
   }, [localValue, value])
 
   const sliderRef = useRef<ReactSlider>(null)
@@ -159,7 +160,7 @@ const Slider: React.FC<Props> = ({
     const middlePoint = (leftTick + rightTick) / 2
     const offsetLeft = labelRef.current ? labelRef.current.clientWidth + labelSpacingValue : 0
 
-    if (localValue[1] >= localValue[0]) {
+    if (Array.isArray(localValue) && localValue[1] >= localValue[0]) {
       setBackdropState({ left: `${offsetLeft}px`, width: `${middlePoint}px` })
     } else {
       setBackdropState({
@@ -208,7 +209,7 @@ const Slider: React.FC<Props> = ({
       const thumbOne = thumbsRef.current[0]
       const thumbTwo = thumbsRef.current[1]
       if (thumbOne && thumbTwo) {
-        const parentWidth = thumbTwo.offsetParent.clientWidth
+        const parentWidth = thumbTwo?.offsetParent?.clientWidth ?? 0
         const thumbOneCenter = thumbOne.clientWidth / 2
         const thumbTwoCenter = thumbTwo.clientWidth / 2
         const thumbOneLeft = thumbOne.offsetLeft
@@ -227,7 +228,7 @@ const Slider: React.FC<Props> = ({
     }
   }, [dualTrackProgress.left, dualTrackProgress.right])
 
-  const updateThumbRef = (el: HTMLDivElement, index): void => {
+  const updateThumbRef = (el: HTMLDivElement, index: number): void => {
     thumbsRef.current[index] = el
     // initialize left right position on track
     updateDualTrackProgress()
@@ -239,7 +240,7 @@ const Slider: React.FC<Props> = ({
     { index, valueNow }: { index: number; valueNow: number }
   ): React.ReactElement => (
     <SliderThumb
-      customRef={(el): void => updateThumbRef(el, index)}
+      customRef={(el): void => updateThumbRef(el as HTMLDivElement, index)}
       index={index}
       value={valueNow}
       numberFormatter={numberFormatter}
@@ -267,7 +268,7 @@ const Slider: React.FC<Props> = ({
 
   const renderContainer = (
     <Container
-      ref={sliderRef}
+      ref={sliderRef as React.Ref<ReactSlider<number | readonly number[]>> | undefined}
       renderTrack={Track}
       renderThumb={renderThumb}
       min={min}

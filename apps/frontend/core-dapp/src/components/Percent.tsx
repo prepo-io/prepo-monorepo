@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { media } from '@prepo-io/ui'
+import { media } from 'prepo-ui'
 import { formatPercent } from '../utils/number-utils'
 
 type StylesProps = {

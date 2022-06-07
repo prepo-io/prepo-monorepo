@@ -1,4 +1,4 @@
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { PpoEventObject, PpoHistoryEnum, PpoEventColors } from './ppo-history.types'
 

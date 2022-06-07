@@ -1,4 +1,4 @@
-import { Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { Icon, media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { Label, Value } from './FromPower'
 import useResponsive from '../../../hooks/useResponsive'
