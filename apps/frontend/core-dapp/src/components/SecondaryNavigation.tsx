@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { centered, media, Icon } from '@prepo-io/ui'
+import { centered, media, Icon } from 'prepo-ui'
 import Link from './Link'
 import AdvancedSettingsModal from './AdvancedSettingsModal'
 import { useRootStore } from '../context/RootStoreProvider'

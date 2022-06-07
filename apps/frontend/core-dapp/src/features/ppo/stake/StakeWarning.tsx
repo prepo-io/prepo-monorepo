@@ -1,4 +1,4 @@
-import { Alert, media, spacingIncrement } from '@prepo-io/ui'
+import { Alert, media, spacingIncrement } from 'prepo-ui'
 
 import styled, { Color } from 'styled-components'
 

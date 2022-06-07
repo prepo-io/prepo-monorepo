@@ -1,4 +1,4 @@
-import { ButtonColors } from '@prepo-io/ui'
+import { ButtonColors } from 'prepo-ui'
 
 export const lightPurpleButtonStyles: ButtonColors = {
   background: 'accentPrimary',

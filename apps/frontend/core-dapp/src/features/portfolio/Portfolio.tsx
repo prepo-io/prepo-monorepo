@@ -13,7 +13,7 @@ import {
   Flex,
   Typography,
   Grid,
-} from '@prepo-io/ui'
+} from 'prepo-ui'
 import PortfolioBreakdownItem from './PortfolioBreakdownItem'
 import PositionsAndHistory from './PositionsAndHistory'
 import { makeRepeatedValue } from '../../utils/generic-utils'

@@ -1,4 +1,4 @@
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import React, { FC, useMemo } from 'react'
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useTheme } from 'styled-components'

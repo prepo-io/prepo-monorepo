@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { NETWORKS } from 'prepo-constants'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import DefaultContent from './contents/DefaultContent'
 import FailedContent from './contents/FailedContent'

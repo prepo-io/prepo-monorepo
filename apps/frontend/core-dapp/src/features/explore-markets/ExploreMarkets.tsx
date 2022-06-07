@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import { spacingIncrement, media } from '@prepo-io/ui'
+import { spacingIncrement, media } from 'prepo-ui'
 import Heading from '../../components/Heading'
 import Tabs from '../../components/Tabs'
 import MarketCard from '../../components/MarketCard'

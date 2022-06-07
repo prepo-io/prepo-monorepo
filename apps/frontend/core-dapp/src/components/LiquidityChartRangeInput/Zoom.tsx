@@ -10,7 +10,7 @@ import {
 import { useEffect, useMemo, useRef } from 'react'
 import { Row, Col } from 'antd'
 import styled from 'styled-components'
-import { centered, spacingIncrement, Icon } from '@prepo-io/ui'
+import { centered, spacingIncrement, Icon } from 'prepo-ui'
 import { ZoomLevels } from './types'
 
 const Wrapper = styled(Row)`

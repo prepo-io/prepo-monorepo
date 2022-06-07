@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { media, spacingIncrement, Typography } from '@prepo-io/ui'
+import { media, spacingIncrement, Typography } from 'prepo-ui'
 import PpoHistoryItemDesktop from './PpoHistoryItemDesktop'
 import PpoHistoryItemMobile from './PpoHistoryItemMobile'
 import { useRootStore } from '../../../context/RootStoreProvider'

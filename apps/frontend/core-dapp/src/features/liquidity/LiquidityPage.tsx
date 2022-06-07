@@ -10,7 +10,7 @@ import {
   Slider,
   Icon,
   SliderValue,
-} from '@prepo-io/ui'
+} from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import { observer } from 'mobx-react-lite'
 import { formatNumber } from 'prepo-utils'

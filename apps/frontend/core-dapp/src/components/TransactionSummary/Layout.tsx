@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { centered, spacingIncrement, Button, Icon, ButtonProps } from '@prepo-io/ui'
+import { centered, spacingIncrement, Button, Icon, ButtonProps } from 'prepo-ui'
 import Lottie, { Options } from 'react-lottie'
 import Link from '../Link'
 

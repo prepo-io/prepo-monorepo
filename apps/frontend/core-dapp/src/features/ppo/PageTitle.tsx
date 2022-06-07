@@ -1,4 +1,4 @@
-import { Heading, spacingIncrement, media, Flex } from '@prepo-io/ui'
+import { Heading, spacingIncrement, media, Flex } from 'prepo-ui'
 import styled from 'styled-components'
 import BackButton from './BackButton'
 import { TextAlign } from '../../components/Heading'

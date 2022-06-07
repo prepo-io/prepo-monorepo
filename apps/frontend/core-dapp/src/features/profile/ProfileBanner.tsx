@@ -1,4 +1,4 @@
-import { Flex, Icon, IconName, Tooltip, Typography } from '@prepo-io/ui'
+import { Flex, Icon, IconName, Tooltip, Typography } from 'prepo-ui'
 import styled, { Color } from 'styled-components'
 import useResponsive from '../../hooks/useResponsive'
 

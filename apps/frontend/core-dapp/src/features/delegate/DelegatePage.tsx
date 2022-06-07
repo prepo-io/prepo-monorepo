@@ -1,5 +1,5 @@
 import { Col, Row } from 'antd'
-import { Button, media, spacingIncrement } from '@prepo-io/ui'
+import { Button, media, spacingIncrement } from 'prepo-ui'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'

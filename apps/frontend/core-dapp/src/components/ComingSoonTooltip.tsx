@@ -1,4 +1,4 @@
-import { Tooltip } from '@prepo-io/ui'
+import { Tooltip } from 'prepo-ui'
 import { TooltipPlacement } from 'antd/lib/tooltip'
 import styled from 'styled-components'
 

@@ -1,4 +1,4 @@
-import { Flex, Icon, IconName, spacingIncrement, ThemeModes } from '@prepo-io/ui'
+import { Flex, Icon, IconName, spacingIncrement, ThemeModes } from 'prepo-ui'
 import { Dropdown, Menu } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { observer } from 'mobx-react-lite'

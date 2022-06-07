@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { centered, Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import { LabelWrapper } from './FilterModal'

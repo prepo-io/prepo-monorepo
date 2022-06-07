@@ -20,7 +20,7 @@
   "include": [
     "next-env.d.ts",
     "global.d.ts",
-    "styled.d.ts",
+    "../../../packages/prepo-ui/src/styled.d.ts",
     "react-jazzicon.d.ts",
     "src/**/*",
     "src/styles/default.css",

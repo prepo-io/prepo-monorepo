@@ -94,6 +94,9 @@ packages/constants/lib/**
 # --------- prepo-utils --------- 
 packages/prepo-utils/lib/**
 
+# --------- prepo-ui --------- 
+packages/prepo-ui/lib/**
+
 ## Ignores deployments/localhost across all the sub-folders
 **/deployments/localhost
 ## Ignores .openzeppelin/unknown-31337.json across all the sub-folders

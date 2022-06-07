@@ -1,4 +1,4 @@
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import useResponsive from '../../../hooks/useResponsive'
 import { PREPO_DISCORD } from '../../../lib/constants'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import { LabelWrapper } from './FilterModal'
 import Dropdown from '../Dropdown'

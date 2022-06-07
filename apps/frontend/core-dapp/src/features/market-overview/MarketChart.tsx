@@ -1,6 +1,6 @@
 import { ReactElement, useMemo, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
-import { centered, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import Dropdown from '../../components/Dropdown'
 import AreaChart from '../../components/charts/templates/AreaChart'

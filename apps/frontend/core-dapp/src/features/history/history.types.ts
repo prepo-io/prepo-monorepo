@@ -1,4 +1,4 @@
-import { IconName } from '@prepo-io/ui'
+import { IconName } from 'prepo-ui'
 
 export type HistoryEventItemType = 'deposit' | 'withdraw' | 'short' | 'long' | 'liquidity'
 export type HistoryEventActionType = 'open' | 'close' | 'add'

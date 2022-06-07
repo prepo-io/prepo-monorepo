@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import HistoryEventComponent from './HistoryEvent'
 import { HistoryItem } from './history.types'
 import { getHistoryItemIconTitle } from './history-utils'

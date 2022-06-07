@@ -1,4 +1,4 @@
-import { centered, Icon, media, spacingIncrement, Subtitle } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement, Subtitle } from 'prepo-ui'
 import styled from 'styled-components'
 import Skeleton from 'react-loading-skeleton'
 import { observer } from 'mobx-react-lite'

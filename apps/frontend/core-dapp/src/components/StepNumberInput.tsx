@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
 import { Input, Row } from 'antd'
-import { centered, media, spacingIncrement, Icon } from '@prepo-io/ui'
+import { centered, media, spacingIncrement, Icon } from 'prepo-ui'
 
 const Wrapper = styled.div`
   ${centered}
