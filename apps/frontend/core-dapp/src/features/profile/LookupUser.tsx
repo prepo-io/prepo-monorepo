@@ -1,4 +1,4 @@
-import { Flex, Input, media, spacingIncrement } from '@prepo-io/ui'
+import { Flex, Input, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { EMPTY_CONTRACT_ADDRESS } from 'prepo-constants'

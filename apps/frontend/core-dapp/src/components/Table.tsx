@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import Subtitle from './Subtitle'
 import Percent from './Percent'
 import { formatUsd } from '../utils/number-utils'

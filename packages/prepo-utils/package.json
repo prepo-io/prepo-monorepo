@@ -14,7 +14,7 @@
   "dependencies": {
     "prepo-constants": "*",
     "ethers": "5.6.8",
-    "bnc-onboard": "1.37.1"
+    "bnc-onboard": "1.38.3"
   },
   "devDependencies": {
     "config": "*",

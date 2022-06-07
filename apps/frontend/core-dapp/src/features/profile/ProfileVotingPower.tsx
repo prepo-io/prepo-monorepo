@@ -1,4 +1,4 @@
-import { Flex, Icon, media, Subtitle, Typography } from '@prepo-io/ui'
+import { Flex, Icon, media, Subtitle, Typography } from 'prepo-ui'
 import styled from 'styled-components'
 import Details, { loadValue } from './Details'
 import SectionAccordion from './SectionAccordion'

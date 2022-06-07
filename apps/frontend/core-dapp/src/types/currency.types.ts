@@ -1,4 +1,4 @@
-import { IconName } from '@prepo-io/ui'
+import { IconName } from 'prepo-ui'
 import { RootStore } from '../stores/RootStore'
 import { altCoinsMap, stableCoinsMap } from '../__mocks__/currency.mock'
 

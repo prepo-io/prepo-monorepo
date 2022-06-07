@@ -1,4 +1,4 @@
-import { ThemeModes } from '@prepo-io/ui'
+import { ThemeModes } from 'prepo-ui'
 import TransactionSummaryLayout from '../Layout'
 import * as animationData from '../animation/Error.json'
 import { useRootStore } from '../../../context/RootStoreProvider'

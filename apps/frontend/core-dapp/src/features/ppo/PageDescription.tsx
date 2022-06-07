@@ -1,4 +1,4 @@
-import { spacingIncrement, media } from '@prepo-io/ui'
+import { spacingIncrement, media } from 'prepo-ui'
 import styled from 'styled-components'
 
 type Props = {

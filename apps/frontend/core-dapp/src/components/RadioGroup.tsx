@@ -1,7 +1,7 @@
 import { forwardRef, Ref } from 'react'
 import { Radio, RadioGroupProps } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement, media } from '@prepo-io/ui'
+import { spacingIncrement, media } from 'prepo-ui'
 
 type Props = RadioGroupProps & {
   ref?: Ref<HTMLDivElement> | undefined

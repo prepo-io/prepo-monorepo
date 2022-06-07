@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { spacingIncrement, Alert, Slider, SliderValue } from '@prepo-io/ui'
+import { spacingIncrement, Alert, Slider, SliderValue } from 'prepo-ui'
 import { Direction } from './TradeStore'
 import Subtitle from '../../components/Subtitle'
 import { useRootStore } from '../../context/RootStoreProvider'

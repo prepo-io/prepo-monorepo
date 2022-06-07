@@ -1,4 +1,4 @@
-import { Flex, media, Subtitle, Typography } from '@prepo-io/ui'
+import { Flex, media, Subtitle, Typography } from 'prepo-ui'
 import { ReactElement } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import styled, { css } from 'styled-components'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import DelegateCard from './DelegateCard'
 import { useRootStore } from '../../context/RootStoreProvider'
 

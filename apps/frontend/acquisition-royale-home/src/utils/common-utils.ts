@@ -1,5 +1,5 @@
 import { SEC_IN_MS } from 'prepo-constants'
-import { truncateAmountString } from '@prepo-io/utils'
+import { truncateAmountString } from 'prepo-utils'
 import { BigNumber } from 'ethers'
 import { formatTimestamp } from './date-utils'
 import { CostBalance } from '../features/mvp/ActionCard'

@@ -10,10 +10,10 @@ import {
   Slider,
   Icon,
   SliderValue,
-} from '@prepo-io/ui'
+} from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import { observer } from 'mobx-react-lite'
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import LiquidityTransactionSummary from './LiquidityTransactionSummary'
 import MarketDropdown from '../../components/MarketDropdown'
 import SecondaryNavigation from '../../components/SecondaryNavigation'

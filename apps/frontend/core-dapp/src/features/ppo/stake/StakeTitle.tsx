@@ -1,4 +1,4 @@
-import { media, Icon, Typography } from '@prepo-io/ui'
+import { media, Icon, Typography } from 'prepo-ui'
 import styled from 'styled-components'
 import PageTitle from '../PageTitle'
 

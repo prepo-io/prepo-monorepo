@@ -1,4 +1,4 @@
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import { LabelWrapper } from '../../components/Input'
 
 const WithdrawBalance: React.FC<{ balance: number }> = ({ balance }) => (

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { SkeletonTheme } from 'react-loading-skeleton'
-import { CustomThemeProvider, PresetTheme, ThemeModes } from '@prepo-io/ui'
+import { CustomThemeProvider, PresetTheme, ThemeModes } from 'prepo-ui'
 import GlobalStyle, { AntdGlobalStyle } from './GlobalStyle'
 import { useRootStore } from '../context/RootStoreProvider'
 

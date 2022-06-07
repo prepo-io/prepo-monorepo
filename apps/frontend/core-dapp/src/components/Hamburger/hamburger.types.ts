@@ -1,4 +1,4 @@
-import { IconName } from '@prepo-io/ui'
+import { IconName } from 'prepo-ui'
 import { Color } from 'styled-components'
 
 export type NavigationItemType = {

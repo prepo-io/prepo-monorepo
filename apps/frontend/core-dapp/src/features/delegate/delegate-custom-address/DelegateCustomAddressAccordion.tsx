@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import DelegateCustomAddress from './DelegateCustomAddress'
 import { Routes } from '../../../lib/routes'
 import Accordion from '../../../components/Accordion'

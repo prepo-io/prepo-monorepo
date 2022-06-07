@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { Alert, Icon } from '@prepo-io/ui'
+import { Alert, Icon } from 'prepo-ui'
 import { useRootStore } from '../context/RootStoreProvider'
 
 const Text = styled.span<{ highlight?: boolean }>`

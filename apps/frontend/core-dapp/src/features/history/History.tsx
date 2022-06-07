@@ -1,4 +1,4 @@
-import { Box, centered, coreDappTheme, Typography } from '@prepo-io/ui'
+import { Box, centered, coreDappTheme, Typography } from 'prepo-ui'
 import styled from 'styled-components'
 import { PositionItemSkeleton } from '../position/PositionItem'
 

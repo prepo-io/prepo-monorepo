@@ -1,6 +1,6 @@
 import { Card as ACard, CardProps } from 'antd'
 import styled from 'styled-components'
-import { centered, spacingIncrement } from '@prepo-io/ui'
+import { centered, spacingIncrement } from 'prepo-ui'
 
 const Wrapper = styled.div`
   &&& {

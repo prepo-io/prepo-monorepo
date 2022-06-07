@@ -1,4 +1,4 @@
-import { IconName } from '@prepo-io/ui'
+import { IconName } from 'prepo-ui'
 import { HistoryEventItemType } from './history.types'
 import { PositionType } from '../../utils/prepo.types'
 import { coinsMock } from '../../__mocks__/currency.mock'

@@ -1,4 +1,4 @@
-import { ThemeModes } from '@prepo-io/ui'
+import { ThemeModes } from 'prepo-ui'
 import { useRouter } from 'next/router'
 import TransactionSummaryLayout from '../Layout'
 import * as animationData from '../animation/Success.json'

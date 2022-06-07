@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { centered, Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement } from 'prepo-ui'
 import { format } from 'date-fns'
 import RCalendar, { CalendarTileProperties, OnChangeDateRangeCallback } from 'react-calendar'
 import styled from 'styled-components'

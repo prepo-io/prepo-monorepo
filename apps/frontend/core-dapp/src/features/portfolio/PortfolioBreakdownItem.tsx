@@ -1,5 +1,5 @@
-import { Box, Flex, Icon, IconName, Typography } from '@prepo-io/ui'
-import { truncateAmountString } from '@prepo-io/utils'
+import { Box, Flex, Icon, IconName, Typography } from 'prepo-ui'
+import { truncateAmountString } from 'prepo-utils'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'

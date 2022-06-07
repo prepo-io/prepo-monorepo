@@ -1,4 +1,4 @@
-import { Button, Flex, media, spacingIncrement, Typography } from '@prepo-io/ui'
+import { Button, Flex, media, spacingIncrement, Typography } from 'prepo-ui'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { CSVLink } from 'react-csv'

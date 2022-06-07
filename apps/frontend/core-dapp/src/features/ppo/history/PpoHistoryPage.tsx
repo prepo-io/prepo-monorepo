@@ -1,4 +1,4 @@
-import { Box, media, spacingIncrement } from '@prepo-io/ui'
+import { Box, media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import PpoHistoryItems from './PpoHistoryItems'
 import PpoHistoryActionBar from './PpoHistoryActionBar'

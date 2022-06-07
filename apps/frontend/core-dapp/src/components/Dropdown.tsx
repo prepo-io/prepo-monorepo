@@ -6,7 +6,7 @@ import styled, {
   FlattenInterpolation,
   ThemeProps,
 } from 'styled-components'
-import { centered, spacingIncrement, media, Icon } from '@prepo-io/ui'
+import { centered, spacingIncrement, media, Icon } from 'prepo-ui'
 
 type CustomStyles = {
   backgroundColor?: keyof Color
