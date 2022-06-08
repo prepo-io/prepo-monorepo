@@ -13,10 +13,6 @@ const FILE_NAME = 'changed_apps.json'
 
 const FRONTEND_APPS: FrontendApp[] = [
   {
-    name: 'acquisition-royale-landing-page',
-    projectId: 'prj_So4gfuKdA7SYrdLpc20mSTLyCWAz',
-  },
-  {
     name: 'core-dapp',
     projectId: 'prj_JWVJ3WoV71UcOmB52qrcezjyBL3V',
   },
