@@ -5831,10 +5831,10 @@
     mobx-state-tree "5.1.3"
     mst-gql "0.14.1"
 
-"@prepo-io/stores@0.25.0":
-  version "0.25.0"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.25.0/048891b16ad2a90ef09d5ed9a503af48d7b9b5662fd2a9185315446bae27030d#bad0b39eaa106a7ed7fd795e90176bf3172c33f1"
-  integrity sha512-WhpxA4+ar/Jg7H3zCivBMYs0gTsZToBtMve3sAQckXtr1LrmV3rX2uhvp2vNxMu1cN9+y+0gIOik9WMWn6UvdQ==
+"@prepo-io/stores@0.25.5":
+  version "0.25.5"
+  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.25.5/cefa58ca7359e50ca9a5d37cc04e6b8428605ab36c8469b3b1ef84cb78503100#bec3a4d6561ac1287ebf31a46544e37f9f8206f1"
+  integrity sha512-Fua5OC1mbxvYMl6rNJg/izxC1pztcaMd5LP8ECitqK/U7a9H/DxcAhUhT0w2VJOJaftahajgsPGqxcNxPDtkYQ==
   dependencies:
     ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
     graphql "16.3.0"
@@ -17045,7 +17045,7 @@ ethereum-cryptography@^1.0.3:
     "@scure/bip32" "1.0.1"
     "@scure/bip39" "1.0.0"
 
-ethereum-multicall@2.10.0:
+ethereum-multicall@2.10.0, "ethereum-multicall@git+https://github.com/prepo-io/ethereum-multicall.git#1.0.1-prepo":
   version "2.10.0"
   resolved "git+https://github.com/prepo-io/ethereum-multicall.git#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
