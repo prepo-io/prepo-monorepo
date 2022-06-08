@@ -58,8 +58,9 @@ const GasPriceSelectionWrapper = styled(RadioGroup)`
 `
 
 const SingleGasPriceSelectionWrapper = styled.div`
+  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-weight: ${({ theme }): number => theme.fontWeight.medium};
   padding: ${spacingIncrement(5)};
-  font-size: ${({ theme }): string => theme.fontSize.base}})}
 `
 
 const GasPriceValue = styled.div`
