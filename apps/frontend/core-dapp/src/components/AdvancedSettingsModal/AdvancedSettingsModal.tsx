@@ -1,5 +1,5 @@
 import { GasSpeed } from 'prepo-constants'
-import { spacingIncrement, Slider, Button, SliderValue } from 'prepo-ui'
+import { spacingIncrement, Slider, Button, SliderValue, media } from 'prepo-ui'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -58,18 +58,24 @@ const GasPriceSelectionWrapper = styled(RadioGroup)`
 `
 
 const SingleGasPriceSelectionWrapper = styled.div`
-  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.medium};
   padding: ${spacingIncrement(5)};
+  ${media.desktop`
+    font-size: ${({ theme }): string => theme.fontSize.md};
+  `}
 `
 
 const GasPriceValue = styled.div`
   color: ${({ theme }): string => theme.color.secondary};
-  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.medium};
   position: absolute;
   right: ${spacingIncrement(20)};
   top: ${spacingIncrement(17)};
+  ${media.desktop`
+    font-size: ${({ theme }): string => theme.fontSize.md};
+  `}
 `
 
 const CustomInput = styled(Input)`
@@ -77,11 +83,14 @@ const CustomInput = styled(Input)`
   border: none;
   box-shadow: none;
   color: ${({ theme }): string => theme.color.secondary};
-  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.medium};
   max-width: ${spacingIncrement(63)};
   padding: ${spacingIncrement(3)} ${spacingIncrement(6)};
   text-align: center;
+  ${media.desktop`
+    font-size: ${({ theme }): string => theme.fontSize.md};
+  `}
 `
 
 const ButtonWrapper = styled.div`
