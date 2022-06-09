@@ -10,7 +10,9 @@ import { getContractCall } from './utils/web3-store-utils'
 import { CollateralAbi, CollateralAbi__factory } from '../../generated/typechain'
 import { SupportedContracts } from '../lib/contract.types'
 import { supportedContracts } from '../lib/supported-contracts'
-import { formatUsd } from '../utils/number-utils'
+import { numberFormatter } from '../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 type Deposit = CollateralAbi['functions']['deposit']
 type GetAmountForShares = CollateralAbi['functions']['getAmountForShares']
@@ -157,11 +159,7 @@ export class CollateralStore extends Erc20Store {
   }
 
   get formatSignerBalance(): string {
-    if (this.signerBalance) {
-      return formatUsd(this.signerBalance, true)
-    }
-
-    return '$0'
+    return toUsd(this.signerBalance)
   }
 
   // setters

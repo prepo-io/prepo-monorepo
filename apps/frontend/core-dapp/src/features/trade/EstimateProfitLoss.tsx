@@ -8,8 +8,11 @@ import { useRootStore } from '../../context/RootStoreProvider'
 import { EstimateYourProfitLoss } from '../definitions'
 import { ExitProfitLoss, SliderSettings } from '../../types/market.types'
 import Percent from '../../components/Percent'
-import { formatUsd, makeAddStep, numFormatter } from '../../utils/number-utils'
+import { makeAddStep, numFormatter } from '../../utils/number-utils'
 import { TWO_DECIMAL_DENOMINATOR, VALUATION_DENOMINATOR } from '../../lib/constants'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 type Props = {
   sliderSettings: SliderSettings
@@ -94,7 +97,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
     return (
       <div>
         If the market resolves at {sliderNumFormatter(exit)}, your {dynamicProfitLossMessage} would
-        be ≈{formatUsd(exitProfitLoss?.expectedProfitLoss)}
+        be ≈{toUsd(exitProfitLoss?.expectedProfitLoss)}
         <ProfitLossPercent
           value={exitProfitLoss?.expectedProfitLossPercentage}
           showPlusSign
