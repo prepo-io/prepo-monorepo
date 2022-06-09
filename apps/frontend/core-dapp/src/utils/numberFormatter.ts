@@ -39,8 +39,8 @@ export const numberFormatter = {
    * @method withCommas
    * @param value - The value that will be formatted.
    */
-  withCommas: (numberValue: number | undefined): string => {
-    if (!numberValue) return '0'
-    return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  withCommas: (value: number | undefined): string => {
+    if (!value) return '0'
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   },
 }
