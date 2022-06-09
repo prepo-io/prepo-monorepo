@@ -33,4 +33,14 @@ export const numberFormatter = {
     const formatResult = formatPercent(value, precision)
     return formatResult ? `${formatResult}%` : undefined
   },
+  /**
+   * Will return the value with decimal separator as comma. Example: 1,200,000
+   * @memberof numberFormatter
+   * @method withCommas
+   * @param value - The value that will be formatted.
+   */
+  withCommas: (numberValue: number | undefined): string => {
+    if (!numberValue) return '0'
+    return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  },
 }

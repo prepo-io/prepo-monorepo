@@ -94,11 +94,6 @@ export const validateNumber = (value: number | string | undefined = 0): number =
   return 0
 }
 
-export const numberWithCommas = (numberValue: number | undefined): string => {
-  if (!numberValue) return '0'
-  return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
 /**
  * Makes sure to avoid getting large string numbers like
  * 14.999999999999999999 when converting from BigNumber to string

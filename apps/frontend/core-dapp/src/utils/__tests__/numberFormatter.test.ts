@@ -92,4 +92,21 @@ describe('numberFormatter tests', () => {
       expect(output3).toBe(undefined)
     })
   })
+
+  describe('withCommas', () => {
+    const { withCommas } = numberFormatter
+    it('should return a number with commas as thousands', () => {
+      const output1 = withCommas(1234)
+      const output2 = withCommas(12345678)
+      const output3 = withCommas(12345678912)
+      expect(output1).toBe('1,234')
+      expect(output2).toBe('12,345,678')
+      expect(output3).toBe('12,345,678,912')
+    })
+
+    it('should return 0', () => {
+      const output = withCommas(0)
+      expect(output).toBe('0')
+    })
+  })
 })
