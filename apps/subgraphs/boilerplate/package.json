@@ -5,7 +5,8 @@
   "license": "ISC",
   "scripts": {
     "postinstall": "yarn codegen",
-    "codegen": "graph codegen --output-dir src/types/"
+    "codegen": "graph codegen --output-dir src/types/",
+    "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.30.4",
