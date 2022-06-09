@@ -1,5 +1,5 @@
 import { MarketAdded } from '../types/PrePOMarketFactory/PrePOMarketFactory'
-import { DeployedMarket, Market } from '../types/schema'
+import { DeployedMarket, Market, Token } from '../types/schema'
 import { PrePOMarket as PrePOMarketTemplate } from '../types/templates'
 import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
 
@@ -12,9 +12,19 @@ export function handleMarketAdded(event: MarketAdded): void {
 }
 
 export function handleMarketCreated(event: MarketCreated): void {
-  const market = new Market(event.address.toHexString())
-  market.longToken = event.params.longToken.toHexString()
-  market.shortToken = event.params.shortToken.toHexString()
+  const marketAddress = event.address.toHexString()
+  const longTokenAddress = event.params.longToken.toHexString()
+  const shortTokenAddress = event.params.shortToken.toHexString()
+
+  const longToken = new Token(longTokenAddress)
+  longToken.market = marketAddress
+
+  const shortToken = new Token(shortTokenAddress)
+  shortToken.market = marketAddress
+
+  const market = new Market(marketAddress)
+  market.longToken = longTokenAddress
+  market.shortToken = shortTokenAddress
   market.ceilingLongPrice = event.params.ceilingLongPrice
   market.ceilingValuation = event.params.ceilingValuation
   market.expiryTime = event.params.expiryTime
@@ -24,5 +34,7 @@ export function handleMarketCreated(event: MarketCreated): void {
   market.redemptionFee = event.params.redemptionFee
   market.createdAtBlockNumber = event.block.number
   market.createdAtTimestamp = event.block.timestamp
+  longToken.save()
+  shortToken.save()
   market.save()
 }

@@ -1,8 +1,8 @@
 type Token @entity {
   # token address
   id: ID!
-  # token symbol
-  symbol: String!
+  # the market this token is traded for
+  market: Market!
 }
 
 type DeployedMarket @entity {
