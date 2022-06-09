@@ -10,6 +10,8 @@ type DeployedMarket @entity {
   id: ID!
   # hash of long short token address
   longShortHash: String!
+  # created market
+  market: Market!
 }
 
 type Market @entity {
@@ -20,17 +22,17 @@ type Market @entity {
   # short token
   shortToken: Token!
   # floor long price
-  floorLongPrice: BigDecimal!
+  floorLongPrice: BigInt!
   # ceiling long price
-  ceilingLongPrice: BigDecimal!
+  ceilingLongPrice: BigInt!
   # floor valuation
-  floorValuation: BigDecimal!
+  floorValuation: BigInt!
   # ceiling valuation
-  ceilingValuation: BigDecimal!
+  ceilingValuation: BigInt!
   # minting fee
-  mintingFee: BigDecimal!
+  mintingFee: BigInt!
   # redemption fee
-  redemptionFee: BigDecimal!
+  redemptionFee: BigInt!
   # market expiry time
   expiryTime: BigInt!
   # when market was created
