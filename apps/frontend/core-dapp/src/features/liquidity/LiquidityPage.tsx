@@ -32,6 +32,7 @@ import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { markets } from '../../lib/markets'
 import { useRootStore } from '../../context/RootStoreProvider'
 import ComingSoonTooltip from '../../components/ComingSoonTooltip'
+import { numberFormatter } from '../../utils/numberFormatter'
 
 type Props = {
   staticSelectedMarket: Market
@@ -247,6 +248,7 @@ const LiquidityPage: React.FC<Props> = ({ staticSelectedMarket }) => {
   const {
     uiStore: { disableMocks },
   } = useRootStore()
+  const { significantDigits } = numberFormatter
 
   const { isDesktop } = useResponsive()
 
@@ -380,7 +382,7 @@ const LiquidityPage: React.FC<Props> = ({ staticSelectedMarket }) => {
                   <LiquidityRangeText>
                     Valuation Range:{' '}
                     <Semibold>
-                      ${numFormatter(minBound)} - ${numFormatter(maxBound)}
+                      ${significantDigits(minBound)} - ${significantDigits(maxBound)}
                     </Semibold>
                   </LiquidityRangeText>
                 )}

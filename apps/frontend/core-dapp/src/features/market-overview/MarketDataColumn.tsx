@@ -5,6 +5,7 @@ import FinancialInfoCard from '../../components/FinancialInfoCard'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { getFullDateFromMs, getFullDateShortenMonthFromMs } from '../../utils/date-utils'
 import { bigAmountToShortPresentation, formatPercent } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
 import { EstimatedValuation, ExpiryDate, PayoutRange } from '../definitions'
 
 const DATE_BREAKPOINT = 250
@@ -24,6 +25,7 @@ const MarketDataColumn: React.FC = () => {
     })
   )
   const container = containerRef.current
+  const { significantDigits } = numberFormatter
 
   useEffect(() => {
     const obs = observerRef.current
@@ -64,7 +66,7 @@ const MarketDataColumn: React.FC = () => {
           <FinancialInfoCard
             title="Estimated Valuation"
             tooltip={<EstimatedValuation marketName={name} />}
-            value={`$${bigAmountToShortPresentation(estimatedValuation.value)}`}
+            value={`$${significantDigits(estimatedValuation.value)}`}
           />
         </Col>
       )}
@@ -72,16 +74,13 @@ const MarketDataColumn: React.FC = () => {
         <Col xs={24}>
           <FinancialInfoCard
             title="Trading Volume"
-            value={`$${bigAmountToShortPresentation(tradingVolume.value)}`}
+            value={`$${significantDigits(tradingVolume.value)}`}
           />
         </Col>
       )}
       {liquidity && (
         <Col xs={24}>
-          <FinancialInfoCard
-            title="Liquidity"
-            value={`$${bigAmountToShortPresentation(liquidity.value)}`}
-          />
+          <FinancialInfoCard title="Liquidity" value={`$${significantDigits(liquidity.value)}`} />
         </Col>
       )}
       {expiryTime && (

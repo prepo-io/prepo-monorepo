@@ -1,7 +1,9 @@
 import { Range } from '../../types/market.types'
-import { numFormatter } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
 
 export const getValuationRangeString = (valuationRange: Range): string => {
   const [min, max] = valuationRange
-  return `$${numFormatter(min)} - $${numFormatter(max)}`
+  const { significantDigits } = numberFormatter
+
+  return `$${significantDigits(min)} - $${significantDigits(max)}`
 }

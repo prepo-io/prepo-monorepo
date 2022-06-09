@@ -10,6 +10,7 @@ import { Line } from './Line'
 import { Bound, BrushLabelValueType, ChartEntry, ZoomLevels } from './types'
 import Zoom, { ZoomOverlay } from './Zoom'
 import { numFormatter } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
 
 export const xAccessor = (d: ChartEntry): number => d.price0
 export const yAccessor = (d: ChartEntry): number => d.activeLiquidity
@@ -57,6 +58,7 @@ const Chart: React.FC<Props> = ({
 }) => {
   const zoomRef = useRef<SVGRectElement>(null)
   const [zoom, setZoom] = useState<ZoomTransform | null | undefined>(undefined)
+  const { significantDigits } = numberFormatter
 
   const [innerHeight, innerWidth] = useMemo(
     () => [height - margins.top - margins.bottom, width - margins.left - margins.right],
@@ -136,7 +138,7 @@ const Chart: React.FC<Props> = ({
           {currentPrice === undefined ? (
             <Skeleton height={22} width={200} />
           ) : (
-            `Current Valuation: $${numFormatter(currentPrice)}`
+            `Current Valuation: $${significantDigits(currentPrice)}`
           )}
         </Title>
       </Header>
