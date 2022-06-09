@@ -8,7 +8,6 @@
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.30.4",
-    "@graphprotocol/graph-ts": "0.27.0",
     "config": "*",
     "tsconfig": "*",
     "typescript": "^4.7.3"
@@ -16,5 +15,8 @@
   "engines": {
     "node": ">=16.0.0",
     "yarn": "1.x"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.27.0"
   }
 }
