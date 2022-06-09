@@ -1,0 +1,32 @@
+{
+  "name": "prepo-stores",
+  "version": "0.0.0",
+  "description": "prePO Stores",
+  "source": "src/index.ts",
+  "main": "src/index.ts",
+  "files": ["src/index.ts"],
+  "scripts": {
+    "build": "tsc",
+    "test": "npx jest",
+    "test:ci": "yarn test",
+    "build:watch": "yarn build --watch"
+  },
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*"
+  },
+  "dependencies": {
+    "ethereum-multicall": "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo",
+    "graphql": "16.3.0",
+    "graphql-request": "4.0.0",
+    "mobx-state-tree": "5.1.5",
+    "mst-gql": "0.14.1",
+    "bnc-onboard": "1.38.3",
+    "clone-deep": "4.0.1",
+    "ethers": "5.5.2",
+    "fast-deep-equal": "3.1.3",
+    "mobx": "6.6.0",
+    "prepo-constants": "*",
+    "prepo-utils": "*"
+  }
+}
