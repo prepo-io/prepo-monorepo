@@ -26,6 +26,27 @@ dataSources:
       eventHandlers:
         - event: MarketAdded(address,bytes32)
           handler: handleMarketAdded
+  - kind: ethereum/contract
+    name: UniswapV3PoolFactory
+    network: goerli
+    source:
+      address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+      abi: UniswapV3PoolFactory
+      startBlock: 6820227
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: UniswapV3PoolFactory
+          file: ./abis/UniswapV3PoolFactory.json
+      eventHandlers:
+        - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
+          handler: handlePoolCreated
 templates:
   - kind: ethereum/contract
     name: PrePOMarket
@@ -43,6 +64,26 @@ templates:
       abis:
         - name: PrePOMarket
           file: ./abis/PrePOMarket.json
+        - name: LongShortToken
+          file: ./abis/LongShortToken.json
       eventHandlers:
         - event: MarketCreated(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleMarketCreated
+  - kind: ethereum/contract
+    name: LongShortToken
+    network: goerli
+    source:
+      abi: LongShortToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/core.ts
+      entities:
+        - Position
+      abis:
+        - name: LongShortToken
+          file: ./abis/LongShortToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleLongShortTokenTransfer

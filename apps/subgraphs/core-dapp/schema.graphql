@@ -1,10 +1,3 @@
-type Token @entity {
-  # token address
-  id: ID!
-  # the market this token is traded for
-  market: Market!
-}
-
 type Market @entity {
   # market contract address
   id: ID!
@@ -30,4 +23,47 @@ type Market @entity {
   createdAtTimestamp: BigInt!
   # at which block was market created
   createdAtBlockNumber: BigInt!
+}
+
+type Pool @entity {
+  # pool contract address
+  id: ID!
+  # address of token0
+  token0: String!
+  # address of token1
+  token1: String!
+  # long/short token of this pool
+  token: Token!
+  # pool creation time
+  createdAtTimestamp: BigInt!
+  # at which block was pool created
+  createdAtBlockNumber: BigInt!
+}
+
+type Position @entity {
+  # concat of user address and token address
+  id: ID!
+  # average cost per token - for PNL calculation
+  costBasis: BigDecimal!
+  # address who owned this position
+  owner: String!
+  # token of whic this position is tracking
+  token: Token!
+  # balance of token
+  balance: BigInt!
+}
+
+type Token @entity {
+  # token address
+  id: ID!
+  # the market this token is traded for
+  market: Market!
+  # all positions in this token
+  positions: [Position!]! @derivedFrom(field: "token")
+  # decimals of token
+  decimals: BigInt!
+  # default pool preCT/currentToken as trading pair
+  defaultPool: Pool @derivedFrom(field: "token")
+  # price in USD
+  priceUSD: BigDecimal!
 }
