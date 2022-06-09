@@ -4,6 +4,7 @@
   "description": "prePO subgraph boilerplate",
   "license": "ISC",
   "scripts": {
+    "postinstall": "yarn codegen",
     "codegen": "graph codegen --output-dir src/types/"
   },
   "devDependencies": {
