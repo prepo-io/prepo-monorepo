@@ -9,8 +9,8 @@ Things that are implemented
 - [x] graphprotocol dependencies
 - [x] codegen and deploy scripts
 - [x] sample subgraph.yaml file
-- [x] sample handlers for creating entity when event is emitted
-- [x] sample handlers for dynamically new handlers to listen for events of contract created dynamically
+- [x] keep track of Market created from PrePOMarketFactory
+- [x] dynamically listen to MarketCreated event of Market contract deployed by PrePOMarketFactory, then create related Token and Market entity
 
 ## Installation
 
