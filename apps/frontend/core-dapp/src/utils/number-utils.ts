@@ -80,7 +80,7 @@ export const numFormatter = (
       )
     : FormatterSettings.TRIMS_INSIGNIFICANT_TRAILING_ZEROS
 
-  return replaceGigaToBillion(format(rule)(numValue))
+  return replaceGigaToBillion(format(rule)(numValue)).toUpperCase()
 }
 
 export const balanceToNumber = (balanceOfSigner: BigNumber): number =>

@@ -71,11 +71,11 @@ describe('replace large numbers with SI Prefix', () => {
     const output4 = numFormatter(1000)
     const output5 = numFormatter(10000)
 
-    expect(output1).toBe('1.234k')
-    expect(output2).toBe('12.345k')
-    expect(output3).toBe('123.456k')
-    expect(output4).toBe('1k')
-    expect(output5).toBe('10k')
+    expect(output1).toBe('1.234K')
+    expect(output2).toBe('12.345K')
+    expect(output3).toBe('123.456K')
+    expect(output4).toBe('1K')
+    expect(output5).toBe('10K')
   })
 
   it('should replace with M letter', () => {
