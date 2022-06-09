@@ -1,5 +1,5 @@
 import { SEC_IN_MS } from 'prepo-constants'
-import { GraphStore, OnNewDataOptions, OnNewDataOutput } from '@prepo-io/stores'
+import { GraphStore, OnNewDataOptions, OnNewDataOutput } from 'prepo-stores'
 import { makeObservable, observable } from 'mobx'
 import {
   latestPoolsDayDatasQueryString,

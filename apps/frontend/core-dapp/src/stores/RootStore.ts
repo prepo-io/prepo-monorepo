@@ -1,5 +1,5 @@
 import notification from 'antd/lib/notification'
-import { RootStore as PRootStore, LocalStorageStore } from '@prepo-io/stores'
+import { RootStore as PRootStore, LocalStorageStore } from 'prepo-stores'
 import { ThemeModes } from 'prepo-ui'
 import { UiStore } from './UiStore'
 import { MarketStore } from './MarketStore'

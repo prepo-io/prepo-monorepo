@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { BigNumber } from 'ethers'
-import { ContractReturn, Factory } from '@prepo-io/stores'
+import { ContractReturn, Factory } from 'prepo-stores'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { ChainId, Token } from '@uniswap/sdk'
 import { getContractAddress } from 'prepo-utils'
