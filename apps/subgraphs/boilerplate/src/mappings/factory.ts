@@ -1,14 +1,10 @@
 import { MarketAdded } from '../types/PrePOMarketFactory/PrePOMarketFactory'
-import { DeployedMarket, Market, Token } from '../types/schema'
+import { Market, Token } from '../types/schema'
 import { PrePOMarket as PrePOMarketTemplate } from '../types/templates'
 import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
 
 export function handleMarketAdded(event: MarketAdded): void {
-  const deployedMarket = new DeployedMarket(event.params.market.toHexString())
-  deployedMarket.longShortHash = event.params.longShortHash.toHexString()
-  deployedMarket.market = event.params.market.toHexString()
   PrePOMarketTemplate.create(event.params.market)
-  deployedMarket.save()
 }
 
 export function handleMarketCreated(event: MarketCreated): void {

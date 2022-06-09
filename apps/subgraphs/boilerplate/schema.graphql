@@ -5,15 +5,6 @@ type Token @entity {
   market: Market!
 }
 
-type DeployedMarket @entity {
-  # address of market created
-  id: ID!
-  # hash of long short token address
-  longShortHash: String!
-  # created market
-  market: Market!
-}
-
 type Market @entity {
   # market contract address
   id: ID!

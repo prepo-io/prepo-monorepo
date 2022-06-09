@@ -19,7 +19,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mappings/factory.ts
       entities:
-        - DeployedMarket
+        - Market
       abis:
         - name: PrePOMarketFactory
           file: ./abis/PrePOMarketFactory.json
