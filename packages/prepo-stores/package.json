@@ -7,8 +7,6 @@
   "files": ["src/index.ts"],
   "scripts": {
     "build": "tsc",
-    "test": "npx jest",
-    "test:ci": "yarn test",
     "build:watch": "yarn build --watch"
   },
   "dependencies": {
