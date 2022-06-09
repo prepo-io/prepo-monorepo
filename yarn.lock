@@ -17045,7 +17045,7 @@ ethereum-cryptography@^1.0.3:
     "@scure/bip32" "1.0.1"
     "@scure/bip39" "1.0.0"
 
-ethereum-multicall@2.10.0, "ethereum-multicall@git+https://github.com/prepo-io/ethereum-multicall.git#1.0.1-prepo":
+ethereum-multicall@2.10.0:
   version "2.10.0"
   resolved "git+https://github.com/prepo-io/ethereum-multicall.git#359516f74e66bc6cda16bad8d8170f943765b467"
   dependencies:
