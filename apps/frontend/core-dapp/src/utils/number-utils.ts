@@ -4,7 +4,8 @@ import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { ERC20_UNITS } from '../lib/constants'
 
-/** It is common to use string type to maintain values with precision. If the output is undefined, this input cannot be converted to percent (e.g. invalid string) */
+/** It is common to use string type to maintain values with precision.
+ * If the output is undefined, this input cannot be converted to percent (e.g. invalid string) */
 export function formatPercent(percent: number | string, precision = 1): string | undefined {
   const transformedPercent = +percent
   if (
