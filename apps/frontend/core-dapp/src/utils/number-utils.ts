@@ -93,28 +93,6 @@ export const validateNumber = (value: number | string | undefined = 0): number =
   return 0
 }
 
-export const bigAmountToShortPresentation = (number: number, digits = 2): string => {
-  const lookup = [
-    { value: 1, symbol: '' },
-    { value: 1e3, symbol: 'K' },
-    { value: 1e6, symbol: 'M' },
-    { value: 1e9, symbol: 'B' },
-  ]
-  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-  const item = lookup
-    .slice()
-    .reverse()
-    .find((itemLookup) => Math.abs(number) >= itemLookup.value)
-
-  const newFormatValue = item
-    ? Number(number / item.value)
-        .toFixed(digits)
-        .replace(rx, '$1')
-    : Number(number).toFixed(digits)
-
-  return item ? `${newFormatValue}${item?.symbol}` : newFormatValue
-}
-
 export const numberWithCommas = (numberValue: number | undefined): string => {
   if (!numberValue) return '0'
   return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

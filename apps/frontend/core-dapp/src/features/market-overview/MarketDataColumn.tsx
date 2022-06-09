@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import FinancialInfoCard from '../../components/FinancialInfoCard'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { getFullDateFromMs, getFullDateShortenMonthFromMs } from '../../utils/date-utils'
-import { bigAmountToShortPresentation, formatPercent } from '../../utils/number-utils'
+import { formatPercent } from '../../utils/number-utils'
 import { numberFormatter } from '../../utils/numberFormatter'
 import { EstimatedValuation, ExpiryDate, PayoutRange } from '../definitions'
 

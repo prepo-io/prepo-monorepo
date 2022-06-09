@@ -2,7 +2,7 @@ import { Icon, media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { Label, Value } from './FromPower'
 import useResponsive from '../../../hooks/useResponsive'
-import { bigAmountToShortPresentation } from '../../../utils/number-utils'
+import { numberFormatter } from '../../../utils/numberFormatter'
 
 type Props = { connected: boolean; power: number; delegatorsCount: number }
 
@@ -22,6 +22,7 @@ const SubLabel = styled(Label)`
 
 const FromDelegators: React.FC<Props> = ({ connected, power = 0, delegatorsCount }) => {
   const { isDesktop } = useResponsive()
+  const { significantDigits } = numberFormatter
 
   const size = isDesktop ? '26' : '13'
   return (
@@ -34,7 +35,7 @@ const FromDelegators: React.FC<Props> = ({ connected, power = 0, delegatorsCount
         </Label>
         {connected && <SubLabel>{delegatorsCount} Delegators</SubLabel>}
       </div>
-      <Value>{connected ? bigAmountToShortPresentation(power) : '-'}</Value>
+      <Value>{connected ? significantDigits(power) : '-'}</Value>
     </Wrapper>
   )
 }

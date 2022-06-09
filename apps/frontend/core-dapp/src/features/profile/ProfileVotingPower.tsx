@@ -4,7 +4,7 @@ import Details, { loadValue } from './Details'
 import SectionAccordion from './SectionAccordion'
 import useResponsive from '../../hooks/useResponsive'
 import { DelegateEntity } from '../../stores/entities/DelegateEntity'
-import { bigAmountToShortPresentation } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
 
 const StyledSubtitle = styled(Subtitle)`
   color: ${({ theme }): string => theme.color.neutral1};
@@ -16,13 +16,14 @@ const StyledSubtitle = styled(Subtitle)`
 
 const ProfileVotingPower: React.FC<{ delegate?: DelegateEntity }> = ({ delegate }) => {
   const { isDesktop } = useResponsive()
+  const { significantDigits } = numberFormatter
 
   const governIconSize = isDesktop ? '32' : '24'
   const ppoPowerValue =
-    delegate?.ppoPower !== undefined ? bigAmountToShortPresentation(delegate.ppoPower) : undefined
+    delegate?.ppoPower !== undefined ? significantDigits(delegate.ppoPower) : undefined
   const delegatorsPowerValue =
     delegate?.delegatorsPower !== undefined
-      ? bigAmountToShortPresentation(delegate.delegatorsPower)
+      ? significantDigits(delegate.delegatorsPower)
       : undefined
   return (
     <SectionAccordion
