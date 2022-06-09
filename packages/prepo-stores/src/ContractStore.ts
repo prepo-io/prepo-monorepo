@@ -7,6 +7,7 @@ import { RootStore } from './RootStore'
 import { isImportantError } from './utils/error-capturer-util'
 import { Abi, ContractReturn, Factory, Storage, TransactionReceipt } from './utils/stores.types'
 import { DYNAMIC_CONTRACT_ADDRESS } from './utils/constants'
+import { SendTransactionReturn } from './types'
 
 type CallOptions = {
   subscribe: boolean
@@ -17,10 +18,7 @@ type SendTransactionOptions = {
 } & UnsignedTransaction
 
 type GasOptions = { gasLimit?: BigNumber; gasPrice?: BigNumber; type: number }
-export type SendTransactionReturn = {
-  hash: string
-  wait: () => Promise<TransactionReceipt>
-}
+
 export class ContractStore<RootStoreType, SupportedContracts> {
   contractName: keyof SupportedContracts
   address?: string

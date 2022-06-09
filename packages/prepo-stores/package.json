@@ -11,10 +11,6 @@
     "test:ci": "yarn test",
     "build:watch": "yarn build --watch"
   },
-  "devDependencies": {
-    "config": "*",
-    "tsconfig": "*"
-  },
   "dependencies": {
     "ethereum-multicall": "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo",
     "graphql": "16.3.0",
@@ -28,5 +24,13 @@
     "mobx": "6.6.0",
     "prepo-constants": "*",
     "prepo-utils": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "7.16.5",
+    "@babel/preset-env": "7.16.5",
+    "babel-loader": "8.2.3",
+    "concurrently": "6.5.1",
+    "tsconfig": "*",
+    "config": "*"
   }
 }
