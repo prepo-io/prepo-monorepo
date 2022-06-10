@@ -22462,16 +22462,6 @@ mobx-state-tree@5.1.3:
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.1.3.tgz#457271818c265359c92186d2e4264ccf8d3fbf66"
   integrity sha512-noS6f0OG1T94Nlgq7Ex9k2JBGkoFclEdNLE5rlfOy5CUTzcHNJ18fu8t2TmGXDNzH/jdwc8xAR/w36A2XAUmwA==
 
-mobx-state-tree@5.1.4:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.1.4.tgz#37bf0e393b3fa9c0f5dfd718f450c30de151d5bb"
-  integrity sha512-AaQplqZCqXQsH1T/cf1jVGnup3l4jnFTSTjFrRB0hFQq+CuiHcIl/x38FzIO0hYLq8dwvwR3RW2G2tVXJTHKyA==
-
-mobx-state-tree@5.1.5:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.1.5.tgz#7344d61072705747abb98d23ad21302e38200105"
-  integrity sha512-jugIic0PYWW+nzzYfp4RUy9dec002Z778OC6KzoOyBHnqxupK9iPCsUJYkHjmNRHjZ8E4Z7qQpsKV3At/ntGVw==
-
 mobx@6.5.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.5.0.tgz#dc2d028b1882737f6e813fc92454381e438b7ad3"
