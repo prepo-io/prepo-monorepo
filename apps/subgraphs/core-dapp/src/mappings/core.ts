@@ -1,8 +1,13 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { manageRecipientPosition } from './accounting'
 import { Swap } from '../types/templates/UniswapV3Pool/UniswapV3Pool'
 import { Pool, Token } from '../types/schema'
 import { sqrtPriceX96ToTokenPrices } from '../utils/math'
-import { CollateralToken } from '../types/PrePOMarketFactory/CollateralToken'
+import { CollateralToken, Transfer } from '../types/PrePOMarketFactory/CollateralToken'
+
+export function handleLongShortTokenTransfer(event: Transfer): void {
+  manageRecipientPosition(event.address, event.params.to, event.params.value)
+}
 
 export function handleUniswapV3Swap(event: Swap): void {
   const pool = Pool.load(event.address.toHexString())
@@ -30,6 +35,13 @@ export function handleUniswapV3Swap(event: Swap): void {
 
     pool.token0Price = prices[0]
     pool.token1Price = prices[1]
+
+    if (Address.fromString(longShortToken.id).equals(Address.fromString(pool.token0)))
+      longShortToken.priceUSD = prices[1]
+    if (Address.fromString(longShortToken.id).equals(Address.fromString(pool.token1)))
+      longShortToken.priceUSD = prices[0]
+
+    longShortToken.save()
   }
 
   pool.save()
