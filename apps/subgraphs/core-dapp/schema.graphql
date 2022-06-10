@@ -6,7 +6,7 @@ type ValidCollateralToken @entity {
   # symbol of collateral token
   symbol: String!
   # decimals of collateral token
-  decimals: Int!
+  decimals: BigInt!
 }
 
 type Market @entity {
@@ -45,6 +45,12 @@ type Pool @entity {
   token1: String!
   # long/short token of this pool
   token: Token!
+  # token0 per token1
+  token0Price: BigDecimal!
+  # token1 per token0
+  token1Price: BigDecimal!
+  # The sqrt(price) of the pool after the swap, as a Q64.96
+  sqrtPriceX96: BigInt!
   # pool creation time
   createdAtTimestamp: BigInt!
   # at which block was pool created

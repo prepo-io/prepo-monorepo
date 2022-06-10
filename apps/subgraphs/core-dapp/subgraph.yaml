@@ -91,6 +91,8 @@ templates:
           file: ./abis/UniswapV3Pool.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: CollateralToken
+          file: ./abis/CollateralToken.json
       eventHandlers:
         - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
           handler: handleUniswapV3Swap

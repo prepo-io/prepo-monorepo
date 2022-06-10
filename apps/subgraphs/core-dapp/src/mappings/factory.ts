@@ -1,3 +1,4 @@
+import { BigInt } from '@graphprotocol/graph-ts'
 import {
   CollateralValidityChanged,
   MarketAdded,
@@ -10,7 +11,7 @@ import {
 } from '../types/templates'
 import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
 import { PoolCreated } from '../types/UniswapV3PoolFactory/UniswapV3PoolFactory'
-import { ZERO_BD } from '../utils/constants'
+import { ZERO_BD, ZERO_BI } from '../utils/constants'
 import { fetchTokenDecimals } from '../utils/LongShortToken'
 import { CollateralToken } from '../types/PrePOMarketFactory/CollateralToken'
 
@@ -24,7 +25,7 @@ export function handleCollateralValidityChanged(event: CollateralValidityChanged
     const nameResult = collateralContract.try_name()
     if (!decimalsResult.reverted && !symbolResult.reverted && !nameResult.reverted) {
       collateral = new ValidCollateralToken(collateralAddress)
-      collateral.decimals = decimalsResult.value
+      collateral.decimals = BigInt.fromI32(decimalsResult.value)
       collateral.name = nameResult.value
       collateral.symbol = symbolResult.value
       collateral.save()
@@ -90,6 +91,9 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.token = longShortToken.id
   pool.token0 = token0Address
   pool.token1 = token1Address
+  pool.token0Price = ZERO_BD
+  pool.token1Price = ZERO_BD
+  pool.sqrtPriceX96 = ZERO_BI
   pool.createdAtBlockNumber = event.block.number
   pool.createdAtTimestamp = event.block.timestamp
 
