@@ -5,8 +5,10 @@ import HistoryEventComponent from './HistoryEvent'
 import { HistoryItem } from './history.types'
 import { getHistoryItemIconTitle } from './history-utils'
 import HistoryIconTitle from '../../components/MarketIconTitle'
-import { formatUsd } from '../../utils/number-utils'
 import { getFullDateTimeFromSeconds } from '../../utils/date-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 const Wrapper = styled.div`
   border-bottom: 1px solid ${({ theme }): string => theme.color.primaryAccent};
@@ -59,7 +61,7 @@ const HistoryItemMobile: React.FC<Props> = ({ historyItem }) => {
       </HistoryItemRow>
       <HistoryItemRow>
         <Col xs={8}>
-          <AmountUsd>{formatUsd(historyItem.amount, false)}</AmountUsd>
+          <AmountUsd>{toUsd(historyItem.amount)}</AmountUsd>
         </Col>
         <Col xs={16}>
           <Timestamp>{getFullDateTimeFromSeconds(historyItem.timestamp)}</Timestamp>

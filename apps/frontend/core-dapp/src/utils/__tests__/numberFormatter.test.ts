@@ -109,4 +109,25 @@ describe('numberFormatter tests', () => {
       expect(output).toBe('0')
     })
   })
+
+  describe('toUsd', () => {
+    const { toUsd } = numberFormatter
+    it('should return a number formatted with USD and currency precision', () => {
+      const output1 = toUsd(1234)
+      const output2 = toUsd(12345678)
+      const output3 = toUsd(12345678912)
+      expect(output1).toBe('$1,234.00')
+      expect(output2).toBe('$12,345,678.00')
+      expect(output3).toBe('$12,345,678,912.00')
+    })
+
+    it('should return $0', () => {
+      const output1 = toUsd(undefined)
+      const output2 = toUsd('')
+      const output3 = toUsd(NaN)
+      expect(output1).toBe('$0.00')
+      expect(output2).toBe('$0.00')
+      expect(output3).toBe('$0.00')
+    })
+  })
 })
