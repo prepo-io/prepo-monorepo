@@ -10,8 +10,7 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
-  // eslint-disable-next-line eqeqeq
-  if (exchangeDecimals == ZERO_BI) {
+  if (exchangeDecimals.equals(ZERO_BI)) {
     return tokenAmount.toBigDecimal()
   }
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
