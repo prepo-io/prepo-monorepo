@@ -2,18 +2,18 @@ import { BigInt } from '@graphprotocol/graph-ts'
 import {
   CollateralValidityChanged,
   MarketAdded,
-} from '../types/PrePOMarketFactory/PrePOMarketFactory'
-import { Market, Pool, Token, ValidCollateralToken } from '../types/schema'
+} from '../generated/types/PrePOMarketFactory/PrePOMarketFactory'
+import { Market, Pool, Token, ValidCollateralToken } from '../generated/types/schema'
 import {
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
   UniswapV3Pool as UniswapV3PoolTemplate,
-} from '../types/templates'
-import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
-import { PoolCreated } from '../types/UniswapV3PoolFactory/UniswapV3PoolFactory'
+} from '../generated/types/templates'
+import { MarketCreated } from '../generated/types/templates/PrePOMarket/PrePOMarket'
+import { PoolCreated } from '../generated/types/UniswapV3PoolFactory/UniswapV3PoolFactory'
 import { ZERO_BD, ZERO_BI } from '../utils/constants'
 import { fetchTokenDecimals } from '../utils/LongShortToken'
-import { CollateralToken } from '../types/PrePOMarketFactory/CollateralToken'
+import { CollateralToken } from '../generated/types/PrePOMarketFactory/CollateralToken'
 
 export function handleCollateralValidityChanged(event: CollateralValidityChanged): void {
   const collateralAddress = event.params.collateral.toHexString()

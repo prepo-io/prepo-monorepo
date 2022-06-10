@@ -1,9 +1,9 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { manageRecipientPosition } from './accounting'
-import { Swap } from '../types/templates/UniswapV3Pool/UniswapV3Pool'
-import { Pool, Token } from '../types/schema'
+import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
+import { Pool, Token } from '../generated/types/schema'
 import { sqrtPriceX96ToTokenPrices } from '../utils/math'
-import { CollateralToken, Transfer } from '../types/PrePOMarketFactory/CollateralToken'
+import { CollateralToken, Transfer } from '../generated/types/PrePOMarketFactory/CollateralToken'
 
 export function handleLongShortTokenTransfer(event: Transfer): void {
   manageRecipientPosition(event.address, event.params.to, event.params.value)
