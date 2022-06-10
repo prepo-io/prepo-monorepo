@@ -4,6 +4,8 @@ import { Label, Value } from './FromPower'
 import useResponsive from '../../../hooks/useResponsive'
 import { numberFormatter } from '../../../utils/numberFormatter'
 
+const { significantDigits } = numberFormatter
+
 type Props = { connected: boolean; power: number; delegatorsCount: number }
 
 const Wrapper = styled.div`
@@ -22,7 +24,6 @@ const SubLabel = styled(Label)`
 
 const FromDelegators: React.FC<Props> = ({ connected, power = 0, delegatorsCount }) => {
   const { isDesktop } = useResponsive()
-  const { significantDigits } = numberFormatter
 
   const size = isDesktop ? '26' : '13'
   return (

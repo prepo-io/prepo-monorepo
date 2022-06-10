@@ -6,6 +6,8 @@ import useResponsive from '../../hooks/useResponsive'
 import { DelegateEntity } from '../../stores/entities/DelegateEntity'
 import { numberFormatter } from '../../utils/numberFormatter'
 
+const { significantDigits } = numberFormatter
+
 const StyledSubtitle = styled(Subtitle)`
   color: ${({ theme }): string => theme.color.neutral1};
   font-size: ${({ theme }): string => theme.fontSize.sm};
@@ -16,7 +18,6 @@ const StyledSubtitle = styled(Subtitle)`
 
 const ProfileVotingPower: React.FC<{ delegate?: DelegateEntity }> = ({ delegate }) => {
   const { isDesktop } = useResponsive()
-  const { significantDigits } = numberFormatter
 
   const governIconSize = isDesktop ? '32' : '24'
   const ppoPowerValue =

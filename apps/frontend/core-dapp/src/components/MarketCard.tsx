@@ -10,6 +10,8 @@ import { MarketEntity } from '../stores/entities/MarketEntity'
 import { noSelect } from '../styles/noSelect.style'
 import { numberFormatter } from '../utils/numberFormatter'
 
+const { significantDigits } = numberFormatter
+
 type Props = {
   id: string
   market: MarketEntity
@@ -90,7 +92,6 @@ const IconWrapper = styled(Icon)`
 
 const MarketCard: React.FC<Props> = ({ id, market }) => {
   const [mouseOver, setMouseOver] = useState(false)
-  const { significantDigits } = numberFormatter
 
   return (
     <Link href={`/markets/${market.urlId}`}>

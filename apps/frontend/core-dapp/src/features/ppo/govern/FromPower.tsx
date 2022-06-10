@@ -2,6 +2,8 @@ import { media, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { numberFormatter } from '../../../utils/numberFormatter'
 
+const { significantDigits } = numberFormatter
+
 type Props = { connected: boolean; power: number }
 
 const Wrapper = styled.div`
@@ -40,7 +42,7 @@ export const Label = styled.div`
 const FromPower: React.FC<Props> = ({ connected, power = 0 }) => (
   <Wrapper>
     <Label>From PPO Power</Label>
-    <Value>{connected ? numberFormatter.significantDigits(power) : '-'}</Value>
+    <Value>{connected ? significantDigits(power) : '-'}</Value>
   </Wrapper>
 )
 

@@ -8,11 +8,11 @@ import { useRootStore } from '../../context/RootStoreProvider'
 import { EstimateYourProfitLoss } from '../definitions'
 import { ExitProfitLoss, SliderSettings } from '../../types/market.types'
 import Percent from '../../components/Percent'
-import { makeAddStep, numFormatter } from '../../utils/number-utils'
+import { makeAddStep } from '../../utils/number-utils'
 import { TWO_DECIMAL_DENOMINATOR, VALUATION_DENOMINATOR } from '../../lib/constants'
 import { numberFormatter } from '../../utils/numberFormatter'
 
-const { toUsd } = numberFormatter
+const { toUsd, significantDigits } = numberFormatter
 
 type Props = {
   sliderSettings: SliderSettings
@@ -64,7 +64,7 @@ const getStepWithTwoDecimals = (value: number): number =>
   makeAddStep(value) / TWO_DECIMAL_DENOMINATOR
 
 const sliderNumFormatter = (value: number): string =>
-  `$${numFormatter(value * VALUATION_DENOMINATOR, { significantDigits: 3 })}`
+  `$${significantDigits(value * VALUATION_DENOMINATOR)}`
 
 const EstimateProfitLoss: React.FC<Props> = ({
   getProfitLossOnExit,
