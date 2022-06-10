@@ -7,7 +7,9 @@ import MarketIconTitle from '../../components/MarketIconTitle'
 import Percent from '../../components/Percent'
 import { Position } from '../portfolio/PortfolioStore'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { formatUsd } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 type Props = { position: Required<Position> }
 
@@ -184,7 +186,7 @@ const PositionItem: React.FC<Props> = ({ position }) => {
           <ResponsiveData key={label}>
             <StyledSubtitle tooltip={toolTip}>{label}</StyledSubtitle>
             <ResponsiveDataValue>
-              <p>{formatUsd(amount, true)}&nbsp;</p>
+              <p>{toUsd(amount)}&nbsp;</p>
               {percent !== undefined && (
                 <Percent
                   showPlusSign

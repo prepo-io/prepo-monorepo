@@ -4,7 +4,8 @@ import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { ERC20_UNITS } from '../lib/constants'
 
-/** It is common to use string type to maintain values with precision. If the output is undefined, this input cannot be converted to percent (e.g. invalid string) */
+/** It is common to use string type to maintain values with precision.
+ * If the output is undefined, this input cannot be converted to percent (e.g. invalid string) */
 export function formatPercent(percent: number | string, precision = 1): string | undefined {
   const transformedPercent = +percent
   if (
@@ -93,41 +94,15 @@ export const validateNumber = (value: number | string | undefined = 0): number =
   return 0
 }
 
-export const bigAmountToShortPresentation = (number: number, digits = 2): string => {
-  const lookup = [
-    { value: 1, symbol: '' },
-    { value: 1e3, symbol: 'K' },
-    { value: 1e6, symbol: 'M' },
-    { value: 1e9, symbol: 'B' },
-  ]
-  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-  const item = lookup
-    .slice()
-    .reverse()
-    .find((itemLookup) => Math.abs(number) >= itemLookup.value)
-
-  const newFormatValue = item
-    ? Number(number / item.value)
-        .toFixed(digits)
-        .replace(rx, '$1')
-    : Number(number).toFixed(digits)
-
-  return item ? `${newFormatValue}${item?.symbol}` : newFormatValue
-}
-
-export const numberWithCommas = (numberValue: number | undefined): string => {
-  if (!numberValue) return '0'
-  return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
 /**
  * Makes sure to avoid getting large string numbers like
  * 14.999999999999999999 when converting from BigNumber to string
  * This will always return the amount of digits that are needed according to our currency precision
  * @returns string
  */
-export const normalizeDecimalPrecision = (numberAsString: string | undefined): string => {
-  if (!numberAsString) return '0'
+export const normalizeDecimalPrecision = (value: string | number | undefined): string => {
+  if (!value || Number.isNaN(value)) return '0'
+  const numberAsString = `${value}`
   const decimalsPrecision = `^-?\\d+(?:\\.\\d{0,${CURRENCY_PRECISION}})?`
   const matchResult = numberAsString.match(decimalsPrecision)
   return matchResult ? matchResult[0] : numberAsString
@@ -139,8 +114,8 @@ export const normalizeDecimalPrecision = (numberAsString: string | undefined): s
  * @param amount - The amount to format
  * @param [decimals=true] - If true, the amount will be formatted with decimals
  */
-export function formatUsd(amount: number | string, decimals = true): string {
-  const normalizeAmount = normalizeDecimalPrecision(`${amount}`)
+export function formatUsd(amount: number | string | undefined, decimals = true): string {
+  const normalizeAmount = normalizeDecimalPrecision(amount)
   const usd = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -149,11 +124,4 @@ export function formatUsd(amount: number | string, decimals = true): string {
   if (decimals) return usd
 
   return usd.split('.')[0]
-}
-
-export const formatPrice = (num: number, breakpoint: number): string => {
-  if (num > breakpoint) {
-    return `$${numFormatter(num)}`
-  }
-  return formatUsd(num)
 }

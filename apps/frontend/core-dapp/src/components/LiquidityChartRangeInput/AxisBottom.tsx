@@ -1,7 +1,9 @@
 import { Axis as d3Axis, axisBottom, NumberValue, ScaleLinear, select } from 'd3'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { numFormatter } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 const StyledGroup = styled.g`
   line {
@@ -43,7 +45,7 @@ export const AxisBottom: React.FC<Props> = ({ xScale, innerHeight, offset = 0 })
         <Axis
           axisGenerator={axisBottom(xScale)
             .ticks(6)
-            .tickFormat((value): string => numFormatter(value.toString()))}
+            .tickFormat((value): string => significantDigits(value.toString()))}
         />
       </StyledGroup>
     ),

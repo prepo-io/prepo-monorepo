@@ -6,10 +6,11 @@ import { observer } from 'mobx-react-lite'
 import Skeleton from 'react-loading-skeleton'
 import Link from './Link'
 import MarketIconTitle from './MarketIconTitle'
-import { bigAmountToShortPresentation, formatUsd, numFormatter } from '../utils/number-utils'
 import { MarketEntity } from '../stores/entities/MarketEntity'
 import { noSelect } from '../styles/noSelect.style'
 import { numberFormatter } from '../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 type Props = {
   id: string
@@ -91,7 +92,6 @@ const IconWrapper = styled(Icon)`
 
 const MarketCard: React.FC<Props> = ({ id, market }) => {
   const [mouseOver, setMouseOver] = useState(false)
-  const { significantDigits } = numberFormatter
 
   return (
     <Link href={`/markets/${market.urlId}`}>
