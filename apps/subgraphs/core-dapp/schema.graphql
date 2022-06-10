@@ -1,4 +1,4 @@
-type ValidCollateralToken @entity {
+type CollateralToken @entity {
   # address of collateral token contract
   id: ID!
   # name of collateral token

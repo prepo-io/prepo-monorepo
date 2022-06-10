@@ -20,7 +20,7 @@ dataSources:
       file: ./src/mappings/factory.ts
       entities:
         - Market
-        - ValidCollateralToken
+        - CollateralToken
       abis:
         - name: PrePOMarketFactory
           file: ./abis/PrePOMarketFactory.json

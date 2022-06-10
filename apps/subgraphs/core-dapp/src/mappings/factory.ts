@@ -3,7 +3,12 @@ import {
   CollateralValidityChanged,
   MarketAdded,
 } from '../generated/types/PrePOMarketFactory/PrePOMarketFactory'
-import { Market, Pool, Token, ValidCollateralToken } from '../generated/types/schema'
+import {
+  Market,
+  Pool,
+  Token,
+  CollateralToken as CollateralTokenEntity,
+} from '../generated/types/schema'
 import {
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
@@ -17,14 +22,14 @@ import { CollateralToken } from '../generated/types/PrePOMarketFactory/Collatera
 
 export function handleCollateralValidityChanged(event: CollateralValidityChanged): void {
   const collateralAddress = event.params.collateral.toHexString()
-  let collateral = ValidCollateralToken.load(collateralAddress)
+  let collateral = CollateralTokenEntity.load(collateralAddress)
   if (event.params.allowed && collateral === null) {
     const collateralContract = CollateralToken.bind(event.params.collateral)
     const decimalsResult = collateralContract.try_decimals()
     const symbolResult = collateralContract.try_symbol()
     const nameResult = collateralContract.try_name()
     if (!decimalsResult.reverted && !symbolResult.reverted && !nameResult.reverted) {
-      collateral = new ValidCollateralToken(collateralAddress)
+      collateral = new CollateralTokenEntity(collateralAddress)
       collateral.decimals = BigInt.fromI32(decimalsResult.value)
       collateral.name = nameResult.value
       collateral.symbol = symbolResult.value
