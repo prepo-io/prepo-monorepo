@@ -12,7 +12,7 @@ const irrelevantErrors = [
 export const isImportantError = (error: any): boolean => !irrelevantErrors.includes(error.reason)
 
 export const makeErrorCapturer =
-  (errorCapturer: ErrorCapturer): CaptureError =>
+  (errorCapturer?: ErrorCapturer): CaptureError =>
   (err): Error => {
     let error
     runInAction(() => {
@@ -22,5 +22,5 @@ export const makeErrorCapturer =
         errorCapturer(error)
       }
     })
-    return error
+    return error as unknown as Error
   }

@@ -56,7 +56,7 @@ export class UniswapV3GraphStore extends GraphStore<RootStore, SupportedContract
   }
 
   poolsQuery(longTokenPoolId: string, shortTokenPoolId: string): PoolsData | undefined {
-    return this.query<PoolsData>(poolsQueryString, { longTokenPoolId, shortTokenPoolId }).data
+    return this.query<PoolsData>(poolsQueryString, { longTokenPoolId, shortTokenPoolId })?.data
   }
 
   historicalDailyData(

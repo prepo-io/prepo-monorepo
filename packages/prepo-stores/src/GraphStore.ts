@@ -13,7 +13,7 @@ import {
 } from './utils/graph-store.types'
 
 type StorageQuery = {
-  refetchInterval: number
+  refetchInterval?: number
   lastRefetch?: number
   query: Query
   stopRefetch: boolean
@@ -75,7 +75,10 @@ export class GraphStore<RootStoreType, SupportedContracts> {
     reaction(() => this.root.web3Store.blockNumber, this.onBlockChange)
   }
 
-  onBlockChange(blockNumber): void {
+  onBlockChange(blockNumber?: number): void {
+    if (blockNumber === undefined) {
+      return
+    }
     Object.entries(this.storage).forEach(([queryString, varStrings]) => {
       Object.entries(varStrings).forEach(
         ([varString, { refetchInterval, lastRefetch, query, stopRefetch }]) => {
@@ -86,11 +89,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
               // during previous block
               this.storage[queryString][varString].lastRefetch = blockNumber - 1
             })
-          }
-          if (
-            refetchInterval + this.storage[queryString][varString].lastRefetch <= blockNumber &&
-            !stopRefetch
-          ) {
+          } else if ((refetchInterval ?? 1) + lastRefetch <= blockNumber && !stopRefetch) {
             query.refetch()
           }
         }
@@ -102,12 +101,12 @@ export class GraphStore<RootStoreType, SupportedContracts> {
     gqlQuery: string | DocumentNode,
     variables?: TVariables,
     options: QueryOptions = { fetchPolicy: 'cache-first', refetchInterval: 1 }
-  ): Query<TData> {
+  ): Query<TData> | undefined {
     try {
       if (!this.graph) return undefined
       const queryString = getQueryString(gqlQuery)
       const varString = JSON.stringify(variables)
-      let { refetchInterval, stopRefetch } = options
+      let { refetchInterval = 1, stopRefetch = false } = options
       refetchInterval = refetchInterval <= 0 ? 1 : refetchInterval
       stopRefetch = stopRefetch ?? false
 
@@ -127,6 +126,8 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       }
 
       runInAction(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const query = this.graph.query<TData>(gqlQuery, variables, options)
         this.storage[queryString][varString] = {
           refetchInterval,
@@ -136,7 +137,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       })
       return this.storage[queryString][varString].query as Query<TData>
     } catch (error) {
-      throw this.root.captureError(error)
+      throw this.root.captureError(error as Error)
     }
   }
 
@@ -144,7 +145,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
     query: string | DocumentNode,
     variables: TVariables,
     options: ContinuousQueryOptions<TData>
-  ): ContinuousQueryOutput<TData> {
+  ): ContinuousQueryOutput<TData> | undefined {
     try {
       const queryString = getQueryString(query)
       const varString = JSON.stringify(variables)
@@ -164,21 +165,23 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       const count = maxDataPerFetch || 1000
       let data: TData
       let skip = 0
-      while (!allFound) {
+      while (!allFound && onNewData) {
         const queryObj = this.query<TData, TVariables & { count: number; skip: number }>(
           query,
           { ...variables, count, skip },
           { stopRefetch: true }
         )
         // error and loading handling
-        if (queryObj.error) throw queryObj.error
-        if (queryObj.data === undefined) return {}
+        if (queryObj?.error) throw queryObj.error
+        if (queryObj?.data === undefined) return {}
 
         // allow caller to control whether the loop will continue
         // this allow more flexibility, so we can query multiple stuffs within the same query
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const output = onNewData(data, queryObj.data, { count, skip })
         skip += count
-        data = output.data
+        data = output.data as TData
         allFound = output.allFound
       }
 
@@ -191,7 +194,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       return undefined
     } catch (error) {
       return {
-        error: this.root.captureError(error),
+        error: this.root.captureError(error as Error),
       }
     }
   }

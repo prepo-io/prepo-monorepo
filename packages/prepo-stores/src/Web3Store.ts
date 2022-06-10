@@ -81,7 +81,7 @@ export class Web3Store {
   }
 
   get supportedNetworkIds(): { [key: number]: true } {
-    const supportedIds = {}
+    const supportedIds = {} as { [key: number]: true }
     this.root.config.supportedNetworks.forEach(({ chainId }) => {
       supportedIds[chainId] = true
     })
@@ -173,7 +173,7 @@ export class Web3Store {
       })
     } catch (e) {
       window.localStorage.removeItem('selectedWallet')
-      const error = this.root.captureError(e)
+      const error = this.root.captureError(e as Error)
       this.root.toastStore.errorToast('Error connecting wallet', error.message)
     }
   }
