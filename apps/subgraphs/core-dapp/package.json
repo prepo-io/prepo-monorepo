@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate",
+  "name": "core-dapp",
   "version": "1.0.0",
-  "description": "prePO subgraph boilerplate",
+  "description": "prePO analytical and historical data with subgraph",
   "license": "ISC",
   "scripts": {
     "postinstall": "yarn codegen",
