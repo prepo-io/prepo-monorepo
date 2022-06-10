@@ -1,5 +1,5 @@
 import type { Config } from '@jest/types'
-// Disabling typescipt here since it's a javascript config file that is being imported
+// Disabling typescript here since it's a javascript config file that is being imported
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import base from 'config/jest-frontend'
