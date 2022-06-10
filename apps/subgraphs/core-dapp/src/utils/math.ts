@@ -25,6 +25,7 @@ export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
   return amount0.div(amount1)
 }
 
+// ref: https://github.com/Uniswap/v3-subgraph/blob/bf03f940f17c3d32ee58bd37386f26713cff21e2/src/utils/pricing.ts#L48
 export function sqrtPriceX96ToTokenPrices(
   sqrtPriceX96: BigInt,
   token0Decimals: BigInt,
