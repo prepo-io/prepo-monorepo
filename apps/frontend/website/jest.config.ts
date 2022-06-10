@@ -1,8 +1,11 @@
 import type { Config } from '@jest/types'
+// Disabling typescipt here since it's a javascript config file that is being imported
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import base from 'config/jest-frontend'
 import path from 'path'
 
-const fromRoot = (d): string => path.join(__dirname, d)
+const fromRoot = (directory: string): string => path.join(__dirname, directory)
 
 const config: Config.InitialOptions = {
   ...base,
