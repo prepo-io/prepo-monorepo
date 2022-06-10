@@ -94,19 +94,15 @@ export const validateNumber = (value: number | string | undefined = 0): number =
   return 0
 }
 
-export const numberWithCommas = (numberValue: number | undefined): string => {
-  if (!numberValue) return '0'
-  return numberValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
 /**
  * Makes sure to avoid getting large string numbers like
  * 14.999999999999999999 when converting from BigNumber to string
  * This will always return the amount of digits that are needed according to our currency precision
  * @returns string
  */
-export const normalizeDecimalPrecision = (numberAsString: string | undefined): string => {
-  if (!numberAsString) return '0'
+export const normalizeDecimalPrecision = (value: string | number | undefined): string => {
+  if (!value || Number.isNaN(value)) return '0'
+  const numberAsString = `${value}`
   const decimalsPrecision = `^-?\\d+(?:\\.\\d{0,${CURRENCY_PRECISION}})?`
   const matchResult = numberAsString.match(decimalsPrecision)
   return matchResult ? matchResult[0] : numberAsString
@@ -118,8 +114,8 @@ export const normalizeDecimalPrecision = (numberAsString: string | undefined): s
  * @param amount - The amount to format
  * @param [decimals=true] - If true, the amount will be formatted with decimals
  */
-export function formatUsd(amount: number | string, decimals = true): string {
-  const normalizeAmount = normalizeDecimalPrecision(`${amount}`)
+export function formatUsd(amount: number | string | undefined, decimals = true): string {
+  const normalizeAmount = normalizeDecimalPrecision(amount)
   const usd = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -128,11 +124,4 @@ export function formatUsd(amount: number | string, decimals = true): string {
   if (decimals) return usd
 
   return usd.split('.')[0]
-}
-
-export const formatPrice = (num: number, breakpoint: number): string => {
-  if (num > breakpoint) {
-    return `$${numFormatter(num)}`
-  }
-  return formatUsd(num)
 }
