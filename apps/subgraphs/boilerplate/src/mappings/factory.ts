@@ -1,7 +1,7 @@
-import { MarketAdded } from '../types/PrePOMarketFactory/PrePOMarketFactory'
-import { Market, Token } from '../types/schema'
-import { PrePOMarket as PrePOMarketTemplate } from '../types/templates'
-import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
+import { MarketAdded } from '../generated/types/PrePOMarketFactory/PrePOMarketFactory'
+import { Market, Token } from '../generated/types/schema'
+import { PrePOMarket as PrePOMarketTemplate } from '../generated/types/templates'
+import { MarketCreated } from '../generated/types/templates/PrePOMarket/PrePOMarket'
 
 export function handleMarketAdded(event: MarketAdded): void {
   PrePOMarketTemplate.create(event.params.market)

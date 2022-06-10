@@ -1,11 +1,11 @@
 {
-  "name": "boilerplate",
+  "name": "subgraph-boilerplate",
   "version": "1.0.0",
   "description": "prePO subgraph boilerplate",
   "license": "ISC",
   "scripts": {
     "postinstall": "yarn codegen",
-    "codegen": "graph codegen --output-dir src/types/",
+    "codegen": "graph codegen --output-dir src/generated/types",
     "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli"
   },
   "devDependencies": {

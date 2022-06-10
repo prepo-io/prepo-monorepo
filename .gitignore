@@ -88,10 +88,6 @@ artifacts*
 cache*
 cache
 
-# --------- subgraphs ---------
-# Generated files
-apps/subgraphs/**/src/types
-
 # --------- prepo-constants --------- 
 packages/constants/lib/**
 
