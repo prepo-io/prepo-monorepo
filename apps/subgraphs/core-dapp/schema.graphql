@@ -66,8 +66,6 @@ type Position @entity {
   owner: String!
   # token of whic this position is tracking
   token: Token!
-  # balance of token
-  balance: BigInt!
 }
 
 type Token @entity {
