@@ -1,14 +1,36 @@
-import { Address } from '@graphprotocol/graph-ts'
-import { MarketAdded } from '../types/PrePOMarketFactory/PrePOMarketFactory'
-import { Market, Pool, Token } from '../types/schema'
+import {
+  CollateralValidityChanged,
+  MarketAdded,
+} from '../types/PrePOMarketFactory/PrePOMarketFactory'
+import { Market, Pool, Token, ValidCollateralToken } from '../types/schema'
 import {
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
+  UniswapV3Pool as UniswapV3PoolTemplate,
 } from '../types/templates'
 import { MarketCreated } from '../types/templates/PrePOMarket/PrePOMarket'
 import { PoolCreated } from '../types/UniswapV3PoolFactory/UniswapV3PoolFactory'
-import { COLLATERAL_TOKEN_ADDRESS, ZERO_BD } from '../utils/constants'
+import { ZERO_BD } from '../utils/constants'
 import { fetchTokenDecimals } from '../utils/LongShortToken'
+import { CollateralToken } from '../types/PrePOMarketFactory/CollateralToken'
+
+export function handleCollateralValidityChanged(event: CollateralValidityChanged): void {
+  const collateralAddress = event.params.collateral.toHexString()
+  let collateral = ValidCollateralToken.load(collateralAddress)
+  if (event.params.allowed && collateral === null) {
+    const collateralContract = CollateralToken.bind(event.params.collateral)
+    const decimalsResult = collateralContract.try_decimals()
+    const symbolResult = collateralContract.try_symbol()
+    const nameResult = collateralContract.try_name()
+    if (!decimalsResult.reverted && !symbolResult.reverted && !nameResult.reverted) {
+      collateral = new ValidCollateralToken(collateralAddress)
+      collateral.decimals = decimalsResult.value
+      collateral.name = nameResult.value
+      collateral.symbol = symbolResult.value
+      collateral.save()
+    }
+  }
+}
 
 export function handleMarketAdded(event: MarketAdded): void {
   PrePOMarketTemplate.create(event.params.market)
@@ -53,13 +75,12 @@ export function handleMarketCreated(event: MarketCreated): void {
 export function handlePoolCreated(event: PoolCreated): void {
   const token0Address = event.params.token0.toHexString()
   const token1Address = event.params.token1.toHexString()
-
-  const token0Collateral = event.params.token0.equals(Address.fromString(COLLATERAL_TOKEN_ADDRESS))
-  const token1Collateral = event.params.token1.equals(Address.fromString(COLLATERAL_TOKEN_ADDRESS))
+  const token0 = Token.load(token0Address)
+  const token1 = Token.load(token1Address)
 
   // irrelevant pools
-  if (!token0Collateral && !token1Collateral) return
-  const longShortTokenAddress = token0Collateral ? token1Address : token0Address
+  if (token0 === null && token1 === null) return
+  const longShortTokenAddress = token0 === null ? token1Address : token0Address
   const longShortToken = Token.load(longShortTokenAddress)
 
   // non long short token pool
@@ -72,6 +93,7 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.createdAtBlockNumber = event.block.number
   pool.createdAtTimestamp = event.block.timestamp
 
+  UniswapV3PoolTemplate.create(event.params.pool)
   pool.save()
   longShortToken.save()
 }

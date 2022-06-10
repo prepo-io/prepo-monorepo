@@ -20,12 +20,17 @@ dataSources:
       file: ./src/mappings/factory.ts
       entities:
         - Market
+        - ValidCollateralToken
       abis:
         - name: PrePOMarketFactory
           file: ./abis/PrePOMarketFactory.json
+        - name: CollateralToken
+          file: ./abis/CollateralToken.json
       eventHandlers:
         - event: MarketAdded(address,bytes32)
           handler: handleMarketAdded
+        - event: CollateralValidityChanged(address,bool)
+          handler: handleCollateralValidityChanged
   - kind: ethereum/contract
     name: UniswapV3PoolFactory
     network: goerli
@@ -69,6 +74,26 @@ templates:
       eventHandlers:
         - event: MarketCreated(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleMarketCreated
+  - kind: ethereum/contract
+    name: UniswapV3Pool
+    network: goerli
+    source:
+      abi: UniswapV3Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/core.ts
+      entities:
+        - Token
+      abis:
+        - name: UniswapV3Pool
+          file: ./abis/UniswapV3Pool.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+          handler: handleUniswapV3Swap
   - kind: ethereum/contract
     name: LongShortToken
     network: goerli

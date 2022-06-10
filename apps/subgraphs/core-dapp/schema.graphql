@@ -1,3 +1,14 @@
+type ValidCollateralToken @entity {
+  # address of collateral token contract
+  id: ID!
+  # name of collateral token
+  name: String!
+  # symbol of collateral token
+  symbol: String!
+  # decimals of collateral token
+  decimals: Int!
+}
+
 type Market @entity {
   # market contract address
   id: ID!
