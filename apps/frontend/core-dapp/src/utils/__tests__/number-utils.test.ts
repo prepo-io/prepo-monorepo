@@ -1,6 +1,5 @@
 import {
   numFormatter,
-  numberWithCommas,
   formatPercent,
   validateNumber,
   normalizeDecimalPrecision,
@@ -114,17 +113,6 @@ describe('replace large numbers with SI Prefix', () => {
     expect(output5).toBe('789M')
     expect(output6).toBe('78.9M')
     expect(output7).toBe('7.89M')
-  })
-})
-
-describe('numberWithCommas tests', () => {
-  it('should return a number with commas as thousands', () => {
-    const output = numberWithCommas(1234)
-    expect(output).toBe('1,234')
-  })
-  it('should return 0', () => {
-    const output = numberWithCommas(0)
-    expect(output).toBe('0')
   })
 })
 

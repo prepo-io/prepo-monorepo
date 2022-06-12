@@ -6,7 +6,9 @@ import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'
 import Percent from '../../components/Percent'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { formatUsd } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 type GrowthProps = {
   amount: number
@@ -46,7 +48,7 @@ const PortfolioBreakdownItem: React.FC<PortfolioBreakdownItemProps> = ({
           <Skeleton height={18} width={70} />
         </SkeletonWrapper>
       )
-    return `${formatUsd(value)}`
+    return `${toUsd(value)}`
   }, [connected, value])
 
   return (
