@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 import FinancialInfoCard from '../../components/FinancialInfoCard'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { getFullDateFromMs, getFullDateShortenMonthFromMs } from '../../utils/date-utils'
-import { bigAmountToShortPresentation, formatPercent } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
 import { EstimatedValuation, ExpiryDate, PayoutRange } from '../definitions'
 
 const DATE_BREAKPOINT = 250
+const { percent } = numberFormatter
 
 const MarketDataColumn: React.FC = () => {
   const selectedMarket = useSelectedMarket()
@@ -24,6 +25,7 @@ const MarketDataColumn: React.FC = () => {
     })
   )
   const container = containerRef.current
+  const { significantDigits } = numberFormatter
 
   useEffect(() => {
     const obs = observerRef.current
@@ -44,14 +46,14 @@ const MarketDataColumn: React.FC = () => {
 
   const renderPayoutRange = (): React.ReactNode => {
     if (!payoutRange) return null
-    const floorRange = formatPercent(`${payoutRange[0]}`, 0)
-    const ceilingRange = formatPercent(`${payoutRange[1]}`, 0)
+    const floorRange = percent(`${payoutRange[0]}`, 0)
+    const ceilingRange = percent(`${payoutRange[1]}`, 0)
     return (
       <Col xs={24}>
         <FinancialInfoCard
           title="Payout Range"
           tooltip={<PayoutRange />}
-          value={`${floorRange}% - ${ceilingRange}%`}
+          value={`${floorRange} - ${ceilingRange}`}
         />
       </Col>
     )
@@ -64,7 +66,7 @@ const MarketDataColumn: React.FC = () => {
           <FinancialInfoCard
             title="Estimated Valuation"
             tooltip={<EstimatedValuation marketName={name} />}
-            value={`$${bigAmountToShortPresentation(estimatedValuation.value)}`}
+            value={`$${significantDigits(estimatedValuation.value)}`}
           />
         </Col>
       )}
@@ -72,16 +74,13 @@ const MarketDataColumn: React.FC = () => {
         <Col xs={24}>
           <FinancialInfoCard
             title="Trading Volume"
-            value={`$${bigAmountToShortPresentation(tradingVolume.value)}`}
+            value={`$${significantDigits(tradingVolume.value)}`}
           />
         </Col>
       )}
       {liquidity && (
         <Col xs={24}>
-          <FinancialInfoCard
-            title="Liquidity"
-            value={`$${bigAmountToShortPresentation(liquidity.value)}`}
-          />
+          <FinancialInfoCard title="Liquidity" value={`$${significantDigits(liquidity.value)}`} />
         </Col>
       )}
       {expiryTime && (
