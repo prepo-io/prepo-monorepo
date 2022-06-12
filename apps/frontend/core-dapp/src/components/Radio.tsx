@@ -30,6 +30,11 @@ const Wrapper = styled(ARadio)<{ backgroundColor?: keyof Color; color: string }>
       theme.color[backgroundColor || 'neutral9']} !important;
     color: ${({ color }): string => color};
     display: flex;
+    span:nth-child(2) {
+      display: flex;
+      justify-content: space-between;
+      flex: 1;
+    }
   }
 
   &.ant-radio-wrapper-disabled:hover {
