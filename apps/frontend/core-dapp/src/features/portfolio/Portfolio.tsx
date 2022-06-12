@@ -19,7 +19,9 @@ import PositionsAndHistory from './PositionsAndHistory'
 import { makeRepeatedValue } from '../../utils/generic-utils'
 import useResponsive from '../../hooks/useResponsive'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { formatUsd } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 const Box = styled(Col)`
   border: 1px solid ${({ theme }): string => theme.color.neutral8};
@@ -94,7 +96,7 @@ const Portfolio: React.FC = () => {
     if (!connected) return '-'
     if (!isPortfolioVisible) return makeRepeatedValue('*', 9)
     if (portfolioValue === undefined) return <Skeleton width={120} />
-    return `${formatUsd(portfolioValue)}`
+    return `${toUsd(portfolioValue)}`
   }, [connected, isPortfolioVisible, portfolioValue])
 
   const renderPortfolioBreakdown = useMemo(

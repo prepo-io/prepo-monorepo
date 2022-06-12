@@ -7,7 +7,9 @@ import { useRootStore } from '../../context/RootStoreProvider'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { EstimatedValuation } from '../definitions'
 import { Routes } from '../../lib/routes'
-import { numFormatter } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
@@ -46,7 +48,7 @@ const TradeTransactionSummary: React.FC = () => {
   if (selectedMarket === undefined) return null
 
   const estimatedValuation = selectedMarket.estimatedValuation?.value
-    ? numFormatter(selectedMarket.estimatedValuation?.value)
+    ? significantDigits(selectedMarket.estimatedValuation?.value)
     : undefined
 
   const tradeTransactionSummary = [

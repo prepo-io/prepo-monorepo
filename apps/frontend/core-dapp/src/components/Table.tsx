@@ -3,9 +3,11 @@ import styled from 'styled-components'
 import { spacingIncrement } from 'prepo-ui'
 import Subtitle from './Subtitle'
 import Percent from './Percent'
-import { formatUsd } from '../utils/number-utils'
 import { PositionType } from '../utils/prepo.types'
 import PositionLabel from '../features/position/PositionLabel'
+import { numberFormatter } from '../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 export type RowData = {
   label: string
@@ -69,7 +71,7 @@ const Table: React.FC<Props> = ({
     if (dataItem?.amount !== undefined) {
       return (
         <>
-          {!dataItem.ignoreFormatAmount ? formatUsd(dataItem.amount, true) : dataItem.amount}{' '}
+          {!dataItem.ignoreFormatAmount ? toUsd(dataItem.amount) : dataItem.amount}{' '}
           {dataItem.percent && (
             <PercentWrapper>
               <Percent
