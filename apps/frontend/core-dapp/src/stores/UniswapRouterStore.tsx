@@ -1,5 +1,5 @@
 import { ContractStore, Factory } from '@prepo-io/stores'
-import { makeError } from '@prepo-io/utils'
+import { makeError } from 'prepo-utils'
 import { makeObservable, observable } from 'mobx'
 import { RootStore } from './RootStore'
 import { UniswapRouterAbi__factory, UniswapRouterAbi } from '../../generated/typechain'

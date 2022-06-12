@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Icon, IconName, media, spacingIncrement, Typography } from '@prepo-io/ui'
+import { Icon, IconName, media, spacingIncrement, Typography } from 'prepo-ui'
 import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ChainId, NetworkType } from 'prepo-constants'

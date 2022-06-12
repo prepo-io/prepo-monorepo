@@ -9,17 +9,16 @@ sidebar_position: 7
 ### Q3
 
 - ~~[Seed Round](https://prepo.io/blog/prepo-seed-round/)~~
-- ~~Scaling Team & Community~~*
+- ~~Scaling Team & Community~~\*
 - ~~[SDK](/developer/sdk)~~
 - ~~[Simulator](/simulator)~~
 
-<sub>*<a href="https://url.prepo.io/jobs">we're still hiring!</a></sub>
+<sub>\*<a href="https://url.prepo.io/jobs">we're still hiring!</a></sub>
 
 ### Q4
 
 - ~~Tokenomics~~
 - ~~Documentation~~
-- ~~Acquisition Royale (Alpha)~~
 - ~~Website Redesign~~
 - ~~Core Dapp (Internal Alpha)~~
 

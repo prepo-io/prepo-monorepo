@@ -1,13 +1,15 @@
-import { centered, Icon, media, spacingIncrement, Subtitle } from '@prepo-io/ui'
+import { centered, Icon, media, spacingIncrement, Subtitle } from 'prepo-ui'
 import styled from 'styled-components'
 import Skeleton from 'react-loading-skeleton'
 import { observer } from 'mobx-react-lite'
 import AddressAvatar, { AvatarDiameter } from './AddressAvatar'
 import { getShortAccount } from '../../utils/account-utils'
 import { noSelect } from '../../styles/noSelect.style'
-import { numberWithCommas } from '../../utils/number-utils'
 import { DelegateEntity } from '../../stores/entities/DelegateEntity'
 import { useRootStore } from '../../context/RootStoreProvider'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { withCommas } = numberFormatter
 
 type Props = {
   delegateEntity: DelegateEntity
@@ -142,9 +144,9 @@ const DelegateCard: React.FC<Props> = ({ delegateEntity }) => {
     delegateStore.setSelectedDelegate(delegateEntity)
   }
 
-  const ppoPowerFormat = numberWithCommas(delegateEntity.delegatorsPower)
-  const delegatorsFormat = numberWithCommas(delegateEntity.delegatorsCount)
-  const votingPowerFormat = numberWithCommas(delegateEntity.ppoPower)
+  const ppoPowerFormat = withCommas(delegateEntity.delegatorsPower)
+  const delegatorsFormat = withCommas(delegateEntity.delegatorsCount)
+  const votingPowerFormat = withCommas(delegateEntity.ppoPower)
   const votingPowerTooltip = `${ppoPowerFormat} from PPO Power + ${delegatorsFormat} from Delegators`
 
   return (

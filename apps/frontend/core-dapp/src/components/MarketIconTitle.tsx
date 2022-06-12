@@ -1,4 +1,4 @@
-import { coreDappTheme, IconName } from '@prepo-io/ui'
+import { coreDappTheme, IconName } from 'prepo-ui'
 import { Color } from 'styled-components'
 import IconTitle from './IconTitle'
 import useResponsive from '../hooks/useResponsive'

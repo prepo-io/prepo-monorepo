@@ -1,6 +1,6 @@
 import { Radio as ARadio, RadioProps } from 'antd'
 import styled, { Color, useTheme } from 'styled-components'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 
 type Props = RadioProps & {
   backgroundColor?: keyof Color

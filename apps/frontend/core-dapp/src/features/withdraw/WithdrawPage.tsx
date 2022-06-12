@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import { spacingIncrement, TokenInput } from '@prepo-io/ui'
+import { spacingIncrement, TokenInput } from 'prepo-ui'
 import WithdrawTransactionSummary from './WithdrawTransactionSummary'
 import SecondaryNavigation from '../../components/SecondaryNavigation'
 import Card from '../../components/Card'

@@ -1,4 +1,4 @@
-import { Typography } from '@prepo-io/ui'
+import { Typography } from 'prepo-ui'
 import styled from 'styled-components'
 import { PREPO_TESTNET_FORM } from '../../lib/constants'
 

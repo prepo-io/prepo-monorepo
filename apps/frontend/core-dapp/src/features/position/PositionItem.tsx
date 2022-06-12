@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { media, spacingIncrement, Subtitle, Button } from '@prepo-io/ui'
+import { media, spacingIncrement, Subtitle, Button } from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import PositionLabel from './PositionLabel'
 import Table from '../../components/Table'
@@ -7,7 +7,9 @@ import MarketIconTitle from '../../components/MarketIconTitle'
 import Percent from '../../components/Percent'
 import { Position } from '../portfolio/PortfolioStore'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { formatUsd } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 type Props = { position: Required<Position> }
 
@@ -184,7 +186,7 @@ const PositionItem: React.FC<Props> = ({ position }) => {
           <ResponsiveData key={label}>
             <StyledSubtitle tooltip={toolTip}>{label}</StyledSubtitle>
             <ResponsiveDataValue>
-              <p>{formatUsd(amount, true)}&nbsp;</p>
+              <p>{toUsd(amount)}&nbsp;</p>
               {percent !== undefined && (
                 <Percent
                   showPlusSign

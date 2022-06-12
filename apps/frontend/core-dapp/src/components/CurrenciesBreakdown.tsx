@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { formatNumber } from '@prepo-io/utils'
+import { formatNumber } from 'prepo-utils'
 import ListCard from './ListCard'
 import { useRootStore } from '../context/RootStoreProvider'
 

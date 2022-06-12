@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { media, spacingIncrement } from '@prepo-io/ui'
+import { media, spacingIncrement } from 'prepo-ui'
 import MarketDropdown from './MarketDropdown'
 import DateRangeSelection from './DateRangeSelection'
 import MarketTypeSelection from './MarketTypeSelection'

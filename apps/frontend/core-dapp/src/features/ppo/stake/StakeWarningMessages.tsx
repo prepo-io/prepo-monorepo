@@ -1,4 +1,4 @@
-import { Icon } from '@prepo-io/ui'
+import { Icon } from 'prepo-ui'
 import styled from 'styled-components'
 import useResponsive from '../../../hooks/useResponsive'
 

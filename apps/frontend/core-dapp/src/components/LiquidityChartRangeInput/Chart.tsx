@@ -1,7 +1,7 @@
 import { max, scaleLinear, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { centered, media } from '@prepo-io/ui'
+import { centered, media } from 'prepo-ui'
 import Skeleton from 'react-loading-skeleton'
 import { Area } from './Area'
 import { AxisBottom } from './AxisBottom'
@@ -9,7 +9,9 @@ import { Brush } from './Brush'
 import { Line } from './Line'
 import { Bound, BrushLabelValueType, ChartEntry, ZoomLevels } from './types'
 import Zoom, { ZoomOverlay } from './Zoom'
-import { numFormatter } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 export const xAccessor = (d: ChartEntry): number => d.price0
 export const yAccessor = (d: ChartEntry): number => d.activeLiquidity
@@ -136,7 +138,7 @@ const Chart: React.FC<Props> = ({
           {currentPrice === undefined ? (
             <Skeleton height={22} width={200} />
           ) : (
-            `Current Valuation: $${numFormatter(currentPrice)}`
+            `Current Valuation: $${significantDigits(currentPrice)}`
           )}
         </Title>
       </Header>

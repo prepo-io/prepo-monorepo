@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import styled, { DefaultTheme } from 'styled-components'
-import { media } from '@prepo-io/ui'
-import { formatPercent } from '../utils/number-utils'
+import { media } from 'prepo-ui'
+import { numberFormatter } from '../utils/numberFormatter'
+
+const { percent } = numberFormatter
 
 type StylesProps = {
   fontSize?: keyof DefaultTheme['fontSize']
@@ -45,15 +47,14 @@ const Percent: React.FC<Props> = ({
   className,
 }) => {
   const [percentageValue, setPercentageValue] = useState<string | undefined>(
-    formatPercent(value, percentagePrecision)
+    percent(value, percentagePrecision)
   )
-  const rawPercentValue = formatPercent(value, percentagePrecision)
+  const rawPercentValue = percent(value, percentagePrecision)
 
   useEffect(() => {
     if (format) {
-      const normalizedValue = `${rawPercentValue}`
       const overrideFormat = format(
-        showPlusSign && value > 0 ? `+${normalizedValue}%` : `${normalizedValue}%`
+        showPlusSign && value > 0 ? `+${rawPercentValue}` : `${rawPercentValue}`
       )
       setPercentageValue(overrideFormat)
     }

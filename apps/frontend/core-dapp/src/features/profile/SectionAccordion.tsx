@@ -1,4 +1,4 @@
-import { Box, Icon, media, spacingIncrement } from '@prepo-io/ui'
+import { Box, Icon, media, spacingIncrement } from 'prepo-ui'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Accordion from '../../components/Accordion'

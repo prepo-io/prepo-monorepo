@@ -1,5 +1,5 @@
 import { css } from 'styled-components'
-import { coreDappTheme, spacingIncrement } from '@prepo-io/ui'
+import { coreDappTheme, spacingIncrement } from 'prepo-ui'
 
 const { Z_INDEX } = coreDappTheme
 

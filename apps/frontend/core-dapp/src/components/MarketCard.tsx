@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { Row, Col } from 'antd'
 import styled from 'styled-components'
-import { centered, spacingIncrement, media, Icon } from '@prepo-io/ui'
+import { centered, spacingIncrement, media, Icon } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import Skeleton from 'react-loading-skeleton'
 import Link from './Link'
 import MarketIconTitle from './MarketIconTitle'
-import { bigAmountToShortPresentation, formatUsd, numFormatter } from '../utils/number-utils'
 import { MarketEntity } from '../stores/entities/MarketEntity'
 import { noSelect } from '../styles/noSelect.style'
+import { numberFormatter } from '../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 type Props = {
   id: string
@@ -108,9 +110,7 @@ const MarketCard: React.FC<Props> = ({ id, market }) => {
             {market.estimatedValuation === undefined ? (
               <Skeleton height={30} width={160} />
             ) : (
-              <PrimaryText>
-                ${bigAmountToShortPresentation(market.estimatedValuation.value)}
-              </PrimaryText>
+              <PrimaryText>${significantDigits(market.estimatedValuation.value)}</PrimaryText>
             )}
           </InfoCol>
           <InfoCol xs={12} md={12}>
@@ -119,8 +119,8 @@ const MarketCard: React.FC<Props> = ({ id, market }) => {
               <Skeleton height={30} width={160} />
             ) : (
               <PrimaryText>
-                ${numFormatter(market.valuationRange[0])} - $
-                {numFormatter(market.valuationRange[1])}
+                ${significantDigits(market.valuationRange[0])} - $
+                {significantDigits(market.valuationRange[1])}
               </PrimaryText>
             )}
           </InfoCol>
@@ -129,7 +129,7 @@ const MarketCard: React.FC<Props> = ({ id, market }) => {
           <InfoCol xs={12} md={12}>
             <Subtitle>Volume</Subtitle>
             {market.tradingVolume !== undefined ? (
-              <PrimaryText>{formatUsd(market.tradingVolume.value, false)}</PrimaryText>
+              <PrimaryText>${significantDigits(market.tradingVolume.value)}</PrimaryText>
             ) : (
               <Skeleton height={30} width={160} />
             )}
@@ -139,7 +139,7 @@ const MarketCard: React.FC<Props> = ({ id, market }) => {
             {market.liquidity === undefined ? (
               <Skeleton height={30} width={160} />
             ) : (
-              <PrimaryText>${bigAmountToShortPresentation(market.liquidity.value)}</PrimaryText>
+              <PrimaryText>${significantDigits(market.liquidity.value)}</PrimaryText>
             )}
           </InfoCol>
         </Row>

@@ -1,7 +1,7 @@
 import { Tabs as ATabs, TabsProps } from 'antd'
 import { ReactNode } from 'react'
 import styled, { Color, Weight } from 'styled-components'
-import { centered, spacingIncrement } from '@prepo-io/ui'
+import { centered, spacingIncrement } from 'prepo-ui'
 
 const { TabPane } = ATabs
 

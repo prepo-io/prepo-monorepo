@@ -1,14 +1,16 @@
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 import HistoryEventComponent from './HistoryEvent'
 import { HistoryItem } from './history.types'
 import { getHistoryItemIconTitle, eventTypeRequiresPosition } from './history-utils'
 import HistoryIconTitle from '../../components/MarketIconTitle'
-import { formatUsd } from '../../utils/number-utils'
 import { getFullDateTimeFromSeconds } from '../../utils/date-utils'
 import PositionLabel from '../position/PositionLabel'
 import useResponsive from '../../hooks/useResponsive'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 const Wrapper = styled.div`
   border-bottom: 1px solid ${({ theme }): string => theme.color.accent1};
@@ -73,7 +75,7 @@ const HistoryItemDesktop: React.FC<Props> = ({ historyItem }) => {
         </Col>
         <Col xs={6}>
           <SecondaryText>Value</SecondaryText>
-          <PrimaryText>{formatUsd(historyItem.amount, false)}</PrimaryText>
+          <PrimaryText>{toUsd(historyItem.amount)}</PrimaryText>
         </Col>
         <Col xs={6}>
           <SecondaryText>Transaction Time</SecondaryText>

@@ -1,5 +1,5 @@
 import { toJS } from 'mobx'
-import { centered, spacingIncrement, Icon } from '@prepo-io/ui'
+import { centered, spacingIncrement, Icon } from 'prepo-ui'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'

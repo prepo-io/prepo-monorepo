@@ -1,4 +1,4 @@
-import { Typography } from '@prepo-io/ui'
+import { Typography } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { useRootStore } from '../../context/RootStoreProvider'

@@ -5,12 +5,10 @@
  - provide next/previous navigation
  */
 
-const home = require("./home");
-const developer = require("./developer");
-const acquisitionRoyale = require("./acquisition-royale");
+const home = require('./home')
+const developer = require('./developer')
 
 module.exports = {
   home,
   developer,
-  acquisitionRoyale
-};
+}

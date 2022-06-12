@@ -2,7 +2,7 @@
 import { useState, FocusEvent, forwardRef } from 'react'
 import { Input as AInput, InputProps, InputRef } from 'antd'
 import styled, { Color, css, Weight } from 'styled-components'
-import { spacingIncrement, media } from '@prepo-io/ui'
+import { spacingIncrement, media } from 'prepo-ui'
 import Select, { SelectProps } from './Select'
 
 type CustomStyles = {

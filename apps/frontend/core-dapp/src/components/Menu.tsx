@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Menu as AMenu, MenuProps, MenuItemProps } from 'antd'
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
-import { spacingIncrement } from '@prepo-io/ui'
+import { spacingIncrement } from 'prepo-ui'
 
 export const MenuItem: React.FC<MenuItemProps> = (props) => (
   <>

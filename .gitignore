@@ -88,11 +88,18 @@ artifacts*
 cache*
 cache
 
+# --------- subgraphs ---------
+# Generated files
+apps/subgraphs/**/src/types
+
 # --------- prepo-constants --------- 
 packages/constants/lib/**
 
 # --------- prepo-utils --------- 
 packages/prepo-utils/lib/**
+
+# --------- prepo-ui --------- 
+packages/prepo-ui/lib/**
 
 ## Ignores deployments/localhost across all the sub-folders
 **/deployments/localhost

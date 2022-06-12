@@ -1,4 +1,4 @@
-import { Icon, spacingIncrement } from '@prepo-io/ui'
+import { Icon, spacingIncrement } from 'prepo-ui'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 

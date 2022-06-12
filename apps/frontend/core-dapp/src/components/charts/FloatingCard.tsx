@@ -1,9 +1,11 @@
 import { ReactElement, ReactNode, RefObject, forwardRef } from 'react'
 import styled, { CSSProperties } from 'styled-components'
-import { coreDappTheme, spacingIncrement } from '@prepo-io/ui'
+import { coreDappTheme, spacingIncrement } from 'prepo-ui'
 import { FormatPrice, FormatTime, DetailsProps } from './chart-types'
 import { formatChartTooltipTime } from './utils'
-import { formatUsd } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd } = numberFormatter
 
 const { Z_INDEX } = coreDappTheme
 
@@ -44,7 +46,7 @@ export const FloatingCard = forwardRef<HTMLDivElement, Props>(({ label, style, v
 export const renderFloatingCardWithChartDetails = (
   ref: RefObject<HTMLDivElement>,
   details?: DetailsProps,
-  formatPrice: FormatPrice = formatUsd,
+  formatPrice: FormatPrice = toUsd,
   formatTime: FormatTime = formatChartTooltipTime
 ): ReactElement | null => {
   if (!details) return null

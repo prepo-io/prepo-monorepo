@@ -1,6 +1,6 @@
 import { ReactElement, useMemo, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
-import { centered, media, spacingIncrement } from '@prepo-io/ui'
+import { centered, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import Dropdown from '../../components/Dropdown'
 import AreaChart from '../../components/charts/templates/AreaChart'
@@ -12,9 +12,11 @@ import useTransformedTVLData from '../../hooks/useTransformedTVLData'
 import useTransformedValuationData from '../../hooks/useTransformedValuationData'
 import useTransformedVolumeData from '../../hooks/useTransformedVolumeData'
 import HistogramChart from '../../components/charts/templates/HistogramChart'
-import { formatPrice } from '../../utils/number-utils'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import LoadingLottie from '../../components/lottie-animations/LoadingLottie'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 const ChartBox = styled.div`
   background-color: ${({ theme }): string => theme.color.marketChartBackground};
@@ -153,7 +155,7 @@ const MarketChart: React.FC = () => {
       },
       chartTooltipFormatter: {
         formatPrice: (price?: number): string =>
-          price === undefined ? 'N/A' : formatPrice(price, 99999),
+          price === undefined ? 'N/A' : significantDigits(price),
       },
     }
 

@@ -1,5 +1,5 @@
-import { Box, Button, Flex, spacingIncrement, Typography } from '@prepo-io/ui'
-import { getShortAccount } from '@prepo-io/utils'
+import { Box, Button, Flex, spacingIncrement, Typography } from 'prepo-ui'
+import { getShortAccount } from 'prepo-utils'
 import { Label } from './FromPower'
 import { Routes } from '../../../lib/routes'
 import useResponsive from '../../../hooks/useResponsive'

@@ -1,4 +1,4 @@
-import { centered, Icon, spacingIncrement } from '@prepo-io/ui'
+import { centered, Icon, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { NavigationItem } from './Navigation'
 import Menu, { MenuItem } from './Menu'

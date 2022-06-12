@@ -1,15 +1,18 @@
 import { useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { spacingIncrement, Alert, Slider, SliderValue } from '@prepo-io/ui'
+import { spacingIncrement, Alert, Slider, SliderValue } from 'prepo-ui'
 import { Direction } from './TradeStore'
 import Subtitle from '../../components/Subtitle'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { EstimateYourProfitLoss } from '../definitions'
 import { ExitProfitLoss, SliderSettings } from '../../types/market.types'
 import Percent from '../../components/Percent'
-import { formatUsd, makeAddStep, numFormatter } from '../../utils/number-utils'
+import { makeAddStep } from '../../utils/number-utils'
 import { TWO_DECIMAL_DENOMINATOR, VALUATION_DENOMINATOR } from '../../lib/constants'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { toUsd, significantDigits } = numberFormatter
 
 type Props = {
   sliderSettings: SliderSettings
@@ -61,7 +64,7 @@ const getStepWithTwoDecimals = (value: number): number =>
   makeAddStep(value) / TWO_DECIMAL_DENOMINATOR
 
 const sliderNumFormatter = (value: number): string =>
-  `$${numFormatter(value * VALUATION_DENOMINATOR, { significantDigits: 3 })}`
+  `$${significantDigits(value * VALUATION_DENOMINATOR)}`
 
 const EstimateProfitLoss: React.FC<Props> = ({
   getProfitLossOnExit,
@@ -94,7 +97,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
     return (
       <div>
         If the market resolves at {sliderNumFormatter(exit)}, your {dynamicProfitLossMessage} would
-        be ≈{formatUsd(exitProfitLoss?.expectedProfitLoss)}
+        be ≈{toUsd(exitProfitLoss?.expectedProfitLoss)}
         <ProfitLossPercent
           value={exitProfitLoss?.expectedProfitLossPercentage}
           showPlusSign

@@ -1,6 +1,6 @@
 import { Tooltip as ATooltip } from 'antd'
 import { css } from 'styled-components'
-import { centered } from '@prepo-io/ui'
+import { centered } from 'prepo-ui'
 
 export const tooltipStyles = css`
   .ant-tooltip-inner,

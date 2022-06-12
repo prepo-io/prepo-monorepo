@@ -1,0 +1,24 @@
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "prePO subgraph boilerplate",
+  "license": "ISC",
+  "scripts": {
+    "postinstall": "yarn codegen",
+    "codegen": "graph codegen --output-dir src/types/",
+    "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "0.30.4",
+    "config": "*",
+    "tsconfig": "*",
+    "typescript": "^4.7.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": "1.x"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.27.0"
+  }
+}

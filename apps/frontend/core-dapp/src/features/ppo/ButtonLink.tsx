@@ -1,4 +1,4 @@
-import { Button, ButtonColors, Icon, IconName, media, spacingIncrement } from '@prepo-io/ui'
+import { Button, ButtonColors, Icon, IconName, media, spacingIncrement } from 'prepo-ui'
 import styled, {
   css,
   DefaultTheme,
