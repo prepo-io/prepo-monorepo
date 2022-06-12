@@ -1,5 +1,5 @@
 import { NETWORKS } from 'prepo-constants'
-import { StoreConfig } from '@prepo-io/stores'
+import { StoreConfig } from 'prepo-stores'
 import { PROJECT_NAME } from './constants'
 import { SupportedContracts } from './contract.types'
 import { supportedContracts } from './supported-contracts'
