@@ -222,35 +222,33 @@ export const formatMarketHistoricalData = (
   return Object.values(mergePoolsData(longPoolData, shortPoolData)).map((data) => data)
 }
 
-const normalizePoolCommonData = ({
-  id,
-  liquidity,
-  pool,
-  token0Price,
-  volumeToken0,
-  token1Price,
-  volumeToken1,
-  sqrtPrice,
-}: Omit<PoolHourData, 'periodStartUnix'> & Omit<PoolDayData, 'date'>): Omit<
-  NormalizedPoolHistoricalData,
-  'timestamp'
-> => ({
-  id,
-  liquidity: +liquidity,
-  token0: {
-    id: pool.token0.id,
-    price: token0Price,
-    volume: volumeToken0,
-    totalValueLocked: 0,
-  },
-  token1: {
-    id: pool.token1.id,
-    price: token1Price,
-    volume: volumeToken1,
-    totalValueLocked: 0,
-  },
-  sqrtPrice: +sqrtPrice,
-})
+const normalizePoolCommonData = (
+  data: Omit<PoolHourData, 'periodStartUnix'> & Omit<PoolDayData, 'date'>
+): Omit<NormalizedPoolHistoricalData, 'timestamp'> => {
+  // for some reason, values are being trimmed, maybe last(0.15.0) mst-gql fixes it
+  const item = data.id
+    ? data
+    : (data as unknown as { $treenode: { value: typeof data } }).$treenode.value
+  const { id, liquidity, pool, token0Price, volumeToken0, token1Price, volumeToken1, sqrtPrice } =
+    item
+  return {
+    id,
+    liquidity: +liquidity,
+    token0: {
+      id: pool.token0.id,
+      price: token0Price,
+      volume: volumeToken0,
+      totalValueLocked: 0,
+    },
+    token1: {
+      id: pool.token1.id,
+      price: token1Price,
+      volume: volumeToken1,
+      totalValueLocked: 0,
+    },
+    sqrtPrice: +sqrtPrice,
+  }
+}
 
 const normalizeHourData = ({
   periodStartUnix,

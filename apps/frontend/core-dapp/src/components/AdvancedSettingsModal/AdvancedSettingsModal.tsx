@@ -11,7 +11,9 @@ import Radio from '../Radio'
 import RadioGroup from '../RadioGroup'
 import { useRootStore } from '../../context/RootStoreProvider'
 import useResponsive from '../../hooks/useResponsive'
-import { formatPercent } from '../../utils/number-utils'
+import { numberFormatter } from '../../utils/numberFormatter'
+
+const { percent } = numberFormatter
 
 const Wrapper = styled.div``
 
@@ -30,7 +32,7 @@ const TitleWrapper = styled.div`
 const MaxSlippageTitle: React.FC<MaxSlippageTitleProps> = ({ slippage = 0 }) => (
   <TitleWrapper>
     <Title>Max Slippage</Title>
-    <Title>{formatPercent(slippage)}%</Title>
+    <Title>{percent(slippage)}</Title>
   </TitleWrapper>
 )
 
