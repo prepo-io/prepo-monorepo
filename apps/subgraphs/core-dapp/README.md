@@ -18,6 +18,16 @@ Things that are implemented
 $ yarn
 ```
 
+## Using the schema
+
+The schema we build does not contain some of the top level fields like queries, inputs and Meta and etc, which makes it impossible for tools like mst-gql to generate types for us. We could use `get-graphql-schema` to generate those types once our changes are successfully reflected on our subgraph endpoints.
+
+If you're testing on a different subgraph, change the endpoint's github username and subgraph name in `gql:compile` script and run:
+
+```bash
+$ yarn run gql:compile
+```
+
 ## Testing the subgraph
 
 The most straight forward way to test the subgraph is to deploy to your own subgraph.

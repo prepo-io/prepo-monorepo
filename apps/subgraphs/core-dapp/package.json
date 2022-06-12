@@ -4,13 +4,16 @@
   "description": "prePO analytical and historical data with subgraph",
   "license": "ISC",
   "scripts": {
-    "postinstall": "yarn codegen",
+    "build": "graph build",
+    "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli",
     "codegen": "graph codegen --output-dir src/generated/types",
-    "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli"
+    "gql:compile": "get-graphql-schema https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli > src/generated/schema.gql",
+    "postinstall": "yarn codegen"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.30.4",
     "config": "*",
+    "get-graphql-schema": "^2.1.2",
     "tsconfig": "*",
     "typescript": "4.7.3"
   },
