@@ -13,7 +13,7 @@
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.30.4",
     "config": "*",
-    "get-graphql-schema": "^2.1.2",
+    "get-graphql-schema": "2.1.2",
     "tsconfig": "*",
     "typescript": "4.7.3"
   },
