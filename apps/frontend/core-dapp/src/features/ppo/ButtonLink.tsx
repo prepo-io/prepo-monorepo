@@ -1,4 +1,4 @@
-import { Button, ButtonColors, Icon, IconName, media, spacingIncrement } from 'prepo-ui'
+import { Button, ButtonColors, Flex, Icon, IconName, media, spacingIncrement } from 'prepo-ui'
 import styled, {
   css,
   DefaultTheme,
@@ -45,27 +45,12 @@ const StyledIcon = styled(Icon)<{ $customStyles?: ButtonGridStyles }>`
 `
 
 const alignRightStyles = css<ExternalIconProps>`
-  margin-right: ${({ $externalIconStyles }): string =>
+  right: ${({ $externalIconStyles }): string =>
     $externalIconStyles?.marginRight?.mobile || spacingIncrement(22)};
-  position: absolute;
-  right: 0;
-
-  ${media.desktop<ExternalIconProps>`
-    top: ${({ $emptyHref, $externalIconStyles }): string | undefined =>
-      $emptyHref && $externalIconStyles?.align === 'default' ? spacingIncrement(-8) : undefined};
-    margin-right: ${({ $externalIconStyles }): string =>
-      $externalIconStyles?.marginRight?.desktop ||
-      ($externalIconStyles?.align === 'default' ? '0' : spacingIncrement(22))};
-  `}
 `
 
 const basicExternalIconStyles = css`
-  ${alignRightStyles};
-  margin-left: ${spacingIncrement(12)};
-  ${media.desktop`
-    position: relative;
-    right: auto;
-  `}
+  right: ${spacingIncrement(-27)};
 `
 
 const ExternalIcon = styled(Icon)<ExternalIconProps>`
@@ -86,7 +71,6 @@ const TextWrapper = styled.div`
 const StyledButton = styled(Button)<{
   disabled?: boolean
   customColors?: ButtonColors
-  $externalIconPosition: 'relative' | 'absolute'
 }>`
   &&&& {
     .ant-btn:hover {
@@ -97,7 +81,7 @@ const StyledButton = styled(Button)<{
       position: absolute;
     }
     ${ExternalIcon} {
-      position: ${({ $externalIconPosition }): string => $externalIconPosition};
+      position: absolute;
     }
   }
 `
@@ -111,40 +95,39 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
   customStyles,
   externalIconStyles,
   disabled,
-}) => {
-  const position = externalIconStyles?.align === 'right' ? 'absolute' : 'relative'
-  return (
-    <StyledButton
-      $externalIconPosition={position}
-      href={href}
-      target={target}
-      customColors={customStyles}
-      type={customStyles ? undefined : 'primary'}
-      disabled={!href || disabled}
-    >
-      {iconName && Boolean(iconSize) && (
-        <StyledIcon
-          name={iconName}
-          height={`${iconSize}`}
-          width={`${iconSize}`}
-          $customStyles={customStyles}
-        />
-      )}
-      <TextWrapper>
-        {title} <span>{!href && 'Coming soon'}</span>
-      </TextWrapper>
-      {Boolean(target) && (
-        <ExternalIcon
-          $emptyHref={!href}
-          name="share"
-          $externalIconStyles={externalIconStyles}
-          height={`${externalIconStyles?.size}`}
-          width={`${externalIconStyles?.size}`}
-          color={customStyles?.label ?? 'white'}
-        />
-      )}
-    </StyledButton>
-  )
-}
+}) => (
+  <StyledButton
+    href={href}
+    target={target}
+    customColors={customStyles}
+    type={customStyles ? undefined : 'primary'}
+    disabled={!href || disabled}
+  >
+    {iconName && Boolean(iconSize) && (
+      <StyledIcon
+        name={iconName}
+        height={`${iconSize}`}
+        width={`${iconSize}`}
+        $customStyles={customStyles}
+      />
+    )}
+    <TextWrapper>
+      <Flex position={externalIconStyles?.align === 'right' ? 'static' : 'relative'}>
+        {title}
+        {Boolean(target) && (
+          <ExternalIcon
+            $emptyHref={!href}
+            name="share"
+            $externalIconStyles={externalIconStyles}
+            height={`${externalIconStyles?.size}`}
+            width={`${externalIconStyles?.size}`}
+            color={customStyles?.label ?? 'white'}
+          />
+        )}
+      </Flex>
+      <span>{!href && 'Coming soon'}</span>
+    </TextWrapper>
+  </StyledButton>
+)
 
 export default ButtonLink
