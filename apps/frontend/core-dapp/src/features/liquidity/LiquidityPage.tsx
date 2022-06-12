@@ -18,7 +18,7 @@ import LiquidityTransactionSummary from './LiquidityTransactionSummary'
 import MarketDropdown from '../../components/MarketDropdown'
 import SecondaryNavigation from '../../components/SecondaryNavigation'
 import { Market } from '../../types/market.types'
-import { makeAddStep, makeMinusStep, numFormatter } from '../../utils/number-utils'
+import { makeAddStep, makeMinusStep } from '../../utils/number-utils'
 import StepNumberInput from '../../components/StepNumberInput'
 import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput'
 import { liquidityRangeInputMockData } from '../../__mocks__/liquidity.mock'
@@ -33,6 +33,8 @@ import { markets } from '../../lib/markets'
 import { useRootStore } from '../../context/RootStoreProvider'
 import ComingSoonTooltip from '../../components/ComingSoonTooltip'
 import { numberFormatter } from '../../utils/numberFormatter'
+
+const { significantDigits } = numberFormatter
 
 type Props = {
   staticSelectedMarket: Market
@@ -248,7 +250,6 @@ const LiquidityPage: React.FC<Props> = ({ staticSelectedMarket }) => {
   const {
     uiStore: { disableMocks },
   } = useRootStore()
-  const { significantDigits } = numberFormatter
 
   const { isDesktop } = useResponsive()
 
@@ -415,7 +416,7 @@ const LiquidityPage: React.FC<Props> = ({ staticSelectedMarket }) => {
                         <StepNumberInput
                           addStep={makeAddStep(lowerRange)}
                           disabled={disableMocks}
-                          format={numFormatter}
+                          format={significantDigits}
                           max={upperRange}
                           min={minBound}
                           minusStep={makeMinusStep(lowerRange)}
@@ -436,7 +437,7 @@ const LiquidityPage: React.FC<Props> = ({ staticSelectedMarket }) => {
                         <StepNumberInput
                           addStep={makeAddStep(upperRange)}
                           disabled={disableMocks}
-                          format={numFormatter}
+                          format={significantDigits}
                           max={maxBound}
                           min={lowerRange}
                           minusStep={makeMinusStep(upperRange)}

@@ -1,7 +1,6 @@
 import { ContractCallContext } from 'ethereum-multicall'
 import { action, autorun, makeObservable, observable, onBecomeUnobserved, runInAction } from 'mobx'
 import { Contract, ContractFunction, BigNumber, UnsignedTransaction } from 'ethers'
-// import { SupportedContractName } from 'prepo-constants'
 import { getContractAddress } from 'prepo-utils'
 import { RootStore } from './RootStore'
 import { isImportantError } from './utils/error-capturer-util'
@@ -64,7 +63,7 @@ export class ContractStore<RootStoreType, SupportedContracts> {
       )
       if (address === DYNAMIC_CONTRACT_ADDRESS) return
       if (typeof address === 'undefined')
-        throw Error(`no address for ${this.contractName} on ${network}`)
+        throw Error(`no address for ${this.contractName as string} on ${network}`)
       this.address = address
       this.contract = this.factory.connect(this.address, this.root.web3Store.coreProvider)
     })
@@ -172,7 +171,8 @@ export class ContractStore<RootStoreType, SupportedContracts> {
           if (options.subscribe) {
             // Automatically get updates for this value with the multicall,
             // and set up removing the call when this call becomes unobserved
-            if (!this.address) throw Error(`contract ${this.contractName} not initialized`)
+            if (!this.address)
+              throw Error(`contract ${this.contractName as string} not initialized`)
             const call: ContractCallContext = {
               reference: this.contractName as string,
               contractAddress: this.address,
