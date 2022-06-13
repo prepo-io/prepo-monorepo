@@ -1,3 +1,8 @@
+# --------------- Top level labels ---------------
+# Add 'non-app' to any changes within root folder
+non-app:
+- '*'
+
 # Add 'frontend' to any changes within 'frontend' folder or any subfolders
 frontend:
 - apps/frontend/**/*
@@ -7,5 +12,22 @@ frontend:
 - packages/prepo-utils/**/*
 - packages/constants/**/*
 
+# Add 'smart-contracts' to any changes within 'smart-contracts' folder or any subfolders
 smart-contracts:
 - apps/smart-contracts/**/*
+
+# --------------- Next level labels ---------------
+core-dapp:
+- apps/frontend/core-dapp/**/*
+
+docs:
+- apps/frontend/docs/**/*
+
+react-boilerplate:
+- apps/frontend/react-boilerplate/**/*
+
+simulator:
+- apps/frontend/simulator/**/*
+
+website:
+- apps/frontend/website/**/*
