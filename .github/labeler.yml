@@ -31,3 +31,6 @@ simulator:
 
 website:
 - apps/frontend/website/**/*
+
+blog:
+- apps/frontend/blog/**/*
