@@ -53,6 +53,7 @@ const ResponsiveData = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: ${spacingIncrement(120)};
   `}
 `
 
@@ -142,6 +143,12 @@ export const PositionItemSkeleton: React.FC = () => (
           <Skeleton height={20} width={60} />
         </ResponsiveData>
       </div>
+      <div>
+        <ResponsiveData>
+          <Skeleton height={20} width={80} />
+          <Skeleton height={20} width={60} />
+        </ResponsiveData>
+      </div>
       <Skeleton height={54} width={152} />
     </FlexWrapper>
     <Body>
@@ -163,6 +170,12 @@ const PositionItem: React.FC<Props> = ({ position }) => {
   const { market, position: direction, data } = position
 
   const tableData: TableData[] = [
+    {
+      label: 'PNL',
+      amount: data.pnl,
+      usd: true,
+      toolTip: 'Profit and loss',
+    },
     {
       label: 'Total Value',
       amount: data.totalValue,
