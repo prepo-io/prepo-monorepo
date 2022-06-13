@@ -3,6 +3,7 @@ import { Dropdown, Menu } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { useState } from 'react'
 import { useRootStore } from '../context/RootStoreProvider'
 import useResponsive from '../hooks/useResponsive'
 import { PREPO_DISCORD, PREPO_TWITTER, PREPO_WEBSITE } from '../lib/constants'
@@ -109,13 +110,23 @@ const renderItem = (item: typeof items[number], uiStore: UiStore): ItemType => {
 const SettingsMenu: React.FC = () => {
   const { isDesktop } = useResponsive()
   const { uiStore } = useRootStore()
+  const [visible, setVisible] = useState(false)
+  const handleVisibleChange = (flag: boolean): void => setVisible(flag)
+
   const size = isDesktop ? '32px' : '24px'
 
   return (
     <Flex alignSelf="stretch" width={38}>
       <StyledDropdown
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
         trigger={['click']}
-        overlay={<StyledMenu items={items.map((item) => renderItem(item, uiStore))} />}
+        overlay={
+          <StyledMenu
+            items={items.map((item) => renderItem(item, uiStore))}
+            onClick={(): void => setVisible(true)}
+          />
+        }
       >
         <button type="button">
           <Icon name="dots" width={size} height={size} color="neutral1" />
