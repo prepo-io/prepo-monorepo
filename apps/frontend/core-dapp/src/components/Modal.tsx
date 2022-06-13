@@ -66,7 +66,7 @@ export const modalStylesCss = css<Props>`
       font-weight: ${({ theme }): number => theme.fontWeight.medium};
       text-align: ${({ titleAlign }): string | undefined => titleAlign};
       ${media.desktop`
-        font-size: ${({ theme }): string => theme.fontSize.lg};
+        font-size: ${({ theme }): string => theme.fontSize.md};
       `}
     }
   }
