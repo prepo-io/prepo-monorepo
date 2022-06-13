@@ -5050,17 +5050,6 @@
   resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.17.0/3d95b801df2bf713c602e039a8a69f1e920320c6eaf85a467d5411182fcf1378#431b8996df8298c0dfec68ad22063c7ea3ab9500"
   integrity sha512-eQbrlvnG6W457i+IdgYbrrLbTNQQXB86sMQbht+L5kCAmFaIjzUgiWKqLTZ4pDyYzoD7+XZgJwA58dl7w2cp9Q==
 
-"@prepo-io/stores@0.23.0":
-  version "0.23.0"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.23.0/f008f22f4459afcdecb6012b9e508174ec0cd3658ebd011ed469c56a300d444a#941573753529057404c79a6a834614c006c1b455"
-  integrity sha512-aIJar7Ny1VAU60iVZ0r/RkTGT8oBPVw6Dmey/qUzBSrKymemu0QSoXVuWBQUVQQRm68oRfTFzvwl9LJO831m+w==
-  dependencies:
-    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
-    graphql "16.3.0"
-    graphql-request "4.0.0"
-    mobx-state-tree "5.1.3"
-    mst-gql "0.14.1"
-
 "@prepo-io/stores@0.25.5":
   version "0.25.5"
   resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.25.5/cefa58ca7359e50ca9a5d37cc04e6b8428605ab36c8469b3b1ef84cb78503100#bec3a4d6561ac1287ebf31a46544e37f9f8206f1"

@@ -1,5 +1,5 @@
 import { makeObservable, observable, runInAction } from 'mobx'
-import { ContractStore, Factory } from '@prepo-io/stores'
+import { ContractStore, Factory } from 'prepo-stores'
 import { RootStore } from './RootStore'
 import { ContractReturn } from './utils/class-utils'
 import {

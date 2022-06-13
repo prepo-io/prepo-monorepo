@@ -1,6 +1,6 @@
 import { makeObservable, observable, runInAction, computed, action } from 'mobx'
 import { BigNumber, utils } from 'ethers'
-import { ContractReturn, ContractStore, Factory } from '@prepo-io/stores'
+import { ContractReturn, ContractStore, Factory } from 'prepo-stores'
 import { RootStore } from '../RootStore'
 import { SupportedContracts, SupportedContractsNames } from '../../lib/contract.types'
 import { Erc20Abi, Erc20Abi__factory } from '../../../generated/typechain'
