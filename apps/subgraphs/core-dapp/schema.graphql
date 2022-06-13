@@ -1,0 +1,84 @@
+type CollateralToken @entity {
+  # address of collateral token contract
+  id: ID!
+  # name of collateral token
+  name: String!
+  # symbol of collateral token
+  symbol: String!
+  # decimals of collateral token
+  decimals: BigInt!
+}
+
+type Market @entity {
+  # market contract address
+  id: ID!
+  # long token
+  longToken: Token!
+  # short token
+  shortToken: Token!
+  # floor long price
+  floorLongPrice: BigInt!
+  # ceiling long price
+  ceilingLongPrice: BigInt!
+  # floor valuation
+  floorValuation: BigInt!
+  # ceiling valuation
+  ceilingValuation: BigInt!
+  # minting fee
+  mintingFee: BigInt!
+  # redemption fee
+  redemptionFee: BigInt!
+  # market expiry time
+  expiryTime: BigInt!
+  # when market was created
+  createdAtTimestamp: BigInt!
+  # at which block was market created
+  createdAtBlockNumber: BigInt!
+}
+
+type Pool @entity {
+  # pool contract address
+  id: ID!
+  # address of token0
+  token0: String!
+  # address of token1
+  token1: String!
+  # long/short token of this pool
+  token: Token!
+  # token0 per token1
+  token0Price: BigDecimal!
+  # token1 per token0
+  token1Price: BigDecimal!
+  # The sqrt(price) of the pool after the swap, as a Q64.96
+  sqrtPriceX96: BigInt!
+  # pool creation time
+  createdAtTimestamp: BigInt!
+  # at which block was pool created
+  createdAtBlockNumber: BigInt!
+}
+
+type Position @entity {
+  # concat of user address and token address
+  id: ID!
+  # average cost per token - for PNL calculation
+  costBasis: BigDecimal!
+  # address who owned this position
+  owner: String!
+  # token of whic this position is tracking
+  token: Token!
+}
+
+type Token @entity {
+  # token address
+  id: ID!
+  # the market this token is traded for
+  market: Market!
+  # all positions in this token
+  positions: [Position!]! @derivedFrom(field: "token")
+  # decimals of token
+  decimals: BigInt!
+  # default pool preCT/currentToken as trading pair
+  defaultPool: Pool @derivedFrom(field: "token")
+  # price in USD
+  priceUSD: BigDecimal!
+}

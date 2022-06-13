@@ -6,6 +6,7 @@
     "packages": [
       "apps/frontend/*",
       "apps/smart-contracts/*",
+      "apps/subgraphs/*",
       "packages/*"
     ],
     "nohoist": [
