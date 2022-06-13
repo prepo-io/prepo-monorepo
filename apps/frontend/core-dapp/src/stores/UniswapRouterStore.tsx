@@ -1,4 +1,4 @@
-import { ContractStore, Factory } from '@prepo-io/stores'
+import { ContractStore, Factory } from 'prepo-stores'
 import { makeError } from 'prepo-utils'
 import { makeObservable, observable } from 'mobx'
 import { RootStore } from './RootStore'

@@ -5045,37 +5045,6 @@
     pocket-js-core "0.0.3"
     web3-provider-engine "16.0.1"
 
-"@prepo-io/constants@0.17.0":
-  version "0.17.0"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/constants/0.17.0/3d95b801df2bf713c602e039a8a69f1e920320c6eaf85a467d5411182fcf1378#431b8996df8298c0dfec68ad22063c7ea3ab9500"
-  integrity sha512-eQbrlvnG6W457i+IdgYbrrLbTNQQXB86sMQbht+L5kCAmFaIjzUgiWKqLTZ4pDyYzoD7+XZgJwA58dl7w2cp9Q==
-
-"@prepo-io/stores@0.25.5":
-  version "0.25.5"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/stores/0.25.5/cefa58ca7359e50ca9a5d37cc04e6b8428605ab36c8469b3b1ef84cb78503100#bec3a4d6561ac1287ebf31a46544e37f9f8206f1"
-  integrity sha512-Fua5OC1mbxvYMl6rNJg/izxC1pztcaMd5LP8ECitqK/U7a9H/DxcAhUhT0w2VJOJaftahajgsPGqxcNxPDtkYQ==
-  dependencies:
-    ethereum-multicall "https://github.com/prepo-io/ethereum-multicall#1.0.1-prepo"
-    graphql "16.3.0"
-    graphql-request "4.0.0"
-    mobx-state-tree "5.1.3"
-    mst-gql "0.14.1"
-
-"@prepo-io/ui@0.59.1":
-  version "0.59.1"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/ui/0.59.1/4aa96f25a1e63f735dc8a0e2e54c96c8ff2df489b19ff6f7fccfabac9642b99f#903ba18294e6e8a3b80f9552a163a6d3fbe5fbc9"
-  integrity sha512-V/OutRNf8Jb8fpjwIRLYAXLDW7aN9iCLk/S7cSgXN4Fu6QrihvVd6rU4LA1bLsIlJQrcmQJgzGFA0A8P8ECk/Q==
-  dependencies:
-    bnc-onboard "1.34.1"
-    ethers "5.5.2"
-    react-loading-skeleton "3.0.3"
-    react-slider "1.3.1"
-
-"@prepo-io/utils@0.10.6":
-  version "0.10.6"
-  resolved "https://npm.pkg.github.com/download/@prepo-io/utils/0.10.6/2b30f0286796830388eb1955dca7756876528ba6486a92a20a558d6390e6b11f#5e5eb2eab98b080e5b737e2bf8c32b9f517ddc33"
-  integrity sha512-Bi9VPEWW5IMGnWC0W9ib5nMyB87PvF7QzdfVIzRIXXw+QdrWDmb96QYq4dSzI1zOrugq5W7Y7uEthcVc4uAuaQ==
-
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -7236,6 +7205,11 @@
   version "4.2.15"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.15.tgz#b7a6d263c2cecf44b6de9a051cf496249b154553"
   integrity sha512-rYff6FI+ZTKAPkJUoyz7Udq3GaoDZnxYDEvdEdFZASiA7PoErltHezDishqQiSDWrGxvxmplH304jyzQmjp0AQ==
+
+"@types/clone-deep@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/clone-deep/-/clone-deep-4.0.1.tgz#7c488443ab9f571cd343d774551b78e9264ea990"
+  integrity sha512-bdkCSkyVHsgl3Goe1y16T9k6JuQx7SiDREkq728QjKmTZkGJZuS8R3gGcnGzVuGBP0mssKrzM/GlMOQxtip9cg==
 
 "@types/color-convert@^2.0.0":
   version "2.0.0"

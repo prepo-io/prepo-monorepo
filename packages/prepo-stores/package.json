@@ -4,7 +4,9 @@
   "description": "prePO Stores",
   "source": "src/index.ts",
   "main": "src/index.ts",
-  "files": ["src/index.ts"],
+  "files": [
+    "src/index.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "build:watch": "yarn build --watch"
@@ -26,9 +28,10 @@
   "devDependencies": {
     "@babel/core": "7.16.5",
     "@babel/preset-env": "7.16.5",
+    "@types/clone-deep": "^4.0.1",
     "babel-loader": "8.2.3",
     "concurrently": "6.5.1",
-    "tsconfig": "*",
-    "config": "*"
+    "config": "*",
+    "tsconfig": "*"
   }
 }

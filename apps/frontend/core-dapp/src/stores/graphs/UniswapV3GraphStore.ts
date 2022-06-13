@@ -1,5 +1,5 @@
 import { SEC_IN_MS } from 'prepo-constants'
-import { GraphStore, OnNewDataOptions, OnNewDataOutput } from '@prepo-io/stores'
+import { GraphStore, OnNewDataOptions, OnNewDataOutput } from 'prepo-stores'
 import { makeObservable, observable } from 'mobx'
 import {
   latestPoolsDayDatasQueryString,
@@ -56,7 +56,7 @@ export class UniswapV3GraphStore extends GraphStore<RootStore, SupportedContract
   }
 
   poolsQuery(longTokenPoolId: string, shortTokenPoolId: string): PoolsData | undefined {
-    return this.query<PoolsData>(poolsQueryString, { longTokenPoolId, shortTokenPoolId }).data
+    return this.query<PoolsData>(poolsQueryString, { longTokenPoolId, shortTokenPoolId })?.data
   }
 
   historicalDailyData(

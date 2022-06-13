@@ -206,6 +206,8 @@ export class ContractStore<RootStoreType, SupportedContracts> {
           if (!this.called[methodName][paramStr]) {
             // instantly cache a function before it's called to avoid redundant call
             this.called[methodName][paramStr] = true
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             this.contract.functions[methodName](...params)
               .then(onFirstSet)
               .catch((error) => {

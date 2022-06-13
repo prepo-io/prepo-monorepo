@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed, makeObservable, observable } from 'mobx'
 import { BigNumber, ethers } from 'ethers'
-import { ContractReturn, ContractStore, Factory as prepoFactory } from '@prepo-io/stores'
+import { ContractReturn, ContractStore, Factory as prepoFactory } from 'prepo-stores'
 import { RootStore } from '../RootStore'
 import { SupportedContracts } from '../../lib/contract.types'
 import { SupportedMarketPools } from '../../lib/markets-pool-contracts'

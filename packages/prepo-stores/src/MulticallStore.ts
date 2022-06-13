@@ -49,7 +49,7 @@ export class MulticallStore {
           .call(cloneDeep(this.contractCallContexts))
           .then((results) => {
             Object.values(results).forEach((res) => {
-              Object.values(res).forEach((val: ContractCallReturnContext) => {
+              Object.values<ContractCallReturnContext>(res).forEach((val) => {
                 const { context } = val.originalContractCallContext
                 const { contractStore } = context ?? {}
                 runInAction(() => {

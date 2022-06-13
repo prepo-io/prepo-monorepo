@@ -81,7 +81,7 @@ export class Web3Store {
   }
 
   get supportedNetworkIds(): { [key: number]: true } {
-    const supportedIds = {}
+    const supportedIds: { [key: number]: true } = {}
     this.root.config.supportedNetworks.forEach(({ chainId }) => {
       supportedIds[chainId] = true
     })

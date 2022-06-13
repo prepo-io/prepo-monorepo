@@ -41,7 +41,8 @@ export type TransactionReceipt = {
 }
 
 // this will be called to format, capture and return error within stores
-export type CaptureError = (error: Error) => Error
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CaptureError = (error: any) => Error
 
 // this refers to the capture function passed from application level
 export type ErrorCapturer = (error: Error) => unknown

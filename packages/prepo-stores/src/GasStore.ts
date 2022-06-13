@@ -63,7 +63,7 @@ const getGasPrices = async (
 }
 export class GasStore {
   cachedGasPrice: Omit<GasPriceSuggestions, 'Custom'>
-  customGasInput: number = undefined
+  customGasInput?: number = undefined
   gasSpeed = GasSpeed.FAST
   root: RootStore<unknown>
   constructor(root: RootStore<unknown>) {
@@ -102,14 +102,19 @@ export class GasStore {
         // eslint-disable-next-line no-await-in-loop
         const curGasPrice = await getGasPrices(gasPriceChecker)
         if (curGasPrice !== undefined) {
-          Object.keys(curGasPrice).forEach((gasSpeed: GasSpeed) => {
+          Object.keys(curGasPrice).forEach((key) => {
+            const gasSpeed = key as GasSpeed
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             gasPriceMap[gasSpeed] = curGasPrice[gasSpeed].add(gasPriceMap[gasSpeed] ?? 0)
           })
           successGasPriceCount += 1
         }
       }
       runInAction(() => {
-        Object.keys(gasPriceMap).forEach((gasSpeed: GasSpeed) => {
+        Object.keys(gasPriceMap).forEach((gasSpeed) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           this.cachedGasPrice[gasSpeed] = gasPriceMap[gasSpeed].div(successGasPriceCount)
         })
       })
@@ -141,10 +146,13 @@ export class GasStore {
   get gasPriceOptionsNumber(): Required<GasPriceSuggestionsInNumber> {
     const options: GasPriceSuggestionsInNumber = {}
     Object.entries(this.gasPriceOptions).forEach(([speed, price]) => {
-      options[speed] = +truncateAmountString(formatUnits(price, 'gwei'), {
-        maxDecimalDigits: 0,
-        hideCommas: true,
-      })
+      options[speed as keyof GasPriceSuggestionsInNumber] = +truncateAmountString(
+        formatUnits(price, 'gwei'),
+        {
+          maxDecimalDigits: 0,
+          hideCommas: true,
+        }
+      )
     })
     return options as Required<GasPriceSuggestionsInNumber>
   }

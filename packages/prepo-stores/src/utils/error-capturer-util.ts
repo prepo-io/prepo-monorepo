@@ -12,11 +12,10 @@ const irrelevantErrors = [
 export const isImportantError = (error: any): boolean => !irrelevantErrors.includes(error.reason)
 
 export const makeErrorCapturer =
-  (errorCapturer: ErrorCapturer): CaptureError =>
+  (errorCapturer?: ErrorCapturer): CaptureError =>
   (err): Error => {
-    let error
+    const error = makeError(err)
     runInAction(() => {
-      error = makeError(err)
       // TODO: format/serialize store
       if (errorCapturer) {
         errorCapturer(error)
