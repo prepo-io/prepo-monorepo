@@ -49,8 +49,7 @@ export class MulticallStore {
           .call(cloneDeep(this.contractCallContexts))
           .then((results) => {
             Object.values(results).forEach((res) => {
-              Object.values(res).forEach((value) => {
-                const val = value as ContractCallReturnContext
+              Object.values<ContractCallReturnContext>(res).forEach((val) => {
                 const { context } = val.originalContractCallContext
                 const { contractStore } = context ?? {}
                 runInAction(() => {
@@ -75,10 +74,10 @@ export class MulticallStore {
           })
           // errors in here won't get caught by try catch
           .catch((error) => {
-            if (isImportantError(error)) throw this.root.captureError(error as Error)
+            if (isImportantError(error)) throw this.root.captureError(error)
           })
       } catch (error) {
-        if (isImportantError(error)) throw this.root.captureError(error as Error)
+        if (isImportantError(error)) throw this.root.captureError(error)
       }
     })
   }

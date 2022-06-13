@@ -109,7 +109,7 @@ export class ContractStore<RootStoreType, SupportedContracts> {
       // Wait for tx to resolve with the coreProvider (signer can be seconds slower than coreProvider)
       return { hash, wait: (): Promise<TransactionReceipt> => this.root.web3Store.wait(hash) }
     } catch (error) {
-      throw this.root.captureError(error as Error)
+      throw this.root.captureError(error)
     }
   }
 
@@ -211,14 +211,14 @@ export class ContractStore<RootStoreType, SupportedContracts> {
             this.contract.functions[methodName](...params)
               .then(onFirstSet)
               .catch((error) => {
-                if (isImportantError(error)) throw this.root.captureError(error as Error)
+                if (isImportantError(error)) throw this.root.captureError(error)
               })
           }
         })
       }
       return undefined
     } catch (error) {
-      throw this.root.captureError(error as Error)
+      throw this.root.captureError(error)
     }
   }
 }

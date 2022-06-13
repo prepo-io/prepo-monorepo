@@ -112,8 +112,7 @@ export class GasStore {
         }
       }
       runInAction(() => {
-        Object.keys(gasPriceMap).forEach((key) => {
-          const gasSpeed = key as GasPriceSuggestionsInNumber
+        Object.keys(gasPriceMap).forEach((gasSpeed) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           this.cachedGasPrice[gasSpeed] = gasPriceMap[gasSpeed].div(successGasPriceCount)

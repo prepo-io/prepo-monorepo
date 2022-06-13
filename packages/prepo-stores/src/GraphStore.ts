@@ -126,8 +126,8 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       }
 
       runInAction(() => {
+        if (!this.graph) return
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         const query = this.graph.query<TData>(gqlQuery, variables, options)
         this.storage[queryString][varString] = {
           refetchInterval,
@@ -137,7 +137,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       })
       return this.storage[queryString][varString].query as Query<TData>
     } catch (error) {
-      throw this.root.captureError(error as Error)
+      throw this.root.captureError(error)
     }
   }
 
@@ -194,7 +194,7 @@ export class GraphStore<RootStoreType, SupportedContracts> {
       return undefined
     } catch (error) {
       return {
-        error: this.root.captureError(error as Error),
+        error: this.root.captureError(error),
       }
     }
   }
