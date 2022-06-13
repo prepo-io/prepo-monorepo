@@ -1,0 +1,11 @@
+# Add 'frontend' to any changes within 'frontend' folder or any subfolders
+frontend:
+- apps/frontend/**/*
+- apps/subgraph/**/*
+- packages/prepo-sdk/**/*
+- packages/prepo-ui/**/*
+- packages/prepo-utils/**/*
+- packages/constants/**/*
+
+smart-contracts:
+- apps/smart-contracts/**/*
