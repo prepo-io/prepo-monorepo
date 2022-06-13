@@ -1,0 +1,10 @@
+{
+  "development": {
+    "apiUrl": "https://prepo.ghost.io",
+    "contentApiKey": "45c1e71c740473ec08b5b6d5af"
+  },
+  "production": {
+    "apiUrl": "https://prepo.ghost.io",
+    "contentApiKey": "45c1e71c740473ec08b5b6d5af"
+  }
+}
