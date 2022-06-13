@@ -1,4 +1,5 @@
 import { Button, ButtonColors, Flex, Icon, IconName, media, spacingIncrement } from 'prepo-ui'
+import { useMemo } from 'react'
 import styled, {
   css,
   DefaultTheme,
@@ -95,39 +96,47 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
   customStyles,
   externalIconStyles,
   disabled,
-}) => (
-  <StyledButton
-    href={href}
-    target={target}
-    customColors={customStyles}
-    type={customStyles ? undefined : 'primary'}
-    disabled={!href || disabled}
-  >
-    {iconName && Boolean(iconSize) && (
-      <StyledIcon
-        name={iconName}
-        height={`${iconSize}`}
-        width={`${iconSize}`}
-        $customStyles={customStyles}
+}) => {
+  const isOnRightSide = externalIconStyles?.align === 'right'
+  const externalIcon = useMemo(
+    () => (
+      <ExternalIcon
+        $emptyHref={!href}
+        name="share"
+        $externalIconStyles={externalIconStyles}
+        height={`${externalIconStyles?.size}`}
+        width={`${externalIconStyles?.size}`}
+        color={customStyles?.label ?? 'white'}
       />
-    )}
-    <TextWrapper>
-      <Flex position={externalIconStyles?.align === 'right' ? 'static' : 'relative'}>
-        {title}
-        {Boolean(target) && (
-          <ExternalIcon
-            $emptyHref={!href}
-            name="share"
-            $externalIconStyles={externalIconStyles}
-            height={`${externalIconStyles?.size}`}
-            width={`${externalIconStyles?.size}`}
-            color={customStyles?.label ?? 'white'}
-          />
-        )}
-      </Flex>
-      <span>{!href && 'Coming soon'}</span>
-    </TextWrapper>
-  </StyledButton>
-)
+    ),
+    [customStyles?.label, externalIconStyles, href]
+  )
+  return (
+    <StyledButton
+      href={href}
+      target={target}
+      customColors={customStyles}
+      type={customStyles ? undefined : 'primary'}
+      disabled={!href || disabled}
+    >
+      {iconName && Boolean(iconSize) && (
+        <StyledIcon
+          name={iconName}
+          height={`${iconSize}`}
+          width={`${iconSize}`}
+          $customStyles={customStyles}
+        />
+      )}
+      <TextWrapper>
+        <Flex position="relative">
+          {title}
+          {!isOnRightSide && Boolean(target) && externalIcon}
+        </Flex>
+        <span>{!href && 'Coming soon'}</span>
+      </TextWrapper>
+      {isOnRightSide && Boolean(target) && externalIcon}
+    </StyledButton>
+  )
+}
 
 export default ButtonLink
