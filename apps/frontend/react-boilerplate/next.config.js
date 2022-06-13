@@ -4,7 +4,7 @@
 const root = process.cwd()
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
-const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils'])
+const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils', 'prepo-stores'])
 
 const nextConfig = {
   experimental: {

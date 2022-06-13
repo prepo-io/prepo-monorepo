@@ -4,7 +4,7 @@
 const root = process.cwd()
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
-const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils', 'prepo-ui'])
+const withTM = require('next-transpile-modules')(['prepo-constants', 'prepo-utils', 'prepo-ui', 'prepo-stores'])
 
 const nextConfig = {
   experimental: { esmExternals: 'loose' },

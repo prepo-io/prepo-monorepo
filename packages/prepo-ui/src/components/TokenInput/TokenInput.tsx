@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { truncateAmountString, validateNumber } from '@prepo-io/utils'
+import { truncateAmountString, validateNumber } from 'prepo-utils'
 import Skeleton from 'react-loading-skeleton'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'

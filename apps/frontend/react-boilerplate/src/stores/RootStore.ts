@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import { RootStore as PRootStore, LocalStorageStore } from '@prepo-io/stores'
+import { RootStore as PRootStore, LocalStorageStore } from 'prepo-stores'
 import { UiStore } from './UiStore'
 import { UniswapV2RouterContractStore } from './UniswapV2RouterContractStore'
 import { Erc20Store } from './entities/Erc20.entity'
