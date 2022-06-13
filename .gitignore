@@ -93,16 +93,7 @@ cache
 apps/subgraphs/**/src/types
 
 # --------- prepo-constants ---------
-packages/constants/lib/**
-
-# --------- prepo-utils ---------
-packages/prepo-utils/lib/**
-
-# --------- prepo-ui ---------
-packages/prepo-ui/lib/**
-
-# --------- prepo-ui ---------
-packages/prepo-stores/lib/**
+packages/**/lib
 
 ## Ignores deployments/localhost across all the sub-folders
 **/deployments/localhost
