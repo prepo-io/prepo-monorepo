@@ -1,4 +1,4 @@
-import { Icon, spacingIncrement } from 'prepo-ui'
+import { Icon, media, spacingIncrement } from 'prepo-ui'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -30,8 +30,11 @@ const TitleWrapper = styled.div`
 
 export const Title = styled.div`
   color: ${({ theme }): string => theme.color.secondary};
-  font-size: ${({ theme }): string => theme.fontSize.base};
+  font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.medium};
+  ${media.desktop`
+    font-size: ${({ theme }): string => theme.fontSize.md};
+  `}
 `
 
 const CollapsibleItem: React.FC<Props> = ({ title, description, onChange }) => {
