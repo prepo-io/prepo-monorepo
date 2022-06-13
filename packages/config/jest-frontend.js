@@ -1,14 +1,11 @@
 module.exports = {
   ...require('./jest-common'),
   preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  testEnvironment: 'node',
+  testPathIgnorePatterns: ['/node_modules/'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   collectCoverageFrom: ['**/src/**/*.{js,ts,jsx,tsx}'],
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
-  transform: {
-    '^.+\\.tsx?$': 'esbuild-jest',
-    '^.+\\.jsx?$': 'esbuild-jest',
-  },
   coveragePathIgnorePatterns: [],
   coverageThreshold: {
     global: {
