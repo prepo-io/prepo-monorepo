@@ -14,7 +14,7 @@ const {
 } = mockData
 
 // TODO: will need to deep compare the objects in future
-describe('@prepo-io/utils', () => {
+describe('prepo-utils', () => {
   it('tests getShortAccount function', () => {
     const shorterAddress = getShortAccount(ethAddress)
     expect(shorterAddress).toEqual(ethAddressShort)
