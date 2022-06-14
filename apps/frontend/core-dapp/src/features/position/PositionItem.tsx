@@ -14,7 +14,7 @@ const { toUsd } = numberFormatter
 type Props = { position: Required<Position> }
 
 type TableData = {
-  amount: number
+  amount?: number
   label: string
   percent?: number
   toolTip?: string
@@ -199,7 +199,11 @@ const PositionItem: React.FC<Props> = ({ position }) => {
           <ResponsiveData key={label}>
             <StyledSubtitle tooltip={toolTip}>{label}</StyledSubtitle>
             <ResponsiveDataValue>
-              <p>{toUsd(amount)}&nbsp;</p>
+              {amount === undefined ? (
+                <Skeleton height={20} width={60} />
+              ) : (
+                <p>{toUsd(amount)}&nbsp;</p>
+              )}
               {percent !== undefined && (
                 <Percent
                   showPlusSign

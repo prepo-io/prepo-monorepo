@@ -12,9 +12,9 @@ export type Position = {
   market: MarketEntity
   position: PositionType
   data?: {
-    costBasis: number
+    costBasis?: number
     price: number
-    pnl: number
+    pnl?: number
     token: Erc20Store
     tokenBalance: number
     totalValue: number
@@ -52,7 +52,7 @@ export class PortfolioStore {
     if (normalizedTotalValue === 0) return undefined
 
     // pnl accounting
-    let costBasis = tokenPrice
+    let costBasis
     if (this.signerCostBasis) {
       const foundPosition = this.signerCostBasis.find(
         ({ token: { id } }) => id === token.address?.toLowerCase()
@@ -62,7 +62,7 @@ export class PortfolioStore {
       }
     }
 
-    const pnl = tokenBalance * (tokenPrice - costBasis)
+    const pnl = costBasis === undefined ? undefined : tokenBalance * (tokenPrice - costBasis)
     const returnValue = {
       data: {
         costBasis,
