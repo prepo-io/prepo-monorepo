@@ -88,4 +88,10 @@ type Transaction @entity {
   id: ID!
   # value of transaction in USD
   amountUSD: BigDecimal!
+  # when transaction was made
+  createdAtTimestamp: BigInt!
+  # type of event (e.g. Deposit, Withdraw, Open, Short)
+  event: String!
+  # address of token
+  tokenAddress: String!
 }
