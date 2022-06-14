@@ -42,16 +42,16 @@ export class PortfolioStore {
     const tokenPrice = market[`${direction}TokenPrice`]
     const defaultValue = { market, position: direction }
 
-    // loading
-    if (!token || tokenBalance === undefined || tokenPrice === undefined) return defaultValue
-    // no position
-    if (tokenBalance === 0) return undefined
-    // has position and calculate total value of user's position
+    const loading = !token || tokenBalance === undefined || tokenPrice === undefined
+    if (loading) return defaultValue
+
+    const noPosition = tokenBalance === 0
+    if (noPosition) return undefined
+
     const totalValue = tokenBalance * tokenPrice
     const normalizedTotalValue = normalizeTotalValue(totalValue)
     if (normalizedTotalValue === 0) return undefined
 
-    // pnl accounting
     let costBasis
     if (this.signerCostBasis) {
       const foundPosition = this.signerCostBasis.find(
