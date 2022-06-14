@@ -3,7 +3,7 @@ import styled, { DefaultTheme } from 'styled-components'
 import { media } from 'prepo-ui'
 import { numberFormatter } from '../utils/numberFormatter'
 
-const { percent } = numberFormatter
+const { percent, rawPercent } = numberFormatter
 
 type StylesProps = {
   fontSize?: keyof DefaultTheme['fontSize']
@@ -49,7 +49,7 @@ const Percent: React.FC<Props> = ({
   const [percentageValue, setPercentageValue] = useState<string | undefined>(
     percent(value, percentagePrecision)
   )
-  const rawPercentValue = percent(value, percentagePrecision)
+  const rawPercentValue = rawPercent(value, percentagePrecision)
 
   useEffect(() => {
     if (format) {
