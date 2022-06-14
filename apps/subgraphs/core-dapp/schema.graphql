@@ -82,3 +82,10 @@ type Token @entity {
   # price in USD
   priceUSD: BigDecimal!
 }
+
+type Transaction @entity {
+  # transaction ahsh
+  id: ID!
+  # value of transaction in USD
+  amountUSD: BigDecimal!
+}
