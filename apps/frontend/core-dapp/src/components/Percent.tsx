@@ -50,15 +50,16 @@ const Percent: React.FC<Props> = ({
     percent(value, percentagePrecision)
   )
   const rawPercentValue = rawPercent(value, percentagePrecision)
+  const percentValue = percent(value, percentagePrecision)
 
   useEffect(() => {
     if (format) {
       const overrideFormat = format(
-        showPlusSign && value > 0 ? `+${rawPercentValue}` : `${rawPercentValue}`
+        showPlusSign && value > 0 ? `+${percentValue}` : `${percentValue}`
       )
       setPercentageValue(overrideFormat)
     }
-  }, [value, format, rawPercentValue, showPlusSign])
+  }, [value, format, percentValue, showPlusSign])
 
   if (rawPercentValue === undefined) {
     return null
