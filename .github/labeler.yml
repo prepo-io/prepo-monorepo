@@ -10,8 +10,8 @@ frontend:
 - packages/prepo-sdk/**/*
 - packages/prepo-ui/**/*
 - packages/prepo-utils/**/*
-- packages/constants/**/*
 - packages/prepo-stores/**/*
+- packages/prepo-constants/**/*
 
 # Add 'smart-contracts' to any changes within 'smart-contracts' folder or any subfolders
 smart-contracts:
