@@ -1,5 +1,5 @@
 import { makeObservable, observable } from 'mobx'
-import { GraphStore } from '@prepo-io/stores'
+import { GraphStore } from 'prepo-stores'
 import { userPositionsQueryString } from './queries/core.queries'
 import { SupportedContracts } from '../../lib/contract.types'
 import { RootStore } from '../RootStore'
@@ -13,5 +13,6 @@ export class CoreGraphStore extends GraphStore<RootStore, SupportedContracts> {
   }
 
   positionsCostBasis = (address: string): PositionCostBasis | undefined =>
-    this.query<PositionCostBasis>(userPositionsQueryString, { address: address.toLowerCase() }).data
+    this.query<PositionCostBasis>(userPositionsQueryString, { address: address.toLowerCase() })
+      ?.data
 }
