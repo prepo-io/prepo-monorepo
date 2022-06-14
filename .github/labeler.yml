@@ -6,11 +6,12 @@ non-app:
 # Add 'frontend' to any changes within 'frontend' folder or any subfolders
 frontend:
 - apps/frontend/**/*
-- apps/subgraph/**/*
+- apps/subgraphs/**/*
 - packages/prepo-sdk/**/*
 - packages/prepo-ui/**/*
 - packages/prepo-utils/**/*
 - packages/constants/**/*
+- packages/prepo-stores/**/*
 
 # Add 'smart-contracts' to any changes within 'smart-contracts' folder or any subfolders
 smart-contracts:
@@ -19,12 +20,15 @@ smart-contracts:
 # --------------- Next level labels ---------------
 core-dapp:
 - apps/frontend/core-dapp/**/*
+- apps/smart-contracts/core/**/*
+- apps/subgraphs/core-dapp/**/*
 
 docs:
 - apps/frontend/docs/**/*
 
-react-boilerplate:
+boilerplate:
 - apps/frontend/react-boilerplate/**/*
+- apps/subgraphs/boilerplate/**/*
 
 simulator:
 - apps/frontend/simulator/**/*
