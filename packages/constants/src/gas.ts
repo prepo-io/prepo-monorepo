@@ -1,18 +1,16 @@
 import { BigNumber } from 'ethers'
 
 export enum GasSpeed {
-  AVERAGE = 'Average',
   CUSTOM = 'Custom',
   FAST = 'Fast',
-  Slow = 'Slow',
+  VERYFAST = 'Very Fast',
 }
 
 export type GasPriceSuggestions = {
-  [GasSpeed.AVERAGE]?: BigNumber
+  [GasSpeed.VERYFAST]?: BigNumber
   // default to falbackGasPrice, this is also the value for custom gas price, which can be changed by user
   [GasSpeed.CUSTOM]?: BigNumber
   [GasSpeed.FAST]?: BigNumber
-  [GasSpeed.Slow]?: BigNumber
 }
 
 export type GasPriceSource = {

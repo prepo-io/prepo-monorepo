@@ -42,18 +42,14 @@ const getGasPrices = async (
   try {
     const res = await fetch(gasPriceChecker.url)
     const gasJson = await res.json()
-    const { averagePath, fastPath, slowPath } = gasPriceChecker.paths
-    const average = findGasPriceByPath(gasJson, averagePath)
+    const { fastPath } = gasPriceChecker.paths
     const fast = findGasPriceByPath(gasJson, fastPath)
-    const slow = findGasPriceByPath(gasJson, slowPath)
     // if any of these is undefined, it's probably API failure, hence, return false
     // to load alternative api
-    if (average === undefined || fast === undefined || slow === undefined)
-      throw Error('Gas price API incomplete.')
+    if (fast === undefined) throw Error('Gas price API incomplete.')
     return {
-      [GasSpeed.AVERAGE]: multiplyGasPrice(average, 1.2),
+      [GasSpeed.VERYFAST]: multiplyGasPrice(fast, 1.4),
       [GasSpeed.FAST]: multiplyGasPrice(fast, 1.2),
-      [GasSpeed.Slow]: multiplyGasPrice(slow, 1.2),
     }
   } catch (error) {
     // if any error occur, return false to try alternative API
@@ -130,16 +126,15 @@ export class GasStore {
 
   get gasPriceOptions(): Required<GasPriceSuggestions> {
     const fallbackGasPrice = this.root.web3Store.network.gasPrice || parseUnits('60', 'gwei')
-    const { Average, Fast, Slow } = this.cachedGasPrice
     const customGas =
       this.customGasInput === undefined ? undefined : parseUnits(`${this.customGasInput}`, 'gwei')
     return {
       // if dynamic price is undefined, it's either we haven't got the data since page load or there was API failure
       // hence, use fallbackGasPrice with multiplier
-      Fast: Fast || multiplyGasPrice(fallbackGasPrice, 1.5),
-      Average: Average || fallbackGasPrice,
-      Slow: Slow || multiplyGasPrice(fallbackGasPrice, 0.6),
-      Custom: customGas ?? fallbackGasPrice,
+      [GasSpeed.FAST]: this.cachedGasPrice.Fast || multiplyGasPrice(fallbackGasPrice, 1.5),
+      [GasSpeed.VERYFAST]:
+        this.cachedGasPrice[GasSpeed.VERYFAST] || multiplyGasPrice(fallbackGasPrice, 2),
+      [GasSpeed.CUSTOM]: customGas ?? fallbackGasPrice,
     }
   }
 
