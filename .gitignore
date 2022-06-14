@@ -88,8 +88,11 @@ artifacts*
 cache*
 cache
 
-# --------- prepo-constants ---------
+# --------- prepo-packages ---------
 packages/**/lib
+
+# --------- subgraphs ---------
+apps/subgraphs/boilerplate/src/types
 
 ## Ignores deployments/localhost across all the sub-folders
 **/deployments/localhost
