@@ -17,7 +17,9 @@ enum MetamaskErrorMessages {
   SMART_CONTRACT_EXECUTION_REVERTED = 'execution reverted: STF',
 }
 
-const userFriendlyErrorMessages = {
+const userFriendlyErrorMessages: {
+  [key in MetamaskErrorMessages]: string
+} = {
   [MetamaskErrorMessages.SLIPPAGE_ERROR]:
     'The trading price has changed too much since you last checked. Please try again or change your slippage options.',
   [MetamaskErrorMessages.DENIED_TRANSACTION]:
@@ -30,7 +32,9 @@ export const makeErrorCapturer =
   (errorCapturer?: ErrorCapturer): CaptureError =>
   (err): Error => {
     const error = makeError(err)
-    error.message = userFriendlyErrorMessages[error.message] || error.message
+    error.message =
+      userFriendlyErrorMessages[error.message as keyof typeof userFriendlyErrorMessages] ||
+      error.message
     runInAction(() => {
       // TODO: format/serialize store
       if (errorCapturer) {
