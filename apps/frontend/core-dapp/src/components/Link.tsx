@@ -1,7 +1,11 @@
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
-const Anchor = styled.a``
+const Anchor = styled.a`
+  :hover {
+    color: ${({ theme }): string => theme.color.primary};
+  }
+`
 
 type Props = {
   href: string
