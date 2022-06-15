@@ -1,4 +1,6 @@
 type CollateralToken @entity {
+  # whether collateral token is allowed
+  allowed: Boolean!
   # address of collateral token contract
   id: ID!
   # name of collateral token
@@ -92,6 +94,12 @@ type Transaction @entity {
   createdAtTimestamp: BigInt!
   # type of event (e.g. Deposit, Withdraw, Open, Short)
   event: String!
+  # owner
+  ownerAddress: String!
   # address of token
   tokenAddress: String!
+  # long short or collateral token
+  tokenType: String!
+  # relevant address (e.g. base token of collateral token, null for long short)
+  relevantAddress: String
 }
