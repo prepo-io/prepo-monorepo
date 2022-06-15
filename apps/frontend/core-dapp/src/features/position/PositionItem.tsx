@@ -8,6 +8,7 @@ import Percent from '../../components/Percent'
 import { Position } from '../portfolio/PortfolioStore'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { numberFormatter } from '../../utils/numberFormatter'
+import Link from '../../components/Link'
 
 const { toUsd } = numberFormatter
 
@@ -55,6 +56,14 @@ const ResponsiveData = styled.div`
     justify-content: center;
     width: ${spacingIncrement(120)};
   `}
+`
+
+const StyledLink = styled(Link)`
+  :hover {
+    span {
+      color: ${({ theme }): string => theme.color.primary};
+    }
+  }
 `
 
 const ButtonContainer = styled.div`
@@ -174,7 +183,6 @@ const PositionItem: React.FC<Props> = ({ position }) => {
       label: 'PNL',
       amount: data.pnl,
       usd: true,
-      toolTip: 'Profit and loss',
     },
     {
       label: 'Total Value',
@@ -187,9 +195,11 @@ const PositionItem: React.FC<Props> = ({ position }) => {
     <Wrapper>
       <FlexWrapper>
         <div>
-          <IconTitleWrapper iconName={market.iconName} size="md">
-            {market.name}
-          </IconTitleWrapper>
+          <StyledLink href={`/markets/${market.urlId}/trade`}>
+            <IconTitleWrapper iconName={market.iconName} size="md">
+              {market.name}
+            </IconTitleWrapper>
+          </StyledLink>
           <PositionWrapper>
             Position:&nbsp;
             <StyledPositionlabel positionType={direction} />
