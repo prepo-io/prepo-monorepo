@@ -47,6 +47,10 @@ const StyledSubtitle = styled(Subtitle)`
   }
 `
 
+const Message = styled.div`
+  color: ${({ theme }): string => theme.color.neutral1};
+`
+
 const ProfitLossPercent = styled(Percent)`
   display: inline-block;
   margin-left: ${spacingIncrement(2)};
@@ -95,7 +99,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
     if (!exitProfitLoss?.expectedProfitLoss || !exitProfitLoss?.expectedProfitLossPercentage)
       return null
     return (
-      <div>
+      <Message>
         If the market resolves at {sliderNumFormatter(exit)}, your {dynamicProfitLossMessage} would
         be ≈{toUsd(exitProfitLoss?.expectedProfitLoss)}
         <ProfitLossPercent
@@ -104,7 +108,7 @@ const EstimateProfitLoss: React.FC<Props> = ({
           percentagePrecision={2}
           format={(percentValue): string => `(${percentValue})`}
         />
-      </div>
+      </Message>
     )
   }, [lineSliderValue, trackColor, direction, getProfitLossOnExit, openTradeAmount])
 
