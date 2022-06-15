@@ -8,6 +8,7 @@ import { CollateralStore } from './CollateralStore'
 import { CurrenciesStore } from './CurrenciesStore'
 import { storeConfig } from './utils/stores-config'
 import { UniswapRouterStore } from './UniswapRouterStore'
+import { CoreGraphStore } from './graphs/CoreGraphStore'
 import { UniswapV3GraphStore } from './graphs/UniswapV3GraphStore'
 import { SwapStore } from './SwapStore'
 import { DelegateStore } from '../features/delegate/DelegateStore'
@@ -50,6 +51,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   preCTTokenStore: CollateralStore
   uniswapRouterStore: UniswapRouterStore
   filterStore: FilterStore
+  coreGraphStore: CoreGraphStore
   uniswapV3GraphStore: UniswapV3GraphStore
   withdrawStore: WithdrawStore
   currenciesStore: CurrenciesStore
@@ -84,6 +86,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.uniswapRouterStore = new UniswapRouterStore(this)
     this.filterStore = new FilterStore(this)
     this.currenciesStore = new CurrenciesStore(this)
+    this.coreGraphStore = new CoreGraphStore(this)
     this.uniswapV3GraphStore = new UniswapV3GraphStore(this)
     this.delegateStore = new DelegateStore(this)
     this.ppoTokenStore = new Erc20Store({ root: this, tokenName: 'PPO', symbolOverride: 'PPO' })
