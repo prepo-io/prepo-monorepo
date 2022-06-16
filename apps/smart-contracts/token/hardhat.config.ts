@@ -29,19 +29,19 @@ const chainIds = {
 // Ensure that we have all the environment variables we need.
 let mnemonic: string
 if (!process.env.MNEMONIC) {
-  throw new Error('Please set your MNEMONIC in a .env file')
+  mnemonic = 'test test test test test test test test test test test junk'
 } else {
   mnemonic = process.env.MNEMONIC
 }
 let infuraApiKey: string
 if (!process.env.INFURA_API_KEY) {
-  throw new Error('Please set your INFURA_API_KEY in a .env file')
+  infuraApiKey = 'test'
 } else {
   infuraApiKey = process.env.INFURA_API_KEY
 }
 let etherscanApiKey: string
 if (!process.env.ETHERSCAN_API_KEY) {
-  throw new Error('Please set your ETHERSCAN_API_KEY in a .env file')
+  etherscanApiKey = 'test'
 } else {
   etherscanApiKey = process.env.ETHERSCAN_API_KEY
 }
