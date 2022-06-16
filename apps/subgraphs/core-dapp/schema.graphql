@@ -1,119 +1,119 @@
 type CollateralToken @entity {
-  # whether collateral token is allowed
+  "whether collateral token is allowed"
   allowed: Boolean!
-  # address of collateral token contract
+  "address of collateral token contract"
   id: ID!
-  # name of collateral token
+  "name of collateral token"
   name: String!
-  # symbol of collateral token
+  "symbol of collateral token"
   symbol: String!
-  # decimals of collateral token
+  "decimals of collateral token"
   decimals: BigInt!
-  # address of base token
+  "address of base token"
   baseToken: String!
 }
 
 type Market @entity {
-  # market contract address
+  "market contract address"
   id: ID!
-  # long token
+  "long token"
   longToken: Token!
-  # short token
+  "short token"
   shortToken: Token!
-  # floor long price
+  "floor long price"
   floorLongPrice: BigInt!
-  # ceiling long price
+  "ceiling long price"
   ceilingLongPrice: BigInt!
-  # floor valuation
+  "floor valuation"
   floorValuation: BigInt!
-  # ceiling valuation
+  "ceiling valuation"
   ceilingValuation: BigInt!
-  # minting fee
+  "minting fee"
   mintingFee: BigInt!
-  # redemption fee
+  "redemption fee"
   redemptionFee: BigInt!
-  # market expiry time
+  "market expiry time"
   expiryTime: BigInt!
-  # when market was created
+  "when market was created"
   createdAtTimestamp: BigInt!
-  # at which block was market created
+  "at which block was market created"
   createdAtBlockNumber: BigInt!
 }
 
 type Pool @entity {
-  # pool contract address
+  "pool contract address"
   id: ID!
-  # address of token0
+  "address of token0"
   token0: String!
-  # address of token1
+  "address of token1"
   token1: String!
-  # long/short token of this pool
+  "long/short token of this pool"
   token: Token!
-  # token0 per token1
+  "token0 per token1"
   token0Price: BigDecimal!
-  # token1 per token0
+  "token1 per token0"
   token1Price: BigDecimal!
-  # The sqrt(price) of the pool after the swap, as a Q64.96
+  "The sqrt(price) of the pool after the swap, as a Q64.96"
   sqrtPriceX96: BigInt!
-  # pool creation time
+  "pool creation time"
   createdAtTimestamp: BigInt!
-  # at which block was pool created
+  "at which block was pool created"
   createdAtBlockNumber: BigInt!
-  # transactions related to this pool
+  "transactions related to this pool"
   transactions: [Transaction!]! @derivedFrom(field: "pool")
 }
 
 type Position @entity {
-  # concat of user address and token address
+  "concat of user address and token address"
   id: ID!
-  # average cost per token - for PNL calculation
+  "average cost per token - for PNL calculation"
   costBasis: BigDecimal!
-  # address who owned this position
+  "address who owned this position"
   owner: String!
-  # token of whic this position is tracking
+  "token of whic this position is tracking"
   token: Token!
 }
 
 type Token @entity {
-  # token address
+  "token address"
   id: ID!
-  # the market this token is traded for
+  "the market this token is traded for"
   market: Market!
-  # all positions in this token
+  "all positions in this token"
   positions: [Position!]! @derivedFrom(field: "token")
-  # decimals of token
+  "decimals of token"
   decimals: BigInt!
-  # default pool preCT/currentToken as trading pair
+  "default pool preCT/currentToken as trading pair"
   defaultPool: Pool @derivedFrom(field: "token")
-  # price in USD
+  "price in USD"
   priceUSD: BigDecimal!
 }
 
 type Transaction @entity {
-  # template: {ACTION}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}
+  "template: {ACTION}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}"
   id: ID!
-  # token amount (for Pool related events, this is the token amount user receives)
+  "token amount (for Pool related events, this is the token amount user receives)"
   amount: BigDecimal!
-  # token amount in USD value (for Pool related events, this is the amount user paid (input amount) in USD value)
+  "token amount in USD value (for Pool related events, this is the amount user paid (input amount) in USD value)"
   amountUSD: BigDecimal!
-  # block number
+  "block number"
   createdAtBlockNumber: BigInt!
-  # when transaction was made
+  "when transaction was made"
   createdAtTimestamp: BigInt!
-  # actions we recognized (e.g. send, open, close, receive)
+  "actions we recognized (e.g. send, open, close, receive)"
   action: String!
-  # type of event (e.g. Swap, Transfer)
+  "type of event (e.g. Swap, Transfer)"
   event: String!
-  # transaction hash
+  "transaction hash"
   hash: String!
-  # owner
+  "owner"
   ownerAddress: String!
-  # the token which owner's balance is affected
+  "the token which owner's balance is affected"
   tokenAddress: String!
-  # [Collateral token's transfer] base token address if transaction is transfer of collateral tokens
+  "[Collateral token's transfer] base token address if transaction is transfer of collateral tokens"
   baseTokenAddress: String
-  # [Long/short token's transfer] market if transaction is transfer of long short token
+  "[Long/short token's transfer] market if transaction is transfer of long short token"
   market: Market
-  # [prePO related Pool interaction] pool if transaction is swap
+  "[prePO related Pool interaction] pool if transaction is swap"
   pool: Pool
 }
