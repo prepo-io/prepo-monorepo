@@ -1,16 +1,16 @@
-import chai from 'chai'
-import { expect } from 'chai'
+/* eslint-disable no-await-in-loop */
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { TokenShop, MockERC20 } from '../types/generated'
-import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { FakeContract, MockContract, smock } from '@defi-wonderland/smock'
 import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
-import { revertReason, AddressZero, JunkAddress, ZERO } from './utils'
 import { parseEther } from 'ethers/lib/utils'
+import { revertReason, AddressZero, JunkAddress, ZERO } from './utils'
+import { tokenShopFixture } from './fixtures/TokenShopFixtures'
+import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
+import { TokenShop, MockERC20 } from '../types/generated'
 
-//TODO: change AddressZero and JunkAddress to all caps
+// TODO: change AddressZero and JunkAddress to all caps
 
 chai.use(smock.matchers)
 
@@ -26,9 +26,9 @@ describe('TokenShop', () => {
 
   const setupTokenShop = async (): Promise<void> => {
     ;[deployer, owner, user1] = await ethers.getSigners()
-    let mockERC20Recipient = owner.address
-    let mockERC20Decimals = 18
-    let mockERC20InitialSupply = parseEther('100')
+    const mockERC20Recipient = owner.address
+    const mockERC20Decimals = 18
+    const mockERC20InitialSupply = parseEther('100')
     paymentToken = await mockERC20Fixture(
       'Payment Token',
       'PT',
@@ -46,7 +46,7 @@ describe('TokenShop', () => {
     mockERC721 = await mockERC721Factory.deploy('mock ERC721', 'mERC721')
   }
 
-  describe('initial state', async () => {
+  describe('initial state', () => {
     before(async () => {
       await setupTokenShop()
     })
@@ -61,7 +61,7 @@ describe('TokenShop', () => {
     })
   })
 
-  describe('# setContractToIdToPrice', async () => {
+  describe('# setContractToIdToPrice', () => {
     const tokenIds = [1, 1]
     const itemPrices = [parseEther('1'), parseEther('2')]
 
@@ -188,7 +188,7 @@ describe('TokenShop', () => {
     })
   })
 
-  describe('# setPaused', async () => {
+  describe('# setPaused', () => {
     beforeEach(async () => {
       await setupTokenShop()
     })
@@ -231,7 +231,7 @@ describe('TokenShop', () => {
     })
   })
 
-  describe('# setPurchaseHook', async () => {
+  describe('# setPurchaseHook', () => {
     beforeEach(async () => {
       await setupTokenShop()
     })
@@ -275,7 +275,7 @@ describe('TokenShop', () => {
     })
   })
 
-  describe('# purchase', async () => {
+  describe('# purchase', () => {
     let mockPurchaseHook: FakeContract<Contract>
     const tokenIds = [1, 1]
     const amounts = [2, 1]
@@ -486,6 +486,6 @@ describe('TokenShop', () => {
       )
     })
   })
-  //TODO : add tests for onERC1155Received, onERC1155BatchReceived, and onERC721Received
-  //TODO : add tests for tx.origin vs msg.sender
+  // TODO : add tests for onERC1155Received, onERC1155BatchReceived, and onERC721Received
+  // TODO : add tests for tx.origin vs msg.sender
 })

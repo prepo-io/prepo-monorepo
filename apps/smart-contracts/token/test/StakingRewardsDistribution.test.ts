@@ -2,10 +2,9 @@ import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { FakeContract, smock } from '@defi-wonderland/smock'
 import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
-import { StakingRewardsDistribution } from '../types/generated'
-import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
+import { parseEther } from 'ethers/lib/utils'
 import {
   revertReason,
   generateAccountAmountMerkleTree,
@@ -17,12 +16,13 @@ import {
   ONE,
   ZERO,
 } from './utils'
-import { parseEther } from 'ethers/lib/utils'
+import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
+import { StakingRewardsDistribution } from '../types/generated'
 
 chai.use(smock.matchers)
-//TODO: rename AccountAmountLeafNode to AllocationLeafNode and similarly for hash and generateMerkleTree
+// TODO: rename AccountAmountLeafNode to AllocationLeafNode and similarly for hash and generateMerkleTree
 
-describe('StakingRewardsDistribution', async () => {
+describe('StakingRewardsDistribution', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user1: SignerWithAddress
@@ -50,7 +50,7 @@ describe('StakingRewardsDistribution', async () => {
     merkleTree = generateAccountAmountMerkleTree(eligibleNodes)
   }
 
-  describe('# initial state', async () => {
+  describe('# initial state', () => {
     beforeEach(async () => {
       await setupStakingRewardsDistribution()
     })
@@ -72,7 +72,7 @@ describe('StakingRewardsDistribution', async () => {
     })
   })
 
-  describe('# setPPOStaking', async () => {
+  describe('# setPPOStaking', () => {
     beforeEach(async () => {
       await setupStakingRewardsDistribution()
     })
@@ -116,7 +116,7 @@ describe('StakingRewardsDistribution', async () => {
     })
   })
 
-  describe('# setMerkleTreeRoot', async () => {
+  describe('# setMerkleTreeRoot', () => {
     beforeEach(async () => {
       await setupStakingRewardsDistribution()
     })
@@ -182,10 +182,10 @@ describe('StakingRewardsDistribution', async () => {
         .to.emit(stakingRewardsDistribution, 'RootUpdate')
         .withArgs(merkleTree.getHexRoot(), periodNumberBefore.add(1))
     })
-    //TODO: Write a test to verify that setting a new merkle tree root will result in a previously true hasClaimed becoming false
+    // TODO: Write a test to verify that setting a new merkle tree root will result in a previously true hasClaimed becoming false
   })
 
-  describe('# claim', async () => {
+  describe('# claim', () => {
     beforeEach(async () => {
       await setupStakingRewardsDistribution()
       await stakingRewardsDistribution.connect(owner).setMerkleTreeRoot(merkleTree.getHexRoot())
@@ -307,6 +307,6 @@ describe('StakingRewardsDistribution', async () => {
         .to.emit(stakingRewardsDistribution, 'RewardClaim')
         .withArgs(eligibleNode2.account, eligibleNode2.amount, periodNumber)
     })
-    //TODO: Write an 'integration test' (where we test the full flow with no mocks)
+    // TODO: Write an 'integration test' (where we test the full flow with no mocks)
   })
 })

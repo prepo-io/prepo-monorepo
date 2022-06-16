@@ -1,7 +1,5 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { PregenesisPoints } from '../types/generated'
-import { pregenesisPointsFixture } from './fixtures/PregenesisPointsFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
 import {
@@ -13,7 +11,10 @@ import {
   AccountAmountLeafNode,
   hashAccountAmountLeafNode,
 } from './utils'
-import { parseEther } from '@ethersproject/units'
+import { pregenesisPointsFixture } from './fixtures/PregenesisPointsFixtures'
+import { PregenesisPoints } from '../types/generated'
+
+const { parseEther } = ethers.utils
 
 describe('PregenesisPoints', () => {
   let deployer: SignerWithAddress
@@ -44,7 +45,7 @@ describe('PregenesisPoints', () => {
     merkleTree = generateAccountAmountMerkleTree(eligibleNodes)
   }
 
-  describe('initial state', async () => {
+  describe('initial state', () => {
     before(async () => {
       await setupPregenesisPoints()
     })
@@ -67,7 +68,7 @@ describe('PregenesisPoints', () => {
     })
   })
 
-  describe('# setShop', async () => {
+  describe('# setShop', () => {
     beforeEach(async () => {
       await setupPregenesisPoints()
     })
@@ -110,7 +111,7 @@ describe('PregenesisPoints', () => {
     })
   })
 
-  describe('# setMerkleTreeRoot', async () => {
+  describe('# setMerkleTreeRoot', () => {
     beforeEach(async () => {
       await setupPregenesisPoints()
     })
@@ -154,7 +155,7 @@ describe('PregenesisPoints', () => {
     })
   })
 
-  describe('# mint', async () => {
+  describe('# mint', () => {
     beforeEach(async () => {
       await setupPregenesisPoints()
       await points.connect(owner).setShop(shop.address)
@@ -203,7 +204,7 @@ describe('PregenesisPoints', () => {
    * TODO: Add tests for transfer, transferFrom using smock to test for intended behavior
    * of `_beforeTokenTransfer()`
    */
-  describe('# burn', async () => {
+  describe('# burn', () => {
     beforeEach(async () => {
       await setupPregenesisPoints()
       await points.connect(owner).setShop(shop.address)
@@ -263,7 +264,7 @@ describe('PregenesisPoints', () => {
     })
   })
 
-  describe('# claim', async () => {
+  describe('# claim', () => {
     beforeEach(async () => {
       await setupPregenesisPoints()
       await points.connect(owner).setMerkleTreeRoot(merkleTree.getHexRoot())

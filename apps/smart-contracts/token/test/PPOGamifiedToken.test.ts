@@ -1,15 +1,10 @@
-import chai from 'chai'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { BigNumber } from 'ethers'
-import {
-  MockERC20,
-  MockERC20__factory,
-  MockNexus,
-  MockNexus__factory,
-  MockPPOGamifiedToken,
-  PlatformTokenVendorFactory__factory,
-} from '../types/generated'
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
+import { parseEther } from 'ethers/lib/utils'
+import { MockContract, smock } from '@defi-wonderland/smock'
+import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
 import { mockPPOGamifiedTokenDeployFixture } from './fixtures/PPOGamifiedTokenFixture'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
@@ -22,10 +17,14 @@ import {
   MIN_INT64,
   revertReason,
 } from './utils'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { parseEther } from 'ethers/lib/utils'
-import { MockContract, smock } from '@defi-wonderland/smock'
-import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
+import {
+  MockERC20,
+  MockERC20__factory,
+  MockNexus,
+  MockNexus__factory,
+  MockPPOGamifiedToken,
+  PlatformTokenVendorFactory__factory,
+} from '../types/generated'
 
 chai.use(smock.matchers)
 
@@ -60,14 +59,15 @@ describe('PPOGamifiedToken', () => {
     cooldownUnits: 0,
   }
 
-  const initAccounts = async () => {
-    const allSigners = await ethers.getSigners()
-    deployer = allSigners[0]
-    owner = allSigners[1]
-    user1 = allSigners[2]
-    user2 = allSigners[3]
-    user3 = allSigners[4]
-    rewardsDistributor = allSigners[5]
+  const initAccounts = async (): Promise<void> => {
+    const [localDeployer, localOwner, localUser1, localUser2, localUser3, localRewardsDistributor] =
+      await ethers.getSigners()
+    deployer = localDeployer
+    owner = localOwner
+    user1 = localUser1
+    user2 = localUser2
+    user3 = localUser3
+    rewardsDistributor = localRewardsDistributor
   }
 
   const redeployGamifiedToken = async (): Promise<Deployment> => {
@@ -89,7 +89,7 @@ describe('PPOGamifiedToken', () => {
     )
     await gamifiedToken.__mockPPOGamifiedToken_init('PPO Power', 'pPPO', rewardsDistributor.address)
     return {
-      gamifiedToken: gamifiedToken,
+      gamifiedToken,
     }
   }
 
@@ -263,8 +263,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(
         testRawBalance.mul(timeMultiplier + achievementsMultiplier).div(MULTIPLIER_DENOMINATOR)
@@ -280,8 +280,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(
         testRawBalance.mul(timeMultiplier + achievementsMultiplier).div(MULTIPLIER_DENOMINATOR)
@@ -296,8 +296,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(0)
     })
@@ -310,8 +310,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(0)
     })
@@ -324,8 +324,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(testRawBalance.mul(MAX_MULTIPLIER).div(MULTIPLIER_DENOMINATOR))
     })
@@ -338,8 +338,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(testRawBalance.mul(MAX_MULTIPLIER).div(MULTIPLIER_DENOMINATOR))
     })
@@ -352,8 +352,8 @@ describe('PPOGamifiedToken', () => {
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
           raw: 1,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(BigNumber.from(1).mul(MAX_MULTIPLIER).div(MULTIPLIER_DENOMINATOR))
     })
@@ -366,8 +366,8 @@ describe('PPOGamifiedToken', () => {
       expect(
         await gamifiedToken.getScaledBalance({
           ...defaultBalanceData,
-          timeMultiplier: timeMultiplier,
-          achievementsMultiplier: achievementsMultiplier,
+          timeMultiplier,
+          achievementsMultiplier,
         })
       ).to.eq(testRawBalance.mul(MAX_MULTIPLIER).div(MULTIPLIER_DENOMINATOR))
     })

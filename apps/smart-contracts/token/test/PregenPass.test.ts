@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { MockPregenPass } from '../types/generated'
-import { mockPregenPassFixture } from './fixtures/PregenPassFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { mockPregenPassFixture } from './fixtures/PregenPassFixtures'
 import { revertReason } from './utils'
+import { MockPregenPass } from '../types/generated'
 
-describe('PregenPass', async () => {
+describe('PregenPass', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user: SignerWithAddress
@@ -20,7 +20,7 @@ describe('PregenPass', async () => {
     pregenPass = await mockPregenPassFixture(owner.address, URI)
   }
 
-  describe('constructor', async () => {
+  describe('constructor', () => {
     before(async () => {
       await setupPregenPass()
     })
@@ -42,12 +42,12 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# setURI', async () => {
+  describe('# setURI', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(pregenPass.connect(user).setURI(URI_2)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -82,12 +82,12 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# mint', async () => {
+  describe('# mint', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(pregenPass.connect(user).mint(user.address)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -110,12 +110,12 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# mintBatch', async () => {
+  describe('# mintBatch', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(pregenPass.connect(user).mintBatch([user.address, user2.address])).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -158,18 +158,18 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# burn', async () => {
+  describe('# burn', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(pregenPass.connect(user).mint(user.address)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
     })
 
-    it('reverts if nonexistent token', async () => {
+    it('reverts if nonexistent token', () => {
       expect(pregenPass.connect(owner).burn(1)).revertedWith(
         revertReason('ERC721: owner query for nonexistent token')
       )
@@ -196,7 +196,7 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# burnBatch', async () => {
+  describe('# burnBatch', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
@@ -210,7 +210,7 @@ describe('PregenPass', async () => {
       )
     })
 
-    it('reverts if non existent token', async () => {
+    it('reverts if non existent token', () => {
       expect(pregenPass.connect(owner).burnBatch([1, 2])).revertedWith(
         revertReason('ERC721: owner query for nonexistent token')
       )
@@ -254,12 +254,12 @@ describe('PregenPass', async () => {
     })
   })
 
-  describe('# _beforeTokenTransfer', async () => {
+  describe('# _beforeTokenTransfer', () => {
     beforeEach(async () => {
       await setupPregenPass()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(
         pregenPass.connect(user).beforeTokenTransfer(user.address, user2.address, 0)
       ).revertedWith(revertReason('Ownable: caller is not the owner'))

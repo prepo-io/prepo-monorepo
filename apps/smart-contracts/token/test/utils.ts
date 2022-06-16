@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { BigNumber, providers } from 'ethers'
 import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
@@ -27,7 +28,7 @@ export function expandTo18Decimals(n: number): BigNumber {
 }
 
 export function nowPlusMonths(n: number): number {
-  let d = new Date()
+  const d = new Date()
   d.setMonth(d.getMonth() + n)
   d.setHours(0, 0, 0, 0)
   return d.getTime() / 1000
@@ -46,10 +47,7 @@ export async function mineBlocks(provider: providers.Web3Provider, blocks: numbe
   }
 }
 
-export async function mineBlock(
-  provider: providers.Web3Provider,
-  timestamp: number
-): Promise<void> {
+export function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
   return provider.send('evm_mine', [timestamp])
 }
 
@@ -59,11 +57,11 @@ export async function getLastTimestamp(): Promise<number> {
    * to a snapshot, getBlockNumber will still return the last mined block rather than the
    * block height of the snapshot.
    */
-  let currentBlock = await ethers.provider.getBlock('latest')
+  const currentBlock = await ethers.provider.getBlock('latest')
   return currentBlock.timestamp
 }
 
-export function revertReason(reason: string) {
+export function revertReason(reason: string): string {
   return reason
 }
 

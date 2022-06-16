@@ -1,12 +1,12 @@
-import chai from 'chai'
-import { expect } from 'chai'
+/* eslint-disable no-await-in-loop */
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { PurchaseHook } from '../types/generated'
-import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
-import { revertReason, ZERO } from './utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
+import { revertReason, ZERO } from './utils'
+import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
+import { PurchaseHook } from '../types/generated'
 
 chai.use(smock.matchers)
 
@@ -39,7 +39,7 @@ describe('PurchaseHook', () => {
     secondERC1155 = await mockERC1155Factory.deploy('mockURI2')
   }
 
-  describe('initial state', async () => {
+  describe('initial state', () => {
     before(async () => {
       await setupPurchaseHook()
     })
@@ -49,7 +49,7 @@ describe('PurchaseHook', () => {
     })
   })
 
-  describe('# setMaxERC721PurchasesPerUser', async () => {
+  describe('# setMaxERC721PurchasesPerUser', () => {
     const maxAmounts = [1, 2]
 
     beforeEach(async () => {
@@ -155,7 +155,7 @@ describe('PurchaseHook', () => {
     })
   })
 
-  describe('# setMaxERC1155PurchasesPerUser', async () => {
+  describe('# setMaxERC1155PurchasesPerUser', () => {
     const maxAmounts = [1, 2]
     const tokenIds = [0, 1]
 

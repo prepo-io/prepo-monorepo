@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { WithdrawalRights } from '../types/generated'
-import { withdrawalRightsFixture } from './fixtures/WithdrawalRightsFixtures'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { withdrawalRightsFixture } from './fixtures/WithdrawalRightsFixtures'
 import { AddressZero, revertReason } from './utils'
+import { WithdrawalRights } from '../types/generated'
 
-describe('WithdrawalRights', async () => {
+describe('WithdrawalRights', () => {
   let deployer: SignerWithAddress
   let governance: SignerWithAddress
   let user1: SignerWithAddress
@@ -14,15 +14,15 @@ describe('WithdrawalRights', async () => {
   let withdrawalRights: WithdrawalRights
   const testURI = 'https://newBaseURI/'
 
-  const setupAccounts = async () => {
+  const setupAccounts = async (): Promise<void> => {
     ;[deployer, governance, user1, user2, ppoStaking] = await ethers.getSigners()
   }
 
-  const setupWithdrawalRights = async () => {
+  const setupWithdrawalRights = async (): Promise<void> => {
     withdrawalRights = await withdrawalRightsFixture(governance.address)
   }
 
-  describe('initial state', async () => {
+  describe('initial state', () => {
     before(async () => {
       await setupAccounts()
       await setupWithdrawalRights()
@@ -41,7 +41,7 @@ describe('WithdrawalRights', async () => {
     })
   })
 
-  describe('# setURI', async () => {
+  describe('# setURI', () => {
     beforeEach(async () => {
       await setupAccounts()
       await setupWithdrawalRights()
@@ -85,7 +85,7 @@ describe('WithdrawalRights', async () => {
     })
   })
 
-  describe('# setPPOStaking', async () => {
+  describe('# setPPOStaking', () => {
     beforeEach(async () => {
       await setupAccounts()
       await setupWithdrawalRights()
@@ -129,7 +129,7 @@ describe('WithdrawalRights', async () => {
     })
   })
 
-  describe('# mint', async () => {
+  describe('# mint', () => {
     beforeEach(async () => {
       await setupAccounts()
       await setupWithdrawalRights()

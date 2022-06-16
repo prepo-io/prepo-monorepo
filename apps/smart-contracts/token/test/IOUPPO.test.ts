@@ -1,16 +1,22 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { parseEther } from '@ethersproject/units'
-import { IOUPPO, PPO, MockERC20 } from '../types/generated'
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { MerkleTree } from 'merkletreejs'
 import { iouPPOFixture } from './fixtures/IOUPPOFixtures'
 import { ppoDeployFixture } from './fixtures/PPOFixture'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
-import { revertReason, AddressZero, IOUPPOLeafNode } from './utils'
-import { MerkleTree } from 'merkletreejs'
-import { hashIOUPPOLeafNode, generateMerkleTreeIOUPPO } from './utils'
+import {
+  revertReason,
+  AddressZero,
+  IOUPPOLeafNode,
+  hashIOUPPOLeafNode,
+  generateMerkleTreeIOUPPO,
+} from './utils'
+import { IOUPPO, PPO, MockERC20 } from '../types/generated'
 
-describe('IOUPPO', async () => {
+const { parseEther } = ethers.utils
+
+describe('IOUPPO', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let userNotStaked: SignerWithAddress
@@ -43,7 +49,7 @@ describe('IOUPPO', async () => {
     ppo = await ppoDeployFixture()
   }
 
-  describe('# initialize', async () => {
+  describe('# initialize', () => {
     before(async () => {
       await setupIOUPPO()
     })
@@ -63,12 +69,12 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# setPPOToken', async () => {
+  describe('# setPPOToken', () => {
     beforeEach(async () => {
       await setupIOUPPO()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(iouPPO.setPPOToken(ppo.address)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -105,12 +111,12 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# setPPOStaking', async () => {
+  describe('# setPPOStaking', () => {
     beforeEach(async () => {
       await setupIOUPPO()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(iouPPO.setPPOStaking(ppoStaking.address)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -147,12 +153,12 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# setPaused', async () => {
+  describe('# setPaused', () => {
     beforeEach(async () => {
       await setupIOUPPO()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(iouPPO.setPaused(true)).revertedWith(revertReason('Ownable: caller is not the owner'))
     })
 
@@ -192,12 +198,12 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# setMerkleTreeRoot', async () => {
+  describe('# setMerkleTreeRoot', () => {
     beforeEach(async () => {
       await setupIOUPPO()
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       expect(iouPPO.setMerkleTreeRoot(merkleTree.getHexRoot())).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
@@ -234,7 +240,7 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# claim', async () => {
+  describe('# claim', () => {
     beforeEach(async () => {
       await setupIOUPPO()
       await iouPPO.connect(owner).setMerkleTreeRoot(merkleTree.getHexRoot())
@@ -264,7 +270,7 @@ describe('IOUPPO', async () => {
       ).revertedWith(revertReason('Already claimed'))
     })
 
-    it('reverts if wrong account', async () => {
+    it('reverts if wrong account', () => {
       const invalidAccount = owner.address
       const ineligibleNode = {
         ...eligibleNodeStaked,
@@ -277,7 +283,7 @@ describe('IOUPPO', async () => {
       ).revertedWith(revertReason('Invalid claim'))
     })
 
-    it('reverts if staker and hasStaked is false', async () => {
+    it('reverts if staker and hasStaked is false', () => {
       const falseStakingInfo = !eligibleNodeStaked.staked
       const ineligibleNode = {
         ...eligibleNodeStaked,
@@ -290,7 +296,7 @@ describe('IOUPPO', async () => {
       ).revertedWith(revertReason('Invalid claim'))
     })
 
-    it('reverts if non-staker and hasStaked is true', async () => {
+    it('reverts if non-staker and hasStaked is true', () => {
       const falseStakingInfo = !eligibleNodeNotStaked.staked
       const ineligibleNode = {
         ...eligibleNodeNotStaked,
@@ -303,7 +309,7 @@ describe('IOUPPO', async () => {
       ).revertedWith(revertReason('Invalid claim'))
     })
 
-    it('reverts if wrong amount', async () => {
+    it('reverts if wrong amount', () => {
       const falseAmount = eligibleNodeStaked.amount.add(parseEther('0.1'))
       const ineligibleNode = {
         ...eligibleNodeStaked,
@@ -363,7 +369,7 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# convert', async () => {
+  describe('# convert', () => {
     beforeEach(async () => {
       await setupIOUPPO()
       await iouPPO.connect(owner).setMerkleTreeRoot(merkleTree.getHexRoot())
@@ -503,7 +509,7 @@ describe('IOUPPO', async () => {
     })
   })
 
-  describe('# withdrawERC20', async () => {
+  describe('# withdrawERC20', () => {
     beforeEach(async () => {
       await setupIOUPPO()
       const mockERC20Recipient = userNotStaked.address
@@ -518,7 +524,7 @@ describe('IOUPPO', async () => {
       )
     })
 
-    it('reverts if not owner', async () => {
+    it('reverts if not owner', () => {
       const amountWithdrawn = parseEther('1')
 
       expect(iouPPO.withdrawERC20(ppo.address, amountWithdrawn)).revertedWith(
@@ -526,7 +532,7 @@ describe('IOUPPO', async () => {
       )
     })
 
-    it('reverts if withdraw amount > balance', async () => {
+    it('reverts if withdraw amount > balance', () => {
       const amountWithdrawn = parseEther('1')
 
       expect(iouPPO.connect(owner).withdrawERC20(ppo.address, amountWithdrawn)).revertedWith(

@@ -1,11 +1,12 @@
-import chai from 'chai'
-import { expect } from 'chai'
+/* eslint-disable no-await-in-loop */
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
-import { Vesting, MockERC20, MockVestingClaimer } from '../types/generated'
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { BigNumber } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 import { vestingFixture } from './fixtures/VestingFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { mockVestingClaimerFixture } from './fixtures/MockVestingClaimerFixtures'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import {
   revertReason,
   getLastTimestamp,
@@ -16,10 +17,9 @@ import {
   ONE,
   mineBlocks,
 } from './utils'
-import { BigNumber } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
+import { Vesting, MockERC20, MockVestingClaimer } from '../types/generated'
 
-describe('Vesting', async () => {
+describe('Vesting', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user1: SignerWithAddress
@@ -56,7 +56,7 @@ describe('Vesting', async () => {
     )
   }
 
-  describe('# initialize', async () => {
+  describe('# initialize', () => {
     before(async () => {
       await setupVesting()
     })
@@ -68,7 +68,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# setPaused', async () => {
+  describe('# setPaused', () => {
     beforeEach(async () => {
       await setupVesting()
     })
@@ -111,7 +111,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# setToken', async () => {
+  describe('# setToken', () => {
     beforeEach(async () => {
       await setupVesting()
     })
@@ -155,7 +155,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# setVestingStartTime', async () => {
+  describe('# setVestingStartTime', () => {
     beforeEach(async () => {
       await setupVesting()
       currentTime = await getLastTimestamp()
@@ -214,6 +214,7 @@ describe('Vesting', async () => {
       const newFutureStartTime = vestingStartTime + 10 * DAY_IN_SECONDS
       const newCurrentTime = vestingStartTime + DAY_IN_SECONDS
       // Set the current time to be after vesting started.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, newCurrentTime)
       expect(await getLastTimestamp()).to.be.eq(newCurrentTime)
       expect(newCurrentTime).to.be.greaterThan(vestingStartTime)
@@ -229,6 +230,7 @@ describe('Vesting', async () => {
       const newPastStartTime = vestingStartTime - 10 * DAY_IN_SECONDS
       // Set the current time to be after vesting started.
       const newCurrentTime = vestingStartTime + DAY_IN_SECONDS
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, newCurrentTime)
       expect(await getLastTimestamp()).to.be.eq(newCurrentTime)
       expect(newCurrentTime).to.be.greaterThan(vestingStartTime)
@@ -252,7 +254,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# setVestingEndTime', async () => {
+  describe('# setVestingEndTime', () => {
     beforeEach(async () => {
       await setupVesting()
       currentTime = await getLastTimestamp()
@@ -317,6 +319,7 @@ describe('Vesting', async () => {
       const newEndTime = vestingEndTime + 10 * DAY_IN_SECONDS
       // Set the current time to be after vesting started
       const newCurrentTime = vestingStartTime + DAY_IN_SECONDS
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, newCurrentTime)
       expect(await getLastTimestamp()).to.be.eq(newCurrentTime)
       expect(newCurrentTime).to.be.gt(vestingStartTime)
@@ -333,6 +336,7 @@ describe('Vesting', async () => {
       const newEndTime = vestingEndTime - 10 * DAY_IN_SECONDS
       // Set the current time to be after vesting started
       const newCurrentTime = vestingEndTime - DAY_IN_SECONDS
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, newCurrentTime)
       expect(await getLastTimestamp()).to.be.eq(newCurrentTime)
       expect(newCurrentTime).to.be.gt(vestingStartTime)
@@ -356,9 +360,9 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# setAllocations', async () => {
+  describe('# setAllocations', () => {
     let expectedDecrease: BigNumber
-    before(async () => {
+    before(() => {
       amountsAllocated = [ONE_ETH, ONE_ETH.mul(2)]
       lowerAllocationAmounts = [amountsAllocated[0].sub(1), amountsAllocated[1].sub(1)]
       higherAllocationAmounts = [amountsAllocated[0].add(1), amountsAllocated[1].add(1)]
@@ -537,6 +541,7 @@ describe('Vesting', async () => {
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set time to be after vesting start to be able to claim.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, timeAfterVestingStarted)
       await vesting.connect(user1).claim()
       const totalClaimedAfter = await vesting.getClaimedAmount(user1.address)
@@ -555,6 +560,7 @@ describe('Vesting', async () => {
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set time to be after vesting start to be able to claim.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, timeAfterVestingStarted)
       await vesting.connect(user1).claim()
       const equalAllocationAmount = await vesting.getClaimedAmount(user1.address)
@@ -572,6 +578,7 @@ describe('Vesting', async () => {
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set time to be after vesting start to be able to claim.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, timeAfterVestingStarted)
       await vesting.connect(user1).claim()
       const higherAllocationAmount = (await vesting.getClaimedAmount(user1.address)).add(1)
@@ -582,7 +589,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# claim', async () => {
+  describe('# claim', () => {
     beforeEach(async () => {
       await setupVesting()
       mockVestingClaimer = await mockVestingClaimerFixture(vesting.address)
@@ -630,6 +637,7 @@ describe('Vesting', async () => {
        */
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set current time to be after vesting started.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       await vesting.connect(user1).claim()
@@ -647,6 +655,7 @@ describe('Vesting', async () => {
     it('reverts if allocated amount = already claimed', async () => {
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set current time to be after vesting started.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       await vesting.connect(user1).claim()
@@ -669,6 +678,7 @@ describe('Vesting', async () => {
        */
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
       // Set the current time to be after vesting started and then claim.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       await vesting.connect(user1).claim()
@@ -684,6 +694,7 @@ describe('Vesting', async () => {
     })
 
     it('reverts if insufficient balance in contract', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       const claimableAmount = await vesting.getClaimableAmount(user1.address)
@@ -696,6 +707,7 @@ describe('Vesting', async () => {
 
     it('transfers tokens if still vesting', async () => {
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       const totalClaimedBefore = await vesting.getClaimedAmount(user1.address)
@@ -716,6 +728,7 @@ describe('Vesting', async () => {
 
     it('transfers tokens if vesting ended', async () => {
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, vestingEndTime + 1)
       expect(await getLastTimestamp()).to.be.eq(vestingEndTime + 1)
       const totalClaimedBefore = await vesting.getClaimedAmount(user1.address)
@@ -736,6 +749,7 @@ describe('Vesting', async () => {
 
     it('transfers only once if vesting ended', async () => {
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[0])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, vestingEndTime + 1)
       expect(await getLastTimestamp()).to.be.eq(vestingEndTime + 1)
       const totalClaimedBefore = await vesting.getClaimedAmount(user1.address)
@@ -761,8 +775,9 @@ describe('Vesting', async () => {
       const numberOfWithdrawals = 2
       const duration = vestingEndTime - vestingStartTime
       const timeBetweenEachWithdrawal = duration / numberOfWithdrawals
-      for (var i = 1; i <= numberOfWithdrawals; i++) {
-        var withdrawalTime = vestingStartTime + i * timeBetweenEachWithdrawal
+      for (let i = 1; i <= numberOfWithdrawals; i++) {
+        const withdrawalTime = vestingStartTime + i * timeBetweenEachWithdrawal
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mineBlock(ethers.provider as any, withdrawalTime)
         expect(await getLastTimestamp()).to.be.eq(withdrawalTime)
         const totalClaimedBefore = await vesting.getClaimedAmount(user1.address)
@@ -784,6 +799,7 @@ describe('Vesting', async () => {
 
     it('transfers to calling contract', async () => {
       await mockERC20Token.connect(owner).transfer(vesting.address, amountsAllocated[2])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mineBlock(ethers.provider as any, timeAfterVestingStarted)
       expect(await getLastTimestamp()).to.be.eq(timeAfterVestingStarted)
       const totalClaimedBefore = await vesting.getClaimedAmount(mockVestingClaimer.address)
@@ -805,8 +821,8 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# getClaimableAmount', async () => {
-    before(async () => {
+  describe('# getClaimableAmount', () => {
+    before(() => {
       amountsAllocated = [parseEther('1'), parseEther('2')]
       lowerAllocationAmounts = [amountsAllocated[0].sub(1), amountsAllocated[1].sub(1)]
       higherAllocationAmounts = [amountsAllocated[0].add(1), amountsAllocated[1].add(1)]
@@ -830,6 +846,7 @@ describe('Vesting', async () => {
     })
 
     it('returns 0 if vesting not started', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime - 1)
       await vesting.connect(owner).setAllocations(recipients, amountsAllocated)
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -840,6 +857,7 @@ describe('Vesting', async () => {
     })
 
     it('returns 0 if amount claimed > allocated', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -854,6 +872,7 @@ describe('Vesting', async () => {
     })
 
     it('returns 0 if amount claimed = allocated', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -866,9 +885,11 @@ describe('Vesting', async () => {
     })
 
     it('returns 0 if account claimed after vesting ended', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingEndTime + 1)
       await vesting.connect(user1).claim()
 
@@ -876,6 +897,7 @@ describe('Vesting', async () => {
     })
 
     it('returns vested amount if still vesting and account never claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -886,6 +908,7 @@ describe('Vesting', async () => {
     })
 
     it('returns entire allocation if vesting ended and account never claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingEndTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -896,11 +919,13 @@ describe('Vesting', async () => {
     })
 
     it('returns vested minus claimed amount if still vesting and account claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
       await vesting.connect(user1).claim()
       const claimedAmount = await vesting.getClaimedAmount(user1.address)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await mineBlocks(ethers.provider as any, 1)
       const vestedAmountTillNow = await vesting.getVestedAmount(user1.address)
       const expectedClaimableAmount = vestedAmountTillNow.sub(claimedAmount)
@@ -909,11 +934,13 @@ describe('Vesting', async () => {
     })
 
     it('returns allocation minus claimed amount if vesting ended after account claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
       await vesting.connect(user1).claim()
       const claimedAmount = await vesting.getClaimedAmount(user1.address)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await mineBlock(ethers.provider as any, vestingEndTime + 1)
       const amountAllocated = await vesting.getAmountAllocated(user1.address)
       const expectedClaimableAmount = amountAllocated.sub(claimedAmount)
@@ -922,8 +949,8 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# getVestedAmount', async () => {
-    before(async () => {
+  describe('# getVestedAmount', () => {
+    before(() => {
       amountsAllocated = [parseEther('1'), parseEther('2')]
       lowerAllocationAmounts = [amountsAllocated[0].sub(1), amountsAllocated[1].sub(1)]
       higherAllocationAmounts = [amountsAllocated[0].add(1), amountsAllocated[1].add(1)]
@@ -948,6 +975,7 @@ describe('Vesting', async () => {
     })
 
     it('returns 0 if vesting not started', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime - 1)
       await vesting.connect(owner).setAllocations(recipients, amountsAllocated)
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -956,6 +984,7 @@ describe('Vesting', async () => {
     })
 
     it('returns vesting amount if still vesting and account never claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -965,6 +994,7 @@ describe('Vesting', async () => {
     })
 
     it('returns entire allocation if vesting ended and account never claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingEndTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -975,10 +1005,12 @@ describe('Vesting', async () => {
     })
 
     it('returns vesting amount if still vesting and account claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
       await vesting.connect(user1).claim()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await mineBlocks(ethers.provider as any, 1)
       const vestedAmountTillNow = await vesting.getVestedAmount(user1.address)
 
@@ -986,10 +1018,12 @@ describe('Vesting', async () => {
     })
 
     it('returns entire allocation if vesting ended after account claimed', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingStartTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
       await vesting.connect(user1).claim()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await mineBlock(ethers.provider as any, vestingEndTime + 1)
       const amountAllocated = await vesting.getAmountAllocated(user1.address)
 
@@ -997,6 +1031,7 @@ describe('Vesting', async () => {
     })
 
     it('returns entire allocation if account claimed after vesting ended', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await setNextTimestamp(ethers.provider as any, vestingEndTime + 1)
       await vesting.connect(owner).setAllocations([user1.address], [amountsAllocated[0]])
       expect(await vesting.getAmountAllocated(user1.address)).to.be.gt(0)
@@ -1007,7 +1042,7 @@ describe('Vesting', async () => {
     })
   })
 
-  describe('# withdrawERC20', async () => {
+  describe('# withdrawERC20', () => {
     beforeEach(async () => {
       await setupVesting()
       const externalERC20Recipient = user1.address

@@ -1,7 +1,15 @@
-import chai from 'chai'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { BigNumber } from 'ethers'
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
+import { formatEther, parseEther } from 'ethers/lib/utils'
+import { MockContract, smock } from '@defi-wonderland/smock'
+import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
+import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
+import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
+import { mockPPOStakingDeployFixture } from './fixtures/PPOStakingFixtures'
+import { AddressZero, MAX_UINT128, ONE, ONE_WEEK, JunkAddress } from './utils'
+import { UserStakingData } from '../types/ppoStaking'
 import {
   MockERC20,
   MockERC20__factory,
@@ -10,15 +18,6 @@ import {
   PlatformTokenVendorFactory__factory,
   MockPPOStaking,
 } from '../types/generated'
-import { mockPPOStakingDeployFixture } from './fixtures/PPOStakingFixtures'
-import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
-import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
-import { UserStakingData } from '../types/ppoStaking'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { formatEther, parseEther } from 'ethers/lib/utils'
-import { MockContract, smock } from '@defi-wonderland/smock'
-import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
-import { AddressZero, MAX_UINT128, ONE, ONE_WEEK, JunkAddress } from './utils'
 
 chai.use(smock.matchers)
 
@@ -45,14 +44,15 @@ describe('PPOStaking', () => {
   const MAX_MULTIPLIER = 5e12 // 5X
   const PPO_SUPPLY = parseEther('1000000000') // 1 billion (total PPO supply)
 
-  const initAccounts = async () => {
-    const allSigners = await ethers.getSigners()
-    deployer = allSigners[0]
-    owner = allSigners[1]
-    user1 = allSigners[2]
-    user2 = allSigners[3]
-    user3 = allSigners[4]
-    rewardsDistributor = allSigners[5]
+  const initAccounts = async (): Promise<void> => {
+    const [localDeployer, localOwner, localUser1, localUser2, localUser3, localRewardsDistributor] =
+      await ethers.getSigners()
+    deployer = localDeployer
+    owner = localOwner
+    user1 = localUser1
+    user2 = localUser2
+    user3 = localUser3
+    rewardsDistributor = localRewardsDistributor
   }
 
   const redeployPPOStaking = async (tokenSupply: BigNumber): Promise<Deployment> => {
@@ -82,8 +82,8 @@ describe('PPOStaking', () => {
     await ppoStaking.connect(owner).setTimeMultiplierCalculator(mockSteppedTimeMultiplier.address)
     await ppoStaking.connect(owner).setMaxMultiplier(MAX_MULTIPLIER)
     return {
-      ppoToken: ppoToken,
-      ppoStaking: ppoStaking,
+      ppoToken,
+      ppoStaking,
     }
   }
 
@@ -161,7 +161,7 @@ describe('PPOStaking', () => {
     // Test against maximum uint128 value since our raw balance is kept in a uint128
     const testAmountsToStake = [parseEther('1000'), ONE, parseEther('1000000000'), MAX_UINT128]
 
-    context('first stake', async () => {
+    context('first stake', () => {
       beforeEach(async () => {
         await initAccounts()
         ;({ ppoToken, ppoStaking } = await redeployPPOStaking(PPO_SUPPLY))
@@ -177,11 +177,13 @@ describe('PPOStaking', () => {
         )
       })
 
-      context('staking with various amounts', async () => {
-        for (let amount of testAmountsToStake) {
-          context(`staking with ${formatEther(amount)} PPO`, async () => {
+      context('staking with various amounts', () => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const amount of testAmountsToStake) {
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          context(`staking with ${formatEther(amount)} PPO`, () => {
             beforeEach(async () => {
-              if (amount == MAX_UINT128) {
+              if (amount === MAX_UINT128) {
                 ;({ ppoToken, ppoStaking } = await redeployPPOStaking(MAX_UINT128))
               }
               testAmountToStake = amount
@@ -300,7 +302,7 @@ describe('PPOStaking', () => {
     })
   })
 
-  describe('# delegate', async () => {
+  describe('# delegate', () => {
     let staker: SignerWithAddress
     let recipient: SignerWithAddress
     let delegator: SignerWithAddress
