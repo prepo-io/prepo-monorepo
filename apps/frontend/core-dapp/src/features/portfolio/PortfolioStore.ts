@@ -15,6 +15,7 @@ export type Position = {
     costBasis?: number
     price: number
     pnl?: number
+    percentage?: number
     token: Erc20Store
     tokenBalance: number
     totalValue: number
@@ -53,20 +54,25 @@ export class PortfolioStore {
     if (normalizedTotalValue === 0) return undefined
 
     let costBasis
+    let pnl
+    let percentage
     if (this.signerCostBasis) {
       const foundPosition = this.signerCostBasis.find(
         ({ token: { id } }) => id === token.address?.toLowerCase()
       )
       if (foundPosition) {
         costBasis = foundPosition.costBasis
+        pnl = +normalizeDecimalPrecision(`${tokenBalance * (tokenPrice - costBasis)}`)
+        const capital = totalValue - pnl
+        if (pnl > 0) percentage = pnl / capital
       }
     }
 
-    const pnl = costBasis === undefined ? undefined : tokenBalance * (tokenPrice - costBasis)
     const returnValue = {
       data: {
         costBasis,
         pnl,
+        percentage,
         price: tokenPrice,
         token,
         tokenBalance,
