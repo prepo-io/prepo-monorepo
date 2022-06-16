@@ -114,3 +114,21 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleLongShortTokenTransfer
+  - kind: ethereum/contract
+    name: CollateralToken
+    network: goerli
+    source:
+      abi: CollateralToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/core.ts
+      entities:
+        - Transaction
+      abis:
+        - name: CollateralToken
+          file: ./abis/CollateralToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleCollateralTokenTransfer
