@@ -6,5 +6,5 @@ export async function mockPregenPassFixtures(
   mockPregenPassURI: string
 ): Promise<MockPregenPass> {
   const Factory = await ethers.getContractFactory('MockPregenPass')
-  return (await Factory.deploy(mockPregenPassOwner, mockPregenPassURI)) as MockPregenPass
+  return (await Factory.deploy(mockPregenPassOwner, mockPregenPassURI)) as unknown as MockPregenPass
 }

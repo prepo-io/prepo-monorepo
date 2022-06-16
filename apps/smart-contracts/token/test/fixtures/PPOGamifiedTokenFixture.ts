@@ -12,5 +12,9 @@ export async function mockPPOGamifiedTokenDeployFixture(
       PlatformTokenVendorFactory: platformTokenVendorFactoryAddress,
     },
   })
-  return (await Factory.deploy(nexus, rewardsToken, questManager)) as MockPPOGamifiedToken
+  return (await Factory.deploy(
+    nexus,
+    rewardsToken,
+    questManager
+  )) as unknown as MockPPOGamifiedToken
 }

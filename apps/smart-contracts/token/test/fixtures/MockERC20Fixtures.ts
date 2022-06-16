@@ -16,5 +16,5 @@ export async function mockERC20Fixture(
     decimal,
     initialRecipient,
     initialMint
-  )) as MockERC20
+  )) as unknown as MockERC20
 }

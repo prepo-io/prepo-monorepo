@@ -1,6 +1,6 @@
 import { ethers } from 'hardhat'
-import { MockPPOStaking } from '../../types/generated'
 import { BigNumber } from 'ethers'
+import { MockPPOStaking } from '../../types/generated'
 
 export async function mockPPOStakingDeployFixture(
   platformTokenVendorFactoryAddress: string,
@@ -23,5 +23,5 @@ export async function mockPPOStakingDeployFixture(
     stakedToken,
     cooldownSeconds,
     unstakeWindow
-  )) as MockPPOStaking
+  )) as unknown as MockPPOStaking
 }

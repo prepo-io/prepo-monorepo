@@ -11,5 +11,5 @@ export async function pregenesisPointsFixture(
     pregenPointsOwner,
     pregenPointsName,
     pregenPointsSymbol
-  )) as PregenesisPoints
+  )) as unknown as PregenesisPoints
 }
