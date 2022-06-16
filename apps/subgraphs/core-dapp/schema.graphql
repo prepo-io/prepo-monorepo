@@ -59,6 +59,8 @@ type Pool @entity {
   createdAtTimestamp: BigInt!
   "at which block was pool created"
   createdAtBlockNumber: BigInt!
+  "transactions related to this pool"
+  transactions: [Transaction!]! @derivedFrom(field: "pool")
 }
 
 type Position @entity {
@@ -85,4 +87,33 @@ type Token @entity {
   defaultPool: Pool @derivedFrom(field: "token")
   "price in USD"
   priceUSD: BigDecimal!
+}
+
+type Transaction @entity {
+  "template: {ACTION}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}"
+  id: ID!
+  "actions we recognized (e.g. send, open, close, receive)"
+  action: String!
+  "token amount (for Pool related events, this is the token amount user receives)"
+  amount: BigDecimal!
+  "token amount in USD value (for Pool related events, this is the amount user paid (input amount) in USD value)"
+  amountUSD: BigDecimal!
+  "block number"
+  createdAtBlockNumber: BigInt!
+  "when transaction was made"
+  createdAtTimestamp: BigInt!
+  "type of event (e.g. Swap, Transfer)"
+  event: String!
+  "transaction hash"
+  hash: String!
+  "owner"
+  ownerAddress: String!
+  "the token which owner's balance is affected"
+  tokenAddress: String!
+  "[Collateral token's transfer] base token address if transaction is transfer of collateral tokens"
+  baseTokenAddress: String
+  "[Long/short token's transfer] market if transaction is transfer of long short token"
+  market: Market
+  "[prePO related Pool interaction] pool if transaction is swap"
+  pool: Pool
 }
