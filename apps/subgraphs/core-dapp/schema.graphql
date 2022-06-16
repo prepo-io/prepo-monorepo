@@ -1,12 +1,16 @@
 type CollateralToken @entity {
   # address of collateral token contract
   id: ID!
+  #whether collateral token is allowed
+  allowed: Boolean!
+  # address of base token
+  baseToken: String!
+  # decimals of collateral token
+  decimals: BigInt!
   # name of collateral token
   name: String!
   # symbol of collateral token
   symbol: String!
-  # decimals of collateral token
-  decimals: BigInt!
 }
 
 type Market @entity {
