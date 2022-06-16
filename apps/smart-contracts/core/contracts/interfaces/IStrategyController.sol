@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import './IStrategy.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import "./IStrategy.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
  * @notice Strategy Controller acts as an intermediary between the Strategy

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import './LongShortToken.sol';
-import './PrePOMarket.sol';
-import './interfaces/ILongShortToken.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol';
-import './interfaces/IPrePOMarketFactory.sol';
+import "./LongShortToken.sol";
+import "./PrePOMarket.sol";
+import "./interfaces/ILongShortToken.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "./interfaces/IPrePOMarketFactory.sol";
 
 contract PrePOMarketFactory is IPrePOMarketFactory, OwnableUpgradeable, ReentrancyGuardUpgradeable {
   mapping(address => bool) private _validCollateral;
@@ -38,7 +38,7 @@ contract PrePOMarketFactory is IPrePOMarketFactory, OwnableUpgradeable, Reentran
     uint256 _redemptionFee,
     uint256 _expiryTime
   ) external override onlyOwner nonReentrant {
-    require(_validCollateral[_collateral], 'Invalid collateral');
+    require(_validCollateral[_collateral], "Invalid collateral");
 
     (LongShortToken _longToken, LongShortToken _shortToken) = _createPairTokens(
       _tokenNameSuffix,
@@ -76,10 +76,10 @@ contract PrePOMarketFactory is IPrePOMarketFactory, OwnableUpgradeable, Reentran
     internal
     returns (LongShortToken _newLongToken, LongShortToken _newShortToken)
   {
-    string memory _longTokenName = string(abi.encodePacked('LONG', ' ', _tokenNameSuffix));
-    string memory _shortTokenName = string(abi.encodePacked('SHORT', ' ', _tokenNameSuffix));
-    string memory _longTokenSymbol = string(abi.encodePacked('L', '_', _tokenSymbolSuffix));
-    string memory _shortTokenSymbol = string(abi.encodePacked('S', '_', _tokenSymbolSuffix));
+    string memory _longTokenName = string(abi.encodePacked("LONG", " ", _tokenNameSuffix));
+    string memory _shortTokenName = string(abi.encodePacked("SHORT", " ", _tokenNameSuffix));
+    string memory _longTokenSymbol = string(abi.encodePacked("L", "_", _tokenSymbolSuffix));
+    string memory _shortTokenSymbol = string(abi.encodePacked("S", "_", _tokenSymbolSuffix));
     _newLongToken = new LongShortToken(_longTokenName, _longTokenSymbol);
     _newShortToken = new LongShortToken(_shortTokenName, _shortTokenSymbol);
     return (_newLongToken, _newShortToken);
