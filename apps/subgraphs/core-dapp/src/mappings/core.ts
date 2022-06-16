@@ -1,5 +1,9 @@
 import { updateLongShortPrices, updatePosition } from './accounting'
-import { addCollateralTransactions, addLongShortTokenTransactions } from './transaction'
+import {
+  addCollateralTransactions,
+  addLongShortTokenTransactions,
+  addSwapTransactions,
+} from './transaction'
 import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
 import { Pool } from '../generated/types/schema'
 import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
@@ -19,4 +23,5 @@ export function handleUniswapV3Swap(event: Swap): void {
   if (pool === null) return // swaps irrelevant to prePO
 
   updateLongShortPrices(event, pool)
+  addSwapTransactions(event, pool)
 }
