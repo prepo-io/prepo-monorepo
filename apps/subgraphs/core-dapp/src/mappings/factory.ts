@@ -10,6 +10,7 @@ import {
   CollateralToken as CollateralTokenEntity,
 } from '../generated/types/schema'
 import {
+  CollateralToken as CollateralTokenTemplate,
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
   UniswapV3Pool as UniswapV3PoolTemplate,
@@ -42,6 +43,7 @@ export function handleCollateralValidityChanged(event: CollateralValidityChanged
     collateral.decimals = BigInt.fromI32(decimalsResult.value)
     collateral.name = nameResult.value
     collateral.symbol = symbolResult.value
+    CollateralTokenTemplate.create(event.params.collateral)
   }
   collateral.allowed = event.params.allowed
   collateral.save()
