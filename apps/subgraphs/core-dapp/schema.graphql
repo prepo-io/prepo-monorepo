@@ -38,8 +38,6 @@ type Market @entity {
   createdAtTimestamp: BigInt!
   # at which block was market created
   createdAtBlockNumber: BigInt!
-  # long short token transactions of the market
-  transactions: [Transaction!]! @derivedFrom(field: "market")
 }
 
 type Pool @entity {
@@ -92,17 +90,17 @@ type Token @entity {
 }
 
 type Transaction @entity {
-  # template: {SEND_OR_RECEIVE}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}
+  # template: {ACTION}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}
   id: ID!
-  # the output token amount
+  # token amount (for Pool related events, this is the token amount user receives)
   amount: BigDecimal!
-  # the input value in USD
+  # token amount in USD value (for Pool related events, this is the amount user paid (input amount) in USD value)
   amountUSD: BigDecimal!
   # block number
   createdAtBlockNumber: BigInt!
   # when transaction was made
   createdAtTimestamp: BigInt!
-  # e.g. send, receive
+  # actions we recognized (e.g. send, open, close, receive)
   action: String!
   # type of event (e.g. Swap, Transfer)
   event: String!
@@ -112,10 +110,10 @@ type Transaction @entity {
   ownerAddress: String!
   # the token which owner's balance is affected
   tokenAddress: String!
-  # base token address if transaction is transfer of collateral tokens
+  # [Collateral token's transfer] base token address if transaction is transfer of collateral tokens
   baseTokenAddress: String
-  # market if transaction is transfer of long short token
+  # [Long/short token's transfer] market if transaction is transfer of long short token
   market: Market
-  # pool if transaction is swap
+  # [prePO related Pool interaction] pool if transaction is swap
   pool: Pool
 }
