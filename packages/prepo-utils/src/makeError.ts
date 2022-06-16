@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const makeError = (error: any, log = true): Error => {
+export const makeError = (errorObject: any, log = true): Error => {
   const errorMessage =
-    typeof error === 'string'
-      ? error
-      : error.data?.message ?? error.reason ?? error.message ?? JSON.stringify(error)
+    typeof errorObject === 'string'
+      ? errorObject
+      : errorObject.error?.data?.originalError.message ?? errorObject.reason ?? errorObject.message ?? JSON.stringify(errorObject)
   // eslint-disable-next-line no-console
-  if (log) console.error(errorMessage, error)
+  if (log) console.error(errorMessage, errorObject)
   return new Error(errorMessage)
 }
