@@ -4,7 +4,7 @@ import { LongShortToken } from '../generated/types/templates/LongShortToken/Long
 import { ZERO_BD } from '../utils/constants'
 import { convertTokenToDecimal } from '../utils/math'
 
-function updatePosition(ownerAddress: Address, tokenAddress: Address, amount: BigInt): void {
+export function updatePosition(ownerAddress: Address, tokenAddress: Address, amount: BigInt): void {
   const ownerAddressString = ownerAddress.toHexString()
   const tokenAddressString = tokenAddress.toHexString()
   const id = `${tokenAddressString}-${ownerAddressString}`
@@ -32,13 +32,4 @@ function updatePosition(ownerAddress: Address, tokenAddress: Address, amount: Bi
   const costBasis = totalWeight.div(balanceBD)
   position.costBasis = costBasis
   position.save()
-}
-
-export const manageRecipientPosition = (
-  tokenAddress: Address,
-  ownerAddress: Address,
-  amount: BigInt
-): void => {
-  updatePosition(ownerAddress, tokenAddress, amount)
-  // TODO: Keep track of user transaction record
 }

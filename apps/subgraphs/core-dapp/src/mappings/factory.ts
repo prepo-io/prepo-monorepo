@@ -10,6 +10,7 @@ import {
   CollateralToken as CollateralTokenEntity,
 } from '../generated/types/schema'
 import {
+  CollateralToken as CollateralTokenTemplate,
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
   UniswapV3Pool as UniswapV3PoolTemplate,
@@ -25,17 +26,24 @@ export function handleCollateralValidityChanged(event: CollateralValidityChanged
   let collateral = CollateralTokenEntity.load(collateralAddress)
   if (collateral === null) {
     const collateralContract = CollateralToken.bind(event.params.collateral)
+    const baseTokenResult = collateralContract.try_getBaseToken()
     const decimalsResult = collateralContract.try_decimals()
     const symbolResult = collateralContract.try_symbol()
     const nameResult = collateralContract.try_name()
 
-    const invalidERC20 = decimalsResult.reverted && symbolResult.reverted && nameResult.reverted
-    if (invalidERC20) return
+    const invalidCollateralInterface =
+      decimalsResult.reverted ||
+      symbolResult.reverted ||
+      nameResult.reverted ||
+      baseTokenResult.reverted
+    if (invalidCollateralInterface) return
 
     collateral = new CollateralTokenEntity(collateralAddress)
+    collateral.baseToken = baseTokenResult.value.toHexString()
     collateral.decimals = BigInt.fromI32(decimalsResult.value)
     collateral.name = nameResult.value
     collateral.symbol = symbolResult.value
+    CollateralTokenTemplate.create(event.params.collateral)
   }
   collateral.allowed = event.params.allowed
   collateral.save()

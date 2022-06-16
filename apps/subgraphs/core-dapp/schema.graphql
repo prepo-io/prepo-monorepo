@@ -9,6 +9,8 @@ type CollateralToken @entity {
   symbol: String!
   # decimals of collateral token
   decimals: BigInt!
+  # address of base token
+  baseToken: String!
 }
 
 type Market @entity {
@@ -36,6 +38,8 @@ type Market @entity {
   createdAtTimestamp: BigInt!
   # at which block was market created
   createdAtBlockNumber: BigInt!
+  # long short token transactions of the market
+  transactions: [Transaction!]! @derivedFrom(field: "market")
 }
 
 type Pool @entity {
@@ -57,6 +61,8 @@ type Pool @entity {
   createdAtTimestamp: BigInt!
   # at which block was pool created
   createdAtBlockNumber: BigInt!
+  # transactions related to this pool
+  transactions: [Transaction!]! @derivedFrom(field: "pool")
 }
 
 type Position @entity {
@@ -86,20 +92,30 @@ type Token @entity {
 }
 
 type Transaction @entity {
-  # transaction ahsh
+  # template: {SEND_OR_RECEIVE}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}
   id: ID!
-  # value of transaction in USD
+  # the output token amount
+  amount: BigDecimal!
+  # the input value in USD
   amountUSD: BigDecimal!
+  # block number
+  createdAtBlockNumber: BigInt!
   # when transaction was made
   createdAtTimestamp: BigInt!
-  # type of event (e.g. Deposit, Withdraw, Open, Short)
+  # e.g. send, receive
+  action: String!
+  # type of event (e.g. Swap, Transfer)
   event: String!
+  # transaction hash
+  hash: String!
   # owner
   ownerAddress: String!
-  # address of token
+  # the token which owner's balance is affected
   tokenAddress: String!
-  # long short or collateral token
-  tokenType: String!
-  # relevant address (e.g. base token of collateral token, null for long short)
-  relevantAddress: String
+  # base token address if transaction is transfer of collateral tokens
+  baseTokenAddress: String
+  # market if transaction is transfer of long short token
+  market: Market
+  # pool if transaction is swap
+  pool: Pool
 }
