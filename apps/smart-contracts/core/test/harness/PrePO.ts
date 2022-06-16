@@ -114,7 +114,7 @@ export class PrePO {
     const events = await getMarketAddedEvent(this.marketFactory)
     const prePOMarket = await ethers.getContractFactory('PrePOMarket')
     this.markets[params.tokenNameSuffix] = {
-      contract: prePOMarket.attach(events.market) as PrePOMarket,
+      contract: prePOMarket.attach(events.market) as unknown as PrePOMarket,
       hash: events.longShortHash,
     }
   }

@@ -22,7 +22,6 @@ task('fund-position', 'fund user with collateral and purchase a long/short posit
     '',
     types.string
   )
-  //@ts-ignore
   .setAction(async (args, { ethers, getChainId }) => {
     const prePO = await PrePO.Instance.init(await getChainId(), ethers)
     const minter = await ethers.provider.getSigner(args.minter)
@@ -144,7 +143,6 @@ task('fund-position', 'fund user with collateral and purchase a long/short posit
 task('display-balances', 'display balances for an account')
   .addParam('market', 'address of market')
   .addOptionalParam('account', 'account to display market balances for', '', types.string)
-  //@ts-ignore
   .setAction(async (args, { ethers, getChainId }) => {
     const prePO = await PrePO.Instance.init(await getChainId(), ethers)
     const market = prePO.marketContractFactory.attach(args.market) as PrePOMarket

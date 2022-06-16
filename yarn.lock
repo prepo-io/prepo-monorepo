@@ -2705,7 +2705,7 @@
     patch-package "^6.2.2"
     postinstall-postinstall "^2.1.0"
 
-"@ethereumjs/block@^3.4.0", "@ethereumjs/block@^3.5.0", "@ethereumjs/block@^3.6.2":
+"@ethereumjs/block@^3.5.0", "@ethereumjs/block@^3.6.2":
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/@ethereumjs/block/-/block-3.6.2.tgz#63d1e26d0b7a7a3684fce920de6ebabec1e5b674"
   integrity sha512-mOqYWwMlAZpYUEOEqt7EfMFuVL2eyLqWWIzcf4odn6QgXY8jBI2NhVuJncrMCKeMZrsJAe7/auaRRB6YcdH+Qw==
@@ -2715,7 +2715,7 @@
     ethereumjs-util "^7.1.4"
     merkle-patricia-tree "^4.2.4"
 
-"@ethereumjs/blockchain@^5.4.0", "@ethereumjs/blockchain@^5.5.2", "@ethereumjs/blockchain@^5.5.3":
+"@ethereumjs/blockchain@^5.5.2", "@ethereumjs/blockchain@^5.5.3":
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/@ethereumjs/blockchain/-/blockchain-5.5.3.tgz#aa49a6a04789da6b66b5bcbb0d0b98efc369f640"
   integrity sha512-bi0wuNJ1gw4ByNCV56H0Z4Q7D+SxUbwyG12Wxzbvqc89PXLRNR20LBcSUZRKpN0+YCPo6m0XZL/JLio3B52LTw==
@@ -2764,7 +2764,7 @@
     "@ethereumjs/common" "^2.6.4"
     ethereumjs-util "^7.1.5"
 
-"@ethereumjs/vm@^5.5.2", "@ethereumjs/vm@^5.9.0":
+"@ethereumjs/vm@^5.9.0":
   version "5.9.2"
   resolved "https://registry.yarnpkg.com/@ethereumjs/vm/-/vm-5.9.2.tgz#e707976d507793096e449a87f0b204f614421cee"
   integrity sha512-6zvH7iuMI7+74aGak6j9+GDYpV2T08vy2FL4iSK1PId7lNyjFELCAzDCSTQcVoyPoRMkZvRHy79W+djwvguMCA==
@@ -2957,7 +2957,7 @@
     "@ethersproject/logger" "^5.6.0"
     "@ethersproject/properties" "^5.6.0"
 
-"@ethersproject/abstract-signer@5.6.2", "@ethersproject/abstract-signer@^5.4.0", "@ethersproject/abstract-signer@^5.4.1", "@ethersproject/abstract-signer@^5.5.0", "@ethersproject/abstract-signer@^5.6.0", "@ethersproject/abstract-signer@^5.6.2":
+"@ethersproject/abstract-signer@5.6.2", "@ethersproject/abstract-signer@^5.4.0", "@ethersproject/abstract-signer@^5.5.0", "@ethersproject/abstract-signer@^5.6.0", "@ethersproject/abstract-signer@^5.6.2":
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/@ethersproject/abstract-signer/-/abstract-signer-5.6.2.tgz#491f07fc2cbd5da258f46ec539664713950b0b33"
   integrity sha512-n1r6lttFBG0t2vNiI3HoWaS/KdOt8xyDjzlP2cuevlWLG6EX0OwcKLyG/Kp/cuwNxdy/ous+R/DEMdTUwWQIjQ==
@@ -3099,7 +3099,7 @@
     "@ethersproject/logger" "^5.6.0"
     bn.js "^4.11.9"
 
-"@ethersproject/bignumber@5.6.2", "@ethersproject/bignumber@>=5.0.0-beta.130", "@ethersproject/bignumber@^5.0.7", "@ethersproject/bignumber@^5.4.0", "@ethersproject/bignumber@^5.4.1", "@ethersproject/bignumber@^5.5.0", "@ethersproject/bignumber@^5.6.0", "@ethersproject/bignumber@^5.6.2":
+"@ethersproject/bignumber@5.6.2", "@ethersproject/bignumber@>=5.0.0-beta.130", "@ethersproject/bignumber@^5.0.7", "@ethersproject/bignumber@^5.4.0", "@ethersproject/bignumber@^5.5.0", "@ethersproject/bignumber@^5.6.0", "@ethersproject/bignumber@^5.6.2":
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/@ethersproject/bignumber/-/bignumber-5.6.2.tgz#72a0717d6163fab44c47bcc82e0c550ac0315d66"
   integrity sha512-v7+EEUbhGqT3XJ9LMPsKvXYHFc8eHxTowFCG/HgJErmq4XHJ2WR7aeyICg3uTOAQ7Icn0GFHAohXEhxQHq4Ubw==
@@ -3212,7 +3212,7 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/transactions" "^5.6.0"
 
-"@ethersproject/contracts@5.6.2", "@ethersproject/contracts@^5.4.1":
+"@ethersproject/contracts@5.6.2":
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.6.2.tgz#20b52e69ebc1b74274ff8e3d4e508de971c287bc"
   integrity sha512-hguUA57BIKi6WY0kHvZp6PwPlWF87MCeB4B7Z7AbUpTxfFXFdn/3b0GmjZPagIHS+3yhcBJDnuEfU4Xz+Ks/8g==
@@ -3672,7 +3672,7 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@5.6.8", "@ethersproject/providers@^5.0.10", "@ethersproject/providers@^5.4.4":
+"@ethersproject/providers@5.6.8", "@ethersproject/providers@^5.0.10":
   version "5.6.8"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.8.tgz#22e6c57be215ba5545d3a46cf759d265bb4e879d"
   integrity sha512-Wf+CseT/iOJjrGtAOf3ck9zS7AgPmr2fZ3N97r4+YXN3mBePTG2/bJ8DApl9mVwYL+RpYbNxMEkEp4mPGdwG/w==
@@ -3881,7 +3881,7 @@
     "@ethersproject/sha2" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@ethersproject/solidity@5.6.1", "@ethersproject/solidity@^5.4.0":
+"@ethersproject/solidity@5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/solidity/-/solidity-5.6.1.tgz#5845e71182c66d32e6ec5eefd041fca091a473e2"
   integrity sha512-KWqVLkUUoLBfL1iwdzUVlkNqAUIFMpbbeH0rgCfKmJp0vFtY4AsaN91gHKo9ZZLkC4UOm3cI3BmMV4N53BOq4g==
@@ -4088,7 +4088,7 @@
     "@ethersproject/transactions" "^5.6.0"
     "@ethersproject/wordlists" "^5.6.0"
 
-"@ethersproject/wallet@5.6.2", "@ethersproject/wallet@^5.4.0":
+"@ethersproject/wallet@5.6.2":
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/@ethersproject/wallet/-/wallet-5.6.2.tgz#cd61429d1e934681e413f4bc847a5f2f87e3a03c"
   integrity sha512-lrgh0FDQPuOnHcF80Q3gHYsSUODp6aJLAdDmDV0xKCN/T7D99ta1jGVhulg3PY8wiXEngD0DfM0I2XKXlrqJfg==
@@ -5082,7 +5082,7 @@
     safe-buffer "^5.1.1"
     util.promisify "^1.0.0"
 
-"@nomiclabs/hardhat-ethers@yarn:hardhat-deploy-ethers@0.3.0-beta.13":
+"@nomiclabs/hardhat-ethers@yarn:hardhat-deploy-ethers@0.3.0-beta.13", hardhat-deploy-ethers@0.3.0-beta.13:
   version "0.3.0-beta.13"
   resolved "https://registry.yarnpkg.com/hardhat-deploy-ethers/-/hardhat-deploy-ethers-0.3.0-beta.13.tgz#b96086ff768ddf69928984d5eb0a8d78cfca9366"
   integrity sha512-PdWVcKB9coqWV1L7JTpfXRCI91Cgwsm7KLmBcwZ8f0COSm1xtABHZTyz3fvF6p42cTnz1VM0QnfDvMFlIRkSNw==
@@ -6269,11 +6269,6 @@
     eval "^0.1.8"
     p-map "^4.0.0"
     webpack-sources "^3.2.2"
-
-"@solidity-parser/parser@^0.11.0":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.11.1.tgz#fa840af64840c930f24a9c82c08d4a092a068add"
-  integrity sha512-H8BSBoKE8EubJa0ONqecA2TviT3TnHeC4NpgnAHSUiuhZoQBfPB4L2P9bs8R6AoTW10Endvh3vc+fomVMIDIYQ==
 
 "@solidity-parser/parser@^0.12.0":
   version "0.12.2"
@@ -16470,16 +16465,6 @@ eth-sig-util@^1.4.2:
     ethereumjs-abi "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util "^5.1.1"
 
-eth-sig-util@^2.5.2:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/eth-sig-util/-/eth-sig-util-2.5.4.tgz#577b01fe491b6bf59b0464be09633e20c1677bc5"
-  integrity sha512-aCMBwp8q/4wrW4QLsF/HYBOSA7TpLKmkVwP3pYQNkEEseW2Rr8Z5Uxc9/h6HX+OG3tuHo+2bINVSihIeBfym6A==
-  dependencies:
-    ethereumjs-abi "0.6.8"
-    ethereumjs-util "^5.1.1"
-    tweetnacl "^1.0.3"
-    tweetnacl-util "^0.15.0"
-
 eth-sig-util@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/eth-sig-util/-/eth-sig-util-3.0.1.tgz#8753297c83a3f58346bd13547b59c4b2cd110c96"
@@ -18883,34 +18868,6 @@ hardhat-deploy@0.11.10:
     qs "^6.9.4"
     zksync-web3 "^0.4.0"
 
-hardhat-deploy@0.9.24:
-  version "0.9.24"
-  resolved "https://registry.yarnpkg.com/hardhat-deploy/-/hardhat-deploy-0.9.24.tgz#0e0ca589dbeb9682c5b43e935246390cc5d6fb14"
-  integrity sha512-fIIg6Wt7lV8h+6c6dFnINUKcJ/5Wfe5GYDaDsGGPqaK2b71DaeFHjsWRL+2ozaHkMZjdyYBOweY09wRu/KM1Qw==
-  dependencies:
-    "@ethersproject/abi" "^5.4.0"
-    "@ethersproject/abstract-signer" "^5.4.1"
-    "@ethersproject/address" "^5.4.0"
-    "@ethersproject/bignumber" "^5.4.1"
-    "@ethersproject/bytes" "^5.4.0"
-    "@ethersproject/constants" "^5.4.0"
-    "@ethersproject/contracts" "^5.4.1"
-    "@ethersproject/providers" "^5.4.4"
-    "@ethersproject/solidity" "^5.4.0"
-    "@ethersproject/transactions" "^5.4.0"
-    "@ethersproject/wallet" "^5.4.0"
-    "@types/qs" "^6.9.7"
-    axios "^0.21.1"
-    chalk "^4.1.2"
-    chokidar "^3.5.2"
-    debug "^4.3.2"
-    enquirer "^2.3.6"
-    form-data "^4.0.0"
-    fs-extra "^10.0.0"
-    match-all "^1.2.6"
-    murmur-128 "^0.2.1"
-    qs "^6.9.4"
-
 hardhat-gas-reporter@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/hardhat-gas-reporter/-/hardhat-gas-reporter-1.0.4.tgz#59e3137e38e0dfeac2e4f90d5c74160b50ad4829"
@@ -18918,59 +18875,6 @@ hardhat-gas-reporter@1.0.4:
   dependencies:
     eth-gas-reporter "^0.2.20"
     sha1 "^1.1.1"
-
-hardhat@2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.4.tgz#9ff3f139f697bfc4e14836a3fef3ca4c62357d65"
-  integrity sha512-6QNfu1FptjtyGJ+jBR7LMX7AMY9gWWw9kAUD7v0YZNZH1ZBgsZdMHqXKiSzO5pLQXo+fy9zZovKAUNYbjQ/1fw==
-  dependencies:
-    "@ethereumjs/block" "^3.4.0"
-    "@ethereumjs/blockchain" "^5.4.0"
-    "@ethereumjs/common" "^2.4.0"
-    "@ethereumjs/tx" "^3.3.0"
-    "@ethereumjs/vm" "^5.5.2"
-    "@ethersproject/abi" "^5.1.2"
-    "@sentry/node" "^5.18.1"
-    "@solidity-parser/parser" "^0.11.0"
-    "@types/bn.js" "^5.1.0"
-    "@types/lru-cache" "^5.1.0"
-    abort-controller "^3.0.0"
-    adm-zip "^0.4.16"
-    ansi-escapes "^4.3.0"
-    chalk "^2.4.2"
-    chokidar "^3.4.0"
-    ci-info "^2.0.0"
-    debug "^4.1.1"
-    enquirer "^2.3.0"
-    env-paths "^2.2.0"
-    eth-sig-util "^2.5.2"
-    ethereum-cryptography "^0.1.2"
-    ethereumjs-abi "^0.6.8"
-    ethereumjs-util "^7.1.0"
-    find-up "^2.1.0"
-    fp-ts "1.19.3"
-    fs-extra "^7.0.1"
-    glob "^7.1.3"
-    https-proxy-agent "^5.0.0"
-    immutable "^4.0.0-rc.12"
-    io-ts "1.10.4"
-    lodash "^4.17.11"
-    merkle-patricia-tree "^4.2.0"
-    mnemonist "^0.38.0"
-    mocha "^7.1.2"
-    node-fetch "^2.6.0"
-    qs "^6.7.0"
-    raw-body "^2.4.1"
-    resolve "1.17.0"
-    semver "^6.3.0"
-    slash "^3.0.0"
-    solc "0.7.3"
-    source-map-support "^0.5.13"
-    stacktrace-parser "^0.1.10"
-    "true-case-path" "^2.2.1"
-    tsort "0.0.1"
-    uuid "^3.3.2"
-    ws "^7.4.6"
 
 hardhat@2.9.6:
   version "2.9.6"
@@ -23114,7 +23018,7 @@ merkle-patricia-tree@^2.1.2, merkle-patricia-tree@^2.3.2:
     rlp "^2.0.0"
     semaphore ">=1.0.1"
 
-merkle-patricia-tree@^4.2.0, merkle-patricia-tree@^4.2.4:
+merkle-patricia-tree@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/merkle-patricia-tree/-/merkle-patricia-tree-4.2.4.tgz#ff988d045e2bf3dfa2239f7fabe2d59618d57413"
   integrity sha512-eHbf/BG6eGNsqqfbLED9rIqbsF4+sykEaBn6OLNs71tjclbMcMOk1tEPmJKcNcNCLkvbpY/lwyOlizWsqPNo8w==
@@ -23490,7 +23394,7 @@ mobx@6.6.0:
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.6.0.tgz#617ca1f3b745a781fa89c5eb94a773e3cbeff8ae"
   integrity sha512-MNTKevLH/6DShLZcmSL351+JgiJPO56A4GUpoiDQ3/yZ0mAtclNLdHK9q4BcQhibx8/JSDupfTpbX2NZPemlRg==
 
-mocha@^7.1.1, mocha@^7.1.2:
+mocha@^7.1.1:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-7.2.0.tgz#01cc227b00d875ab1eed03a75106689cfed5a604"
   integrity sha512-O9CIypScywTVpNaRrCAgoUnJgozpIofjKUYmJhiCIJMiuYnLI6otcb1/kpW9/n/tJODHGZ7i8aLQoDVsMtOKQQ==

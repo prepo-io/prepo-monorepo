@@ -8,12 +8,12 @@ chai.use(solidity)
 
 export async function accountAccessControllerFixture(): Promise<AccountAccessController> {
   const accountAccessController = await ethers.getContractFactory('AccountAccessController')
-  return (await accountAccessController.deploy()) as AccountAccessController
+  return (await accountAccessController.deploy()) as unknown as AccountAccessController
 }
 
 export async function mockAccountAccessControllerFixture(): Promise<MockAccountAccessController> {
   const mockAccountAccessController = await ethers.getContractFactory('MockAccountAccessController')
-  return (await mockAccountAccessController.deploy()) as MockAccountAccessController
+  return (await mockAccountAccessController.deploy()) as unknown as MockAccountAccessController
 }
 
 export async function smockAccountAccessControllerFixture(): Promise<MockContract> {

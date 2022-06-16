@@ -8,12 +8,12 @@ chai.use(solidity)
 
 export async function depositHookFixture(depositRecordAddress: string): Promise<DepositHook> {
   const depositHook = await ethers.getContractFactory('DepositHook')
-  return (await depositHook.deploy(depositRecordAddress)) as DepositHook
+  return (await depositHook.deploy(depositRecordAddress)) as unknown as DepositHook
 }
 
 export async function withdrawHookFixture(depositRecordAddress: string): Promise<WithdrawHook> {
   const withdrawHook = await ethers.getContractFactory('WithdrawHook')
-  return (await withdrawHook.deploy(depositRecordAddress)) as WithdrawHook
+  return (await withdrawHook.deploy(depositRecordAddress)) as unknown as WithdrawHook
 }
 
 export async function smockDepositHookFixture(depositRecordAddress: string): Promise<MockContract> {

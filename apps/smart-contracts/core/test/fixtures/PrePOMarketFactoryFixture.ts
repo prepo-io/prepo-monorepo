@@ -25,7 +25,8 @@ export type CreateMarketParams = {
 }
 
 export async function prePOMarketFactoryFixture(): Promise<PrePOMarketFactory> {
-  const prePOMarketFactory = await ethers.getContractFactory('PrePOMarketFactory')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prePOMarketFactory: any = await ethers.getContractFactory('PrePOMarketFactory')
   return (await upgrades.deployProxy(prePOMarketFactory, [])) as PrePOMarketFactory
 }
 

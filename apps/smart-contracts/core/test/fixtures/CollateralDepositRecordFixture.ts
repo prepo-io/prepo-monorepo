@@ -15,7 +15,7 @@ export async function collateralDepositRecordFixture(
   return (await collateralDepositRecord.deploy(
     globalDepositCap,
     accountDepositCap
-  )) as CollateralDepositRecord
+  )) as unknown as CollateralDepositRecord
 }
 
 export async function smockCollateralDepositRecordFixture(

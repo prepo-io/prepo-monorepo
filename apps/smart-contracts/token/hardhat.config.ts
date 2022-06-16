@@ -12,8 +12,6 @@ import { HDAccountsUserConfig, NetworkUserConfig } from 'hardhat/types'
 import { resolve } from 'path'
 import 'solidity-coverage'
 
-import 'ts-node/register'
-
 dotenvConfig({ path: resolve(__dirname, './.env') })
 
 // https://hardhat.org/config/
@@ -55,7 +53,7 @@ export const accounts: HDAccountsUserConfig = {
 }
 
 function createTestnetConfig(network: keyof typeof chainIds): NetworkUserConfig {
-  const url: string = 'https://' + network + '.infura.io/v3/' + infuraApiKey
+  const url = `https://${network}.infura.io/v3/${infuraApiKey}`
   return {
     accounts,
     chainId: chainIds[network],
