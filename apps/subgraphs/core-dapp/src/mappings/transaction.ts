@@ -1,6 +1,7 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
-import { CollateralToken, Transaction } from '../generated/types/schema'
+import { CollateralToken, Token, Transaction } from '../generated/types/schema'
 import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
+import { Transfer as LongShortTokenTransfer } from '../generated/types/templates/LongShortToken/LongShortToken'
 import { ACTIONS_RECEIVE, ACTIONS_SEND, EVENTS_TRANSFER } from '../utils/constants'
 
 export function makeTransactionId(
@@ -52,5 +53,28 @@ export function addCollateralTransactions(event: CollateralTokenTransfer): void 
   toTransaction.amountUSD = valueBD
   toTransaction.baseTokenAddress = collateralToken.baseToken
   toTransaction.event = EVENTS_TRANSFER
+  toTransaction.save()
+}
+
+export function addLongShortTokenTransactions(event: LongShortTokenTransfer): void {
+  const longShortToken = Token.load(event.address.toHexString())
+  if (longShortToken === null) return
+
+  const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
+  const toTransaction = makeTransaction(event, event.params.to, ACTIONS_RECEIVE)
+
+  const valueBD = event.params.value.toBigDecimal()
+  const valueUSD = longShortToken.priceUSD.times(valueBD)
+
+  fromTransaction.amount = valueBD
+  fromTransaction.amountUSD = valueUSD
+  fromTransaction.event = EVENTS_TRANSFER
+  fromTransaction.market = longShortToken.market
+  fromTransaction.save()
+
+  toTransaction.amount = valueBD
+  toTransaction.amountUSD = valueUSD
+  toTransaction.event = EVENTS_TRANSFER
+  toTransaction.market = longShortToken.market
   toTransaction.save()
 }
