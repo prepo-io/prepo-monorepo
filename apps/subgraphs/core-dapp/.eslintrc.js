@@ -11,6 +11,7 @@ module.exports = {
     'prefer-destructuring': 'off',
     'prefer-exponentiation-operator': 'off',
     'no-param-reassign': 'off',
+    eqeqeq: 'off',
   },
   // Removes the jest configuration since we are using chai here
   overrides: [],

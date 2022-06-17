@@ -8,6 +8,8 @@ import {
   Pool,
   Token,
   CollateralToken as CollateralTokenEntity,
+  LongShortToken,
+  BaseToken as BaseTokenEntity,
 } from '../generated/types/schema'
 import {
   CollateralToken as CollateralTokenTemplate,
@@ -17,32 +19,40 @@ import {
 } from '../generated/types/templates'
 import { MarketCreated } from '../generated/types/templates/PrePOMarket/PrePOMarket'
 import { PoolCreated } from '../generated/types/UniswapV3PoolFactory/UniswapV3PoolFactory'
-import { ZERO_BD, ZERO_BI } from '../utils/constants'
-import { fetchTokenDecimals } from '../utils/LongShortToken'
+import {
+  TOKEN_TYPE_COLLATERAL,
+  TOKEN_TYPE_COLLATERAL_BASE,
+  TOKEN_TYPE_LONG_SHORT,
+  ZERO_BD,
+  ZERO_BI,
+} from '../utils/constants'
 import { CollateralToken } from '../generated/types/PrePOMarketFactory/CollateralToken'
+import { fetchERC20 } from '../utils/ERC20'
 
 export function handleCollateralValidityChanged(event: CollateralValidityChanged): void {
   const collateralAddress = event.params.collateral.toHexString()
   let collateral = CollateralTokenEntity.load(collateralAddress)
   if (collateral === null) {
+    const collateralERC20 = fetchERC20(event.params.collateral, TOKEN_TYPE_COLLATERAL)
     const collateralContract = CollateralToken.bind(event.params.collateral)
     const baseTokenResult = collateralContract.try_getBaseToken()
-    const decimalsResult = collateralContract.try_decimals()
-    const symbolResult = collateralContract.try_symbol()
-    const nameResult = collateralContract.try_name()
 
-    const invalidCollateralInterface =
-      decimalsResult.reverted ||
-      symbolResult.reverted ||
-      nameResult.reverted ||
-      baseTokenResult.reverted
+    const invalidCollateralInterface = !collateralERC20 || baseTokenResult.reverted
     if (invalidCollateralInterface) return
+    const baseERC20 = fetchERC20(baseTokenResult.value, TOKEN_TYPE_COLLATERAL_BASE)
+
+    // base token is invalid erc20
+    if (!baseERC20) return
+    const base = new BaseTokenEntity(baseERC20.id)
+
+    base.collateral = collateralAddress
+    base.token = base.id
+    base.save()
 
     collateral = new CollateralTokenEntity(collateralAddress)
-    collateral.baseToken = baseTokenResult.value.toHexString()
-    collateral.decimals = BigInt.fromI32(decimalsResult.value)
-    collateral.name = nameResult.value
-    collateral.symbol = symbolResult.value
+    collateral.baseToken = baseERC20.id
+    collateral.token = collateral.id
+
     CollateralTokenTemplate.create(event.params.collateral)
   }
   collateral.allowed = event.params.allowed
@@ -55,26 +65,28 @@ export function handleMarketAdded(event: MarketAdded): void {
 
 export function handleMarketCreated(event: MarketCreated): void {
   const marketAddress = event.address.toHexString()
-  const longTokenAddress = event.params.longToken.toHexString()
-  const shortTokenAddress = event.params.shortToken.toHexString()
+  const longERC20 = fetchERC20(event.params.longToken, TOKEN_TYPE_LONG_SHORT)
+  const shortERC20 = fetchERC20(event.params.shortToken, TOKEN_TYPE_LONG_SHORT)
 
-  const longToken = new Token(longTokenAddress)
+  // invalid tokens
+  if (!longERC20 || !shortERC20) return
+  const longToken = new LongShortToken(longERC20.id)
   longToken.market = marketAddress
-  longToken.decimals = fetchTokenDecimals(event.params.longToken)
   longToken.priceUSD = ZERO_BD
+  longToken.token = longToken.id
 
-  const shortToken = new Token(shortTokenAddress)
+  const shortToken = new LongShortToken(shortERC20.id)
   shortToken.market = marketAddress
-  shortToken.decimals = fetchTokenDecimals(event.params.shortToken)
   shortToken.priceUSD = ZERO_BD
+  shortToken.token = shortToken.id
 
   // start tracking transfer event of theses tokens
   LongShortTokenTemplate.create(event.params.longToken)
   LongShortTokenTemplate.create(event.params.shortToken)
 
   const market = new Market(marketAddress)
-  market.longToken = longTokenAddress
-  market.shortToken = shortTokenAddress
+  market.longToken = longERC20.id
+  market.shortToken = shortERC20.id
   market.ceilingLongPrice = event.params.ceilingLongPrice
   market.ceilingValuation = event.params.ceilingValuation
   market.expiryTime = event.params.expiryTime
@@ -96,17 +108,25 @@ export function handlePoolCreated(event: PoolCreated): void {
   const token1 = Token.load(token1Address)
 
   // irrelevant pools
-  if (token0 === null && token1 === null) return
-  const longShortTokenAddress = token0 === null ? token1Address : token0Address
-  const longShortToken = Token.load(longShortTokenAddress)
+  if (token0 === null || token1 === null) return
 
-  // non long short token pool
-  if (longShortToken === null) return
+  // only track if one side is long short token and the other is collateral
+  const tokenTypesList: string[] = []
+  tokenTypesList.push(token0.type)
+  tokenTypesList.push(token1.type)
+  const hasLongShortToken = tokenTypesList.includes(TOKEN_TYPE_LONG_SHORT)
+  const hasCollateralToken = tokenTypesList.includes(TOKEN_TYPE_COLLATERAL)
+  if (!hasLongShortToken || !hasCollateralToken) return
+
+  const collateralTokenPosition = token0.type == TOKEN_TYPE_COLLATERAL ? 0 : 1
+
   const poolAddress = event.params.pool.toHexString()
   const pool = new Pool(poolAddress)
-  pool.token = longShortToken.id
-  pool.token0 = token0Address
-  pool.token1 = token1Address
+  pool.longShortToken = collateralTokenPosition === 0 ? token1.id : token0.id
+  pool.collateralToken = collateralTokenPosition === 0 ? token0.id : token1.id
+  pool.collateralTokenPosition = BigInt.fromI32(collateralTokenPosition)
+  pool.token0 = token0.id
+  pool.token1 = token1.id
   pool.token0Price = ZERO_BD
   pool.token1Price = ZERO_BD
   pool.sqrtPriceX96 = ZERO_BI
@@ -115,5 +135,4 @@ export function handlePoolCreated(event: PoolCreated): void {
 
   UniswapV3PoolTemplate.create(event.params.pool)
   pool.save()
-  longShortToken.save()
 }

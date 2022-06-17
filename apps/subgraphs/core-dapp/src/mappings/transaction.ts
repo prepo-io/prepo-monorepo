@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
-import { CollateralToken, Pool, Token, Transaction } from '../generated/types/schema'
+import { CollateralToken, LongShortToken, Pool, Transaction } from '../generated/types/schema'
 import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
 import { Transfer as LongShortTokenTransfer } from '../generated/types/templates/LongShortToken/LongShortToken'
 import {
@@ -54,19 +54,19 @@ export function addCollateralTransactions(event: CollateralTokenTransfer): void 
 
   fromTransaction.amount = valueBD
   fromTransaction.amountUSD = valueBD
-  fromTransaction.baseTokenAddress = collateralToken.baseToken
+  fromTransaction.collateralToken = collateralToken.id
   fromTransaction.event = EVENTS_TRANSFER
   fromTransaction.save()
 
   toTransaction.amount = valueBD
   toTransaction.amountUSD = valueBD
-  toTransaction.baseTokenAddress = collateralToken.baseToken
+  toTransaction.collateralToken = collateralToken.id
   toTransaction.event = EVENTS_TRANSFER
   toTransaction.save()
 }
 
 export function addLongShortTokenTransactions(event: LongShortTokenTransfer): void {
-  const longShortToken = Token.load(event.address.toHexString())
+  const longShortToken = LongShortToken.load(event.address.toHexString())
   if (longShortToken === null) return
 
   const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
@@ -78,24 +78,24 @@ export function addLongShortTokenTransactions(event: LongShortTokenTransfer): vo
   fromTransaction.amount = valueBD
   fromTransaction.amountUSD = valueUSD
   fromTransaction.event = EVENTS_TRANSFER
-  fromTransaction.market = longShortToken.market
+  fromTransaction.longShortToken = longShortToken.id
   fromTransaction.save()
 
   toTransaction.amount = valueBD
   toTransaction.amountUSD = valueUSD
   toTransaction.event = EVENTS_TRANSFER
-  toTransaction.market = longShortToken.market
+  toTransaction.longShortToken = longShortToken.id
   toTransaction.save()
 }
 
 export function addSwapTransactions(event: Swap, pool: Pool): void {
-  const token = Token.load(pool.token)
+  const token = LongShortToken.load(pool.longShortToken)
   if (token === null) return // impossible
 
   const amount0BD = event.params.amount0.toBigDecimal()
   const amount1BD = event.params.amount1.toBigDecimal()
 
-  const longShortTokenIsToken0 = pool.token === pool.token0
+  const longShortTokenIsToken0 = pool.longShortToken === pool.token0
 
   const collateralAmountBD = longShortTokenIsToken0 ? amount1BD : amount0BD
   const longShortTokenAmountBD = longShortTokenIsToken0 ? amount0BD : amount1BD
@@ -115,7 +115,7 @@ export function addSwapTransactions(event: Swap, pool: Pool): void {
   transaction.amountUSD = amountUSD
   transaction.event = EVENTS_SWAP
   transaction.pool = pool.id
-  transaction.tokenAddress = pool.token
+  transaction.tokenAddress = pool.longShortToken
 
   transaction.save()
 }
