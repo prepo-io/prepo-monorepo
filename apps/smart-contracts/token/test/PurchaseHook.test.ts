@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
+import { Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MockContract, smock } from '@defi-wonderland/smock'
-import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
 import { revertReason, ZERO } from './utils'
 import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
 import { PurchaseHook } from '../types/generated'

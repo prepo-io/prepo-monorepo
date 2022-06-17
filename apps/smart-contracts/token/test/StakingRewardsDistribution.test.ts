@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { FakeContract, smock } from '@defi-wonderland/smock'
-import { Contract } from '@defi-wonderland/smock/node_modules/ethers'
+import { Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
 import { parseEther } from 'ethers/lib/utils'
