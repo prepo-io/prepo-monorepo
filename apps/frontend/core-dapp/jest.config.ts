@@ -12,7 +12,13 @@ process.env.TZ = 'UTC'
 const config: Config.InitialOptions = {
   ...base,
   roots: [fromRoot('.')],
-  name: 'core-dapp',
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'ts-jest',
+    'node_modules/@web3-onboard/.+\\.(j|t)s?$': 'ts-jest',
+  },
+  testRegex: '(/src/.*\\.(test|spec))\\.(jsx?|tsx?|ts|js)$',
+  transformIgnorePatterns: ['node_modules/(?!@web3-onboard/(.*))'],
   displayName: 'Core dApp',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {

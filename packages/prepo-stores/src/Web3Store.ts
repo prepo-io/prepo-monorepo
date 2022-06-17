@@ -1,6 +1,5 @@
 import { runInAction, makeAutoObservable, autorun } from 'mobx'
 import { BigNumber, ethers } from 'ethers'
-// eslint-disable-next-line import/no-unresolved
 import Onboard, { OnboardAPI, WalletState } from '@web3-onboard/core'
 import { Network, IS_BROWSER, NETWORKS } from 'prepo-constants'
 import { createFallbackProvider, chainIdToHexString } from 'prepo-utils'
@@ -28,7 +27,7 @@ export class Web3Store {
     balance: undefined,
   }
   currentAddress = ''
-  unsubscribeFromWalletChange: () => void | undefined = undefined
+  unsubscribeFromWalletChange: (() => void) | undefined = undefined
   connecting = false
   onboardEns: Ens | undefined = undefined
   onboard: OnboardAPI | undefined = undefined
