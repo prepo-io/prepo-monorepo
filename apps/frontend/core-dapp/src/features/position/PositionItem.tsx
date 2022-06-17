@@ -182,6 +182,7 @@ const PositionItem: React.FC<Props> = ({ position }) => {
     {
       label: 'PNL',
       amount: data.pnl,
+      percent: data.percentage,
       usd: true,
     },
     {
@@ -218,7 +219,7 @@ const PositionItem: React.FC<Props> = ({ position }) => {
                 <Percent
                   showPlusSign
                   value={percent}
-                  percentagePrecision={0}
+                  percentagePrecision={2}
                   format={(percentValue): string => `(${percentValue})`}
                 />
               )}
@@ -245,7 +246,7 @@ const PositionItem: React.FC<Props> = ({ position }) => {
       </FlexWrapper>
       <MobilePositionLabel positionType={direction}>{direction}</MobilePositionLabel>
       <Body>
-        <Table data={tableData} hideBorder padding="sm" />
+        <Table data={tableData} percentagePrecision={2} hideBorder padding="sm" />
       </Body>
     </Wrapper>
   )

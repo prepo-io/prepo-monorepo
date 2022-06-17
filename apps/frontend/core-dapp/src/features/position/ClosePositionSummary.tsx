@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import TransactionSummary from '../../components/TransactionSummary'
 import { Position } from '../portfolio/PortfolioStore'
 import { useRootStore } from '../../context/RootStoreProvider'
-import { RowData } from '../../components/Table'
+import Table, { RowData } from '../../components/Table'
 import { Callback } from '../../types/common.types'
 import AdvancedSettingsModal from '../../components/AdvancedSettingsModal'
 
@@ -88,6 +88,15 @@ const ClosePositionSummary: React.FC<Props> = ({ position }) => {
     },
   ]
 
+  const pnlTableData = [
+    {
+      label: 'Estimated PNL',
+      toolTip: 'Some tooltip',
+      amount: position.data.pnl,
+      percent: position.data.percentage,
+    },
+  ]
+
   if (isSettingsOpen) return <AdvancedSettingsModal />
 
   return (
@@ -127,6 +136,7 @@ const ClosePositionSummary: React.FC<Props> = ({ position }) => {
           value={amount}
         />
       </FormItem>
+      <Table percentagePrecision={2} data={pnlTableData} />
     </TransactionSummary>
   )
 }
