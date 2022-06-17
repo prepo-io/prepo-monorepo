@@ -23,19 +23,28 @@ import { CollateralToken } from '../generated/types/PrePOMarketFactory/Collatera
 export function handleCollateralValidityChanged(event: CollateralValidityChanged): void {
   const collateralAddress = event.params.collateral.toHexString()
   let collateral = CollateralTokenEntity.load(collateralAddress)
-  if (event.params.allowed && collateral === null) {
+  if (collateral === null) {
     const collateralContract = CollateralToken.bind(event.params.collateral)
+    const baseTokenResult = collateralContract.try_getBaseToken()
     const decimalsResult = collateralContract.try_decimals()
     const symbolResult = collateralContract.try_symbol()
     const nameResult = collateralContract.try_name()
-    if (!decimalsResult.reverted && !symbolResult.reverted && !nameResult.reverted) {
-      collateral = new CollateralTokenEntity(collateralAddress)
-      collateral.decimals = BigInt.fromI32(decimalsResult.value)
-      collateral.name = nameResult.value
-      collateral.symbol = symbolResult.value
-      collateral.save()
-    }
+
+    const invalidCollateralInterface =
+      decimalsResult.reverted ||
+      symbolResult.reverted ||
+      nameResult.reverted ||
+      baseTokenResult.reverted
+    if (invalidCollateralInterface) return
+
+    collateral = new CollateralTokenEntity(collateralAddress)
+    collateral.baseToken = baseTokenResult.value.toHexString()
+    collateral.decimals = BigInt.fromI32(decimalsResult.value)
+    collateral.name = nameResult.value
+    collateral.symbol = symbolResult.value
   }
+  collateral.allowed = event.params.allowed
+  collateral.save()
 }
 
 export function handleMarketAdded(event: MarketAdded): void {
