@@ -23,7 +23,6 @@
     "@uniswap/sdk": "3.0.3",
     "@uniswap/v3-core": "1.0.1",
     "antd": "4.20.7",
-    "bnc-onboard": "1.38.3",
     "clone-deep": "4.0.1",
     "configcat-js-ssr": "3.10.0",
     "d3": "7.3.0",

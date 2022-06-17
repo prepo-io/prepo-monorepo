@@ -1,10 +1,9 @@
 import { runInAction, makeAutoObservable, autorun } from 'mobx'
-import Onboard from 'bnc-onboard'
 import { BigNumber, ethers } from 'ethers'
 // eslint-disable-next-line import/no-unresolved
-import { API as OnboardType } from 'bnc-onboard/dist/src/interfaces'
+import Onboard, { OnboardAPI, WalletState } from '@web3-onboard/core'
 import { Network, IS_BROWSER, NETWORKS } from 'prepo-constants'
-import { createFallbackProvider } from 'prepo-utils'
+import { createFallbackProvider, chainIdToHexString } from 'prepo-utils'
 import { addNetworkToMetamask } from './utils/metamask-utils'
 import { RootStore } from './RootStore'
 import { TransactionReceipt } from './utils/stores.types'
@@ -14,6 +13,8 @@ type SignerState = {
   address: string | undefined
   balance: BigNumber | undefined
 }
+
+type Ens = WalletState['accounts'][number]['ens']
 
 export class Web3Store {
   root: RootStore<unknown>
@@ -26,7 +27,11 @@ export class Web3Store {
     address: undefined,
     balance: undefined,
   }
-  onboard: OnboardType | undefined = undefined
+  currentAddress = ''
+  unsubscribeFromWalletChange: () => void | undefined = undefined
+  connecting = false
+  onboardEns: Ens | undefined = undefined
+  onboard: OnboardAPI | undefined = undefined
 
   constructor(root: RootStore<unknown>) {
     this.root = root
@@ -123,48 +128,70 @@ export class Web3Store {
   }
 
   async connect(walletName?: string): Promise<void> {
+    if (this.connecting) {
+      return
+    }
+    this.connecting = true
     try {
-      if (this.onboard) this.onboard = undefined
-
       // Create new onboard instance with desired config
-      const onboard = Onboard({
-        subscriptions: {
-          address: () => {
-            this.refreshSignerAddress()
-            this.refreshSignerBalance()
-          },
-        },
+      const config = {
         ...this.root.config.onboardConfig,
-      })
-      if (walletName) {
-        await onboard.walletSelect(walletName)
-      } else {
-        await onboard.walletSelect()
       }
-      let state = onboard.getState()
-      if (!state.wallet.name) {
+      const onboard = this.onboard ?? Onboard(config)
+      if (!this.onboard) {
+        runInAction(() => {
+          this.onboard = onboard
+        })
+      }
+      let walletState: WalletState[] = []
+      if (walletName) {
+        walletState = await onboard.connectWallet({
+          autoSelect: { label: walletName, disableModals: false },
+        })
+      } else {
+        walletState = await onboard.connectWallet()
+      }
+      if (!walletState.length) {
         // User exited wallet selection
         this.disconnect()
         return
       }
-      await onboard.walletCheck()
-      state = onboard.getState()
-      if (!state.address || !state.wallet.name) {
+      if (!onboard) {
         // Something went wrong connecting the wallet
         this.root.toastStore.errorToast(
           'Wallet connection cancelled',
-          Error(`Something went wrong connecting ${state.wallet.name}`)
+          Error(`Something went wrong`)
         )
         this.disconnect()
         return
       }
+      await onboard.setChain({ chainId: chainIdToHexString(this.network.chainId) })
 
       // Onboard wallet connection successful
-      window.localStorage.setItem('selectedWallet', state.wallet.name)
-      runInAction(() => {
-        this.onboard = onboard
-      })
-      const { provider } = state.wallet
+      const walletsSub = onboard.state.select('wallets')
+      if (this.unsubscribeFromWalletChange) {
+        this.unsubscribeFromWalletChange()
+      }
+      this.unsubscribeFromWalletChange = walletsSub.subscribe((wallets) => {
+        if (wallets.length !== 0) {
+          const [wallet] = wallets
+          window.localStorage.setItem('selectedWallet', JSON.stringify(wallet.label))
+
+          const { address, ens } = wallet.accounts[0]
+          if (this.currentAddress !== address) {
+            this.currentAddress = address
+            this.refreshSignerAddress()
+            this.refreshSignerBalance()
+          }
+          if (this.onboardEns?.name !== ens?.name) {
+            runInAction(() => {
+              this.onboardEns = ens
+            })
+          }
+        }
+      }).unsubscribe
+
+      const { provider } = onboard.state.get().wallets[0]
       const signer = new ethers.providers.Web3Provider(provider).getSigner()
       runInAction(async () => {
         this.signer = signer
@@ -176,6 +203,7 @@ export class Web3Store {
       const error = this.root.captureError(e)
       this.root.toastStore.errorToast('Error connecting wallet', error.message)
     }
+    this.connecting = false
   }
 
   disconnect(): void {
@@ -188,12 +216,8 @@ export class Web3Store {
   }
 
   checkSigner(): Promise<boolean | void> {
-    if (!this.onboard) return Promise.resolve()
-    const { network } = this.onboard.getState()
-    if (network !== this.root.config.defaultNetwork.chainId) {
-      return this.onboard.walletCheck()
-    }
-    return Promise.resolve()
+    if (!this.onboard?.state?.get().wallets.length) return Promise.resolve()
+    return Promise.resolve(true)
   }
 
   async setNetwork(network: Network): Promise<void> {
