@@ -86,6 +86,7 @@ templates:
       file: ./src/mappings/core.ts
       entities:
         - Token
+        - Transaction
       abis:
         - name: UniswapV3Pool
           file: ./abis/UniswapV3Pool.json
@@ -108,9 +109,28 @@ templates:
       file: ./src/mappings/core.ts
       entities:
         - Position
+        - Transaction
       abis:
         - name: LongShortToken
           file: ./abis/LongShortToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleLongShortTokenTransfer
+  - kind: ethereum/contract
+    name: CollateralToken
+    network: goerli
+    source:
+      abi: CollateralToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/core.ts
+      entities:
+        - Transaction
+      abis:
+        - name: CollateralToken
+          file: ./abis/CollateralToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleCollateralTokenTransfer
