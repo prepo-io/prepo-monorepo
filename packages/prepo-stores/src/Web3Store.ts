@@ -212,6 +212,7 @@ export class Web3Store {
       balance: undefined,
     }
     window.localStorage.removeItem('selectedWallet')
+    this.connecting = false
   }
 
   checkSigner(): Promise<boolean | void> {
