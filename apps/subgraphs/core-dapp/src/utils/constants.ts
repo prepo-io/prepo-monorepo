@@ -14,6 +14,10 @@ export const ZERO_BD = BigDecimal.fromString('0')
 // so we must set these separately
 
 export const EVENTS_TRANSFER = 'TRANSFER'
+export const EVENTS_SWAP = 'SWAP'
 
 export const ACTIONS_SEND = 'SEND'
 export const ACTIONS_RECEIVE = 'RECEIVE'
+export const ACTIONS_OPEN = 'OPEN'
+export const ACTIONS_CLOSE = 'CLOSE'
+export const ACTIONS_POOL = 'POOL'
