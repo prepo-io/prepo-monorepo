@@ -21,3 +21,8 @@ export const ACTIONS_RECEIVE = 'RECEIVE'
 export const ACTIONS_OPEN = 'OPEN'
 export const ACTIONS_CLOSE = 'CLOSE'
 export const ACTIONS_POOL = 'POOL'
+
+// ... token types ...
+export const TOKEN_TYPE_COLLATERAL = 'COLLATERAL'
+export const TOKEN_TYPE_LONG_SHORT = 'LONG_SHORT'
+export const TOKEN_TYPE_COLLATERAL_BASE = 'COLLATERAL_BASE'

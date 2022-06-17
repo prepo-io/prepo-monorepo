@@ -26,6 +26,8 @@ dataSources:
           file: ./abis/PrePOMarketFactory.json
         - name: CollateralToken
           file: ./abis/CollateralToken.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: MarketAdded(address,bytes32)
           handler: handleMarketAdded
@@ -46,9 +48,13 @@ dataSources:
       entities:
         - Pool
         - Token
+        - LongShortToken
+        - CollateralToken
       abis:
         - name: UniswapV3PoolFactory
           file: ./abis/UniswapV3PoolFactory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
           handler: handlePoolCreated
@@ -71,6 +77,8 @@ templates:
           file: ./abis/PrePOMarket.json
         - name: LongShortToken
           file: ./abis/LongShortToken.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: MarketCreated(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleMarketCreated
