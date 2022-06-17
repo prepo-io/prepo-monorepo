@@ -6,6 +6,7 @@
   "scripts": {
     "build": "graph build",
     "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli",
+    "deploy:testnet-staging": "graph deploy --product hosted-service chrisling-dev/prepo-goerli-staging",
     "codegen": "graph codegen --output-dir src/generated/types",
     "gql:compile": "get-graphql-schema https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli > src/generated/schema.gql",
     "postinstall": "yarn codegen"

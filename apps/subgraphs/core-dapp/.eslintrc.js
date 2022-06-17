@@ -10,6 +10,7 @@ module.exports = {
     // wasm assembly doesn't support these
     'prefer-destructuring': 'off',
     'prefer-exponentiation-operator': 'off',
+    'no-param-reassign': 'off',
   },
   // Removes the jest configuration since we are using chai here
   overrides: [],
