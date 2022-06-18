@@ -12,6 +12,7 @@ import {
   BaseToken as BaseTokenEntity,
 } from '../generated/types/schema'
 import {
+  BaseToken as BaseTokenTemplate,
   CollateralToken as CollateralTokenTemplate,
   PrePOMarket as PrePOMarketTemplate,
   LongShortToken as LongShortTokenTemplate,
@@ -36,8 +37,10 @@ export function handleCollateralValidityChanged(event: CollateralValidityChanged
     const collateralERC20 = fetchERC20(event.params.collateral, TOKEN_TYPE_COLLATERAL)
     const collateralContract = CollateralToken.bind(event.params.collateral)
     const baseTokenResult = collateralContract.try_getBaseToken()
+    const treasuryResult = collateralContract.try_getTreasury()
 
-    const invalidCollateralInterface = !collateralERC20 || baseTokenResult.reverted
+    const invalidCollateralInterface =
+      !collateralERC20 || baseTokenResult.reverted || treasuryResult.reverted
     if (invalidCollateralInterface) return
     const baseERC20 = fetchERC20(baseTokenResult.value, TOKEN_TYPE_COLLATERAL_BASE)
 
@@ -52,7 +55,9 @@ export function handleCollateralValidityChanged(event: CollateralValidityChanged
     collateral = new CollateralTokenEntity(collateralAddress)
     collateral.baseToken = baseERC20.id
     collateral.token = collateral.id
+    collateral.treasuryAddress = treasuryResult.value.toHexString()
 
+    BaseTokenTemplate.create(baseTokenResult.value)
     CollateralTokenTemplate.create(event.params.collateral)
   }
   collateral.allowed = event.params.allowed

@@ -1,7 +1,14 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
-import { CollateralToken, LongShortToken, Pool, Transaction } from '../generated/types/schema'
+import {
+  BaseToken,
+  CollateralToken,
+  LongShortToken,
+  Pool,
+  Transaction,
+} from '../generated/types/schema'
 import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
 import { Transfer as LongShortTokenTransfer } from '../generated/types/templates/LongShortToken/LongShortToken'
+import { Transfer as BaseTokenTransfer } from '../generated/types/templates/BaseToken/ERC20'
 import {
   ACTIONS_CLOSE,
   ACTIONS_OPEN,
@@ -41,6 +48,35 @@ export function makeTransaction(
   transaction.tokenAddress = contractAddress
 
   return transaction
+}
+
+export function addBaseTokenTransactions(event: BaseTokenTransfer): void {
+  const baseToken = BaseToken.load(event.address.toHexString())
+  if (baseToken === null) return // impossible
+  let collateralToken = CollateralToken.load(event.params.to.toHexString())
+
+  // transfer of base token irrelevant to prePO
+  if (collateralToken === null) {
+    collateralToken = CollateralToken.load(event.params.from.toHexString())
+    if (collateralToken === null) return
+  }
+
+  const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
+  const toTransaction = makeTransaction(event, event.params.to, ACTIONS_RECEIVE)
+
+  const amountBD = event.params.value.toBigDecimal()
+
+  fromTransaction.amount = amountBD
+  fromTransaction.amountUSD = amountBD
+  fromTransaction.baseToken = baseToken.id
+  fromTransaction.event = EVENTS_TRANSFER
+  fromTransaction.save()
+
+  toTransaction.amount = amountBD
+  toTransaction.amountUSD = amountBD
+  toTransaction.baseToken = baseToken.id
+  toTransaction.event = EVENTS_TRANSFER
+  toTransaction.save()
 }
 
 export function addCollateralTransactions(event: CollateralTokenTransfer): void {
