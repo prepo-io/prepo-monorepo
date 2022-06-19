@@ -99,7 +99,7 @@ const ClosePositionSummary: React.FC<Props> = ({ position }) => {
 
   if (isSettingsOpen) return <AdvancedSettingsModal />
   const insufficentBalance = positionValue < amount
-  const buttonText = insufficentBalance ? 'Insufficent Balance' : undefined
+  const buttonText = insufficentBalance ? 'Insufficent Position Value' : undefined
 
   return (
     <TransactionSummary
