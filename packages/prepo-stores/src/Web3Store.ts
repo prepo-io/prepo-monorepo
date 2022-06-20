@@ -211,6 +211,8 @@ export class Web3Store {
       address: undefined,
       balance: undefined,
     }
+    window.localStorage.removeItem('selectedWallet')
+    this.connecting = false
     if (this.onboard) {
       const wallets = this.onboard.state.get().wallets
       if (!wallets.length) {
@@ -218,8 +220,6 @@ export class Web3Store {
       }
       this.onboard.disconnectWallet({ label: wallets[0].label })
     }
-    window.localStorage.removeItem('selectedWallet')
-    this.connecting = false
   }
 
   checkSigner(): Promise<boolean | void> {
