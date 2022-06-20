@@ -22,6 +22,29 @@ type CollateralToken @entity {
   treasuryAddress: String!
 }
 
+type HistoricalEvent @entity {
+  "{HASH}-{OWNER_ADDRESS}"
+  id: ID!
+  "amount of tokens"
+  amount: BigInt!
+  "USD value to display"
+  amountUSD: BigDecimal!
+  "potential event"
+  event: String!
+  "hash of the transaction"
+  hash: String!
+  "owner address"
+  ownerAddress: String!
+  "collateral token if this is deposit or withdraw"
+  collateralToken: CollateralToken
+  "long/short token if this is open or close"
+  longShortToken: LongShortToken
+  "number of transactions related to this hash for the same owner"
+  txCount: BigInt!
+  "all transactions with same hash that belongs to the same owner"
+  transactions: [Transaction!]!
+}
+
 type LongShortToken @entity {
   "token address"
   id: ID!
@@ -136,6 +159,8 @@ type Transaction @entity {
   event: String!
   "transaction hash"
   hash: String!
+  "{HASH}-{OWNER_ADDRESS}"
+  historicalEvent: HistoricalEvent
   "owner"
   ownerAddress: String!
   "recipent address"
