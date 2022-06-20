@@ -29,7 +29,7 @@ const StyledButton = styled(Button)`
 
 const ConnectButton: React.FC = () => {
   const { uiStore, web3Store } = useRootStore()
-  const { signerState } = web3Store
+  const { signerState, onboardEns } = web3Store
   const account = signerState.address
 
   const onClickLogin = (): void => {
@@ -47,9 +47,14 @@ const ConnectButton: React.FC = () => {
         {account ? (
           <WalletAddressCard onClick={onOpenModal}>
             <IconWrapper>
-              <Identicon account={account} />
+              <Identicon
+                account={account}
+                avatarUrl={onboardEns?.avatar?.url}
+                diameterDesktop={23}
+                diameterMobile={23}
+              />
             </IconWrapper>
-            {getShortAccount(account)}
+            {onboardEns?.name ?? getShortAccount(account)}
           </WalletAddressCard>
         ) : (
           <StyledButton type="primary" onClick={onClickLogin} size="sm">

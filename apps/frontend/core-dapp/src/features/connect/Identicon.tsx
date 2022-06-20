@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 type Props = {
   account: string
+  avatarUrl?: string
   diameterDesktop?: number
   diameterMobile?: number
 }
@@ -12,6 +13,7 @@ type ComponentProps = {
   diameterDesktop: number
   diameterMobile: number
   seed?: number
+  avatarUrl?: string
 }
 
 /*
@@ -21,7 +23,12 @@ type ComponentProps = {
 */
 
 const Wrapper = styled.div<ComponentProps>`
+  background-color: ${({ theme }): string => theme.color.neutral6};
+  background-image: url(${({ avatarUrl }): string | undefined => avatarUrl});
+  background-position: top center;
+  background-size: cover;
   height: ${({ diameterMobile }): string => spacingIncrement(diameterMobile)};
+  width: ${({ diameterMobile }): string => spacingIncrement(diameterMobile)};
 
   .paper {
     height: ${({ diameterMobile }): string => spacingIncrement(diameterMobile)} !important;
@@ -29,6 +36,7 @@ const Wrapper = styled.div<ComponentProps>`
   }
 
   ${media.desktop<Pick<ComponentProps, 'diameterDesktop'>>`
+    width: ${({ diameterDesktop }): string => spacingIncrement(diameterDesktop)};
     height: ${({ diameterDesktop }): string => spacingIncrement(diameterDesktop)};
      .paper {
       height: ${({ diameterDesktop }): string => spacingIncrement(diameterDesktop)} !important;
@@ -37,8 +45,22 @@ const Wrapper = styled.div<ComponentProps>`
   `}
 `
 
-const Identicon: React.FC<Props> = ({ account, diameterDesktop = 15, diameterMobile = 15 }) => {
+const Identicon: React.FC<Props> = ({
+  account,
+  diameterDesktop = 15,
+  diameterMobile = 15,
+  avatarUrl,
+}) => {
   if (!account) return null
+  if (avatarUrl) {
+    return (
+      <Wrapper
+        diameterDesktop={diameterDesktop}
+        diameterMobile={diameterMobile}
+        avatarUrl={avatarUrl}
+      />
+    )
+  }
 
   return (
     <Wrapper diameterDesktop={diameterDesktop} diameterMobile={diameterMobile}>
