@@ -39,16 +39,6 @@ const BalanceText = styled.p`
     line-height: ${({ theme }): string => theme.fontSize['4xl']};
   `}
 `
-const BlackText = styled.p`
-  color: ${({ theme }): string => theme.color.neutral2};
-  font-size: ${({ theme }): string => theme.fontSize.sm};
-  line-height: ${spacingIncrement(18)};
-  margin: 0;
-  margin-right: ${spacingIncrement(17)};
-  ${media.desktop`
-    font-size: ${({ theme }): string => theme.fontSize.md};
-  `}
-`
 
 const IconWrapper = styled.div`
   cursor: pointer;
@@ -127,7 +117,9 @@ const Portfolio: React.FC = () => {
           <Flex flexDirection="column" alignItems="flex-start" padding={25}>
             <Flex alignItems="flex-start" flexDirection="column" gap={8}>
               <Flex justifyContent="flex-start">
-                <BlackText>Portfolio Value</BlackText>
+                <Typography color="neutral2" variant="text-medium-md" mr={17}>
+                  Portfolio Value
+                </Typography>
                 <IconWrapper onClick={toggleShowPortfolio}>
                   <Icon
                     color="secondary"
@@ -157,7 +149,7 @@ const Portfolio: React.FC = () => {
       {isDesktop && (
         <Col flex={2}>
           <Box>
-            <Typography color="neutral4" variant="text-semiBold-base" pb={8} pl={27} pt={20}>
+            <Typography color="neutral4" variant="text-semiBold-md" pb={8} pl={27} pt={20}>
               Portfolio Breakdown
             </Typography>
             {renderPortfolioBreakdown}
