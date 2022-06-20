@@ -15,6 +15,7 @@ import {
   ACTIONS_SEND,
   EVENTS_SWAP,
   EVENTS_TRANSFER,
+  ONE_BI,
   ZERO_BD,
   ZERO_BI,
 } from '../utils/constants'
