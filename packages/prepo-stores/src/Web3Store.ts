@@ -211,6 +211,8 @@ export class Web3Store {
       address: undefined,
       balance: undefined,
     }
+    const label = window.localStorage.getItem('selectedWallet')
+    this.onboard.disconnectWallet({ label })
     window.localStorage.removeItem('selectedWallet')
     this.connecting = false
   }
