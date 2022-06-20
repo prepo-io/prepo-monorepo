@@ -6,9 +6,7 @@ import {
   Pool,
   Transaction,
 } from '../generated/types/schema'
-import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
-import { Transfer as LongShortTokenTransfer } from '../generated/types/templates/LongShortToken/LongShortToken'
-import { Transfer as BaseTokenTransfer } from '../generated/types/templates/BaseToken/ERC20'
+import { Transfer as ERC20Transfer } from '../generated/types/templates/BaseToken/ERC20'
 import {
   ACTIONS_CLOSE,
   ACTIONS_OPEN,
@@ -45,12 +43,28 @@ export function makeTransaction(
   transaction.createdAtTimestamp = event.block.timestamp
   transaction.hash = hashString
   transaction.ownerAddress = ownerAddressString
-  transaction.tokenAddress = contractAddress
+  transaction.contractAddress = contractAddress
 
   return transaction
 }
 
-export function addBaseTokenTransactions(event: BaseTokenTransfer): void {
+export function makeTransferTransaction(
+  event: ERC20Transfer,
+  ownerAddress: Address,
+  action: string
+): Transaction {
+  const transaction = makeTransaction(event, ownerAddress, action)
+  const amountBD = event.params.value.toBigDecimal()
+  transaction.amount = amountBD
+  transaction.amountUSD = amountBD
+  transaction.event = EVENTS_TRANSFER
+  transaction.recipientAddress = event.params.to.toHexString()
+  transaction.senderAddress = event.params.from.toHexString()
+
+  return transaction
+}
+
+export function addBaseTokenTransactions(event: ERC20Transfer): void {
   const baseToken = BaseToken.load(event.address.toHexString())
   if (baseToken === null) return // impossible
   let collateralToken = CollateralToken.load(event.params.to.toHexString())
@@ -61,65 +75,45 @@ export function addBaseTokenTransactions(event: BaseTokenTransfer): void {
     if (collateralToken === null) return
   }
 
-  const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
-  const toTransaction = makeTransaction(event, event.params.to, ACTIONS_RECEIVE)
+  const fromTransaction = makeTransferTransaction(event, event.params.from, ACTIONS_SEND)
+  const toTransaction = makeTransferTransaction(event, event.params.to, ACTIONS_RECEIVE)
 
-  const amountBD = event.params.value.toBigDecimal()
-
-  fromTransaction.amount = amountBD
-  fromTransaction.amountUSD = amountBD
   fromTransaction.baseToken = baseToken.id
-  fromTransaction.event = EVENTS_TRANSFER
   fromTransaction.save()
 
-  toTransaction.amount = amountBD
-  toTransaction.amountUSD = amountBD
   toTransaction.baseToken = baseToken.id
-  toTransaction.event = EVENTS_TRANSFER
   toTransaction.save()
 }
 
-export function addCollateralTransactions(event: CollateralTokenTransfer): void {
+export function addCollateralTransactions(event: ERC20Transfer): void {
   const collateralToken = CollateralToken.load(event.address.toHexString())
   if (collateralToken === null) return
 
-  const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
-  const toTransaction = makeTransaction(event, event.params.to, ACTIONS_RECEIVE)
+  const fromTransaction = makeTransferTransaction(event, event.params.from, ACTIONS_SEND)
+  const toTransaction = makeTransferTransaction(event, event.params.to, ACTIONS_RECEIVE)
 
-  const valueBD = event.params.value.toBigDecimal()
-
-  fromTransaction.amount = valueBD
-  fromTransaction.amountUSD = valueBD
   fromTransaction.collateralToken = collateralToken.id
-  fromTransaction.event = EVENTS_TRANSFER
   fromTransaction.save()
 
-  toTransaction.amount = valueBD
-  toTransaction.amountUSD = valueBD
   toTransaction.collateralToken = collateralToken.id
-  toTransaction.event = EVENTS_TRANSFER
   toTransaction.save()
 }
 
-export function addLongShortTokenTransactions(event: LongShortTokenTransfer): void {
+export function addLongShortTokenTransactions(event: ERC20Transfer): void {
   const longShortToken = LongShortToken.load(event.address.toHexString())
   if (longShortToken === null) return
 
-  const fromTransaction = makeTransaction(event, event.params.from, ACTIONS_SEND)
-  const toTransaction = makeTransaction(event, event.params.to, ACTIONS_RECEIVE)
+  const fromTransaction = makeTransferTransaction(event, event.params.from, ACTIONS_SEND)
+  const toTransaction = makeTransferTransaction(event, event.params.to, ACTIONS_RECEIVE)
 
   const valueBD = event.params.value.toBigDecimal()
   const valueUSD = longShortToken.priceUSD.times(valueBD)
 
-  fromTransaction.amount = valueBD
   fromTransaction.amountUSD = valueUSD
-  fromTransaction.event = EVENTS_TRANSFER
   fromTransaction.longShortToken = longShortToken.id
   fromTransaction.save()
 
-  toTransaction.amount = valueBD
   toTransaction.amountUSD = valueUSD
-  toTransaction.event = EVENTS_TRANSFER
   toTransaction.longShortToken = longShortToken.id
   toTransaction.save()
 }
@@ -151,7 +145,8 @@ export function addSwapTransactions(event: Swap, pool: Pool): void {
   transaction.amountUSD = amountUSD
   transaction.event = EVENTS_SWAP
   transaction.pool = pool.id
-  transaction.tokenAddress = pool.longShortToken
+  transaction.recipientAddress = event.params.recipient.toHexString()
+  transaction.senderAddress = event.params.sender.toHexString()
 
   transaction.save()
 }
