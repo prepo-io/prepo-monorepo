@@ -211,13 +211,6 @@ export class Web3Store {
       address: undefined,
       balance: undefined,
     }
-    if (this.onboard) {
-      const wallets = this.onboard.state.get().wallets
-      if (!wallets.length) {
-        return
-      }
-      this.onboard.disconnectWallet({ label: wallets[0].label })
-    }
     window.localStorage.removeItem('selectedWallet')
     this.connecting = false
     if (this.onboard) {
