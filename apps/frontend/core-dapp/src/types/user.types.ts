@@ -9,8 +9,8 @@ export type User = {
 export type Position = {
   id: string
   costBasis: number
-  owner: string
-  token: {
+  ownerAddress: string
+  longShortToken: {
     id: string
   }
 }

@@ -58,7 +58,7 @@ export class PortfolioStore {
     let percentage
     if (this.signerCostBasis) {
       const foundPosition = this.signerCostBasis.find(
-        ({ token: { id } }) => id === token.address?.toLowerCase()
+        ({ longShortToken: { id } }) => id === token.address?.toLowerCase()
       )
       if (foundPosition) {
         costBasis = foundPosition.costBasis
