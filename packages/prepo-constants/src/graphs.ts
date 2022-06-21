@@ -12,8 +12,8 @@ export type GraphEndpoints = {
 
 export const GRAPH_ENDPOINTS: GraphEndpoints = {
   core: {
-    mainnet: 'https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli-staging',
-    goerli: 'https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli-staging',
+    mainnet: 'https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli',
+    goerli: 'https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-goerli',
   },
   uniswapV3: {
     mainnet: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
