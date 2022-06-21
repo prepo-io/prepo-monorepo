@@ -73,7 +73,8 @@ export function makeTransferTransaction(
   return transaction
 }
 
-export function getHistoricalEvent(id: string, transaction: Transaction): HistoricalEvent {
+export function getHistoricalEvent(transaction: Transaction): HistoricalEvent {
+  const id = makeHistoricalEventId(transaction.hash, transaction.ownerAddress)
   let historicalEvent = HistoricalEvent.load(id)
   if (historicalEvent === null) {
     historicalEvent = new HistoricalEvent(id)
@@ -114,14 +115,8 @@ export function addBaseTokenTransactions(event: ERC20Transfer): void {
   toTransaction.baseToken = baseToken.id
   toTransaction.save()
 
-  const hashString = event.transaction.hash.toHexString()
-  const fromHistoricalEventId = makeHistoricalEventId(hashString, fromTransaction.ownerAddress)
-  const toHistoricalEventId = makeHistoricalEventId(hashString, toTransaction.ownerAddress)
-  const fromHistoricalEvent = getHistoricalEvent(fromHistoricalEventId, fromTransaction)
-  const toHistoricalEvent = getHistoricalEvent(toHistoricalEventId, toTransaction)
-
-  fromHistoricalEvent.save()
-  toHistoricalEvent.save()
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addCollateralTransactions(event: ERC20Transfer): void {
@@ -137,14 +132,8 @@ export function addCollateralTransactions(event: ERC20Transfer): void {
   toTransaction.collateralToken = collateralToken.id
   toTransaction.save()
 
-  const hashString = event.transaction.hash.toHexString()
-  const fromHistoricalEventId = makeHistoricalEventId(hashString, fromTransaction.ownerAddress)
-  const toHistoricalEventId = makeHistoricalEventId(hashString, toTransaction.ownerAddress)
-  const fromHistoricalEvent = getHistoricalEvent(fromHistoricalEventId, fromTransaction)
-  const toHistoricalEvent = getHistoricalEvent(toHistoricalEventId, toTransaction)
-
-  fromHistoricalEvent.save()
-  toHistoricalEvent.save()
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addLongShortTokenTransactions(event: ERC20Transfer): void {
@@ -165,14 +154,8 @@ export function addLongShortTokenTransactions(event: ERC20Transfer): void {
   toTransaction.longShortToken = longShortToken.id
   toTransaction.save()
 
-  const hashString = event.transaction.hash.toHexString()
-  const fromHistoricalEventId = makeHistoricalEventId(hashString, fromTransaction.ownerAddress)
-  const toHistoricalEventId = makeHistoricalEventId(hashString, toTransaction.ownerAddress)
-  const fromHistoricalEvent = getHistoricalEvent(fromHistoricalEventId, fromTransaction)
-  const toHistoricalEvent = getHistoricalEvent(toHistoricalEventId, toTransaction)
-
-  fromHistoricalEvent.save()
-  toHistoricalEvent.save()
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addSwapTransactions(event: Swap, pool: Pool): void {
@@ -207,9 +190,5 @@ export function addSwapTransactions(event: Swap, pool: Pool): void {
 
   transaction.save()
 
-  const hashString = event.transaction.hash.toHexString()
-  const historicalEventId = makeHistoricalEventId(hashString, transaction.ownerAddress)
-  const historicalEvent = getHistoricalEvent(historicalEventId, transaction)
-
-  historicalEvent.save()
+  getHistoricalEvent(transaction)
 }
