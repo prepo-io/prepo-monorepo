@@ -98,14 +98,18 @@ const ClosePositionSummary: React.FC<Props> = ({ position }) => {
   ]
 
   if (isSettingsOpen) return <AdvancedSettingsModal />
+  const insufficentBalance = positionValue < amount
+  const buttonText = insufficentBalance ? 'Insufficent Position Value' : undefined
 
   return (
     <TransactionSummary
       data={tableData}
       onCancel={handleClose}
       onComplete={handleClose}
+      disabled={insufficentBalance}
       onConfirm={handleClosePosition}
       onRetry={handleClosePosition}
+      buttonText={buttonText}
       successButtonText="Close"
       title={
         <TitleWrapper>

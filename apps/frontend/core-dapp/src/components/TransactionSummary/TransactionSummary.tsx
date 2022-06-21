@@ -140,8 +140,8 @@ const TransactionSummary: React.FC<Props> = ({
         return (
           <DefaultContent
             button={{
-              children: requiresUnlockToken ? 'Approve' : 'Confirm',
-              disabled: buttonLoading,
+              children: buttonText ?? (requiresUnlockToken ? 'Approve' : 'Confirm'),
+              disabled: disabled || buttonLoading,
               loading: buttonLoading,
               onClick: handleConfirm,
               type: 'primary',
