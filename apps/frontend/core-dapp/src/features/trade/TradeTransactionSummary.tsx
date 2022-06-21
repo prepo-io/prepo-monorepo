@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 import EstimateProfitLoss from './EstimateProfitLoss'
 import TransactionSummary from '../../components/TransactionSummary/TransactionSummary'
 import { Callback } from '../../types/common.types'
@@ -13,10 +14,22 @@ const { significantDigits } = numberFormatter
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
-  const { tradeStore, preCTTokenStore } = useRootStore()
+  const {
+    tradeStore,
+    preCTTokenStore,
+    advancedSettingsStore: { slippage },
+  } = useRootStore()
   const { openTradeAmount, openTradeHash, openTradeUILoading, setOpenTradeHash, tradeDisabled } =
     tradeStore
   const selectedMarket = useSelectedMarket()
+
+  const { amountOut } = tradeStore
+
+  useEffect(() => {
+    if (!selectedMarket) return
+
+    tradeStore.quoteExactInput(selectedMarket)
+  }, [selectedMarket, tradeStore, openTradeAmount])
 
   const onCancel = (): void => {
     setOpenTradeHash(undefined)
@@ -55,6 +68,14 @@ const TradeTransactionSummary: React.FC = () => {
     {
       label: 'Trade Size',
       amount: openTradeAmount,
+    },
+    {
+      label: 'Expected output amount',
+      amount: amountOut || 'calculating',
+    },
+    {
+      label: 'Minimum received after slippage (N%)',
+      amount: amountOut ? amountOut * (1 - slippage) : 'calculating',
     },
     {
       label: 'Average Valuation Price',

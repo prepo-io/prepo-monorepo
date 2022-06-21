@@ -1,5 +1,7 @@
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { makeAutoObservable } from 'mobx'
+import QuoterABI from '../../../abi/uniswapV3Quoter.abi.json'
+import { UNISWAP_QUOTER_ADDRESS } from '../../lib/external-contracts'
 import { Erc20Store } from '../../stores/entities/Erc20.entity'
 import { MarketEntity } from '../../stores/entities/MarketEntity'
 import { RootStore } from '../../stores/RootStore'
@@ -16,6 +18,7 @@ export class TradeStore {
   openTradeAmount = 0
   openTradeAmountBigNumber = BigNumber.from(0)
   openTradeHash?: string
+  amountOut?: number
 
   constructor(public root: RootStore) {
     makeAutoObservable(this, {}, { autoBind: true })
@@ -48,6 +51,37 @@ export class TradeStore {
     this.openTradeHash = hash
   }
 
+  setAmountOut(value: number): void {
+    this.amountOut = value
+  }
+
+  async quoteExactInput(selectedMarket: MarketEntity): Promise<number | null> {
+    const selectedToken = selectedMarket?.[`${this.direction}Token`]
+    const pool = selectedMarket?.[`${this.direction}Pool`]
+    const state = pool?.poolState
+    const fee = pool?.poolImmutables?.fee
+    if (!fee || !selectedToken || !state || !this.openTradeAmount) {
+      return null
+    }
+    const tokenAddressFrom = this.root.preCTTokenStore.uniswapToken.address
+    const tokenAddressTo = selectedToken.address ?? ''
+    const quoterContract = new ethers.Contract(
+      UNISWAP_QUOTER_ADDRESS.mainnet ?? '', // all uniswap contracts has same address on all chains
+      QuoterABI,
+      this.root.web3Store.coreProvider
+    )
+    const func: ethers.ContractFunction<BigNumber> = quoterContract.callStatic.quoteExactInputSingle
+    try {
+      const result = await func(tokenAddressFrom, tokenAddressTo, fee, this.openTradeAmount, 0)
+      this.amountOut = result.toNumber()
+      return this.amountOut
+    } catch (e) {
+      this.amountOut = undefined
+      this.root.toastStore.errorToast('Error calculating output amount', e)
+      return null
+    }
+  }
+
   // eslint-disable-next-line require-await
   async openTrade(selectedMarket: MarketEntity): Promise<{ success: boolean; error?: string }> {
     const selectedToken = selectedMarket[`${this.direction}Token`]
@@ -59,13 +93,13 @@ export class TradeStore {
       return { success: false }
 
     this.setOpenTradeHash(undefined)
-    const tokensReceivable = this.openTradeAmount / price
+    if (this.amountOut === undefined) return { success: false }
 
     return swap({
       fee,
       fromAmount: this.openTradeAmount,
       fromTokenAddress: uniswapToken.address,
-      toAmount: tokensReceivable,
+      toAmount: this.amountOut,
       toTokenAddress: selectedToken.address,
       type: TradeType.EXACT_INPUT,
       onHash: (hash) => this.setOpenTradeHash(hash),

@@ -1,6 +1,10 @@
 import { ExternalContract, SupportedContracts } from './contract.types'
 
-export type SupportedExternalContractsNames = 'DAI' | 'USDC' | 'UNISWAP_SWAP_ROUTER'
+export type SupportedExternalContractsNames =
+  | 'DAI'
+  | 'USDC'
+  | 'UNISWAP_SWAP_ROUTER'
+  | 'UNISWAP_QUOTER'
 
 export const DAI_ADDRESS: ExternalContract = {
   mainnet: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -17,8 +21,15 @@ export const UNISWAP_SWAP_ROUTER_ADDRESS: ExternalContract = {
   mainnet: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   goerli: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
 }
+
+export const UNISWAP_QUOTER_ADDRESS: ExternalContract = {
+  mainnet: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  goerli: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+}
+
 export const supportedExternalTokenContracts: SupportedContracts = {
   DAI: DAI_ADDRESS,
   USDC: USDC_ADDRESS,
   UNISWAP_SWAP_ROUTER: UNISWAP_SWAP_ROUTER_ADDRESS,
+  UNISWAP_QUOTER: UNISWAP_QUOTER_ADDRESS,
 }
