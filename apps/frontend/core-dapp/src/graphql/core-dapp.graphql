@@ -1285,6 +1285,137 @@ type Subscription {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
+<<<<<<< Updated upstream
+=======
+  ): Position
+  positions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Position_orderBy
+    orderDirection: OrderDirection
+    where: Position_filter
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Position!]!
+  token(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Token
+  tokens(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Token_orderBy
+    orderDirection: OrderDirection
+    where: Token_filter
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Token!]!
+  transaction(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Transaction
+  transactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Transaction_orderBy
+    orderDirection: OrderDirection
+    where: Transaction_filter
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Transaction!]!
+
+  """
+  Access to subgraph metadata
+  """
+  _meta(block: Block_height): _Meta_
+}
+
+type Subscription {
+  baseToken(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be a `{ hash:
+    Bytes }` value containing a block hash, a `{ number: Int }` containing the
+    block number, or a `{ number_gte: Int }` containing the minimum block
+    number. In the case of `number_gte`, the query will be executed on the
+    latest block only if the subgraph has progressed to or past the minimum
+    block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+>>>>>>> Stashed changes
   ): BaseToken
   baseTokens(
     skip: Int = 0
@@ -1736,6 +1867,14 @@ type Transaction {
   amountUSD: BigDecimal!
 
   """
+<<<<<<< Updated upstream
+=======
+  the contract that emitted this event
+  """
+  contractAddress: String!
+
+  """
+>>>>>>> Stashed changes
   block number
   """
   createdAtBlockNumber: BigInt!
@@ -1761,9 +1900,20 @@ type Transaction {
   ownerAddress: String!
 
   """
+<<<<<<< Updated upstream
   the token which owner's balance is affected
   """
   tokenAddress: String!
+=======
+  recipent address
+  """
+  recipientAddress: String!
+
+  """
+  sender address
+  """
+  senderAddress: String!
+>>>>>>> Stashed changes
 
   """
   [Base token's transfer] base token entity if transaction is transfer of base tokens
@@ -1831,6 +1981,29 @@ input Transaction_filter {
   amountUSD_lte: BigDecimal
   amountUSD_in: [BigDecimal!]
   amountUSD_not_in: [BigDecimal!]
+<<<<<<< Updated upstream
+=======
+  contractAddress: String
+  contractAddress_not: String
+  contractAddress_gt: String
+  contractAddress_lt: String
+  contractAddress_gte: String
+  contractAddress_lte: String
+  contractAddress_in: [String!]
+  contractAddress_not_in: [String!]
+  contractAddress_contains: String
+  contractAddress_contains_nocase: String
+  contractAddress_not_contains: String
+  contractAddress_not_contains_nocase: String
+  contractAddress_starts_with: String
+  contractAddress_starts_with_nocase: String
+  contractAddress_not_starts_with: String
+  contractAddress_not_starts_with_nocase: String
+  contractAddress_ends_with: String
+  contractAddress_ends_with_nocase: String
+  contractAddress_not_ends_with: String
+  contractAddress_not_ends_with_nocase: String
+>>>>>>> Stashed changes
   createdAtBlockNumber: BigInt
   createdAtBlockNumber_not: BigInt
   createdAtBlockNumber_gt: BigInt
@@ -1907,6 +2080,7 @@ input Transaction_filter {
   ownerAddress_ends_with_nocase: String
   ownerAddress_not_ends_with: String
   ownerAddress_not_ends_with_nocase: String
+<<<<<<< Updated upstream
   tokenAddress: String
   tokenAddress_not: String
   tokenAddress_gt: String
@@ -1927,6 +2101,48 @@ input Transaction_filter {
   tokenAddress_ends_with_nocase: String
   tokenAddress_not_ends_with: String
   tokenAddress_not_ends_with_nocase: String
+=======
+  recipientAddress: String
+  recipientAddress_not: String
+  recipientAddress_gt: String
+  recipientAddress_lt: String
+  recipientAddress_gte: String
+  recipientAddress_lte: String
+  recipientAddress_in: [String!]
+  recipientAddress_not_in: [String!]
+  recipientAddress_contains: String
+  recipientAddress_contains_nocase: String
+  recipientAddress_not_contains: String
+  recipientAddress_not_contains_nocase: String
+  recipientAddress_starts_with: String
+  recipientAddress_starts_with_nocase: String
+  recipientAddress_not_starts_with: String
+  recipientAddress_not_starts_with_nocase: String
+  recipientAddress_ends_with: String
+  recipientAddress_ends_with_nocase: String
+  recipientAddress_not_ends_with: String
+  recipientAddress_not_ends_with_nocase: String
+  senderAddress: String
+  senderAddress_not: String
+  senderAddress_gt: String
+  senderAddress_lt: String
+  senderAddress_gte: String
+  senderAddress_lte: String
+  senderAddress_in: [String!]
+  senderAddress_not_in: [String!]
+  senderAddress_contains: String
+  senderAddress_contains_nocase: String
+  senderAddress_not_contains: String
+  senderAddress_not_contains_nocase: String
+  senderAddress_starts_with: String
+  senderAddress_starts_with_nocase: String
+  senderAddress_not_starts_with: String
+  senderAddress_not_starts_with_nocase: String
+  senderAddress_ends_with: String
+  senderAddress_ends_with_nocase: String
+  senderAddress_not_ends_with: String
+  senderAddress_not_ends_with_nocase: String
+>>>>>>> Stashed changes
   baseToken: String
   baseToken_not: String
   baseToken_gt: String
@@ -2019,12 +2235,21 @@ enum Transaction_orderBy {
   action
   amount
   amountUSD
+<<<<<<< Updated upstream
+=======
+  contractAddress
+>>>>>>> Stashed changes
   createdAtBlockNumber
   createdAtTimestamp
   event
   hash
   ownerAddress
+<<<<<<< Updated upstream
   tokenAddress
+=======
+  recipientAddress
+  senderAddress
+>>>>>>> Stashed changes
   baseToken
   collateralToken
   longShortToken
