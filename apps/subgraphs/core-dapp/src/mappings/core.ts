@@ -1,19 +1,23 @@
 import { updateLongShortPrices, updatePosition } from './accounting'
 import {
+  addBaseTokenTransactions,
   addCollateralTransactions,
   addLongShortTokenTransactions,
   addSwapTransactions,
 } from './transaction'
 import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
 import { Pool } from '../generated/types/schema'
-import { Transfer as CollateralTokenTransfer } from '../generated/types/templates/CollateralToken/CollateralToken'
-import { Transfer as LongShortTokenTransfer } from '../generated/types/templates/LongShortToken/LongShortToken'
+import { Transfer as ERC20Transfer } from '../generated/types/templates/BaseToken/ERC20'
 
-export function handleCollateralTokenTransfer(event: CollateralTokenTransfer): void {
+export function handleBaseTokenTransfer(event: ERC20Transfer): void {
+  addBaseTokenTransactions(event)
+}
+
+export function handleCollateralTokenTransfer(event: ERC20Transfer): void {
   addCollateralTransactions(event)
 }
 
-export function handleLongShortTokenTransfer(event: LongShortTokenTransfer): void {
+export function handleLongShortTokenTransfer(event: ERC20Transfer): void {
   updatePosition(event.params.to, event.address, event.params.value)
   addLongShortTokenTransactions(event)
 }
