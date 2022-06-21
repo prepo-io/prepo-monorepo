@@ -26,9 +26,13 @@ type HistoricalEvent @entity {
   "{HASH}-{OWNER_ADDRESS}"
   id: ID!
   "amount of tokens"
-  amount: BigInt!
+  amount: BigDecimal!
   "USD value to display"
   amountUSD: BigDecimal!
+  "block number"
+  createdAtBlockNumber: BigInt!
+  "when transaction was made"
+  createdAtTimestamp: BigInt!
   "potential event"
   event: String!
   "hash of the transaction"

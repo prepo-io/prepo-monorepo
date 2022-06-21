@@ -15,11 +15,11 @@ import {
   ACTIONS_SEND,
   EVENTS_SWAP,
   EVENTS_TRANSFER,
-  ONE_BI,
   ZERO_BD,
   ZERO_BI,
 } from '../utils/constants'
 import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
+import { isDeposit } from '../utils/transactions'
 
 export function makeTransactionId(
   event: string,
@@ -78,19 +78,22 @@ export function getHistoricalEvent(transaction: Transaction): HistoricalEvent {
   let historicalEvent = HistoricalEvent.load(id)
   if (historicalEvent === null) {
     historicalEvent = new HistoricalEvent(id)
-    historicalEvent.amount = ZERO_BI
-    historicalEvent.amountUSD = ZERO_BD
-    historicalEvent.event = ''
+    historicalEvent.amount = transaction.amount
+    historicalEvent.amountUSD = transaction.amountUSD
+    historicalEvent.createdAtBlockNumber = transaction.createdAtBlockNumber
+    historicalEvent.createdAtTimestamp = transaction.createdAtTimestamp
+    historicalEvent.event = transaction.action
     historicalEvent.hash = transaction.hash
     historicalEvent.ownerAddress = transaction.ownerAddress
     historicalEvent.transactions = new Array<string>()
-    historicalEvent.txCount = ONE_BI
+    historicalEvent.txCount = ZERO_BI
   }
   const transactions = historicalEvent.transactions
   transactions.push(transaction.id)
   historicalEvent.transactions = transactions
   historicalEvent.txCount = BigInt.fromI32(transactions.length)
 
+  if (isDeposit(historicalEvent)) return historicalEvent
   historicalEvent.save()
   return historicalEvent
 }
@@ -174,7 +177,7 @@ export function addSwapTransactions(event: Swap, pool: Pool): void {
 
   const transaction = makeTransaction(
     event,
-    event.params.sender,
+    event.transaction.from,
     closing ? ACTIONS_CLOSE : ACTIONS_OPEN
   )
 
