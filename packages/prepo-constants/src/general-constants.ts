@@ -1,5 +1,7 @@
 export const DEFAULT_LANGUAGE = 'en-us'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const IS_BROWSER = typeof window !== 'undefined'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
