@@ -2,6 +2,7 @@ import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import {
   BaseToken,
   CollateralToken,
+  HistoricalEvent,
   LongShortToken,
   Pool,
   Transaction,
@@ -14,7 +15,9 @@ import {
   ACTIONS_SEND,
   EVENTS_SWAP,
   EVENTS_TRANSFER,
+  ONE_BI,
   ZERO_BD,
+  ZERO_BI,
 } from '../utils/constants'
 import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
 
@@ -27,6 +30,10 @@ export function makeTransactionId(
   return `${event}-${ownerAddress}-${transactionHash}-${logIndex.toString()}`
 }
 
+export function makeHistoricalEventId(hashString: string, ownerAddressString: string): string {
+  return `${hashString}-${ownerAddressString}`
+}
+
 export function makeTransaction(
   event: ethereum.Event,
   ownerAddress: Address,
@@ -37,6 +44,7 @@ export function makeTransaction(
   const ownerAddressString = ownerAddress.toHexString()
   const id = makeTransactionId(action, ownerAddressString, hashString, event.transactionLogIndex)
   const transaction = new Transaction(id)
+  const historicalEventId = makeHistoricalEventId(hashString, ownerAddressString)
 
   transaction.action = action
   transaction.createdAtBlockNumber = event.block.number
@@ -44,6 +52,7 @@ export function makeTransaction(
   transaction.hash = hashString
   transaction.ownerAddress = ownerAddressString
   transaction.contractAddress = contractAddress
+  transaction.historicalEvent = historicalEventId
 
   return transaction
 }
@@ -62,6 +71,28 @@ export function makeTransferTransaction(
   transaction.senderAddress = event.params.from.toHexString()
 
   return transaction
+}
+
+export function getHistoricalEvent(transaction: Transaction): HistoricalEvent {
+  const id = makeHistoricalEventId(transaction.hash, transaction.ownerAddress)
+  let historicalEvent = HistoricalEvent.load(id)
+  if (historicalEvent === null) {
+    historicalEvent = new HistoricalEvent(id)
+    historicalEvent.amount = ZERO_BI
+    historicalEvent.amountUSD = ZERO_BD
+    historicalEvent.event = ''
+    historicalEvent.hash = transaction.hash
+    historicalEvent.ownerAddress = transaction.ownerAddress
+    historicalEvent.transactions = new Array<string>()
+    historicalEvent.txCount = ONE_BI
+  }
+  const transactions = historicalEvent.transactions
+  transactions.push(transaction.id)
+  historicalEvent.transactions = transactions
+  historicalEvent.txCount = BigInt.fromI32(transactions.length)
+
+  historicalEvent.save()
+  return historicalEvent
 }
 
 export function addBaseTokenTransactions(event: ERC20Transfer): void {
@@ -83,6 +114,9 @@ export function addBaseTokenTransactions(event: ERC20Transfer): void {
 
   toTransaction.baseToken = baseToken.id
   toTransaction.save()
+
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addCollateralTransactions(event: ERC20Transfer): void {
@@ -97,6 +131,9 @@ export function addCollateralTransactions(event: ERC20Transfer): void {
 
   toTransaction.collateralToken = collateralToken.id
   toTransaction.save()
+
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addLongShortTokenTransactions(event: ERC20Transfer): void {
@@ -116,6 +153,9 @@ export function addLongShortTokenTransactions(event: ERC20Transfer): void {
   toTransaction.amountUSD = valueUSD
   toTransaction.longShortToken = longShortToken.id
   toTransaction.save()
+
+  getHistoricalEvent(fromTransaction)
+  getHistoricalEvent(toTransaction)
 }
 
 export function addSwapTransactions(event: Swap, pool: Pool): void {
@@ -149,4 +189,6 @@ export function addSwapTransactions(event: Swap, pool: Pool): void {
   transaction.senderAddress = event.params.sender.toHexString()
 
   transaction.save()
+
+  getHistoricalEvent(transaction)
 }
