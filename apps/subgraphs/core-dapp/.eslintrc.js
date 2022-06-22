@@ -8,6 +8,7 @@ module.exports = {
     ...require('config/eslint-server').rules,
     '@typescript-eslint/no-unused-expressions': 'off',
     // wasm assembly doesn't support these
+    '@typescript-eslint/no-inferrable-types': 'off',
     'prefer-destructuring': 'off',
     'prefer-exponentiation-operator': 'off',
     'no-param-reassign': 'off',
