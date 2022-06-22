@@ -20,7 +20,7 @@ import {
   ZERO_BI,
 } from '../utils/constants'
 import { Swap } from '../generated/types/templates/UniswapV3Pool/UniswapV3Pool'
-import { isDeposit, isWithdraw } from '../utils/transactions'
+import { isDeposit, isOpen, isWithdraw } from '../utils/transactions'
 
 export function makeTransactionId(
   event: string,
@@ -94,6 +94,8 @@ export function getHistoricalEvent(transaction: Transaction): HistoricalEvent {
   historicalEvent.transactions = transactions
   historicalEvent.txCount = BigInt.fromI32(transactions.length)
 
+  // always check those that requires more txCount first
+  if (isOpen(historicalEvent)) return historicalEvent
   if (isDeposit(historicalEvent)) return historicalEvent
   if (isWithdraw(historicalEvent)) return historicalEvent
   historicalEvent.save()
