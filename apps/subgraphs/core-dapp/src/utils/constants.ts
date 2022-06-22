@@ -31,4 +31,5 @@ export const TOKEN_TYPE_COLLATERAL_BASE = 'COLLATERAL_BASE'
 export class HistoricalEventTypes {
   deposit: string = 'DEPOSIT'
   withdraw: string = 'WITHDRAW'
+  open: string = 'OPEN'
 }
