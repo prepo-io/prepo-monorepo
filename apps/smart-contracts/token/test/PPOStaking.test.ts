@@ -4,10 +4,11 @@ import { BigNumber, Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { mockPPOStakingDeployFixture } from './fixtures/PPOStakingFixtures'
-import { AddressZero, MAX_UINT128, ONE, ONE_WEEK, JunkAddress } from './utils'
+import { MAX_UINT128, ONE, ONE_WEEK, JunkAddress } from './utils'
 import { UserStakingData } from '../types/ppoStaking'
 import {
   MockERC20,
@@ -370,7 +371,7 @@ describe('PPOStaking', () => {
       expect(delegatorVotesBefore).to.eq(0)
       const previousDelegateeVotesBefore = await ppoStaking.getVotes(previousDelegateeAddress)
 
-      const tx = await ppoStaking.connect(delegator).delegate(AddressZero)
+      const tx = await ppoStaking.connect(delegator).delegate(ZERO_ADDRESS)
 
       expect(await ppoStaking.delegates(delegator.address)).to.eq(delegator.address)
       expect(await ppoStaking.getVotes(delegator.address)).to.eq(previousDelegateeVotesBefore)

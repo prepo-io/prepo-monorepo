@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import {
   revertReason,
-  AddressZero,
   JunkAddress,
   ONE,
   generateAccountAmountMerkleTree,
@@ -64,7 +64,7 @@ describe('PregenesisPoints', () => {
     })
 
     it('sets shop as zero address', async () => {
-      expect(await points.getShop()).to.eq(AddressZero)
+      expect(await points.getShop()).to.eq(ZERO_ADDRESS)
     })
   })
 
@@ -86,16 +86,16 @@ describe('PregenesisPoints', () => {
       await points.connect(owner).setShop(JunkAddress)
 
       expect(await points.connect(owner).getShop()).to.eq(JunkAddress)
-      expect(await points.connect(owner).getShop()).to.not.eq(AddressZero)
+      expect(await points.connect(owner).getShop()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
       await points.connect(owner).setShop(JunkAddress)
-      expect(await points.connect(owner).getShop()).to.not.eq(AddressZero)
+      expect(await points.connect(owner).getShop()).to.not.eq(ZERO_ADDRESS)
 
-      await points.connect(owner).setShop(AddressZero)
+      await points.connect(owner).setShop(ZERO_ADDRESS)
 
-      expect(await points.connect(owner).getShop()).to.eq(AddressZero)
+      expect(await points.connect(owner).getShop()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
@@ -178,7 +178,7 @@ describe('PregenesisPoints', () => {
     })
 
     it('reverts if minting to zero address', async () => {
-      await expect(points.connect(owner).mint(AddressZero, ONE)).revertedWith(
+      await expect(points.connect(owner).mint(ZERO_ADDRESS, ONE)).revertedWith(
         revertReason('ERC20: mint to the zero address')
       )
     })
@@ -231,7 +231,7 @@ describe('PregenesisPoints', () => {
     })
 
     it('reverts if burn from zero address', async () => {
-      await expect(points.connect(owner).burn(AddressZero, ONE)).revertedWith(
+      await expect(points.connect(owner).burn(ZERO_ADDRESS, ONE)).revertedWith(
         revertReason('ERC20: burn from the zero address')
       )
     })

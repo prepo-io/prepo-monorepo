@@ -2,16 +2,11 @@ import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { iouPPOFixture } from './fixtures/IOUPPOFixtures'
 import { ppoDeployFixture } from './fixtures/PPOFixture'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import {
-  revertReason,
-  AddressZero,
-  IOUPPOLeafNode,
-  hashIOUPPOLeafNode,
-  generateMerkleTreeIOUPPO,
-} from './utils'
+import { revertReason, IOUPPOLeafNode, hashIOUPPOLeafNode, generateMerkleTreeIOUPPO } from './utils'
 import { IOUPPO, PPO, MockERC20 } from '../types/generated'
 
 const { parseEther } = ethers.utils
@@ -82,11 +77,11 @@ describe('IOUPPO', () => {
 
     it('sets PPO address to zero address', async () => {
       await iouPPO.connect(owner).setPPOToken(ppo.address)
-      expect(await iouPPO.connect(owner).getPPOToken()).to.not.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOToken()).to.not.eq(ZERO_ADDRESS)
 
-      await iouPPO.connect(owner).setPPOToken(AddressZero)
+      await iouPPO.connect(owner).setPPOToken(ZERO_ADDRESS)
 
-      expect(await iouPPO.connect(owner).getPPOToken()).to.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOToken()).to.eq(ZERO_ADDRESS)
     })
 
     it('sets PPO address to non-zero address', async () => {
@@ -95,7 +90,7 @@ describe('IOUPPO', () => {
       await iouPPO.connect(owner).setPPOToken(ppo.address)
 
       expect(await iouPPO.connect(owner).getPPOToken()).to.eq(ppo.address)
-      expect(await iouPPO.connect(owner).getPPOToken()).to.not.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOToken()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
@@ -124,11 +119,11 @@ describe('IOUPPO', () => {
 
     it('sets PPO Staking address to zero address', async () => {
       await iouPPO.connect(owner).setPPOStaking(ppoStaking.address)
-      expect(await iouPPO.connect(owner).getPPOStaking()).to.not.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOStaking()).to.not.eq(ZERO_ADDRESS)
 
-      await iouPPO.connect(owner).setPPOStaking(AddressZero)
+      await iouPPO.connect(owner).setPPOStaking(ZERO_ADDRESS)
 
-      expect(await iouPPO.connect(owner).getPPOStaking()).to.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOStaking()).to.eq(ZERO_ADDRESS)
     })
 
     it('sets PPO Staking address to non-zero address', async () => {
@@ -137,7 +132,7 @@ describe('IOUPPO', () => {
       await iouPPO.connect(owner).setPPOStaking(ppoStaking.address)
 
       expect(await iouPPO.connect(owner).getPPOStaking()).to.eq(ppoStaking.address)
-      expect(await iouPPO.connect(owner).getPPOStaking()).to.not.eq(AddressZero)
+      expect(await iouPPO.connect(owner).getPPOStaking()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
@@ -393,7 +388,7 @@ describe('IOUPPO', () => {
     })
 
     it('reverts if PPO address not set', async () => {
-      expect(await iouPPO.getPPOToken()).to.be.equal(AddressZero)
+      expect(await iouPPO.getPPOToken()).to.be.equal(ZERO_ADDRESS)
       expect(iouPPO.connect(userNotStaked).convert(shouldStake)).revertedWith(
         revertReason('PPO address not set')
       )
@@ -477,7 +472,7 @@ describe('IOUPPO', () => {
     it('converts if not staked and PPOStaking not set', async () => {
       await iouPPO.connect(owner).setPPOToken(ppo.address)
       expect(await iouPPO.getPPOToken()).to.be.equal(ppo.address)
-      expect(await iouPPO.getPPOStaking()).to.be.equal(AddressZero)
+      expect(await iouPPO.getPPOStaking()).to.be.equal(ZERO_ADDRESS)
       await ppo.connect(deployer).transfer(iouPPO.address, ppoAmountForIOUPPO)
       expect(await ppo.balanceOf(iouPPO.address)).to.equal(ppoAmountForIOUPPO)
       const ppoBalanceBefore = await ppo.balanceOf(userNotStaked.address)
@@ -493,7 +488,7 @@ describe('IOUPPO', () => {
     it('converts if not staked and PPOStaking set', async () => {
       await iouPPO.connect(owner).setPPOToken(ppo.address)
       expect(await iouPPO.getPPOToken()).to.be.equal(ppo.address)
-      expect(await iouPPO.getPPOStaking()).to.be.equal(AddressZero)
+      expect(await iouPPO.getPPOStaking()).to.be.equal(ZERO_ADDRESS)
       await iouPPO.connect(owner).setPPOStaking(ppoStaking.address)
       expect(await iouPPO.connect(owner).getPPOStaking()).to.eq(ppoStaking.address)
       await ppo.connect(deployer).transfer(iouPPO.address, ppoAmountForIOUPPO)

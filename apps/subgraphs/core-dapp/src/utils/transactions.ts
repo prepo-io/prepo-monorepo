@@ -1,11 +1,11 @@
 import { BigDecimal } from '@graphprotocol/graph-ts'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import {
   ACTIONS_RECEIVE,
   ACTIONS_SEND,
   EVENTS_TRANSFER,
   HistoricalEventTypes,
   ONE_BI,
-  ZERO_ADDRESS,
 } from './constants'
 import { CollateralToken, HistoricalEvent, Transaction } from '../generated/types/schema'
 

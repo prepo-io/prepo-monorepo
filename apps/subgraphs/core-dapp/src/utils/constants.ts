@@ -2,7 +2,6 @@ import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 
 // ... addresses ...
 export const COLLATERAL_TOKEN_ADDRESS = '0xab7f09a1bd92ae0508884e6ab02a7a11df83512d'
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 // ... numbers ...
 export const DEFAULT_LONG_SHORT_DECIMALS = 18

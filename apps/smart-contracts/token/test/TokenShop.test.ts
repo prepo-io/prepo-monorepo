@@ -5,12 +5,13 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { FakeContract, MockContract, smock } from '@defi-wonderland/smock'
 import { Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
-import { revertReason, AddressZero, JunkAddress, ZERO } from './utils'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { revertReason, JunkAddress, ZERO } from './utils'
 import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { TokenShop, MockERC20 } from '../types/generated'
 
-// TODO: change AddressZero and JunkAddress to all caps
+// TODO: change ZERO_ADDRESS and JunkAddress to all caps
 
 chai.use(smock.matchers)
 
@@ -246,7 +247,7 @@ describe('TokenShop', () => {
 
     it('sets to non-zero address', async () => {
       expect(await tokenShop.getPurchaseHook()).to.not.eq(JunkAddress)
-      expect(JunkAddress).to.not.equal(AddressZero)
+      expect(JunkAddress).to.not.equal(ZERO_ADDRESS)
 
       await tokenShop.connect(owner).setPurchaseHook(JunkAddress)
 
@@ -255,11 +256,11 @@ describe('TokenShop', () => {
 
     it('sets to zero address', async () => {
       await tokenShop.connect(owner).setPurchaseHook(JunkAddress)
-      expect(await tokenShop.getPurchaseHook()).to.not.eq(AddressZero)
+      expect(await tokenShop.getPurchaseHook()).to.not.eq(ZERO_ADDRESS)
 
-      await tokenShop.connect(owner).setPurchaseHook(AddressZero)
+      await tokenShop.connect(owner).setPurchaseHook(ZERO_ADDRESS)
 
-      expect(await tokenShop.getPurchaseHook()).to.eq(AddressZero)
+      expect(await tokenShop.getPurchaseHook()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
@@ -337,8 +338,8 @@ describe('TokenShop', () => {
     })
 
     it('reverts if purchase hook is zero address', async () => {
-      await tokenShop.connect(owner).setPurchaseHook(AddressZero)
-      expect(await tokenShop.getPurchaseHook()).to.be.eq(AddressZero)
+      await tokenShop.connect(owner).setPurchaseHook(ZERO_ADDRESS)
+      expect(await tokenShop.getPurchaseHook()).to.be.eq(ZERO_ADDRESS)
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, amounts)
