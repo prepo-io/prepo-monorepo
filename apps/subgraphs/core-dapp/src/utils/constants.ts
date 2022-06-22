@@ -32,4 +32,5 @@ export class HistoricalEventTypes {
   deposit: string = 'DEPOSIT'
   withdraw: string = 'WITHDRAW'
   open: string = 'OPEN'
+  close: string = 'CLOSE'
 }
