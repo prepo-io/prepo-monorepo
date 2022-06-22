@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import '../AccountAccessController.sol';
+import "../AccountAccessController.sol";
 
 contract MockAccountAccessController is AccountAccessController {
   constructor() {}

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import './interfaces/IStrategy.sol';
-import './interfaces/IStrategyController.sol';
-import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import "./interfaces/IStrategy.sol";
+import "./interfaces/IStrategyController.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SingleStrategyController is IStrategyController, Ownable, ReentrancyGuard {
   using SafeERC20 for IERC20;
@@ -15,12 +15,12 @@ contract SingleStrategyController is IStrategyController, Ownable, ReentrancyGua
   IERC20 private immutable _baseToken;
 
   modifier onlyVault() {
-    require(msg.sender == _vault, 'Caller is not the vault');
+    require(msg.sender == _vault, "Caller is not the vault");
     _;
   }
 
   constructor(IERC20 _token) {
-    require(address(_token) != address(0), 'Zero address');
+    require(address(_token) != address(0), "Zero address");
     _baseToken = _token;
   }
 

@@ -9,7 +9,8 @@ export async function collateralFixture(
   tokenAddress: string,
   treasuryAddress: string
 ): Promise<Collateral> {
-  const collateral = await ethers.getContractFactory('Collateral')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const collateral: any = await ethers.getContractFactory('Collateral')
   return (await upgrades.deployProxy(collateral, [tokenAddress, treasuryAddress])) as Collateral
 }
 
@@ -17,7 +18,8 @@ export async function testCollateralFixture(
   tokenAddress: string,
   treasuryAddress: string
 ): Promise<TestCollateral> {
-  const testCollateral = await ethers.getContractFactory('TestCollateral')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const testCollateral: any = await ethers.getContractFactory('TestCollateral')
   /**
    * This is only meant for testing to prevent warnings for use of delegatecall().
    * OpenZeppelin Upgrades by default does not allow the logic contract to

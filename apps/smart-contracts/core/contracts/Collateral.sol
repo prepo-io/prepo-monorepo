@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import './interfaces/ICollateral.sol';
-import './interfaces/IStrategyController.sol';
-import './interfaces/IHook.sol';
-import './openzeppelin/ERC20UpgradeableRenameable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol';
+import "./interfaces/ICollateral.sol";
+import "./interfaces/IStrategyController.sol";
+import "./interfaces/IHook.sol";
+import "./openzeppelin/ERC20UpgradeableRenameable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
 contract Collateral is
   ICollateral,
@@ -38,13 +38,13 @@ contract Collateral is
   function initialize(address _newBaseToken, address _newTreasury) public initializer {
     __Ownable_init_unchained();
     __ReentrancyGuard_init_unchained();
-    __ERC20_init_unchained(string('prePO Collateral Token'), string('preCT'));
+    __ERC20_init_unchained(string("prePO Collateral Token"), string("preCT"));
     _baseToken = IERC20Upgradeable(_newBaseToken);
     _treasury = _newTreasury;
   }
 
   function deposit(uint256 _amount) external override nonReentrant returns (uint256) {
-    require(_depositsAllowed, 'Deposits not allowed');
+    require(_depositsAllowed, "Deposits not allowed");
     _baseToken.safeTransferFrom(msg.sender, address(this), _amount);
     // Calculate fees and shares to mint including latent contract funds
     uint256 _amountToDeposit = _baseToken.balanceOf(address(this));
@@ -57,7 +57,7 @@ contract Collateral is
      * depositing an amount large enough to pay a fee.
      */
     uint256 _fee = (_amountToDeposit * _mintingFee) / FEE_DENOMINATOR + 1;
-    require(_amountToDeposit > _fee, 'Deposit amount too small');
+    require(_amountToDeposit > _fee, "Deposit amount too small");
     _baseToken.safeTransfer(_treasury, _fee);
     unchecked {
       _amountToDeposit -= _fee;
@@ -89,7 +89,7 @@ contract Collateral is
      * could initiate an unlimited withdrawal amount ahead of time,
      * negating the protection a delayed withdrawal offers.
      */
-    require(balanceOf(msg.sender) >= _amount, 'Insufficient balance');
+    require(balanceOf(msg.sender) >= _amount, "Insufficient balance");
     _accountToWithdrawalRequest[msg.sender].amount = _amount;
     _accountToWithdrawalRequest[msg.sender].blockNumber = block.number;
   }
@@ -106,21 +106,21 @@ contract Collateral is
      */
     require(
       _accountToWithdrawalRequest[_account].amount == _amount,
-      'Initiated amount does not match'
+      "Initiated amount does not match"
     );
     uint256 _recordedBlock = _accountToWithdrawalRequest[_account].blockNumber;
     require(
       _recordedBlock + _delayedWithdrawalExpiry >= block.number,
-      'Must withdraw before expiry'
+      "Must withdraw before expiry"
     );
-    require(block.number > _recordedBlock, 'Must withdraw in a later block');
+    require(block.number > _recordedBlock, "Must withdraw in a later block");
     // Reset the initiation prior to withdrawal.
     _accountToWithdrawalRequest[_account].amount = 0;
     _accountToWithdrawalRequest[_account].blockNumber = 0;
   }
 
   function withdraw(uint256 _amount) external override nonReentrant returns (uint256) {
-    require(_withdrawalsAllowed, 'Withdrawals not allowed');
+    require(_withdrawalsAllowed, "Withdrawals not allowed");
     if (_delayedWithdrawalExpiry != 0) {
       _processDelayedWithdrawal(msg.sender, _amount);
     }
@@ -143,7 +143,7 @@ contract Collateral is
      * withdrawing an amount large enough to pay a fee.
      */
     uint256 _fee = (_amountWithdrawn * _redemptionFee) / FEE_DENOMINATOR + 1;
-    require(_amountWithdrawn > _fee, 'Withdrawal amount too small');
+    require(_amountWithdrawn > _fee, "Withdrawal amount too small");
     _baseToken.safeTransfer(_treasury, _fee);
     unchecked {
       _amountWithdrawn -= _fee;
@@ -189,13 +189,13 @@ contract Collateral is
   }
 
   function setMintingFee(uint256 _newMintingFee) external override onlyOwner {
-    require(_newMintingFee <= FEE_LIMIT, 'Exceeds fee limit');
+    require(_newMintingFee <= FEE_LIMIT, "Exceeds fee limit");
     _mintingFee = _newMintingFee;
     emit MintingFeeChanged(_mintingFee);
   }
 
   function setRedemptionFee(uint256 _newRedemptionFee) external override onlyOwner {
-    require(_newRedemptionFee <= FEE_LIMIT, 'Exceeds fee limit');
+    require(_newRedemptionFee <= FEE_LIMIT, "Exceeds fee limit");
     _redemptionFee = _newRedemptionFee;
     emit RedemptionFeeChanged(_redemptionFee);
   }

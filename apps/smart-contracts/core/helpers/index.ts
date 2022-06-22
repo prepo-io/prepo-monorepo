@@ -1,5 +1,5 @@
 import { HardhatEthersHelpers } from '@nomiclabs/hardhat-ethers/types'
-import { Contract, ContractFactory, ContractTransaction } from 'ethers'
+import { Contract, ContractTransaction } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { PrePOMarketFactory, Collateral } from '../typechain'
 
@@ -11,7 +11,8 @@ import { PrePOMarketFactory, Collateral } from '../typechain'
  */
 async function fetchExistingDeploymentFromEnvironment(
   envVarName: string,
-  contractFactory: ContractFactory
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  contractFactory: any
 ): Promise<Contract> {
   const valueFromEnvVar = process.env[envVarName]
   if (!valueFromEnvVar) {

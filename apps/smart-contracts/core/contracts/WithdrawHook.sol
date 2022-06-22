@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
-import './interfaces/IHook.sol';
-import './interfaces/ICollateralDepositRecord.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "./interfaces/IHook.sol";
+import "./interfaces/ICollateralDepositRecord.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 pragma solidity =0.8.7;
 
@@ -14,7 +14,7 @@ contract WithdrawHook is IHook, Ownable {
   }
 
   modifier onlyVault() {
-    require(msg.sender == _vault, 'Caller is not the vault');
+    require(msg.sender == _vault, "Caller is not the vault");
     _;
   }
 
