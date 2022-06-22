@@ -179,7 +179,7 @@ export function isOpenClose(historicalEvent: HistoricalEvent): boolean {
               userInputAmount = transaction.amount
             }
           }
-          // TODO: check for SEND of long short token here
+          // sending longShortToken = potential close flow
           if (!hasSendLongShortToken && transaction.action == ACTIONS_SEND) {
             const ownerIsSender = transaction.ownerAddress == transaction.senderAddress
             const validRecipient = Pool.load(transaction.recipientAddress) !== null
@@ -200,6 +200,7 @@ export function isOpenClose(historicalEvent: HistoricalEvent): boolean {
             hasSendCollateralToken = ownerIsSender && validRecipient
           }
 
+          // receiving collateral token = potential close flow
           if (!hasReceiveCollateralToken && transaction.action == ACTIONS_RECEIVE) {
             const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
             const validSender = Pool.load(transaction.senderAddress) !== null
