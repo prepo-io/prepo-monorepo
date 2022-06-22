@@ -7174,9 +7174,9 @@
     randombytes "^2.1.0"
 
 "@toruslabs/torus-embed@^1.10.11":
-  version "1.24.2"
-  resolved "https://registry.yarnpkg.com/@toruslabs/torus-embed/-/torus-embed-1.24.2.tgz#8f63c5116eb414594f5d285facbfa588c98c7a90"
-  integrity sha512-I5BV4JyyrEVYthD+nTdXZBr53GKJ1i+A6suJ0y52P6hahH2cA2NdMJcDhQSwjftFo4KlQ41LI7R31w8Hu8sdPA==
+  version "1.24.3"
+  resolved "https://registry.yarnpkg.com/@toruslabs/torus-embed/-/torus-embed-1.24.3.tgz#b821b7a9de8d7d2a8d52bd1b1124d8bfa2bb0097"
+  integrity sha512-OBazs/kAW6IA3QSgMJDBELbyZEjj+Qd/7kq98KtlYSdP8TNjyMaw5+pez6e4F+Pd70r1Buj1mReIrMTQQdQQeA==
   dependencies:
     "@metamask/obs-store" "^7.0.0"
     "@toruslabs/fetch-node-details" "^6.0.1"
