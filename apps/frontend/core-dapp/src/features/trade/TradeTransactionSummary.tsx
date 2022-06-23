@@ -48,7 +48,7 @@ const TradeTransactionSummary: React.FC = () => {
   if (selectedMarket === undefined) return null
 
   const estimatedValuation = selectedMarket.estimatedValuation?.value
-    ? significantDigits(selectedMarket.estimatedValuation?.value)
+    ? `$${significantDigits(selectedMarket.estimatedValuation?.value)}`
     : undefined
 
   const tradeTransactionSummary = [
