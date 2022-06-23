@@ -1,6 +1,7 @@
 import chai, { expect } from 'chai'
 import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
+import { utils } from 'prepo-hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { LongShortTokenAttachFixture } from './fixtures/LongShortTokenFixture'
@@ -11,9 +12,11 @@ import {
   createMarketFixture,
 } from './fixtures/PrePOMarketFactoryFixture'
 import { getCollateralValidityChangedEvent } from './events'
-import { nowPlusMonths, revertReason } from './utils'
+import { revertReason } from './utils'
 import { PrePOMarketFactory } from '../typechain/PrePOMarketFactory'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { nowPlusMonths } = utils
 
 chai.use(solidity)
 

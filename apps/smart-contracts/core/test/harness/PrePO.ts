@@ -3,6 +3,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { ethers, upgrades } from 'hardhat'
 import { ContractFactory } from 'ethers'
 import { parseEther } from '@ethersproject/units'
+import { utils } from 'prepo-hardhat'
 import { getFactories } from './helpers'
 import {
   MockStrategy,
@@ -14,9 +15,11 @@ import {
   CollateralDepositRecord,
 } from '../../typechain'
 import { getMarketAddedEvent } from '../events'
-import { setNextTimestamp, FEE_DENOMINATOR } from '../utils'
+import { FEE_DENOMINATOR } from '../utils'
 import { depositHookFixture, withdrawHookFixture } from '../fixtures/HookFixture'
 import { collateralDepositRecordFixture } from '../fixtures/CollateralDepositRecordFixture'
+
+const { setNextTimestamp } = utils
 
 export type CreateMarketParams = {
   tokenNameSuffix: string

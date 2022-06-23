@@ -2,7 +2,10 @@
 import { parseEther } from 'ethers/lib/utils'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { assertIsTestnetChain } from '../utils'
+import { ChainId } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
+
+const { assertIsTestnetChain } = utils
 
 const deployFunction: DeployFunction = async function ({
   deployments,
@@ -17,7 +20,7 @@ const deployFunction: DeployFunction = async function ({
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
    */
-  assertIsTestnetChain(currentChain)
+  assertIsTestnetChain(currentChain as unknown as ChainId)
   const globalDepositCap = parseEther('100000')
   const accountDepositCap = parseEther('1000')
   const { address: depositRecordAddress, newlyDeployed } = await deploy('CollateralDepositRecord', {

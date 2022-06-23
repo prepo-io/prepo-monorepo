@@ -13,32 +13,6 @@ export const ONE = BigNumber.from(1)
 export const ZERO_HASH = ethers.utils.formatBytes32String('')
 export const ONE_WEEK = BigNumber.from(60 * 60 * 24 * 7)
 
-export function expandToDecimals(n: number, decimals: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(decimals))
-}
-
-export function expandTo6Decimals(n: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(6))
-}
-
-export function expandTo18Decimals(n: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(18))
-}
-
-export function nowPlusMonths(n: number): number {
-  const d = new Date()
-  d.setMonth(d.getMonth() + n)
-  d.setHours(0, 0, 0, 0)
-  return d.getTime() / 1000
-}
-
-export async function setNextTimestamp(
-  provider: providers.Web3Provider,
-  timestamp: number
-): Promise<void> {
-  await provider.send('evm_setNextBlockTimestamp', [timestamp])
-}
-
 export async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
   for (let i = 0; i < blocks; i++) {
     await provider.send('evm_mine', [])

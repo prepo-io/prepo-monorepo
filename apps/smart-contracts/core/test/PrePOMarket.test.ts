@@ -4,6 +4,7 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { LongShortTokenAttachFixture } from './fixtures/LongShortTokenFixture'
 import { prePOMarketAttachFixture } from './fixtures/PrePOMarketFixture'
@@ -21,7 +22,6 @@ import {
   getFinalLongPriceSetEvent,
 } from './events'
 import {
-  nowPlusMonths,
   MAX_PRICE,
   calculateFee,
   FEE_LIMIT,
@@ -33,6 +33,8 @@ import { PrePOMarketFactory } from '../typechain/PrePOMarketFactory'
 import { PrePOMarket } from '../typechain/PrePOMarket'
 import { LongShortToken } from '../typechain/LongShortToken'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { nowPlusMonths } = utils
 
 chai.use(solidity)
 
