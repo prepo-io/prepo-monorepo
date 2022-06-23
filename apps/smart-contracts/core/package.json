@@ -59,6 +59,7 @@
         "keccak256": "1.0.3",
         "merkletreejs": "0.2.24",
         "solidity-coverage": "0.7.17",
-        "prepo-constants": "*"
+        "prepo-constants": "*",
+        "prepo-hardhat": "*"
     }
 }
