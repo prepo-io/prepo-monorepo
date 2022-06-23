@@ -28,4 +28,9 @@ interface ITokenShop {
   function getPaymentToken() external view returns (address);
 
   function getPurchaseHook() external view returns (IPurchaseHook);
+
+  function getERC721PurchaseCount(address user, address tokenContract)
+    external
+    view
+    returns (uint256);
 }

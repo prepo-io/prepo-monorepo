@@ -15,6 +15,7 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
   bool private _paused;
   IPurchaseHook private _purchaseHook;
   mapping(address => mapping(uint256 => uint256)) private _contractToIdToPrice;
+  mapping(address => mapping(address => uint256)) private _userToERC721ToPurchaseCount;
 
   //TODO: move it into Pausable.sol
   modifier whenNotPaused() {
@@ -62,6 +63,7 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     require(address(_purchaseHook) != address(0), "Purchase hook not set");
     for (uint256 i; i < _tokenContracts.length; ++i) {
       bool _isERC1155 = IERC1155(_tokenContracts[i]).supportsInterface(type(IERC1155).interfaceId);
+      require(_contractToIdToPrice[_tokenContracts[i]][_ids[i]] != 0, "Non-purchasable item");
       if (_isERC1155) {
         _purchaseHook.hookERC1155(tx.origin, _tokenContracts[i], _ids[i], _amounts[i]);
         IERC1155(_tokenContracts[i]).safeTransferFrom(
@@ -73,6 +75,7 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
         );
       } else {
         _purchaseHook.hookERC721(tx.origin, _tokenContracts[i], _ids[i]);
+        ++_userToERC721ToPurchaseCount[tx.origin][_tokenContracts[i]];
         IERC721(_tokenContracts[i]).safeTransferFrom(address(this), _msgSender(), _ids[i]);
       }
     }
@@ -92,6 +95,15 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
 
   function getPurchaseHook() external view override returns (IPurchaseHook) {
     return _purchaseHook;
+  }
+
+  function getERC721PurchaseCount(address _user, address _tokenContract)
+    external
+    view
+    override
+    returns (uint256)
+  {
+    _userToERC721ToPurchaseCount[_user][_tokenContract];
   }
 
   function onERC1155Received(

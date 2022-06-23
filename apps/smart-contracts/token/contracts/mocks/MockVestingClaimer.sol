@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "../../Vesting.sol";
+import "../Vesting.sol";
 
 contract MockVestingClaimer {
   Vesting private _vesting;
