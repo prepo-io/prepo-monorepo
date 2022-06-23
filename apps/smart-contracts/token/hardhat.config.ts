@@ -19,6 +19,36 @@ const hardhatConfig = generateHardhatConfig(hardhatLocalConfig)
 
 const config: HardhatUserConfig = {
   ...hardhatConfig,
+  solidity: {
+    compilers: [
+      {
+        version: '0.8.7',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 99999,
+          },
+        },
+      },
+      {
+        version: '0.8.6',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+          outputSelection: {
+            '*': {
+              Masset: ['storageLayout'],
+              FeederPool: ['storageLayout'],
+              EmissionsController: ['storageLayout'],
+              SavingsContract: ['storageLayout'],
+            },
+          },
+        },
+      },
+    ],
+  },
   typechain: {
     outDir: 'types/generated',
     target: 'ethers-v5',
