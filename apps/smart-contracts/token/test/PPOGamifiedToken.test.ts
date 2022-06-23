@@ -4,18 +4,11 @@ import { BigNumber, Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
-import { ZERO_ADDRESS } from 'prepo-constants'
+import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { mockPPOGamifiedTokenDeployFixture } from './fixtures/PPOGamifiedTokenFixture'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
-import {
-  getLastTimestamp,
-  JunkAddress,
-  MAX_INT64,
-  MAX_UINT64,
-  MIN_INT64,
-  revertReason,
-} from './utils'
+import { getLastTimestamp, MAX_INT64, MAX_UINT64, MIN_INT64, revertReason } from './utils'
 import {
   MockERC20,
   MockERC20__factory,
@@ -70,7 +63,7 @@ describe('PPOGamifiedToken', () => {
   }
 
   const redeployGamifiedToken = async (): Promise<Deployment> => {
-    nexus = await new MockNexus__factory(user1).deploy(owner.address, JunkAddress, JunkAddress)
+    nexus = await new MockNexus__factory(user1).deploy(owner.address, JUNK_ADDRESS, JUNK_ADDRESS)
     ppoToken = await new MockERC20__factory(user1).deploy(
       'prePO Token',
       'PPO',

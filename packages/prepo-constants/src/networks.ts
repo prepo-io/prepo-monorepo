@@ -28,6 +28,7 @@ export type NetworkType = 'ethereum' | 'arbitrum' | 'polygon' | 'dai' | 'bsc'
 
 export type SupportedNetworks =
   | 'localhost'
+  | 'hardhat'
   | 'mainnet'
   | 'kovan'
   | 'rinkeby'
@@ -68,6 +69,15 @@ export const NETWORKS: Networks = {
   localhost: {
     chainName: 'Localhost',
     name: 'localhost',
+    color: '#666666',
+    chainId: ChainId.Localhost,
+    blockExplorer: '',
+    rpcUrls: [`http://localhost:8545`],
+    testNetwork: true,
+  },
+  hardhat: {
+    chainName: 'Hardhat',
+    name: 'hardhat',
     color: '#666666',
     chainId: ChainId.Hardhat,
     blockExplorer: '',

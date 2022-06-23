@@ -2,10 +2,9 @@ import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
-import { ZERO_ADDRESS } from 'prepo-constants'
+import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import {
   revertReason,
-  JunkAddress,
   ONE,
   generateAccountAmountMerkleTree,
   AccountAmountLeafNode,
@@ -75,22 +74,22 @@ describe('PregenesisPoints', () => {
 
     it('reverts if not owner', async () => {
       expect(await points.owner()).to.not.eq(user1.address)
-      await expect(points.connect(user1).setShop(JunkAddress)).revertedWith(
+      await expect(points.connect(user1).setShop(JUNK_ADDRESS)).revertedWith(
         revertReason('Ownable: caller is not the owner')
       )
     })
 
     it('sets to non-zero address', async () => {
-      expect(await points.connect(owner).getShop()).to.not.eq(JunkAddress)
+      expect(await points.connect(owner).getShop()).to.not.eq(JUNK_ADDRESS)
 
-      await points.connect(owner).setShop(JunkAddress)
+      await points.connect(owner).setShop(JUNK_ADDRESS)
 
-      expect(await points.connect(owner).getShop()).to.eq(JunkAddress)
+      expect(await points.connect(owner).getShop()).to.eq(JUNK_ADDRESS)
       expect(await points.connect(owner).getShop()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await points.connect(owner).setShop(JunkAddress)
+      await points.connect(owner).setShop(JUNK_ADDRESS)
       expect(await points.connect(owner).getShop()).to.not.eq(ZERO_ADDRESS)
 
       await points.connect(owner).setShop(ZERO_ADDRESS)
@@ -99,15 +98,15 @@ describe('PregenesisPoints', () => {
     })
 
     it('is idempotent', async () => {
-      expect(await points.connect(owner).getShop()).to.not.eq(JunkAddress)
+      expect(await points.connect(owner).getShop()).to.not.eq(JUNK_ADDRESS)
 
-      await points.connect(owner).setShop(JunkAddress)
+      await points.connect(owner).setShop(JUNK_ADDRESS)
 
-      expect(await points.connect(owner).getShop()).to.eq(JunkAddress)
+      expect(await points.connect(owner).getShop()).to.eq(JUNK_ADDRESS)
 
-      await points.connect(owner).setShop(JunkAddress)
+      await points.connect(owner).setShop(JUNK_ADDRESS)
 
-      expect(await points.connect(owner).getShop()).to.eq(JunkAddress)
+      expect(await points.connect(owner).getShop()).to.eq(JUNK_ADDRESS)
     })
   })
 

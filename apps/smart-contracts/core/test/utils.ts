@@ -4,7 +4,6 @@ import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 
-export const JunkAddress = '0x0000000000000000000000000000000000000001'
 export const FEE_DENOMINATOR = 1000000
 export const FEE_LIMIT = 50000
 export const MAX_PRICE = parseEther('1')

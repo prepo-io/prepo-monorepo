@@ -5,11 +5,10 @@ import { Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
 import { parseEther } from 'ethers/lib/utils'
-import { ZERO_ADDRESS } from 'prepo-constants'
+import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import {
   revertReason,
   generateAccountAmountMerkleTree,
-  JunkAddress,
   AccountAmountLeafNode,
   hashAccountAmountLeafNode,
   ZERO_HASH,
@@ -81,21 +80,21 @@ describe('StakingRewardsDistribution', () => {
       expect(await stakingRewardsDistribution.owner()).to.not.eq(user1.address)
 
       await expect(
-        stakingRewardsDistribution.connect(user1).setPPOStaking(JunkAddress)
+        stakingRewardsDistribution.connect(user1).setPPOStaking(JUNK_ADDRESS)
       ).revertedWith(revertReason('Ownable: caller is not the owner'))
     })
 
     it('sets to non-zero address', async () => {
-      expect(await stakingRewardsDistribution.getPPOStaking()).to.not.eq(JunkAddress)
-      expect(JunkAddress).to.not.eq(ZERO_ADDRESS)
+      expect(await stakingRewardsDistribution.getPPOStaking()).to.not.eq(JUNK_ADDRESS)
+      expect(JUNK_ADDRESS).to.not.eq(ZERO_ADDRESS)
 
-      await stakingRewardsDistribution.connect(owner).setPPOStaking(JunkAddress)
+      await stakingRewardsDistribution.connect(owner).setPPOStaking(JUNK_ADDRESS)
 
-      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JunkAddress)
+      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JUNK_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await stakingRewardsDistribution.connect(owner).setPPOStaking(JunkAddress)
+      await stakingRewardsDistribution.connect(owner).setPPOStaking(JUNK_ADDRESS)
       expect(await stakingRewardsDistribution.getPPOStaking()).to.not.eq(ZERO_ADDRESS)
 
       await stakingRewardsDistribution.connect(owner).setPPOStaking(ZERO_ADDRESS)
@@ -104,15 +103,15 @@ describe('StakingRewardsDistribution', () => {
     })
 
     it('is idempotent', async () => {
-      expect(await stakingRewardsDistribution.getPPOStaking()).to.not.eq(JunkAddress)
+      expect(await stakingRewardsDistribution.getPPOStaking()).to.not.eq(JUNK_ADDRESS)
 
-      await stakingRewardsDistribution.connect(owner).setPPOStaking(JunkAddress)
+      await stakingRewardsDistribution.connect(owner).setPPOStaking(JUNK_ADDRESS)
 
-      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JunkAddress)
+      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JUNK_ADDRESS)
 
-      await stakingRewardsDistribution.connect(owner).setPPOStaking(JunkAddress)
+      await stakingRewardsDistribution.connect(owner).setPPOStaking(JUNK_ADDRESS)
 
-      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JunkAddress)
+      expect(await stakingRewardsDistribution.getPPOStaking()).to.eq(JUNK_ADDRESS)
     })
   })
 
@@ -208,7 +207,7 @@ describe('StakingRewardsDistribution', () => {
     })
 
     it("reverts if node doesn't exist (amount exists, but incorrect account)", async () => {
-      const incorrectAccount = JunkAddress
+      const incorrectAccount = JUNK_ADDRESS
       const ineligibleNode = {
         ...eligibleNode1,
         account: incorrectAccount,
@@ -240,7 +239,7 @@ describe('StakingRewardsDistribution', () => {
     })
 
     it("reverts if node doesn't exist (account and amount both incorrect)", async () => {
-      const incorrectAccount = JunkAddress
+      const incorrectAccount = JUNK_ADDRESS
       const incorrectAmount = eligibleNode1.amount.add(ONE)
       const ineligibleNode = {
         account: incorrectAccount,
