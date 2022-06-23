@@ -1,8 +1,9 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { withdrawalRightsFixture } from './fixtures/WithdrawalRightsFixtures'
-import { AddressZero, revertReason } from './utils'
+import { revertReason } from './utils'
 import { WithdrawalRights } from '../types/generated'
 
 describe('WithdrawalRights', () => {
@@ -109,11 +110,11 @@ describe('WithdrawalRights', () => {
 
     it('sets to zero address', async () => {
       await withdrawalRights.connect(governance).setPPOStaking(ppoStaking.address)
-      expect(await withdrawalRights.getPPOStaking()).to.not.eq(AddressZero)
+      expect(await withdrawalRights.getPPOStaking()).to.not.eq(ZERO_ADDRESS)
 
-      await withdrawalRights.connect(governance).setPPOStaking(AddressZero)
+      await withdrawalRights.connect(governance).setPPOStaking(ZERO_ADDRESS)
 
-      expect(await withdrawalRights.getPPOStaking()).to.eq(AddressZero)
+      expect(await withdrawalRights.getPPOStaking()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {

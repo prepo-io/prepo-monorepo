@@ -1,6 +1,7 @@
 import chai, { expect } from 'chai'
 import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
@@ -10,8 +11,6 @@ import { returnFromMockAPY, revertReason } from './utils'
 import { SingleStrategyController } from '../typechain/SingleStrategyController'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
-
-const { AddressZero } = ethers.constants
 
 chai.use(solidity)
 
@@ -45,7 +44,7 @@ describe('=> SingleStrategyController', () => {
     it('should be initialized with correct values', async () => {
       expect(await strategyController.owner()).to.eq(deployer.address)
       expect(await strategyController.getBaseToken()).to.eq(baseToken.address)
-      expect(await strategyController.getStrategy()).to.eq(AddressZero)
+      expect(await strategyController.getStrategy()).to.eq(ZERO_ADDRESS)
       expect(await baseToken.balanceOf(strategyController.address)).to.eq(0)
       expect(await baseToken.balanceOf(mockStrategy.address)).to.eq(0)
     })
@@ -54,7 +53,7 @@ describe('=> SingleStrategyController', () => {
       const singleStrategyControllerFactory = await ethers.getContractFactory(
         'SingleStrategyController'
       )
-      await expect(singleStrategyControllerFactory.deploy(AddressZero)).to.be.revertedWith(
+      await expect(singleStrategyControllerFactory.deploy(ZERO_ADDRESS)).to.be.revertedWith(
         revertReason('Zero address')
       )
     })
@@ -144,23 +143,23 @@ describe('=> SingleStrategyController', () => {
     })
 
     it('should revert if target is zero address and strategy is not already set', async () => {
-      expect(await strategyController.getStrategy()).to.eq(AddressZero)
+      expect(await strategyController.getStrategy()).to.eq(ZERO_ADDRESS)
 
-      await expect(strategyController.migrate(AddressZero)).to.be.revertedWith(
+      await expect(strategyController.migrate(ZERO_ADDRESS)).to.be.revertedWith(
         'ERC20: approve to the zero address'
       )
     })
 
     it('should revert if target is zero address and strategy is already set', async () => {
-      expect(await strategyController.getStrategy()).to.not.eq(AddressZero)
+      expect(await strategyController.getStrategy()).to.not.eq(ZERO_ADDRESS)
 
-      await expect(strategyController.migrate(AddressZero)).to.be.revertedWith(
+      await expect(strategyController.migrate(ZERO_ADDRESS)).to.be.revertedWith(
         'ERC20: approve to the zero address'
       )
     })
 
     it('should set the strategy if one is not already set', async () => {
-      expect(await strategyController.getStrategy()).to.eq(AddressZero)
+      expect(await strategyController.getStrategy()).to.eq(ZERO_ADDRESS)
 
       await strategyController.migrate(mockStrategy.address)
 
@@ -274,7 +273,7 @@ describe('=> SingleStrategyController', () => {
     })
 
     it('should be settable to an address', async () => {
-      expect(await strategyController.getVault()).to.eq(AddressZero)
+      expect(await strategyController.getVault()).to.eq(ZERO_ADDRESS)
 
       await strategyController.connect(deployer).setVault(vault.address)
 
@@ -285,13 +284,13 @@ describe('=> SingleStrategyController', () => {
       await strategyController.connect(deployer).setVault(vault.address)
       expect(await strategyController.getVault()).to.eq(vault.address)
 
-      await strategyController.connect(deployer).setVault(AddressZero)
+      await strategyController.connect(deployer).setVault(ZERO_ADDRESS)
 
-      expect(await strategyController.getVault()).to.eq(AddressZero)
+      expect(await strategyController.getVault()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {
-      expect(await strategyController.getVault()).to.eq(AddressZero)
+      expect(await strategyController.getVault()).to.eq(ZERO_ADDRESS)
 
       await strategyController.connect(deployer).setVault(vault.address)
 

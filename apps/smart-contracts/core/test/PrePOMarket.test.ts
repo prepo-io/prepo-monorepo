@@ -3,6 +3,7 @@ import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { LongShortTokenAttachFixture } from './fixtures/LongShortTokenFixture'
 import { prePOMarketAttachFixture } from './fixtures/PrePOMarketFixture'
@@ -20,7 +21,6 @@ import {
   getFinalLongPriceSetEvent,
 } from './events'
 import {
-  AddressZero,
   nowPlusMonths,
   MAX_PRICE,
   calculateFee,
@@ -294,11 +294,11 @@ describe('=> prePOMarket', () => {
     })
 
     it('should be settable to the zero address', async () => {
-      expect(await prePOMarket.getTreasury()).to.not.eq(AddressZero)
+      expect(await prePOMarket.getTreasury()).to.not.eq(ZERO_ADDRESS)
 
-      await prePOMarket.connect(treasury).setTreasury(AddressZero)
+      await prePOMarket.connect(treasury).setTreasury(ZERO_ADDRESS)
 
-      expect(await prePOMarket.getTreasury()).to.eq(AddressZero)
+      expect(await prePOMarket.getTreasury()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {

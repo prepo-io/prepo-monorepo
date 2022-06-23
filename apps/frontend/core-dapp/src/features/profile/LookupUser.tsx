@@ -1,7 +1,7 @@
 import { Flex, Input, media, spacingIncrement } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { EMPTY_CONTRACT_ADDRESS } from 'prepo-constants'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { CUSTOM_STYLE } from './TotalEarned'
 import ButtonLink from '../ppo/ButtonLink'
 import { Routes } from '../../lib/routes'
@@ -9,7 +9,7 @@ import { useRootStore } from '../../context/RootStoreProvider'
 import AddressAvatar from '../delegate/AddressAvatar'
 import { getShortAccount } from '../../utils/account-utils'
 
-const PLACEHOLDER = getShortAccount(EMPTY_CONTRACT_ADDRESS) ?? ''
+const PLACEHOLDER = getShortAccount(ZERO_ADDRESS) ?? ''
 
 const InputWrapper = styled.div`
   flex: 1;

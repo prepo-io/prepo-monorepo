@@ -3,9 +3,10 @@ import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { parseEther } from 'ethers/lib/utils'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { withdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { AddressZero, revertReason } from './utils'
+import { revertReason } from './utils'
 import { getWithdrawHookVaultChangedEvent } from './events'
 import { CollateralDepositRecord, WithdrawHook } from '../typechain'
 
@@ -35,7 +36,7 @@ describe('=> WithdrawHook', () => {
 
   describe('# initialize', () => {
     it('should be initialized with correct values', async () => {
-      expect(await withdrawHook.getVault()).to.eq(AddressZero)
+      expect(await withdrawHook.getVault()).to.eq(ZERO_ADDRESS)
       expect(await withdrawHook.getDepositRecord()).to.eq(depositRecord.address)
     })
   })
@@ -78,7 +79,7 @@ describe('=> WithdrawHook', () => {
     })
 
     it('should be settable to an address', async () => {
-      expect(await withdrawHook.getVault()).to.eq(AddressZero)
+      expect(await withdrawHook.getVault()).to.eq(ZERO_ADDRESS)
 
       await withdrawHook.connect(deployer).setVault(vault.address)
 
@@ -89,13 +90,13 @@ describe('=> WithdrawHook', () => {
       await withdrawHook.connect(deployer).setVault(vault.address)
       expect(await withdrawHook.getVault()).to.eq(vault.address)
 
-      await withdrawHook.connect(deployer).setVault(AddressZero)
+      await withdrawHook.connect(deployer).setVault(ZERO_ADDRESS)
 
-      expect(await withdrawHook.getVault()).to.eq(AddressZero)
+      expect(await withdrawHook.getVault()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {
-      expect(await withdrawHook.getVault()).to.eq(AddressZero)
+      expect(await withdrawHook.getVault()).to.eq(ZERO_ADDRESS)
 
       await withdrawHook.connect(deployer).setVault(vault.address)
 
@@ -124,8 +125,8 @@ describe('=> WithdrawHook', () => {
     })
 
     it('sets to non-zero address', async () => {
-      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
-      expect(depositRecord.address).to.not.eq(AddressZero)
+      await withdrawHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
+      expect(depositRecord.address).to.not.eq(ZERO_ADDRESS)
       expect(await withdrawHook.getDepositRecord()).to.not.eq(depositRecord.address)
 
       await withdrawHook.connect(deployer).setDepositRecord(depositRecord.address)
@@ -134,15 +135,15 @@ describe('=> WithdrawHook', () => {
     })
 
     it('sets to zero address', async () => {
-      expect(await withdrawHook.getDepositRecord()).to.not.eq(AddressZero)
+      expect(await withdrawHook.getDepositRecord()).to.not.eq(ZERO_ADDRESS)
 
-      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
+      await withdrawHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
 
-      expect(await withdrawHook.getDepositRecord()).to.eq(AddressZero)
+      expect(await withdrawHook.getDepositRecord()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      await withdrawHook.connect(deployer).setDepositRecord(AddressZero)
+      await withdrawHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
       expect(await withdrawHook.getDepositRecord()).to.not.eq(depositRecord.address)
 
       await withdrawHook.connect(deployer).setDepositRecord(depositRecord.address)

@@ -4,8 +4,6 @@ import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 
-export const AddressZero = '0x0000000000000000000000000000000000000000'
-export const JunkAddress = '0x0000000000000000000000000000000000000001'
 export const MAX_UINT64 = BigNumber.from(2).pow(64).sub(1)
 export const MAX_INT64 = BigNumber.from(2).pow(63).sub(1)
 export const MIN_INT64 = BigNumber.from(2).pow(63).mul(-1)

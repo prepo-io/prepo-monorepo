@@ -4,6 +4,7 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { vestingFixture } from './fixtures/VestingFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { mockVestingClaimerFixture } from './fixtures/MockVestingClaimerFixtures'
@@ -11,7 +12,6 @@ import {
   revertReason,
   getLastTimestamp,
   mineBlock,
-  AddressZero,
   ZERO,
   setNextTimestamp,
   ONE,
@@ -130,16 +130,16 @@ describe('Vesting', () => {
       await vesting.connect(owner).setToken(mockERC20Token.address)
 
       expect(await vesting.connect(owner).getToken()).to.eq(mockERC20Token.address)
-      expect(await vesting.connect(owner).getToken()).to.not.eq(AddressZero)
+      expect(await vesting.connect(owner).getToken()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
       await vesting.connect(owner).setToken(mockERC20Token.address)
-      expect(await vesting.connect(owner).getToken()).to.not.eq(AddressZero)
+      expect(await vesting.connect(owner).getToken()).to.not.eq(ZERO_ADDRESS)
 
-      await vesting.connect(owner).setToken(AddressZero)
+      await vesting.connect(owner).setToken(ZERO_ADDRESS)
 
-      expect(await vesting.connect(owner).getToken()).to.eq(AddressZero)
+      expect(await vesting.connect(owner).getToken()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {

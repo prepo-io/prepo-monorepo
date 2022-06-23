@@ -24,6 +24,7 @@
     "yarn": "1.x"
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "0.27.0"
+    "@graphprotocol/graph-ts": "0.27.0",
+    "prepo-constants": "*"
   }
 }
