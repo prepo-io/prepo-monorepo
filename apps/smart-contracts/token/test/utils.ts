@@ -23,6 +23,7 @@ export function mineBlock(provider: providers.Web3Provider, timestamp: number): 
   return provider.send('evm_mine', [timestamp])
 }
 
+<<<<<<< HEAD
 export async function setNextTimestamp(
   provider: providers.Web3Provider,
   timestamp: number
@@ -30,6 +31,8 @@ export async function setNextTimestamp(
   await provider.send('evm_setNextBlockTimestamp', [timestamp])
 }
 
+=======
+>>>>>>> 6a58e4d (feat: move smart contract core utils)
 export async function getLastTimestamp(): Promise<number> {
   /**
    * Changed this from ethers.provider.getBlockNumber since if evm_revert is used to return
