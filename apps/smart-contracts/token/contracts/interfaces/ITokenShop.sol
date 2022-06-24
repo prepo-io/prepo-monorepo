@@ -35,4 +35,12 @@ interface ITokenShop {
     returns (uint256);
 
   function withdrawERC20(address _erc20Token, uint256 _amount) external;
+
+  function withdrawERC721(address erc721Token, uint256 id) external;
+
+  function withdrawERC1155(
+    address erc1155Token,
+    uint256 id,
+    uint256 _amount
+  ) external;
 }
