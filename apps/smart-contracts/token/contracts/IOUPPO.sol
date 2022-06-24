@@ -24,6 +24,7 @@ contract IOUPPO is IIOUPPO, ERC20Upgradeable, OwnableUpgradeable, ReentrancyGuar
     ERC20Upgradeable.__ERC20_init("IOU PPO Token", "IOUPPO");
     OwnableUpgradeable.__Ownable_init();
     __ReentrancyGuard_init();
+    // TODO: switch to nominate + accept using SafeOwnableUpgradeable
     _transferOwnership(_governance);
   }
 

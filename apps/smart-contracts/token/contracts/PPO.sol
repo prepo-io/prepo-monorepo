@@ -5,6 +5,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 contract PPO is ERC20Upgradeable, OwnableUpgradeable {
   function initialize() public initializer {
+    // TODO: switch to nominate + accept using SafeOwnableUpgradeable
     OwnableUpgradeable.__Ownable_init();
     ERC20Upgradeable.__ERC20_init("prePO Token", "PPO");
     _mint(msg.sender, 1e27); // 1 billion
