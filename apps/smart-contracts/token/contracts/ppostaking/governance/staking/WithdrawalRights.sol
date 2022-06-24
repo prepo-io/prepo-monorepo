@@ -17,6 +17,7 @@ contract WithdrawalRights is Ownable, ERC721 {
   }
 
   constructor(address _governance) ERC721("Staked PPO Withdrawal Rights", "stkPPO-WR") {
+    // TODO: switch to nominate + accept after pragma is updated.
     _transferOwnership(_governance);
   }
 

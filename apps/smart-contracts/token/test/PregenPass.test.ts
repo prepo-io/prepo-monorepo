@@ -15,14 +15,19 @@ describe('PregenPass', () => {
   const URI = 'https://newBaseURI/'
   const URI_2 = 'https://newBaseURI2/'
 
-  const setupPregenPass = async (): Promise<void> => {
+  const deployPregenPass = async (): Promise<void> => {
     ;[deployer, owner, user, user2] = await ethers.getSigners()
     pregenPass = await mockPregenPassFixture(owner.address, URI)
   }
 
+  const setupPregenPass = async (): Promise<void> => {
+    await deployPregenPass()
+    await pregenPass.connect(owner).acceptOwnership()
+  }
+
   describe('constructor', () => {
     before(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
     })
 
     it('sets URI from constructor', async () => {
@@ -37,8 +42,8 @@ describe('PregenPass', () => {
       expect(await pregenPass.symbol()).to.eq('PREGENPASS')
     })
 
-    it('sets owner from constructor', async () => {
-      expect(await pregenPass.owner()).to.eq(owner.address)
+    it('sets nominee from constructor', async () => {
+      expect(await pregenPass.getNominee()).to.eq(owner.address)
     })
   })
 
