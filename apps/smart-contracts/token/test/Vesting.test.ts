@@ -5,13 +5,14 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { BigNumber } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS } from 'prepo-constants'
-import { utils } from 'prepo-hardhat'
+import { constants, utils } from 'prepo-hardhat'
 import { vestingFixture } from './fixtures/VestingFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { mockVestingClaimerFixture } from './fixtures/MockVestingClaimerFixtures'
-import { ZERO, ONE, getLastTimestamp, revertReason } from './utils'
+import { getLastTimestamp, revertReason } from './utils'
 import { Vesting, MockERC20, MockVestingClaimer } from '../types/generated'
 
+const { ZERO, ONE } = constants
 const { setNextTimestamp, mineBlocks, mineBlock } = utils
 
 describe('Vesting', () => {

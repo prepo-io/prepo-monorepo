@@ -4,9 +4,12 @@ import { ethers } from 'hardhat'
 import { Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MockContract, smock } from '@defi-wonderland/smock'
-import { revertReason, ZERO } from './utils'
+import { constants } from 'prepo-hardhat'
+import { revertReason } from './utils'
 import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
 import { PurchaseHook } from '../types/generated'
+
+const { ZERO } = constants
 
 chai.use(smock.matchers)
 

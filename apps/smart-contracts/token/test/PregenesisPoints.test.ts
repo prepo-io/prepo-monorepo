@@ -3,8 +3,8 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MerkleTree } from 'merkletreejs'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { constants } from 'prepo-hardhat'
 import {
-  ONE,
   AccountAmountLeafNode,
   hashAccountAmountLeafNode,
   generateAccountAmountMerkleTree,
@@ -13,6 +13,7 @@ import {
 import { pregenesisPointsFixture } from './fixtures/PregenesisPointsFixtures'
 import { PregenesisPoints } from '../types/generated'
 
+const { ONE } = constants
 const { parseEther } = ethers.utils
 
 describe('PregenesisPoints', () => {

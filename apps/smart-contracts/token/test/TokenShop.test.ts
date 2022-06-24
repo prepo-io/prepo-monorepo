@@ -6,10 +6,13 @@ import { FakeContract, MockContract, smock } from '@defi-wonderland/smock'
 import { Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
-import { revertReason, ZERO } from './utils'
+import { constants } from 'prepo-hardhat'
+import { revertReason } from './utils'
 import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { TokenShop, MockERC20 } from '../types/generated'
+
+const { ZERO } = constants
 
 // TODO: change ZERO_ADDRESS and JUNK_ADDRESS to all caps
 

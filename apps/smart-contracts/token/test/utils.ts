@@ -4,15 +4,6 @@ import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 
-export const MAX_UINT64 = BigNumber.from(2).pow(64).sub(1)
-export const MAX_INT64 = BigNumber.from(2).pow(63).sub(1)
-export const MIN_INT64 = BigNumber.from(2).pow(63).mul(-1)
-export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
-export const ZERO = BigNumber.from(0)
-export const ONE = BigNumber.from(1)
-export const ZERO_HASH = ethers.utils.formatBytes32String('')
-export const ONE_WEEK = BigNumber.from(60 * 60 * 24 * 7)
-
 export type IOUPPOLeafNode = {
   account: string
   amount: BigNumber

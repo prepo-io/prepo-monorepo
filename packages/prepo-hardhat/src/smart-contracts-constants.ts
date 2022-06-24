@@ -1,78 +1,23 @@
-import { BigNumber, providers, Contract } from 'ethers'
-import { parse, stringify } from 'envfile'
-import { ChainId, NETWORKS } from 'prepo-constants'
-import { readFileSync, writeFileSync } from 'fs'
+import { BigNumber, utils } from 'ethers'
 
-function expandToDecimals(n: number, decimals: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(decimals))
-}
+const { formatBytes32String } = utils
 
-function expandTo6Decimals(n: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(6))
-}
-
-function expandTo18Decimals(n: number): BigNumber {
-  return BigNumber.from(n).mul(BigNumber.from(10).pow(18))
-}
-
-function nowPlusMonths(n: number): number {
-  const d = new Date()
-  d.setMonth(d.getMonth() + n)
-  d.setHours(0, 0, 0, 0)
-  return d.getTime() / 1000
-}
-
-async function setNextTimestamp(
-  provider: providers.Web3Provider,
-  timestamp: number
-): Promise<void> {
-  await provider.send('evm_setNextBlockTimestamp', [timestamp])
-}
-
-function assertIsTestnetChain(chainId: ChainId): void {
-  const testChains = [
-    NETWORKS.hardhat.chainId,
-    NETWORKS.ropsten.chainId,
-    NETWORKS.rinkeby.chainId,
-    NETWORKS.goerli.chainId,
-    NETWORKS.kovan.chainId,
-  ]
-  if (!testChains.includes(chainId)) {
-    throw new Error('Deployment to production environments is disabled!')
-  }
-}
-
-function recordDeployment(envVarName: string, contract: Contract): void {
-  const sourcePath = '.env'
-  const parsedFile = parse(readFileSync(sourcePath).toString())
-  parsedFile[envVarName] = contract.address
-  writeFileSync(sourcePath, stringify(parsedFile))
-  /**
-   * Since current process will not recognize newly updated file, we need to update the
-   * process.env for the remainder of the deployment task.
-   */
-  process.env[envVarName] = contract.address
-}
-
-async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
-  for (let i = 0; i < blocks; i++) {
-    // eslint-disable-next-line no-await-in-loop
-    await provider.send('evm_mine', [])
-  }
-}
-
-function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
-  return provider.send('evm_mine', [timestamp])
-}
+const MAX_UINT64 = BigNumber.from(2).pow(64).sub(1)
+const MAX_INT64 = BigNumber.from(2).pow(63).sub(1)
+const MIN_INT64 = BigNumber.from(2).pow(63).mul(-1)
+const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
+const ZERO = BigNumber.from(0)
+const ONE = BigNumber.from(1)
+const ZERO_HASH = formatBytes32String('')
+const ONE_WEEK = BigNumber.from(60 * 60 * 24 * 7)
 
 export const constants = {
-  expandToDecimals,
-  expandTo6Decimals,
-  expandTo18Decimals,
-  nowPlusMonths,
-  setNextTimestamp,
-  assertIsTestnetChain,
-  recordDeployment,
-  mineBlocks,
-  mineBlock,
+  MAX_UINT64,
+  MAX_INT64,
+  MIN_INT64,
+  MAX_UINT128,
+  ZERO,
+  ONE,
+  ZERO_HASH,
+  ONE_WEEK,
 }

@@ -6,10 +6,8 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { MerkleTree } from 'merkletreejs'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { constants } from 'prepo-hardhat'
 import {
-  ZERO_HASH,
-  ONE,
-  ZERO,
   AccountAmountLeafNode,
   hashAccountAmountLeafNode,
   generateAccountAmountMerkleTree,
@@ -17,6 +15,8 @@ import {
 } from './utils'
 import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
 import { StakingRewardsDistribution } from '../types/generated'
+
+const { ZERO_HASH, ONE, ZERO } = constants
 
 chai.use(smock.matchers)
 // TODO: rename AccountAmountLeafNode to AllocationLeafNode and similarly for hash and generateMerkleTree

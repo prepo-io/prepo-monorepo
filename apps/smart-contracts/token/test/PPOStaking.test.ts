@@ -5,10 +5,10 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { constants } from 'prepo-hardhat'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { mockPPOStakingDeployFixture } from './fixtures/PPOStakingFixtures'
-import { MAX_UINT128, ONE, ONE_WEEK } from './utils'
 import { UserStakingData } from '../types/ppoStaking'
 import {
   MockERC20,
@@ -19,6 +19,7 @@ import {
   MockPPOStaking,
 } from '../types/generated'
 
+const { MAX_UINT128, ONE, ONE_WEEK } = constants
 chai.use(smock.matchers)
 
 describe('PPOStaking', () => {
