@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { BigNumber, providers } from 'ethers'
+import { BigNumber, BigNumberish, providers } from 'ethers'
 import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
@@ -21,6 +21,13 @@ export async function mineBlocks(provider: providers.Web3Provider, blocks: numbe
 
 export function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
   return provider.send('evm_mine', [timestamp])
+}
+
+export async function setNextTimestamp(
+  provider: providers.Web3Provider,
+  timestamp: number
+): Promise<void> {
+  await provider.send('evm_setNextBlockTimestamp', [timestamp])
 }
 
 export async function getLastTimestamp(): Promise<number> {
@@ -80,4 +87,69 @@ export function hashAccountAmountLeafNode(leaf: AccountAmountLeafNode): Buffer {
 export function generateAccountAmountMerkleTree(leaves: AccountAmountLeafNode[]): MerkleTree {
   const leafNodes = leaves.map(hashAccountAmountLeafNode)
   return new MerkleTree(leafNodes, keccak256, { sortPairs: true })
+}
+
+/**
+ * Calculate the new weighted timestamp after depositing or withdrawing PPO
+ * @param oldWeightedTimestamp
+ * @param currentTimestamp
+ * @param oldStakedBalance
+ * @param stakedDelta The absolute difference between new and old balances. Always positive
+ * @param staking True if depositing, false if withdrawing PPO from a staked position
+ * @returns New weighted timestamp
+ */
+export function calcWeightedTimestamp(
+  oldWeightedTimestamp: BigNumberish,
+  currentTimestamp: BigNumberish,
+  oldStakedBalance: BigNumber,
+  stakedDelta: BigNumber,
+  staking: boolean
+): number {
+  const oldWeightedTimestampBN = BigNumber.from(oldWeightedTimestamp)
+  const currentTimestampBN = BigNumber.from(currentTimestamp)
+  const oldWeightedSeconds = currentTimestampBN.sub(oldWeightedTimestampBN)
+  const adjustedStakedBalanceDelta = staking ? stakedDelta.div(2) : stakedDelta.div(8)
+  const adjustedNewStakedBalance = staking
+    ? oldStakedBalance.add(adjustedStakedBalanceDelta)
+    : oldStakedBalance.sub(adjustedStakedBalanceDelta)
+  const newWeightedSeconds = staking
+    ? oldStakedBalance.mul(oldWeightedSeconds).div(adjustedNewStakedBalance)
+    : adjustedNewStakedBalance.mul(oldWeightedSeconds).div(oldStakedBalance)
+
+  return currentTimestampBN.sub(newWeightedSeconds).toNumber()
+}
+
+/**
+ * Calculate when to subsequently deposit/withdraw PPO to obtain a certain weighted timestamp
+ * @param oldWeightedTimestamp
+ * @param weightedTimeDelta The desired increase in time from the previous weighted timestamp
+ * @param oldStakedBalance
+ * @param stakedDelta The absolute difference between new and old balances. Always positive
+ * @param staking True if depositing, false if withdrawing PPO from a staked position
+ * @returns Time at which to stake to achieve the desired weighted timestamp
+ */
+export function calcTimeToStakeAt(
+  oldWeightedTimestamp: BigNumberish,
+  weightedTimeDelta: BigNumberish,
+  oldStakedBalance: BigNumber,
+  stakedDelta: BigNumber,
+  staking: boolean
+): number {
+  const oldWeightedTimestampBN = BigNumber.from(oldWeightedTimestamp)
+  const weightedTimeDeltaBN = BigNumber.from(weightedTimeDelta)
+  const adjustedStakedBalanceDelta = staking ? stakedDelta.div(2) : stakedDelta.div(8)
+  const adjustedNewStakedBalance = staking
+    ? oldStakedBalance.add(adjustedStakedBalanceDelta)
+    : oldStakedBalance.sub(adjustedStakedBalanceDelta)
+  const newWeightedDelta = staking
+    ? adjustedNewStakedBalance.mul(weightedTimeDeltaBN).div(oldStakedBalance)
+    : oldStakedBalance.mul(weightedTimeDeltaBN).div(adjustedNewStakedBalance)
+  return newWeightedDelta.add(oldWeightedTimestampBN).toNumber()
+}
+
+export function divRoundingUp(num: BigNumber, denominator: BigNumber): BigNumber {
+  const res = num.div(denominator)
+  const remainder = num.mod(denominator)
+  if (remainder.eq(0)) return res
+  return res.add(1)
 }

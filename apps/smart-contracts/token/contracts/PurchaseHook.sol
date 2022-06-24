@@ -2,17 +2,33 @@
 pragma solidity =0.8.7;
 
 import "./interfaces/IPurchaseHook.sol";
+import "./interfaces/ITokenShop.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PurchaseHook is IPurchaseHook, Ownable {
   mapping(address => uint256) private _erc721ToMaxPurchasesPerUser;
   mapping(address => mapping(uint256 => uint256)) private _erc1155ToIdToMaxPurchasesPerUser;
+  ITokenShop private _tokenShop;
 
   function hookERC721(
     address _user,
     address _tokenContract,
     uint256 _tokenId
-  ) external override {}
+  ) external view override {
+    require(address(_tokenShop) != address(0), "Token shop not set in hook");
+    uint256 _maxPurchaseAmount = _erc721ToMaxPurchasesPerUser[_tokenContract];
+    // TODO: move in the new ITokenShopPurchaseHook.sol in future PR
+    /**
+     * _maxPurchaseAmount = 0 means unlimited amount of items
+     * can be purchased for the given ERC721 Contract.
+     */
+    if (_maxPurchaseAmount != 0) {
+      require(
+        _tokenShop.getERC721PurchaseCount(_user, _tokenContract) < _maxPurchaseAmount,
+        "ERC721 purchase limit reached"
+      );
+    }
+  }
 
   function hookERC1155(
     address _user,
@@ -20,6 +36,10 @@ contract PurchaseHook is IPurchaseHook, Ownable {
     uint256 _tokenId,
     uint256 _amount
   ) external override {}
+
+  function setTokenShop(address _newTokenShop) external override onlyOwner {
+    _tokenShop = ITokenShop(_newTokenShop);
+  }
 
   function setMaxERC721PurchasesPerUser(address[] memory _contracts, uint256[] memory _amounts)
     external
@@ -62,5 +82,9 @@ contract PurchaseHook is IPurchaseHook, Ownable {
     returns (uint256)
   {
     return _erc1155ToIdToMaxPurchasesPerUser[_tokenContract][_id];
+  }
+
+  function getTokenShop() external view override returns (ITokenShop) {
+    return _tokenShop;
   }
 }
