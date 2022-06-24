@@ -33,4 +33,6 @@ interface ITokenShop {
     external
     view
     returns (uint256);
+
+  function withdrawERC20(address _erc20Token, uint256 _amount) external;
 }

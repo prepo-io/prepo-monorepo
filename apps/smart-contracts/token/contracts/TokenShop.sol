@@ -3,6 +3,7 @@ pragma solidity =0.8.7;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -10,6 +11,8 @@ import "./interfaces/ITokenShop.sol";
 import "./interfaces/IPurchaseHook.sol";
 
 contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
+  using SafeERC20 for IERC20;
+
   IERC20 private _paymentToken;
   // TODO: Separate pausing logic to a separate Pausable.sol
   bool private _paused;
@@ -104,6 +107,15 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     returns (uint256)
   {
     _userToERC721ToPurchaseCount[_user][_tokenContract];
+  }
+
+  function withdrawERC20(address _erc20Token, uint256 _amount)
+    external
+    override
+    onlyOwner
+    nonReentrant
+  {
+    IERC20(_erc20Token).safeTransfer(owner(), _amount);
   }
 
   function onERC1155Received(

@@ -18,6 +18,7 @@ describe('TokenShop', () => {
   let owner: SignerWithAddress
   let user1: SignerWithAddress
   let paymentToken: MockERC20
+  let externalERC20Token: MockERC20
   let tokenShop: TokenShop
   let mockERC721: MockContract<Contract>
   let mockERC1155: MockContract<Contract>
@@ -504,6 +505,70 @@ describe('TokenShop', () => {
   })
   // TODO : add tests for tx.origin vs msg.sender
 
+  describe('# withdrawERC20', () => {
+    beforeEach(async () => {
+      await setupTokenShop()
+      const externalERC20Recipient = user1.address
+      const externalERC20Decimals = 18
+      const mockERC20InitialSupply = parseEther(`100`)
+      externalERC20Token = await mockERC20Fixture(
+        'External ERC20',
+        'ExtERC20',
+        externalERC20Decimals,
+        externalERC20Recipient,
+        mockERC20InitialSupply
+      )
+    })
+
+    it('reverts if not owner', async () => {
+      const amountToWithdraw = parseEther('1')
+      expect(await tokenShop.owner()).to.not.eq(user1.address)
+
+      await expect(
+        tokenShop.connect(user1).withdrawERC20(externalERC20Token.address, amountToWithdraw)
+      ).revertedWith('Ownable: caller is not the owner')
+    })
+
+    it('reverts if amount > contract balance', async () => {
+      const tokenShopBalanceBefore = await ethers.provider.getBalance(tokenShop.address)
+
+      await expect(
+        tokenShop
+          .connect(owner)
+          .withdrawERC20(externalERC20Token.address, tokenShopBalanceBefore.add(1))
+      ).revertedWith('ERC20: transfer amount exceeds balance')
+    })
+
+    it('transfers if amount = contract balance', async () => {
+      await externalERC20Token.connect(user1).transfer(tokenShop.address, parseEther('1'))
+      const tokenShopBalanceBefore = await externalERC20Token.balanceOf(tokenShop.address)
+      const ownerBalanceBefore = await externalERC20Token.balanceOf(owner.address)
+
+      await tokenShop
+        .connect(owner)
+        .withdrawERC20(externalERC20Token.address, tokenShopBalanceBefore)
+
+      expect(await externalERC20Token.balanceOf(owner.address)).to.be.eq(
+        ownerBalanceBefore.add(tokenShopBalanceBefore)
+      )
+      expect(await externalERC20Token.balanceOf(tokenShop.address)).to.be.eq(0)
+    })
+
+    it('transfers if amount < contract balance', async () => {
+      await externalERC20Token.connect(user1).transfer(tokenShop.address, parseEther('1'))
+      const tokenShopBalanceBefore = await externalERC20Token.balanceOf(tokenShop.address)
+      const ownerBalanceBefore = await externalERC20Token.balanceOf(owner.address)
+
+      await tokenShop
+        .connect(owner)
+        .withdrawERC20(externalERC20Token.address, tokenShopBalanceBefore.sub(1))
+
+      expect(await externalERC20Token.balanceOf(owner.address)).to.be.eq(
+        ownerBalanceBefore.add(tokenShopBalanceBefore.sub(1))
+      )
+      expect(await externalERC20Token.balanceOf(tokenShop.address)).to.be.eq(1)
+    })
+  })
   describe('# onERC1155Received', () => {
     beforeEach(async () => {
       await setupTokenShop()
