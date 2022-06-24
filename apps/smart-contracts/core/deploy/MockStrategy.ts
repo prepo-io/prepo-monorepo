@@ -1,8 +1,11 @@
 // eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import { ChainId } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { fetchExistingCollateral, sendTxAndWait } from '../helpers'
-import { assertIsTestnetChain } from '../utils'
+
+const { assertIsTestnetChain } = utils
 
 const deployFunction: DeployFunction = async function ({
   deployments,
@@ -19,7 +22,7 @@ const deployFunction: DeployFunction = async function ({
    * this can be removed once we deploy to prod.
    * TODO Only deploy "Mock" contracts when on a testchain
    */
-  assertIsTestnetChain(currentChain)
+  assertIsTestnetChain(currentChain as unknown as ChainId)
   // Fetch existing Collateral deployment from local .env
   const collateral = await fetchExistingCollateral(currentChain, ethers)
   // Retrieve existing non-upgradeable deployments using hardhat-deploy

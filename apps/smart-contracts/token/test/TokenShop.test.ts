@@ -11,8 +11,6 @@ import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { TokenShop, MockERC20 } from '../types/generated'
 
-// TODO: change ZERO_ADDRESS and JUNK_ADDRESS to all caps
-
 chai.use(smock.matchers)
 
 describe('TokenShop', () => {
@@ -24,6 +22,8 @@ describe('TokenShop', () => {
   let mockERC721: MockContract<Contract>
   let mockERC1155: MockContract<Contract>
   let tokenContracts: string[]
+  const tokenIds = [1, 1]
+  const amounts = [2, 1]
 
   const setupTokenShop = async (): Promise<void> => {
     ;[deployer, owner, user1] = await ethers.getSigners()
@@ -63,7 +63,6 @@ describe('TokenShop', () => {
   })
 
   describe('# setContractToIdToPrice', () => {
-    const tokenIds = [1, 1]
     const itemPrices = [parseEther('1'), parseEther('2')]
 
     beforeEach(async () => {
@@ -278,12 +277,11 @@ describe('TokenShop', () => {
 
   describe('# purchase', () => {
     let mockPurchaseHook: FakeContract<Contract>
-    const tokenIds = [1, 1]
-    const amounts = [2, 1]
     const erc1155Id = 1
     const erc1155Amount = 2
     const erc721Id = 1
     const erc721Amount = 1
+    const itemPrices = [parseEther('1'), parseEther('2')]
 
     beforeEach(async () => {
       await setupTokenShop()
@@ -293,6 +291,7 @@ describe('TokenShop', () => {
       await mockERC1155.mint(tokenShop.address, tokenIds[0], amounts[0])
       await mockERC721.mint(tokenShop.address, tokenIds[1])
       await tokenShop.connect(owner).setPurchaseHook(mockPurchaseHook.address)
+      await tokenShop.connect(owner).setContractToIdToPrice(tokenContracts, tokenIds, itemPrices)
     })
 
     it('reverts if paused', async () => {
@@ -344,6 +343,17 @@ describe('TokenShop', () => {
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, amounts)
       ).revertedWith(revertReason('Purchase hook not set'))
+    })
+
+    it('reverts if non-purchasable item', async () => {
+      await tokenShop
+        .connect(owner)
+        .setContractToIdToPrice([tokenContracts[0]], [tokenIds[0]], [ZERO])
+      expect(await tokenShop.getPrice(tokenContracts[0], tokenIds[0])).to.be.eq(ZERO)
+
+      await expect(
+        tokenShop.connect(user1).purchase([tokenContracts[0]], [tokenIds[0]], [amounts[0]])
+      ).revertedWith(revertReason('Non-purchasable item'))
     })
 
     it('reverts if called contract neither ERC1155 nor ERC721', async () => {
@@ -401,6 +411,9 @@ describe('TokenShop', () => {
       const erc1155Contracts = [mockERC1155.address, mockERC1155.address]
       const erc1155Ids = [1, 2]
       const erc1155Amounts = [1, 1]
+      await tokenShop
+        .connect(owner)
+        .setContractToIdToPrice(erc1155Contracts, erc1155Ids, itemPrices)
       for (let i = 0; i < erc1155Contracts.length; i++) {
         await mockERC1155.mint(tokenShop.address, erc1155Ids[i], erc1155Amounts[i])
       }
@@ -453,6 +466,7 @@ describe('TokenShop', () => {
       await mockERC721.mint(tokenShop.address, 2)
       const tokenShopERC721BalanceBefore = await mockERC721.balanceOf(tokenShop.address)
       const userERC721BalanceBefore = await mockERC721.balanceOf(user1.address)
+      await tokenShop.connect(owner).setContractToIdToPrice(erc721Contracts, erc721Ids, itemPrices)
 
       await tokenShop.connect(user1).purchase(erc721Contracts, erc721Ids, erc721Amounts)
 
@@ -486,7 +500,62 @@ describe('TokenShop', () => {
         userERC721BalanceBefore.add(amounts[1])
       )
     })
+    // TODO : add tests to check that `_userToERC721ToBalance` and `_userToERC1155ToBalance` increases on successful purchase
   })
-  // TODO : add tests for onERC1155Received, onERC1155BatchReceived, and onERC721Received
   // TODO : add tests for tx.origin vs msg.sender
+
+  describe('# onERC1155Received', () => {
+    beforeEach(async () => {
+      await setupTokenShop()
+      await setupMockContracts()
+    })
+
+    it('is compliant with ERC1155 safeTransferFrom() requirements', async () => {
+      await mockERC1155.mint(user1.address, tokenIds[0], amounts[0])
+
+      await expect(
+        mockERC1155
+          .connect(user1)
+          .safeTransferFrom(user1.address, tokenShop.address, tokenIds[0], amounts[0], [])
+      ).not.reverted
+    })
+  })
+
+  describe('# onERC1155BatchReceived', () => {
+    beforeEach(async () => {
+      await setupTokenShop()
+      await setupMockContracts()
+    })
+
+    it('is compliant with ERC1155 safeBatchTransferFrom() requirements', async () => {
+      await mockERC1155.mint(user1.address, tokenIds[0], amounts[0])
+
+      await expect(
+        mockERC1155
+          .connect(user1)
+          .safeBatchTransferFrom(user1.address, tokenShop.address, [tokenIds[0]], [amounts[0]], [])
+      ).not.reverted
+    })
+  })
+
+  describe('# onERC721Received', () => {
+    beforeEach(async () => {
+      await setupTokenShop()
+      await setupMockContracts()
+    })
+
+    it('is compliant with ERC721 safeTransferFrom() requirements', async () => {
+      await mockERC721.mint(user1.address, tokenIds[0])
+
+      await expect(
+        mockERC721
+          .connect(user1)
+          ['safeTransferFrom(address,address,uint256)'](
+            user1.address,
+            tokenShop.address,
+            tokenIds[0]
+          )
+      ).not.reverted
+    })
+  })
 })

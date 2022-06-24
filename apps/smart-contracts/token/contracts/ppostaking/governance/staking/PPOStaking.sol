@@ -147,8 +147,8 @@ contract PPOStaking is PPOGamifiedVotingToken, InitializableReentrancyGuard {
    * @param _amount Units of STAKED_TOKEN to stake
    */
   function stake(address _recipient, uint256 _amount) external assertNotContract {
+    if (_amount == 0) return;
     STAKED_TOKEN.safeTransferFrom(_msgSender(), address(this), _amount);
-    require(_amount != 0, "INVALID_ZERO_AMOUNT");
 
     // 1. Deal with cooldown
     //      If a user is currently in a cooldown period, re-calculate their cooldown timestamp

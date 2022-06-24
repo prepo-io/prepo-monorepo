@@ -57,7 +57,6 @@
         "chai": "4.3.4",
         "defender-relay-client": "1.19.0",
         "dotenv": "10.0.0",
-        "ethereum-waffle": "3.4.0",
         "keccak256": "1.0.3",
         "merkletreejs": "0.2.24",
         "solidity-coverage": "0.7.17",

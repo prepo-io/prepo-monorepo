@@ -5,10 +5,19 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { Web3Provider } from '@ethersproject/providers'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { mockPPOStakingDeployFixture } from './fixtures/PPOStakingFixtures'
-import { MAX_UINT128, ONE, ONE_WEEK } from './utils'
+import {
+  calcTimeToStakeAt,
+  calcWeightedTimestamp,
+  setNextTimestamp,
+  getLastTimestamp,
+  MAX_UINT128,
+  ONE,
+  ONE_WEEK,
+} from './utils'
 import { UserStakingData } from '../types/ppoStaking'
 import {
   MockERC20,
@@ -43,16 +52,10 @@ describe('PPOStaking', () => {
   const UNSTAKE_WINDOW = ONE_WEEK.mul(2)
   const MAX_MULTIPLIER = 5e12 // 5X
   const PPO_SUPPLY = parseEther('1000000000') // 1 billion (total PPO supply)
+  const MULTIPLIER_DENOMINATOR = 1e12
 
   const initAccounts = async (): Promise<void> => {
-    const [localDeployer, localOwner, localUser1, localUser2, localUser3, localRewardsDistributor] =
-      await ethers.getSigners()
-    deployer = localDeployer
-    owner = localOwner
-    user1 = localUser1
-    user2 = localUser2
-    user3 = localUser3
-    rewardsDistributor = localRewardsDistributor
+    ;[deployer, owner, user1, user2, user3, rewardsDistributor] = await ethers.getSigners()
   }
 
   const redeployPPOStaking = async (tokenSupply: BigNumber): Promise<Deployment> => {
@@ -169,12 +172,16 @@ describe('PPOStaking', () => {
         recipient = user2
       })
 
-      it('reverts if amount = 0', async () => {
+      it('returns without staking if amount = 0', async () => {
         expect(staker.address).to.not.eq(recipient.address)
+        const stakerPPOBalanceBefore = await ppoToken.balanceOf(staker.address)
 
-        await expect(ppoStaking.connect(staker).stake(recipient.address, 0)).to.be.revertedWith(
-          'INVALID_ZERO_AMOUNT'
-        )
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, 0)
+
+        await expect(tx).to.not.emit(ppoToken, 'Transfer')
+        expect(await ppoToken.balanceOf(staker.address)).to.eq(stakerPPOBalanceBefore)
+        await expect(tx).to.not.emit(ppoStaking, 'Staked')
+        expect(await ppoStaking.balanceOf(recipient.address)).to.eq(0)
       })
 
       context('staking with various amounts', () => {
@@ -201,9 +208,10 @@ describe('PPOStaking', () => {
               ).to.be.revertedWith('ERC20: transfer amount exceeds allowance')
             })
 
-            it('transfers PPO from msg.sender', async () => {
+            it('transfers PPO from msg.sender to staking contract', async () => {
               const stakerBalanceBefore = await ppoToken.balanceOf(staker.address)
               const recipientBalanceBefore = await ppoToken.balanceOf(recipient.address)
+              const stakingContractBalanceBefore = await ppoToken.balanceOf(ppoStaking.address)
               expect(staker.address).to.not.eq(recipient.address)
 
               const tx = await ppoStaking
@@ -217,6 +225,9 @@ describe('PPOStaking', () => {
                 stakerBalanceBefore.sub(testAmountToStake)
               )
               expect(await ppoToken.balanceOf(recipient.address)).to.eq(recipientBalanceBefore)
+              expect(await ppoToken.balanceOf(ppoStaking.address)).to.eq(
+                stakingContractBalanceBefore.add(testAmountToStake)
+              )
             })
 
             it('mints staked position for recipient', async () => {
@@ -296,8 +307,379 @@ describe('PPOStaking', () => {
                 .to.emit(ppoStaking, 'DelegateeVotesChange')
                 .withArgs(previousDelegateeAddress, 0, testAmountToStake)
             })
+
+            it("sets recipient's weighted timestamp", async () => {
+              const recipientBalanceDataBefore = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataBefore.weightedTimestamp).to.eq(0)
+
+              await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+              const initialStakingTime = await getLastTimestamp()
+              const recipientBalanceDataAfter = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataAfter.weightedTimestamp).to.eq(initialStakingTime)
+            })
           })
         }
+      })
+    })
+
+    context('subsequent stake', () => {
+      let initialStakingTime: number
+      beforeEach(async () => {
+        await initAccounts()
+        ;({ ppoToken, ppoStaking } = await redeployPPOStaking(PPO_SUPPLY))
+        staker = user1
+        recipient = user2
+        testAmountToStake = parseEther('1000')
+        await ppoToken.connect(staker).approve(ppoStaking.address, testAmountToStake)
+        await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+        initialStakingTime = await getLastTimestamp()
+        await ppoToken.connect(staker).approve(ppoStaking.address, testAmountToStake)
+      })
+
+      it('returns without staking if amount = 0', async () => {
+        expect(staker.address).to.not.eq(recipient.address)
+        const stakerPPOBalanceBefore = await ppoToken.balanceOf(staker.address)
+        const recipientScaledBalanceBefore = await ppoStaking.balanceOf(recipient.address)
+
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, 0)
+
+        await expect(tx).to.not.emit(ppoToken, 'Transfer')
+        expect(await ppoToken.balanceOf(staker.address)).to.eq(stakerPPOBalanceBefore)
+        await expect(tx).to.not.emit(ppoStaking, 'Staked')
+        expect(await ppoStaking.balanceOf(recipient.address)).to.eq(recipientScaledBalanceBefore)
+      })
+
+      it('transfers PPO from msg.sender to staking contract', async () => {
+        const stakerBalanceBefore = await ppoToken.balanceOf(staker.address)
+        const recipientBalanceBefore = await ppoToken.balanceOf(recipient.address)
+        const stakingContractBalanceBefore = await ppoToken.balanceOf(ppoStaking.address)
+        expect(staker.address).to.not.eq(recipient.address)
+        expect(staker.address).to.not.eq(ZERO_ADDRESS)
+
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        await expect(tx)
+          .to.emit(ppoToken, 'Transfer')
+          .withArgs(staker.address, ppoStaking.address, testAmountToStake)
+        expect(await ppoToken.balanceOf(staker.address)).to.eq(
+          stakerBalanceBefore.sub(testAmountToStake)
+        )
+        expect(await ppoToken.balanceOf(recipient.address)).to.eq(recipientBalanceBefore)
+        expect(await ppoToken.balanceOf(ppoStaking.address)).to.eq(
+          stakingContractBalanceBefore.add(testAmountToStake)
+        )
+      })
+
+      it("adds to recipient's existing scaled balance", async () => {
+        const stakerScaledBalanceBefore = await ppoStaking.balanceOf(staker.address)
+        const recipientScaledBalanceBefore = await ppoStaking.balanceOf(recipient.address)
+        expect(staker.address).to.not.eq(recipient.address)
+        expect(staker.address).to.not.eq(ZERO_ADDRESS)
+
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        await expect(tx)
+          .to.emit(ppoStaking, 'Staked')
+          .withArgs(recipient.address, testAmountToStake)
+        expect(await ppoStaking.balanceOf(staker.address)).to.eq(stakerScaledBalanceBefore)
+        expect(await ppoStaking.balanceOf(recipient.address)).to.eq(
+          recipientScaledBalanceBefore.add(testAmountToStake)
+        )
+      })
+
+      it("doesn't change delegatee if delegatee is delegator and staker is not recipient", async () => {
+        const delegator = recipient
+        const previousDelegateeAddress = await ppoStaking.delegates(delegator.address)
+        expect(previousDelegateeAddress).to.eq(delegator.address)
+        const delegateeVotesBefore = await ppoStaking.getVotes(previousDelegateeAddress)
+
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        expect(await ppoStaking.delegates(delegator.address)).to.eq(previousDelegateeAddress)
+        await expect(tx).to.not.emit(ppoStaking, 'DelegateeChange')
+        await expect(tx)
+          .to.emit(ppoStaking, 'DelegateeVotesChange')
+          .withArgs(
+            previousDelegateeAddress,
+            delegateeVotesBefore,
+            delegateeVotesBefore.add(testAmountToStake)
+          )
+      })
+
+      it("doesn't change delegatee if delegatee is non-delegator and staker is not recipient", async () => {
+        const delegator = recipient
+        await ppoStaking.connect(delegator).delegate(staker.address)
+        const previousDelegateeAddress = await ppoStaking.delegates(delegator.address)
+        expect(previousDelegateeAddress).to.not.eq(delegator.address)
+        const delegateeVotesBefore = await ppoStaking.getVotes(previousDelegateeAddress)
+
+        const tx = await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        expect(await ppoStaking.delegates(delegator.address)).to.eq(previousDelegateeAddress)
+        await expect(tx).to.not.emit(ppoStaking, 'DelegateeChange')
+        await expect(tx)
+          .to.emit(ppoStaking, 'DelegateeVotesChange')
+          .withArgs(
+            previousDelegateeAddress,
+            delegateeVotesBefore,
+            delegateeVotesBefore.add(testAmountToStake)
+          )
+      })
+
+      it("doesn't change delegatee if delegatee is delegator and staker is recipient", async () => {
+        const delegator = staker
+        const previousDelegateeAddress = await ppoStaking.delegates(delegator.address)
+        expect(previousDelegateeAddress).to.eq(delegator.address)
+        const delegateeVotesBefore = await ppoStaking.getVotes(previousDelegateeAddress)
+
+        const tx = await ppoStaking.connect(staker).stake(staker.address, testAmountToStake)
+
+        expect(await ppoStaking.delegates(delegator.address)).to.eq(previousDelegateeAddress)
+        await expect(tx).to.not.emit(ppoStaking, 'DelegateeChange')
+        await expect(tx)
+          .to.emit(ppoStaking, 'DelegateeVotesChange')
+          .withArgs(
+            previousDelegateeAddress,
+            delegateeVotesBefore,
+            delegateeVotesBefore.add(testAmountToStake)
+          )
+      })
+
+      it("doesn't change delegatee if delegatee is non-delegator and staker is recipient", async () => {
+        const delegator = staker
+        await ppoStaking.connect(delegator).delegate(recipient.address)
+        const previousDelegateeAddress = await ppoStaking.delegates(delegator.address)
+        expect(previousDelegateeAddress).to.not.eq(delegator.address)
+        const delegateeVotesBefore = await ppoStaking.getVotes(previousDelegateeAddress)
+
+        const tx = await ppoStaking.connect(staker).stake(staker.address, testAmountToStake)
+
+        expect(await ppoStaking.delegates(delegator.address)).to.eq(previousDelegateeAddress)
+        await expect(tx).to.not.emit(ppoStaking, 'DelegateeChange')
+        await expect(tx)
+          .to.emit(ppoStaking, 'DelegateeVotesChange')
+          .withArgs(
+            previousDelegateeAddress,
+            delegateeVotesBefore,
+            delegateeVotesBefore.add(testAmountToStake)
+          )
+      })
+
+      context('restaking after a cooldown', () => {
+        let amountToCooldown: BigNumber
+        const cooldownTestNames = ['partial amount cooldown', 'full amount cooldown']
+        // eslint-disable-next-line no-restricted-syntax
+        for (const cooldownTest of cooldownTestNames) {
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          context(`after a ${cooldownTest}`, () => {
+            beforeEach(async () => {
+              if (cooldownTest === 'partial cooldown') {
+                amountToCooldown = (await ppoStaking.balanceOf(recipient.address)).sub(1)
+              } else {
+                amountToCooldown = await ppoStaking.balanceOf(recipient.address)
+              }
+            })
+
+            it("doesn't end cooldown if time passed < cooldown period + unstaking window", async () => {
+              await ppoStaking.connect(recipient).startCooldown(amountToCooldown)
+              const cooldownStartTime = BigNumber.from(await getLastTimestamp())
+              const recipientBalanceDataBefore = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataBefore.cooldownTimestamp).to.eq(cooldownStartTime)
+              expect(recipientBalanceDataBefore.cooldownUnits).to.eq(amountToCooldown)
+              const secondAmountToStake = 1
+              await ppoToken.connect(user1).approve(ppoStaking.address, secondAmountToStake)
+              const cooldownAndUnstakeEndTime = cooldownStartTime
+                .add(COOLDOWN_SECONDS)
+                .add(UNSTAKE_WINDOW)
+                .toNumber()
+              await setNextTimestamp(ethers.provider as Web3Provider, cooldownAndUnstakeEndTime - 1)
+
+              const tx = await ppoStaking
+                .connect(staker)
+                .stake(recipient.address, secondAmountToStake)
+
+              expect(tx).to.not.emit(ppoStaking, 'CooldownExited')
+              const recipientBalanceDataAfter = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataAfter.raw).to.eq(
+                recipientBalanceDataBefore.raw.add(secondAmountToStake)
+              )
+              expect(recipientBalanceDataAfter.cooldownTimestamp).to.eq(cooldownStartTime)
+              expect(recipientBalanceDataAfter.cooldownUnits).to.eq(
+                recipientBalanceDataBefore.cooldownUnits
+              )
+            })
+
+            it("doesn't end cooldown if time passed = cooldown period + unstaking window", async () => {
+              await ppoStaking.connect(recipient).startCooldown(amountToCooldown)
+              const cooldownStartTime = BigNumber.from(await getLastTimestamp())
+              const recipientBalanceDataBefore = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataBefore.cooldownTimestamp).to.eq(cooldownStartTime)
+              expect(recipientBalanceDataBefore.cooldownUnits).to.eq(amountToCooldown)
+              const secondAmountToStake = 1
+              await ppoToken.connect(user1).approve(ppoStaking.address, secondAmountToStake)
+              const cooldownAndUnstakeEndTime = cooldownStartTime
+                .add(COOLDOWN_SECONDS)
+                .add(UNSTAKE_WINDOW)
+                .toNumber()
+              await setNextTimestamp(ethers.provider as Web3Provider, cooldownAndUnstakeEndTime)
+
+              const tx = await ppoStaking
+                .connect(staker)
+                .stake(recipient.address, secondAmountToStake)
+
+              expect(tx).to.not.emit(ppoStaking, 'CooldownExited')
+              const recipientBalanceDataAfter = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataAfter.raw).to.eq(
+                recipientBalanceDataBefore.raw.add(secondAmountToStake)
+              )
+              expect(recipientBalanceDataAfter.cooldownTimestamp).to.eq(cooldownStartTime)
+              expect(recipientBalanceDataAfter.cooldownUnits).to.eq(
+                recipientBalanceDataBefore.cooldownUnits
+              )
+            })
+
+            it('ends cooldown if time passed > cooldown period + unstaking window', async () => {
+              await ppoStaking.connect(recipient).startCooldown(amountToCooldown)
+              const cooldownStartTime = BigNumber.from(await getLastTimestamp())
+              const recipientBalanceDataBefore = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataBefore.cooldownTimestamp).to.eq(cooldownStartTime)
+              expect(recipientBalanceDataBefore.cooldownUnits).to.eq(amountToCooldown)
+              const secondAmountToStake = 1
+              await ppoToken.connect(user1).approve(ppoStaking.address, secondAmountToStake)
+              const cooldownAndUnstakeEndTime = cooldownStartTime
+                .add(COOLDOWN_SECONDS)
+                .add(UNSTAKE_WINDOW)
+                .toNumber()
+              await setNextTimestamp(ethers.provider as Web3Provider, cooldownAndUnstakeEndTime + 1)
+
+              const tx = await ppoStaking
+                .connect(staker)
+                .stake(recipient.address, secondAmountToStake)
+
+              expect(tx).to.emit(ppoStaking, 'CooldownExited').withArgs(recipient.address)
+              const recipientBalanceDataAfter = await ppoStaking.balanceData(recipient.address)
+              expect(recipientBalanceDataAfter.raw).to.eq(
+                recipientBalanceDataBefore.raw.add(amountToCooldown).add(secondAmountToStake)
+              )
+              expect(recipientBalanceDataAfter.cooldownTimestamp).to.eq(0)
+              expect(recipientBalanceDataAfter.cooldownUnits).to.eq(0)
+            })
+          })
+        }
+      })
+
+      it("doesn't apply new multiplier if time staked < new multiplier threshold", async () => {
+        const recipientDataBefore = await snapshotUserStakingData(recipient.address)
+        expect(recipientDataBefore.rawBalance.weightedTimestamp).to.eq(initialStakingTime)
+        // SteppedTimeMultiplierV1 does not scale beyond 1x until time passed > 13 weeks
+        const deltaBelowScalingThreshold = ONE_WEEK.mul(13).sub(1)
+        const timeToStake = await calcTimeToStakeAt(
+          recipientDataBefore.rawBalance.weightedTimestamp,
+          deltaBelowScalingThreshold,
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        await setNextTimestamp(ethers.provider as Web3Provider, timeToStake)
+
+        await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        const subsequentStakingTime = await getLastTimestamp()
+        const recipientDataAfter = await snapshotUserStakingData(recipient.address)
+        const newWeightedTimestamp = calcWeightedTimestamp(
+          initialStakingTime,
+          subsequentStakingTime,
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        expect(recipientDataAfter.rawBalance.weightedTimestamp).to.eq(newWeightedTimestamp)
+        expect(recipientDataAfter.scaledBalance).to.be.eq(
+          recipientDataBefore.scaledBalance.add(testAmountToStake)
+        )
+      })
+
+      it('applies new multiplier if time staked = new multiplier threshold', async () => {
+        const recipientDataBefore = await snapshotUserStakingData(recipient.address)
+        expect(recipientDataBefore.rawBalance.weightedTimestamp).to.eq(initialStakingTime)
+        // SteppedTimeMultiplierV1 does not scale beyond 1x until time passed >= 13 weeks
+        const deltaAtScalingThreshold = ONE_WEEK.mul(13)
+        const timeToStake = await calcTimeToStakeAt(
+          recipientDataBefore.rawBalance.weightedTimestamp,
+          deltaAtScalingThreshold,
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        await setNextTimestamp(ethers.provider as Web3Provider, timeToStake)
+
+        await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        const subsequentStakingTime = await getLastTimestamp()
+        const recipientDataAfter = await snapshotUserStakingData(recipient.address)
+        const newWeightedTimestamp = calcWeightedTimestamp(
+          initialStakingTime,
+          subsequentStakingTime,
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        expect(recipientDataAfter.rawBalance.weightedTimestamp).to.eq(newWeightedTimestamp)
+        expect(recipientDataAfter.rawBalance.timeMultiplier).to.be.gt(
+          recipientDataBefore.rawBalance.timeMultiplier
+        )
+        const expectedTimeMultiplier = await mockSteppedTimeMultiplier.calculate(
+          recipientDataBefore.rawBalance.weightedTimestamp
+        )
+        expect(recipientDataAfter.rawBalance.timeMultiplier).to.eq(expectedTimeMultiplier)
+        expect(recipientDataAfter.scaledBalance).to.be.eq(
+          recipientDataBefore.rawBalance.raw
+            .add(testAmountToStake)
+            .mul(expectedTimeMultiplier)
+            .div(MULTIPLIER_DENOMINATOR)
+        )
+      })
+
+      it('applies new multiplier if time staked > new multiplier threshold', async () => {
+        const recipientDataBefore = await snapshotUserStakingData(recipient.address)
+        expect(recipientDataBefore.rawBalance.weightedTimestamp).to.eq(initialStakingTime)
+        const deltaAtScalingThreshold = ONE_WEEK.mul(13)
+        const timeToStake = await calcTimeToStakeAt(
+          recipientDataBefore.rawBalance.weightedTimestamp,
+          // Add 1 to the floor of the first multiplier threshold
+          deltaAtScalingThreshold.add(1),
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        await setNextTimestamp(ethers.provider as Web3Provider, timeToStake)
+
+        await ppoStaking.connect(staker).stake(recipient.address, testAmountToStake)
+
+        const subsequentStakingTime = await getLastTimestamp()
+        const recipientDataAfter = await snapshotUserStakingData(recipient.address)
+        const newWeightedTimestamp = calcWeightedTimestamp(
+          initialStakingTime,
+          subsequentStakingTime,
+          recipientDataBefore.scaledBalance,
+          testAmountToStake,
+          true
+        )
+        expect(recipientDataAfter.rawBalance.weightedTimestamp).to.eq(newWeightedTimestamp)
+        expect(recipientDataAfter.rawBalance.timeMultiplier).to.be.gt(
+          recipientDataBefore.rawBalance.timeMultiplier
+        )
+        const expectedTimeMultiplier = await mockSteppedTimeMultiplier.calculate(
+          recipientDataBefore.rawBalance.weightedTimestamp
+        )
+        expect(recipientDataAfter.rawBalance.timeMultiplier).to.eq(expectedTimeMultiplier)
+        expect(recipientDataAfter.scaledBalance).to.be.eq(
+          recipientDataBefore.rawBalance.raw
+            .add(testAmountToStake)
+            .mul(expectedTimeMultiplier)
+            .div(MULTIPLIER_DENOMINATOR)
+        )
       })
     })
   })

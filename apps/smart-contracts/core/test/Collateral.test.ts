@@ -6,6 +6,7 @@ import { BigNumber, Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { testCollateralFixture } from './fixtures/CollateralFixture'
 import { singleStrategyControllerFixture } from './fixtures/SingleStrategyControllerFixture'
@@ -14,7 +15,6 @@ import {
   FEE_LIMIT,
   calculateFee,
   returnFromMockAPY,
-  setNextTimestamp,
   getLastTimestamp,
   getLastBlockNumber,
   mineBlocks,
@@ -42,6 +42,8 @@ import {
   MockStrategy,
   CollateralDepositRecord,
 } from '../typechain'
+
+const { setNextTimestamp } = utils
 
 chai.use(solidity)
 chai.use(smock.matchers)

@@ -4,9 +4,12 @@ import { ethers } from 'hardhat'
 import { Contract } from 'ethers'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { MockContract, smock } from '@defi-wonderland/smock'
+import { parseEther } from 'ethers/lib/utils'
+import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { revertReason, ZERO } from './utils'
 import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
-import { PurchaseHook } from '../types/generated'
+import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
+import { MockERC20, PurchaseHook } from '../types/generated'
 
 chai.use(smock.matchers)
 
@@ -20,6 +23,8 @@ describe('PurchaseHook', () => {
   let secondERC721: MockContract<Contract>
   let firstERC1155: MockContract<Contract>
   let secondERC1155: MockContract<Contract>
+  let tokenShop: MockContract<Contract>
+  let paymentToken: MockERC20
 
   const setupPurchaseHook = async (): Promise<void> => {
     ;[deployer, user1] = await ethers.getSigners()
@@ -37,6 +42,21 @@ describe('PurchaseHook', () => {
     const mockERC1155Factory = await smock.mock('ERC1155Mintable')
     firstERC1155 = await mockERC1155Factory.deploy('mockURI1')
     secondERC1155 = await mockERC1155Factory.deploy('mockURI2')
+  }
+
+  const setupMockTokenShop = async (): Promise<void> => {
+    const mockERC20Recipient = owner.address
+    const mockERC20Decimals = 18
+    const mockERC20InitialSupply = parseEther('100')
+    paymentToken = await mockERC20Fixture(
+      'Payment Token',
+      'PT',
+      mockERC20Decimals,
+      mockERC20Recipient,
+      mockERC20InitialSupply
+    )
+    const tokenShopFactory = await smock.mock('TokenShop')
+    tokenShop = await tokenShopFactory.deploy(owner.address, paymentToken.address)
   }
 
   describe('initial state', () => {
@@ -308,6 +328,107 @@ describe('PurchaseHook', () => {
           await purchaseHook.getMaxERC1155PurchasesPerUser(tokenContracts[i], tokenIds[i])
         ).to.eq(maxAmounts[i])
       }
+    })
+  })
+
+  describe('# setTokenShop', () => {
+    before(async () => {
+      await setupPurchaseHook()
+      await setupMockTokenShop()
+    })
+
+    it('reverts if not owner', async () => {
+      expect(await purchaseHook.owner()).to.not.eq(user1.address)
+
+      await expect(purchaseHook.connect(user1).setTokenShop(JUNK_ADDRESS)).revertedWith(
+        revertReason('Ownable: caller is not the owner')
+      )
+    })
+
+    it('sets to non-zero address', async () => {
+      expect(await purchaseHook.getTokenShop()).to.not.eq(JUNK_ADDRESS)
+      expect(JUNK_ADDRESS).to.not.equal(ZERO_ADDRESS)
+
+      await purchaseHook.connect(owner).setTokenShop(JUNK_ADDRESS)
+
+      expect(await purchaseHook.getTokenShop()).to.eq(JUNK_ADDRESS)
+    })
+
+    it('sets to zero address', async () => {
+      await purchaseHook.connect(owner).setTokenShop(JUNK_ADDRESS)
+      expect(await purchaseHook.getTokenShop()).to.not.eq(ZERO_ADDRESS)
+
+      await purchaseHook.connect(owner).setTokenShop(ZERO_ADDRESS)
+
+      expect(await purchaseHook.getTokenShop()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('is idempotent', async () => {
+      expect(await purchaseHook.getTokenShop()).to.not.eq(JUNK_ADDRESS)
+
+      await purchaseHook.connect(owner).setTokenShop(JUNK_ADDRESS)
+
+      expect(await purchaseHook.getTokenShop()).to.eq(JUNK_ADDRESS)
+
+      await purchaseHook.connect(owner).setTokenShop(JUNK_ADDRESS)
+
+      expect(await purchaseHook.getTokenShop()).to.eq(JUNK_ADDRESS)
+    })
+  })
+
+  describe('# hookERC721', () => {
+    const tokenId = 1
+    let erc721Contract: string
+    beforeEach(async () => {
+      await setupPurchaseHook()
+      await setupMockTokenShop()
+      await setupMockERC721Contracts()
+      erc721Contract = firstERC721.address
+      await purchaseHook.connect(owner).setTokenShop(tokenShop.address)
+    })
+
+    it('reverts if token shop not set', async () => {
+      await purchaseHook.connect(owner).setTokenShop(ZERO_ADDRESS)
+
+      await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
+        revertReason('Token shop not set in hook')
+      )
+    })
+
+    it("reverts if user's ERC721 purchase count > limit", async () => {
+      await purchaseHook.connect(owner).setMaxERC721PurchasesPerUser([erc721Contract], [1])
+      tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(2)
+
+      await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
+        revertReason('ERC721 purchase limit reached')
+      )
+    })
+
+    it("reverts if user's ERC721 purchase count = limit", async () => {
+      await purchaseHook.connect(owner).setMaxERC721PurchasesPerUser([erc721Contract], [1])
+      tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(1)
+
+      await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
+        revertReason('ERC721 purchase limit reached')
+      )
+    })
+
+    it("succeeds if user's ERC721 purchase count < limit", async () => {
+      await purchaseHook.connect(owner).setMaxERC721PurchasesPerUser([erc721Contract], [2])
+      tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(1)
+
+      await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).to.not.reverted
+    })
+
+    it("succeeds if max ERC721 purchase limit = 0 and user's ERC721 purchase count > 0", async () => {
+      /**
+       * maxPurchaseAmount = 0 refers to no limit on max purchase, hence user's ERC721 balance
+       * can be greater than max purchase limit i.e 0
+       */
+      await purchaseHook.connect(owner).setMaxERC721PurchasesPerUser([erc721Contract], [ZERO])
+      tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(1)
+
+      await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).to.not.reverted
     })
   })
 })

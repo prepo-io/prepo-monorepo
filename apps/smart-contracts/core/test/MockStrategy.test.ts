@@ -4,14 +4,17 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import { getMockStrategyVaultChangedEvent } from './events'
-import { setNextTimestamp, returnFromMockAPY, revertReason } from './utils'
+import { returnFromMockAPY, revertReason } from './utils'
 import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
 import { MockBaseToken } from '../typechain/MockBaseToken'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { setNextTimestamp } = utils
 
 chai.use(solidity)
 
