@@ -83,7 +83,7 @@ describe('PurchaseHook', () => {
 
       await expect(
         purchaseHook.connect(user1).setMaxERC721PurchasesPerUser(tokenContracts, maxAmounts)
-      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+      ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if array length mismatch', async () => {
@@ -94,7 +94,7 @@ describe('PurchaseHook', () => {
         purchaseHook
           .connect(owner)
           .setMaxERC721PurchasesPerUser(mismatchedContractArray, maxAmounts)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('sets amount to non-zero for single item', async () => {
@@ -192,7 +192,7 @@ describe('PurchaseHook', () => {
         purchaseHook
           .connect(user1)
           .setMaxERC1155PurchasesPerUser(tokenContracts, tokenIds, maxAmounts)
-      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+      ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if token contract array length mismatch', async () => {
@@ -204,7 +204,7 @@ describe('PurchaseHook', () => {
         purchaseHook
           .connect(owner)
           .setMaxERC1155PurchasesPerUser(mismatchedContractArray, tokenIds, maxAmounts)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if amount array length mismatch', async () => {
@@ -216,7 +216,7 @@ describe('PurchaseHook', () => {
         purchaseHook
           .connect(owner)
           .setMaxERC1155PurchasesPerUser(tokenContracts, tokenIds, mismatchedAmountArray)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if token id array length mismatch', async () => {
@@ -228,7 +228,7 @@ describe('PurchaseHook', () => {
         purchaseHook
           .connect(owner)
           .setMaxERC1155PurchasesPerUser(tokenContracts, mismatchedIdArray, maxAmounts)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('sets amount to non-zero for single item', async () => {
@@ -341,7 +341,7 @@ describe('PurchaseHook', () => {
       expect(await purchaseHook.owner()).to.not.eq(user1.address)
 
       await expect(purchaseHook.connect(user1).setTokenShop(JUNK_ADDRESS)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
+        'Ownable: caller is not the owner'
       )
     })
 
@@ -391,7 +391,7 @@ describe('PurchaseHook', () => {
       await purchaseHook.connect(owner).setTokenShop(ZERO_ADDRESS)
 
       await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
-        revertReason('Token shop not set in hook')
+        'Token shop not set in hook'
       )
     })
 
@@ -400,7 +400,7 @@ describe('PurchaseHook', () => {
       tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(2)
 
       await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
-        revertReason('ERC721 purchase limit reached')
+        'ERC721 purchase limit reached'
       )
     })
 
@@ -409,7 +409,7 @@ describe('PurchaseHook', () => {
       tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(1)
 
       await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).revertedWith(
-        revertReason('ERC721 purchase limit reached')
+        'ERC721 purchase limit reached'
       )
     })
 
@@ -429,6 +429,95 @@ describe('PurchaseHook', () => {
       tokenShop.getERC721PurchaseCount.whenCalledWith(user1.address, erc721Contract).returns(1)
 
       await expect(purchaseHook.hookERC721(user1.address, erc721Contract, tokenId)).to.not.reverted
+    })
+  })
+
+  describe('# hookERC1155', () => {
+    const tokenId = 1
+    const erc1155MaxAmount = 10
+    let erc1155Contract: string
+    beforeEach(async () => {
+      await setupPurchaseHook()
+      await setupMockTokenShop()
+      await setupMockERC1155Contracts()
+      erc1155Contract = firstERC1155.address
+      await purchaseHook.connect(owner).setTokenShop(tokenShop.address)
+      tokenShop.getERC1155PurchaseCount
+        .whenCalledWith(user1.address, erc1155Contract, tokenId)
+        .returns(1)
+    })
+
+    it('reverts if token shop not set', async () => {
+      await purchaseHook.connect(owner).setTokenShop(ZERO_ADDRESS)
+
+      await expect(
+        purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, erc1155MaxAmount)
+      ).revertedWith('Token shop not set in hook')
+    })
+
+    it("reverts if user's ERC1155 purchase count after purchase > limit", async () => {
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [erc1155MaxAmount])
+      const purchaseCountBefore = await tokenShop.getERC1155PurchaseCount(
+        user1.address,
+        erc1155Contract,
+        tokenId
+      )
+      const amountToExceedLimit = erc1155MaxAmount - purchaseCountBefore.toNumber() + 1
+      expect(purchaseCountBefore.add(amountToExceedLimit)).to.be.gt(erc1155MaxAmount)
+
+      await expect(
+        purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, amountToExceedLimit)
+      ).revertedWith('ERC1155 purchase limit reached')
+    })
+
+    it("succeeds if user's ERC1155 purchase count after purchase = limit", async () => {
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [erc1155MaxAmount])
+      const purchaseCountBefore = await tokenShop.getERC1155PurchaseCount(
+        user1.address,
+        erc1155Contract,
+        tokenId
+      )
+      const amountToReachLimit = erc1155MaxAmount - purchaseCountBefore.toNumber()
+      expect(purchaseCountBefore.add(amountToReachLimit)).to.eq(erc1155MaxAmount)
+
+      await expect(
+        purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, amountToReachLimit)
+      ).to.not.reverted
+    })
+
+    it("succeeds if user's ERC1155 purchase count after purchase < limit", async () => {
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [erc1155MaxAmount])
+      const purchaseCountBefore = await tokenShop.getERC1155PurchaseCount(
+        user1.address,
+        erc1155Contract,
+        tokenId
+      )
+      const amountToStayUnderLimit = erc1155MaxAmount - purchaseCountBefore.toNumber() - 1
+      expect(purchaseCountBefore.add(amountToStayUnderLimit)).to.be.lt(erc1155MaxAmount)
+
+      await expect(
+        purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, amountToStayUnderLimit)
+      ).to.not.reverted
+    })
+
+    it("succeeds if max ERC1155 purchase limit = 0 and user's ERC1155 purchase count > 0", async () => {
+      /**
+       * maxPurchaseAmount = 0 refers to no limit on max purchase, hence user's ERC1155 balance
+       * can be greater than max purchase limit i.e 0
+       */
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [ZERO])
+
+      await expect(
+        purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, erc1155MaxAmount)
+      ).to.not.reverted
     })
   })
 })

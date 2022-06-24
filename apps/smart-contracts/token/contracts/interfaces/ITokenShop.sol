@@ -43,4 +43,10 @@ interface ITokenShop {
     external
     view
     returns (uint256);
+
+  function getERC1155PurchaseCount(
+    address user,
+    address tokenContract,
+    uint256 id
+  ) external view returns (uint256);
 }
