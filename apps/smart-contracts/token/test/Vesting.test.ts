@@ -9,10 +9,10 @@ import { utils } from 'prepo-hardhat'
 import { vestingFixture } from './fixtures/VestingFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { mockVestingClaimerFixture } from './fixtures/MockVestingClaimerFixtures'
-import { revertReason, getLastTimestamp, mineBlock, ZERO, ONE, mineBlocks } from './utils'
+import { ZERO, ONE, getLastTimestamp, revertReason } from './utils'
 import { Vesting, MockERC20, MockVestingClaimer } from '../types/generated'
 
-const { setNextTimestamp } = utils
+const { setNextTimestamp, mineBlocks, mineBlock } = utils
 
 describe('Vesting', () => {
   let deployer: SignerWithAddress

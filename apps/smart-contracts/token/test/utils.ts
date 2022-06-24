@@ -1,5 +1,9 @@
 /* eslint-disable no-await-in-loop */
+<<<<<<< HEAD
 import { BigNumber, BigNumberish, providers } from 'ethers'
+=======
+import { BigNumber } from 'ethers'
+>>>>>>> d09fb9c (fix: tests)
 import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
@@ -13,14 +17,15 @@ export const ONE = BigNumber.from(1)
 export const ZERO_HASH = ethers.utils.formatBytes32String('')
 export const ONE_WEEK = BigNumber.from(60 * 60 * 24 * 7)
 
-export async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
-  for (let i = 0; i < blocks; i++) {
-    await provider.send('evm_mine', [])
-  }
+export type IOUPPOLeafNode = {
+  account: string
+  amount: BigNumber
+  staked: boolean
 }
 
-export function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
-  return provider.send('evm_mine', [timestamp])
+export type AccountAmountLeafNode = {
+  account: string
+  amount: BigNumber
 }
 
 <<<<<<< HEAD
@@ -43,18 +48,12 @@ export async function getLastTimestamp(): Promise<number> {
   return currentBlock.timestamp
 }
 
-export function revertReason(reason: string): string {
-  return reason
-}
-
 export function getZeroPadHexFromAddress(address: string): string {
   return ethers.utils.hexZeroPad(address, 32)
 }
 
-export type IOUPPOLeafNode = {
-  account: string
-  amount: BigNumber
-  staked: boolean
+export function revertReason(reason: string): string {
+  return reason
 }
 
 export function hashIOUPPOLeafNode(leaf: IOUPPOLeafNode): Buffer {
@@ -72,11 +71,6 @@ export function hashIOUPPOLeafNode(leaf: IOUPPOLeafNode): Buffer {
 export function generateMerkleTreeIOUPPO(leaves: IOUPPOLeafNode[]): MerkleTree {
   const leafNodes = leaves.map(hashIOUPPOLeafNode)
   return new MerkleTree(leafNodes, keccak256, { sortPairs: true })
-}
-
-export type AccountAmountLeafNode = {
-  account: string
-  amount: BigNumber
 }
 
 export function hashAccountAmountLeafNode(leaf: AccountAmountLeafNode): Buffer {

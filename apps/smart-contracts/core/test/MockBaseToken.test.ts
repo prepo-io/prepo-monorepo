@@ -4,9 +4,11 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
-import { revertReason } from './utils'
 import { MockBaseToken } from '../typechain/MockBaseToken'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 

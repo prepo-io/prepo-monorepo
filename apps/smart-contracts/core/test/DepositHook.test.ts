@@ -6,11 +6,13 @@ import { parseEther } from 'ethers/lib/utils'
 import { Contract } from 'ethers'
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { depositHookFixture } from './fixtures/HookFixture'
 import { smockCollateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { revertReason } from './utils'
 import { getDepositHookVaultChangedEvent } from './events'
 import { DepositHook } from '../typechain'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 chai.use(smock.matchers)

@@ -4,11 +4,11 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { MerkleTree } from 'merkletreejs'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import {
-  revertReason,
   ONE,
-  generateAccountAmountMerkleTree,
   AccountAmountLeafNode,
   hashAccountAmountLeafNode,
+  generateAccountAmountMerkleTree,
+  revertReason,
 } from './utils'
 import { pregenesisPointsFixture } from './fixtures/PregenesisPointsFixtures'
 import { PregenesisPoints } from '../types/generated'

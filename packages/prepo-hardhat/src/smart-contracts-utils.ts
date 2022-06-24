@@ -54,6 +54,21 @@ function recordDeployment(envVarName: string, contract: Contract): void {
   process.env[envVarName] = contract.address
 }
 
+async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
+  for (let i = 0; i < blocks; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    await provider.send('evm_mine', [])
+  }
+}
+
+function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
+  return provider.send('evm_mine', [timestamp])
+}
+
+export function revertReason(reason: string): string {
+  return `VM Exception while processing transaction: reverted with reason string '${reason}'`
+}
+
 export const utils = {
   expandToDecimals,
   expandTo6Decimals,
@@ -62,4 +77,7 @@ export const utils = {
   setNextTimestamp,
   assertIsTestnetChain,
   recordDeployment,
+  mineBlocks,
+  mineBlock,
+  revertReason,
 }

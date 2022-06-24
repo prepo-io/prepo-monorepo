@@ -21,20 +21,13 @@ import {
   getTreasuryChangedEvent,
   getFinalLongPriceSetEvent,
 } from './events'
-import {
-  MAX_PRICE,
-  calculateFee,
-  FEE_LIMIT,
-  FEE_DENOMINATOR,
-  getLastTimestamp,
-  revertReason,
-} from './utils'
+import { MAX_PRICE, calculateFee, FEE_LIMIT, FEE_DENOMINATOR, getLastTimestamp } from './utils'
 import { PrePOMarketFactory } from '../typechain/PrePOMarketFactory'
 import { PrePOMarket } from '../typechain/PrePOMarket'
 import { LongShortToken } from '../typechain/LongShortToken'
 import { MockERC20 } from '../typechain/MockERC20'
 
-const { nowPlusMonths } = utils
+const { nowPlusMonths, revertReason } = utils
 
 chai.use(solidity)
 

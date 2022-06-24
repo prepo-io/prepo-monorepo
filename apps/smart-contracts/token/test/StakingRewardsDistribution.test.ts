@@ -7,13 +7,13 @@ import { MerkleTree } from 'merkletreejs'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import {
-  revertReason,
-  generateAccountAmountMerkleTree,
-  AccountAmountLeafNode,
-  hashAccountAmountLeafNode,
   ZERO_HASH,
   ONE,
   ZERO,
+  AccountAmountLeafNode,
+  hashAccountAmountLeafNode,
+  generateAccountAmountMerkleTree,
+  revertReason,
 } from './utils'
 import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
 import { StakingRewardsDistribution } from '../types/generated'

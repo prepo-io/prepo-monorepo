@@ -1,5 +1,5 @@
 import { parseEther } from '@ethersproject/units'
-import { BigNumber, providers } from 'ethers'
+import { BigNumber } from 'ethers'
 import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
@@ -28,21 +28,6 @@ export function subtractBps(amount: BigNumber, bps: number): BigNumber {
   return amount.sub(amount.mul(bps).div(10000))
 }
 
-export async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
-  for (let i = 0; i < blocks; i++) {
-    // eslint-disable-next-line no-await-in-loop
-    await provider.send('evm_mine', [])
-  }
-}
-
-export async function mineBlock(
-  provider: providers.Web3Provider,
-  timestamp: number
-): Promise<void> {
-  const minedBlock = await provider.send('evm_mine', [timestamp])
-  return minedBlock
-}
-
 export async function getLastTimestamp(): Promise<number> {
   /**
    * Changed this from ethers.provider.getBlockNumber since if evm_revert is used to return
@@ -65,8 +50,4 @@ export function hashAddress(address: string): Buffer {
 export function generateMerkleTree(addresses: string[]): MerkleTree {
   const leaves = addresses.map(hashAddress)
   return new MerkleTree(leaves, keccak256, { sortPairs: true })
-}
-
-export function revertReason(reason: string): string {
-  return `VM Exception while processing transaction: reverted with reason string '${reason}'`
 }
