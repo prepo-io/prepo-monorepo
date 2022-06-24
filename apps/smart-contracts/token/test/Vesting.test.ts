@@ -37,7 +37,7 @@ describe('Vesting', () => {
   const ONE_ETH = parseEther('1')
   const BLOCK_DURATION_IN_SECONDS = 15
 
-  const setupVesting = async (): Promise<void> => {
+  const deployVesting = async (): Promise<void> => {
     ;[deployer, owner, user1, user2] = await ethers.getSigners()
     vesting = await vestingFixture(owner.address)
     const mockERC20Recipient = owner.address
@@ -52,15 +52,20 @@ describe('Vesting', () => {
     )
   }
 
+  const setupVesting = async (): Promise<void> => {
+    await deployVesting()
+    await vesting.connect(owner).acceptOwnership()
+  }
+
   describe('# initialize', () => {
     before(async () => {
-      await setupVesting()
+      await deployVesting()
     })
 
-    it('sets owner from initialize', async () => {
-      expect(await vesting.owner()).to.not.eq(deployer.address)
+    it('sets nominee from initialize', async () => {
+      expect(await vesting.getNominee()).to.not.eq(deployer.address)
 
-      expect(await vesting.owner()).to.eq(owner.address)
+      expect(await vesting.getNominee()).to.eq(owner.address)
     })
   })
 

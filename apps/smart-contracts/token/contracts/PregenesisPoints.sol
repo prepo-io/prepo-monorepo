@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./interfaces/IPregenesisPoints.sol";
+import "./shared/SafeOwnable.sol";
 
-contract PregenesisPoints is IPregenesisPoints, Ownable, ReentrancyGuard, ERC20 {
+contract PregenesisPoints is IPregenesisPoints, SafeOwnable, ReentrancyGuard, ERC20 {
   address private _shop;
   bytes32 private _root;
   mapping(address => bool) private _userToClaim;
@@ -17,8 +17,7 @@ contract PregenesisPoints is IPregenesisPoints, Ownable, ReentrancyGuard, ERC20 
     string memory _name,
     string memory _symbol
   ) ERC20(_name, _symbol) {
-    //TODO: switch to nominate + accept version using `safeOwnable`
-    _transferOwnership(_owner);
+    transferOwnership(_owner);
   }
 
   function setShop(address _newShop) external override onlyOwner {
