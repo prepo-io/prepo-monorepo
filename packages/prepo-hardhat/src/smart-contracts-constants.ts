@@ -65,11 +65,7 @@ function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise
   return provider.send('evm_mine', [timestamp])
 }
 
-function revertReason(reason: string): string {
-  return `VM Exception while processing transaction: reverted with reason string '${reason}'`
-}
-
-export const utils = {
+export const constants = {
   expandToDecimals,
   expandTo6Decimals,
   expandTo18Decimals,
@@ -79,5 +75,4 @@ export const utils = {
   recordDeployment,
   mineBlocks,
   mineBlock,
-  revertReason,
 }
