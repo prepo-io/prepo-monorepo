@@ -8,7 +8,7 @@ import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { mockPPOGamifiedTokenDeployFixture } from './fixtures/PPOGamifiedTokenFixture'
 import { smockSteppedTimeMultiplierV1Fixture } from './fixtures/MultiplierCalculatorFixtures'
 import { smockMockAchievementsManagerFixture } from './fixtures/MockAchievementsManagerFixtures'
-import { getLastTimestamp, MAX_INT64, MAX_UINT64, MIN_INT64, revertReason } from './utils'
+import { MAX_INT64, MAX_UINT64, MIN_INT64, getLastTimestamp, revertReason } from './utils'
 import {
   MockERC20,
   MockERC20__factory,

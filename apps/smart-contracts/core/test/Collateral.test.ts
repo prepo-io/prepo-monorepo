@@ -15,11 +15,8 @@ import {
   FEE_LIMIT,
   calculateFee,
   returnFromMockAPY,
-  getLastTimestamp,
   getLastBlockNumber,
-  mineBlocks,
-  mineBlock,
-  revertReason,
+  getLastTimestamp,
 } from './utils'
 import {
   getStrategyControllerChangedEvent,
@@ -43,7 +40,7 @@ import {
   CollateralDepositRecord,
 } from '../typechain'
 
-const { setNextTimestamp } = utils
+const { setNextTimestamp, mineBlocks, mineBlock, revertReason } = utils
 
 chai.use(solidity)
 chai.use(smock.matchers)
