@@ -9,7 +9,7 @@ import {SafeCastExtended} from "../../shared/SafeCastExtended.sol";
 import {ILockedERC20} from "./interfaces/ILockedERC20.sol";
 import {HeadlessStakingRewards} from "../../rewards/staking/HeadlessStakingRewards.sol";
 import {IAchievementsManager} from "./interfaces/IAchievementsManager.sol";
-import {ITimeMultiplierCalculator} from "./interfaces/ITimeMultiplierCalculator.sol";
+import {ICalculatorFromTimestamp} from "./interfaces/ICalculatorFromTimestamp.sol";
 import "./deps/PPOGamifiedTokenStructs.sol";
 
 /**
@@ -42,7 +42,7 @@ abstract contract PPOGamifiedToken is
   /// @notice number of decimals of this token (ERC20)
   uint8 public constant override decimals = 18;
 
-  ITimeMultiplierCalculator private _timeMultiplierCalculator;
+  ICalculatorFromTimestamp private _timeMultiplierCalculator;
   uint256 private _maxMultiplier;
   uint256 public constant MULTIPLIER_DENOMINATOR = 1e12;
 
@@ -92,7 +92,7 @@ abstract contract PPOGamifiedToken is
   }
 
   function setTimeMultiplierCalculator(address _newCalculator) external onlyGovernor {
-    _timeMultiplierCalculator = ITimeMultiplierCalculator(_newCalculator);
+    _timeMultiplierCalculator = ICalculatorFromTimestamp(_newCalculator);
     emit TimeMultiplierCalculatorChanged(_newCalculator);
   }
 
@@ -171,7 +171,7 @@ abstract contract PPOGamifiedToken is
     balance = (_balance.raw * _combinedMultiplier) / MULTIPLIER_DENOMINATOR;
   }
 
-  function getTimeMultiplierCalculator() external view returns (ITimeMultiplierCalculator) {
+  function getTimeMultiplierCalculator() external view returns (ICalculatorFromTimestamp) {
     return _timeMultiplierCalculator;
   }
 
