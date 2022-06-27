@@ -26,7 +26,7 @@ describe('TokenShop', () => {
   const tokenIds = [1, 1]
   const amounts = [2, 1]
 
-  const deployTokenShop = async (): Promise<void> => {
+  const setupTokenShop = async (): Promise<void> => {
     ;[deployer, owner, user1] = await ethers.getSigners()
     const mockERC20Recipient = owner.address
     const mockERC20Decimals = 18
@@ -48,19 +48,14 @@ describe('TokenShop', () => {
     mockERC721 = await mockERC721Factory.deploy('mock ERC721', 'mERC721')
   }
 
-  const setupTokenShop = async (): Promise<void> => {
-    await deployTokenShop()
-    await tokenShop.connect(owner).acceptOwnership()
-  }
-
   describe('initial state', () => {
     before(async () => {
-      await deployTokenShop()
+      await setupTokenShop()
     })
 
-    it('sets nominee from constructor', async () => {
-      expect(await tokenShop.getNominee()).to.not.eq(deployer.address)
-      expect(await tokenShop.getNominee()).to.eq(owner.address)
+    it('sets owner from constructor', async () => {
+      expect(await tokenShop.owner()).to.not.eq(deployer.address)
+      expect(await tokenShop.owner()).to.eq(owner.address)
     })
 
     it('sets payment token from constructor', async () => {
