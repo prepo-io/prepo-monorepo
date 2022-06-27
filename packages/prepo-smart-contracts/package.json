@@ -2,7 +2,6 @@
   "name": "prepo-smart-contracts",
   "version": "0.0.0",
   "description": "prePO Reusable smart contracts",
-  "main": "src/index.ts",
   "files": ["contracts/*.sol"],
   "scripts": {
     "clean": "rm -rf './frontend/src/hardhat' && npx hardhat clean",
