@@ -632,7 +632,7 @@ describe('TokenShop', () => {
       await expect(
         tokenShop
           .connect(owner)
-          .withdrawERC1155(mockERC1155.address, 2, tokenShopERC1155Balance.add(1))
+          .withdrawERC1155(mockERC1155.address, erc1155Id, tokenShopERC1155Balance.add(1))
       ).revertedWith('ERC1155: insufficient balance for transfer')
     })
 

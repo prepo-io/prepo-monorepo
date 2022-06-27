@@ -93,6 +93,23 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     IERC20(_erc20Token).safeTransfer(owner(), _amount);
   }
 
+  function withdrawERC721(address _erc721Token, uint256 _id)
+    external
+    override
+    onlyOwner
+    nonReentrant
+  {
+    IERC721(_erc721Token).safeTransferFrom(address(this), owner(), _id);
+  }
+
+  function withdrawERC1155(
+    address _erc1155Token,
+    uint256 _id,
+    uint256 _amount
+  ) external override onlyOwner nonReentrant {
+    IERC1155(_erc1155Token).safeTransferFrom(address(this), owner(), _id, _amount, "");
+  }
+
   function getPrice(address _tokenContract, uint256 _id) external view override returns (uint256) {
     return _contractToIdToPrice[_tokenContract][_id];
   }
@@ -116,32 +133,6 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     returns (uint256)
   {
     _userToERC721ToPurchaseCount[_user][_tokenContract];
-  }
-
-  function withdrawERC20(address _erc20Token, uint256 _amount)
-    external
-    override
-    onlyOwner
-    nonReentrant
-  {
-    IERC20(_erc20Token).safeTransfer(owner(), _amount);
-  }
-
-  function withdrawERC721(address _erc721Token, uint256 _id)
-    external
-    override
-    onlyOwner
-    nonReentrant
-  {
-    IERC721(_erc721Token).safeTransferFrom(address(this), owner(), _id);
-  }
-
-  function withdrawERC1155(
-    address _erc1155Token,
-    uint256 _id,
-    uint256 _amount
-  ) external override onlyOwner nonReentrant {
-    IERC1155(_erc1155Token).safeTransferFrom(address(this), owner(), _id, _amount, "");
   }
 
   function onERC1155Received(

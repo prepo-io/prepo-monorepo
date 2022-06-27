@@ -23,6 +23,14 @@ interface ITokenShop {
 
   function withdrawERC20(address erc20Token, uint256 amount) external;
 
+  function withdrawERC721(address erc721Token, uint256 id) external;
+
+  function withdrawERC1155(
+    address erc1155Token,
+    uint256 id,
+    uint256 amount
+  ) external;
+
   function getPrice(address tokenContract, uint256 id) external view returns (uint256);
 
   function isPaused() external view returns (bool);
@@ -35,14 +43,4 @@ interface ITokenShop {
     external
     view
     returns (uint256);
-
-  function withdrawERC20(address _erc20Token, uint256 _amount) external;
-
-  function withdrawERC721(address erc721Token, uint256 id) external;
-
-  function withdrawERC1155(
-    address erc1155Token,
-    uint256 id,
-    uint256 _amount
-  ) external;
 }
