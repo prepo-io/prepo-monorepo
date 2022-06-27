@@ -1,7 +1,7 @@
 {
-  "name": "prepo-smart-contracts",
+  "name": "prepo-shared-contracts",
   "version": "0.0.0",
-  "description": "prePO Reusable smart contracts",
+  "description": "prePO Shared smart contracts",
   "files": ["contracts/*.sol"],
   "scripts": {
     "clean": "rm -rf './frontend/src/hardhat' && npx hardhat clean",
@@ -42,6 +42,8 @@
     "prepo-hardhat": "*"
   },
   "devDependencies": {
+    "solhint": "3.3.3",
+    "solhint-plugin-prettier": "0.0.5",
     "config": "*",
     "tsconfig": "*"
   }

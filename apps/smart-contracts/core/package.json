@@ -61,6 +61,6 @@
         "solidity-coverage": "0.7.17",
         "prepo-constants": "*",
         "prepo-hardhat": "*",
-        "prepo-smart-contracts": "*"
+        "prepo-shared-contracts": "*"
     }
 }
