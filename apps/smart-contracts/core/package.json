@@ -60,6 +60,7 @@
         "merkletreejs": "0.2.24",
         "solidity-coverage": "0.7.17",
         "prepo-constants": "*",
-        "prepo-hardhat": "*"
+        "prepo-hardhat": "*",
+        "prepo-smart-contracts": "*"
     }
 }
