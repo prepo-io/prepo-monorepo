@@ -4,7 +4,7 @@ pragma solidity =0.8.7;
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IVesting.sol";
-import "./shared/SafeOwnable.sol";
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 
 contract Vesting is IVesting, SafeOwnable, ReentrancyGuard {
   using SafeERC20 for IERC20;

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract WithdrawalRights is Ownable, ERC721 {
+contract WithdrawalRights is SafeOwnable, ERC721 {
   uint256 private _id;
   string private _uri;
   address private _ppoStaking;
@@ -15,8 +15,7 @@ contract WithdrawalRights is Ownable, ERC721 {
   }
 
   constructor(address _governance) ERC721("Staked PPO Withdrawal Rights", "stkPPO-WR") {
-    // TODO: switch to nominate + accept after pragma is updated.
-    _transferOwnership(_governance);
+    transferOwnership(_governance);
   }
 
   function setURI(string memory _newURI) external onlyOwner {

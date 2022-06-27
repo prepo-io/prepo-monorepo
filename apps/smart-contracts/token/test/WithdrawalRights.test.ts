@@ -19,14 +19,19 @@ describe('WithdrawalRights', () => {
     ;[deployer, governance, user1, user2, ppoStaking] = await ethers.getSigners()
   }
 
-  const setupWithdrawalRights = async (): Promise<void> => {
+  const deployWithdrawalRights = async (): Promise<void> => {
     withdrawalRights = await withdrawalRightsFixture(governance.address)
+  }
+
+  const setupWithdrawalRights = async (): Promise<void> => {
+    await deployWithdrawalRights()
+    await withdrawalRights.connect(governance).acceptOwnership()
   }
 
   describe('initial state', () => {
     before(async () => {
       await setupAccounts()
-      await setupWithdrawalRights()
+      await deployWithdrawalRights()
     })
 
     it("sets name to 'Staked PPO Withdrawal Rights'", async () => {
@@ -37,8 +42,8 @@ describe('WithdrawalRights', () => {
       expect(await withdrawalRights.symbol()).to.eq('stkPPO-WR')
     })
 
-    it('sets owner from constructor', async () => {
-      expect(await withdrawalRights.owner()).to.eq(governance.address)
+    it('sets nominee from constructor', async () => {
+      expect(await withdrawalRights.getNominee()).to.eq(governance.address)
     })
   })
 

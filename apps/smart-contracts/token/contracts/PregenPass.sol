@@ -2,7 +2,7 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "./shared/SafeOwnable.sol";
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 
 contract PregenPass is SafeOwnable, ERC721Enumerable {
   uint256 private _id;

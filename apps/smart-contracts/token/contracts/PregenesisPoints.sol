@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./interfaces/IPregenesisPoints.sol";
-import "./shared/SafeOwnable.sol";
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 
 contract PregenesisPoints is IPregenesisPoints, SafeOwnable, ReentrancyGuard, ERC20 {
   address private _shop;

@@ -2,9 +2,9 @@
 pragma solidity =0.8.7;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 
-contract ERC1155Mintable is ERC1155, Ownable {
+contract ERC1155Mintable is ERC1155, SafeOwnable {
   constructor(string memory _newUri) ERC1155(_newUri) {}
 
   function mint(

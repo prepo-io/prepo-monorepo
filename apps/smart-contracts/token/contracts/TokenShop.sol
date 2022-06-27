@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/ITokenShop.sol";
 import "./interfaces/IPurchaseHook.sol";
-// import "prepo-smart-contracts/contracts/SafeOwnable.sol"; // Example on how to use the prepo-smart-contracts package
+import "prepo-smart-contracts/contracts/SafeOwnable.sol";
 
 // import "prepo-shared-contracts/contracts/SafeOwnable.sol"; // Example on how to use the prepo-shared-contracts package
 
