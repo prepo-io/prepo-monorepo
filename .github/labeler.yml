@@ -18,6 +18,9 @@ smart-contracts:
 - apps/smart-contracts/**/*
 
 # --------------- Next level labels ---------------
+token:
+- apps/smart-contracts/token/**/*
+
 core-dapp:
 - apps/frontend/core-dapp/**/*
 - apps/smart-contracts/core/**/*

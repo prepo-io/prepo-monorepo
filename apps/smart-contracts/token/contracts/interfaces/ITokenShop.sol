@@ -21,6 +21,8 @@ interface ITokenShop {
     uint256[] memory amounts
   ) external;
 
+  function withdrawERC20(address erc20Token, uint256 amount) external;
+
   function getPrice(address tokenContract, uint256 id) external view returns (uint256);
 
   function isPaused() external view returns (bool);
