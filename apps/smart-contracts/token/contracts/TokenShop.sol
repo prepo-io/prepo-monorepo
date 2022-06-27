@@ -84,6 +84,15 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     }
   }
 
+  function withdrawERC20(address _erc20Token, uint256 _amount)
+    external
+    override
+    onlyOwner
+    nonReentrant
+  {
+    IERC20(_erc20Token).safeTransfer(owner(), _amount);
+  }
+
   function getPrice(address _tokenContract, uint256 _id) external view override returns (uint256) {
     return _contractToIdToPrice[_tokenContract][_id];
   }
@@ -107,15 +116,6 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     returns (uint256)
   {
     _userToERC721ToPurchaseCount[_user][_tokenContract];
-  }
-
-  function withdrawERC20(address _erc20Token, uint256 _amount)
-    external
-    override
-    onlyOwner
-    nonReentrant
-  {
-    IERC20(_erc20Token).safeTransfer(owner(), _amount);
   }
 
   function onERC1155Received(
