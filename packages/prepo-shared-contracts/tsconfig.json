@@ -1,24 +1,3 @@
 {
-  "extends": "tsconfig/server.json",
-  "exclude": ["node_modules", ".turbo"],
-  "compilerOptions": {
-    "target": "ES2019",
-    "lib": ["ES2019"],
-    "module": "CommonJS",
-    "allowJs": false,
-    "strict": false,
-    "esModuleInterop": true,
-    "outDir": "dist",
-    "resolveJsonModule": true,
-    "declaration": true
-  },
-  "include": [
-    "./types/**/*.ts",
-    "./tasks/**/*.ts",
-    "./test/**/*.ts",
-    "./test-utils/**/*.ts",
-    "./*.js",
-    "index.ts"
-  ],
-  "files": ["./hardhat.config.ts"]
+  "extends": "tsconfig/smart-contracts.json"
 }
