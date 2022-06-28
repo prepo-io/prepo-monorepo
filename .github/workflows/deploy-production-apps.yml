@@ -82,6 +82,7 @@ jobs:
 
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
+      continue-on-error: true
       with:
         github_token: ${{ secrets.GH_PAT }}
         workflow: deploy-preview-apps.yml
