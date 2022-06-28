@@ -42,8 +42,6 @@
     "prepo-hardhat": "*"
   },
   "devDependencies": {
-    "solhint": "3.3.3",
-    "solhint-plugin-prettier": "0.0.5",
     "config": "*",
     "tsconfig": "*",
     "solhint-config-prepo": "*"
