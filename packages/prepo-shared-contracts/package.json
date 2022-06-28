@@ -45,6 +45,7 @@
     "solhint": "3.3.3",
     "solhint-plugin-prettier": "0.0.5",
     "config": "*",
-    "tsconfig": "*"
+    "tsconfig": "*",
+    "solhint-config-prepo": "*"
   }
 }
