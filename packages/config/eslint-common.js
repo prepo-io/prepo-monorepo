@@ -19,6 +19,7 @@ module.exports = {
     'arrow-body-style': ['error', 'as-needed'],
     'lines-between-class-members': 'off',
     'import/no-cycle': 'off',
+    'import/no-extraneous-dependencies': 'off',
 
     'import/extensions': 'off',
     'import/order': [

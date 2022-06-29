@@ -1,4 +1,4 @@
-export const DEFAULT_LANGUAGE = 'en-us'
+export const DEFAULT_LANGUAGE = 'en'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
