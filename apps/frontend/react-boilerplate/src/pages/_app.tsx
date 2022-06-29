@@ -5,6 +5,7 @@ import { i18n } from '@lingui/core'
 import { en, sv } from 'make-plural/plurals'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { DEFAULT_LANGUAGE } from 'prepo-constants'
 import { RootStoreProvider } from '../context/RootStoreProvider'
 import AppBootstrap from '../components/AppBootstrap'
 import Layout from '../components/layout'
@@ -26,7 +27,7 @@ configure({
 })
 
 const App = ({ Component, pageProps }: AppProps): React.ReactElement => {
-  const { locale } = useRouter()
+  const { locale = DEFAULT_LANGUAGE } = useRouter()
 
   useEffect(() => {
     async function load(localeCode: string): Promise<void> {
