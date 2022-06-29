@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf './frontend/src/hardhat' && npx hardhat clean",
     "sl": "yarn prettier --write 'contracts/**/*.sol'",
-    "sh": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
+    "sh": "npx solhint -f table contracts/**/*.sol",
     "size": "npx hardhat size-contracts",
     "prec": "yarn typechain && yarn clean && yarn sl",
     "c": "yarn compile",
@@ -42,9 +42,8 @@
     "prepo-hardhat": "*"
   },
   "devDependencies": {
-    "solhint": "3.3.3",
-    "solhint-plugin-prettier": "0.0.5",
     "config": "*",
-    "tsconfig": "*"
+    "tsconfig": "*",
+    "solhint-config-prepo": "*"
   }
 }

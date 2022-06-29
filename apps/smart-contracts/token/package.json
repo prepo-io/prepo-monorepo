@@ -5,7 +5,7 @@
     "scripts": {
         "clean": "rm -rf './frontend/src/hardhat' && npx hardhat clean",
         "sl": "yarn prettier --write 'contracts/**/*.sol'",
-        "sh": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
+        "sh": "npx solhint -f table contracts/**/*.sol",
         "size": "npx hardhat size-contracts",
         "prec": "yarn typechain && yarn clean && yarn sl",
         "c": "yarn compile",
@@ -31,15 +31,14 @@
         "config": "*",
         "ethereumjs-util": "7.0.9",
         "prettier-plugin-solidity": "1.0.0-beta.19",
-        "solhint": "3.3.3",
-        "solhint-plugin-prettier": "0.0.5",
         "ts-generator": "0.1.1",
         "ts-morph": "9.1.0",
         "ts-node": "9.1.1",
         "tsconfig": "*",
         "typechain": "8.0.0",
         "typescript": "4.5.2",
-        "web3-utils": "1.6.1"
+        "web3-utils": "1.6.1",
+        "solhint-config-prepo": "*"
     },
     "dependencies": {
         "@defi-wonderland/smock": "2.0.7",
