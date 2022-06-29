@@ -17,7 +17,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "dependencies": {
     "@panelbear/panelbear-nextjs": "1.0.3",
     "@sentry/nextjs": "6.17.6",

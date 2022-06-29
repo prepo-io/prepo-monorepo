@@ -2,7 +2,6 @@
   "name": "core-dapp-subgraph",
   "version": "1.0.0",
   "description": "prePO analytical and historical data with subgraph",
-  "license": "ISC",
   "scripts": {
     "build": "graph build",
     "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli",
