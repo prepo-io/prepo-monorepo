@@ -11,7 +11,7 @@
     "build": "next build && next-sitemap",
     "test": "jest -w 1",
     "test:ci": "yarn generate && yarn test",
-    "i18n:extract": "lingui extract --locale en-US",
+    "i18n:extract": "NODE_ENV=development lingui extract --locale en",
     "i18n:compile": "yarn i18n:extract && lingui compile",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext ts,tsx",
