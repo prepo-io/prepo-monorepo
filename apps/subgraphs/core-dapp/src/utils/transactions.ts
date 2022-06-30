@@ -147,13 +147,18 @@ export function isWithdraw(historicalEvent: HistoricalEvent): boolean {
  * 6. sender of CollateralToken’s Transfer is owner
  * 7. Swap event’s recipient is owner
  */
-export function isOpen(historicalEvent: HistoricalEvent): boolean {
+export function isOpenClose(historicalEvent: HistoricalEvent): boolean {
   const transactions = getTransactionsForHistoricalEvent(historicalEvent)
 
   if (!historicalEvent.txCount.equals(BigInt.fromI32(3))) return false
 
+  // open flow variables
   let hasReceiveLongShortToken = false
   let hasSendCollateralToken = false
+  // close flow variables
+  let hasSendLongShortToken = false
+  let hasReceiveCollateralToken = false
+
   let hasSwapped = false
   let userInputAmount = historicalEvent.amount
   let userInputAmountUSD = historicalEvent.amountUSD
@@ -174,7 +179,17 @@ export function isOpen(historicalEvent: HistoricalEvent): boolean {
               userInputAmount = transaction.amount
             }
           }
-          // TODO: check for SEND of long short token here
+          // sending longShortToken = potential close flow
+          if (!hasSendLongShortToken && transaction.action == ACTIONS_SEND) {
+            const ownerIsSender = transaction.ownerAddress == transaction.senderAddress
+            const validRecipient = Pool.load(transaction.recipientAddress) !== null
+            hasSendLongShortToken = ownerIsSender && validRecipient
+            if (hasSendLongShortToken) {
+              tradedLongShortToken = transaction.longShortToken
+              userInputAmount = transaction.amount
+              userInputAmountUSD = transaction.amountUSD
+            }
+          }
         }
 
         if (transaction.collateralToken !== null) {
@@ -185,7 +200,12 @@ export function isOpen(historicalEvent: HistoricalEvent): boolean {
             hasSendCollateralToken = ownerIsSender && validRecipient
           }
 
-          // TODO: check for RECEIVE of collateral token here
+          // receiving collateral token = potential close flow
+          if (!hasReceiveCollateralToken && transaction.action == ACTIONS_RECEIVE) {
+            const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
+            const validSender = Pool.load(transaction.senderAddress) !== null
+            hasReceiveCollateralToken = ownerIsRecipient && validSender
+          }
         }
       }
 
@@ -193,24 +213,26 @@ export function isOpen(historicalEvent: HistoricalEvent): boolean {
         const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
         // if we observe more patterns/conditions we should add them here
         hasSwapped = ownerIsRecipient
-        if (hasSwapped) {
+        if (hasSwapped && !hasSendLongShortToken) {
           userInputAmountUSD = transaction.amountUSD
         }
       }
     }
   }
 
-  const valid =
-    hasReceiveLongShortToken &&
-    hasSendCollateralToken &&
-    hasSwapped &&
-    tradedLongShortToken !== null
-  if (valid) {
+  const commonConditionsValid = hasSwapped && tradedLongShortToken !== null
+  const validClose = hasReceiveCollateralToken && hasSendLongShortToken && commonConditionsValid
+  const validOpen = hasReceiveLongShortToken && hasSendCollateralToken && commonConditionsValid
+  if (validClose || validOpen) {
     historicalEvent.amount = userInputAmount
     historicalEvent.amountUSD = userInputAmountUSD
-    historicalEvent.event = new HistoricalEventTypes().open
     historicalEvent.longShortToken = tradedLongShortToken
+    historicalEvent.event = validOpen
+      ? new HistoricalEventTypes().open
+      : new HistoricalEventTypes().close
     historicalEvent.save()
+    return true
   }
-  return valid
+
+  return false
 }
