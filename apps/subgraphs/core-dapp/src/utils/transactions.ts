@@ -1,13 +1,14 @@
-import { BigDecimal } from '@graphprotocol/graph-ts'
+import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { ZERO_ADDRESS } from 'prepo-constants'
 import {
   ACTIONS_RECEIVE,
   ACTIONS_SEND,
+  EVENTS_SWAP,
   EVENTS_TRANSFER,
   HistoricalEventTypes,
   ONE_BI,
 } from './constants'
-import { CollateralToken, HistoricalEvent, Transaction } from '../generated/types/schema'
+import { CollateralToken, HistoricalEvent, Pool, Transaction } from '../generated/types/schema'
 
 function getTransactionsForHistoricalEvent(
   historicalEvent: HistoricalEvent
@@ -134,4 +135,104 @@ export function isWithdraw(historicalEvent: HistoricalEvent): boolean {
     historicalEvent.save()
   }
   return valid
+}
+
+/**
+ * Open flow conditions:
+ * 1. LongShortToken has Transfer event
+ * 2. recipient of LongShort’s transfer is owner
+ * 3. sender of LongShort’s transfer is valid pool address
+ * 4. CollateralToken has Transfer event
+ * 5. recipient of CollateralToken’s Transfer is valid pool address
+ * 6. sender of CollateralToken’s Transfer is owner
+ * 7. Swap event’s recipient is owner
+ */
+export function isOpenClose(historicalEvent: HistoricalEvent): boolean {
+  const transactions = getTransactionsForHistoricalEvent(historicalEvent)
+
+  if (!historicalEvent.txCount.equals(BigInt.fromI32(3))) return false
+
+  // open flow variables
+  let hasReceiveLongShortToken = false
+  let hasSendCollateralToken = false
+  // close flow variables
+  let hasSendLongShortToken = false
+  let hasReceiveCollateralToken = false
+
+  let hasSwapped = false
+  let userInputAmount = historicalEvent.amount
+  let userInputAmountUSD = historicalEvent.amountUSD
+  let tradedLongShortToken: string | null = null
+
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i]
+    if (transaction !== null) {
+      if (transaction.event == EVENTS_TRANSFER) {
+        if (transaction.longShortToken !== null) {
+          // receiving longShortToken = potential open flow
+          if (!hasReceiveLongShortToken && transaction.action == ACTIONS_RECEIVE) {
+            const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
+            const validSender = Pool.load(transaction.senderAddress) !== null
+            hasReceiveLongShortToken = ownerIsRecipient && validSender
+            if (hasReceiveLongShortToken) {
+              tradedLongShortToken = transaction.longShortToken
+              userInputAmount = transaction.amount
+            }
+          }
+          // sending longShortToken = potential close flow
+          if (!hasSendLongShortToken && transaction.action == ACTIONS_SEND) {
+            const ownerIsSender = transaction.ownerAddress == transaction.senderAddress
+            const validRecipient = Pool.load(transaction.recipientAddress) !== null
+            hasSendLongShortToken = ownerIsSender && validRecipient
+            if (hasSendLongShortToken) {
+              tradedLongShortToken = transaction.longShortToken
+              userInputAmount = transaction.amount
+              userInputAmountUSD = transaction.amountUSD
+            }
+          }
+        }
+
+        if (transaction.collateralToken !== null) {
+          // sending collateral token = potential open flow
+          if (!hasSendCollateralToken && transaction.action == ACTIONS_SEND) {
+            const ownerIsSender = transaction.senderAddress == transaction.ownerAddress
+            const validRecipient = Pool.load(transaction.recipientAddress) !== null
+            hasSendCollateralToken = ownerIsSender && validRecipient
+          }
+
+          // receiving collateral token = potential close flow
+          if (!hasReceiveCollateralToken && transaction.action == ACTIONS_RECEIVE) {
+            const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
+            const validSender = Pool.load(transaction.senderAddress) !== null
+            hasReceiveCollateralToken = ownerIsRecipient && validSender
+          }
+        }
+      }
+
+      if (transaction.event == EVENTS_SWAP && transaction.pool !== null) {
+        const ownerIsRecipient = transaction.recipientAddress == transaction.ownerAddress
+        // if we observe more patterns/conditions we should add them here
+        hasSwapped = ownerIsRecipient
+        if (hasSwapped && !hasSendLongShortToken) {
+          userInputAmountUSD = transaction.amountUSD
+        }
+      }
+    }
+  }
+
+  const commonConditionsValid = hasSwapped && tradedLongShortToken !== null
+  const validClose = hasReceiveCollateralToken && hasSendLongShortToken && commonConditionsValid
+  const validOpen = hasReceiveLongShortToken && hasSendCollateralToken && commonConditionsValid
+  if (validClose || validOpen) {
+    historicalEvent.amount = userInputAmount
+    historicalEvent.amountUSD = userInputAmountUSD
+    historicalEvent.longShortToken = tradedLongShortToken
+    historicalEvent.event = validOpen
+      ? new HistoricalEventTypes().open
+      : new HistoricalEventTypes().close
+    historicalEvent.save()
+    return true
+  }
+
+  return false
 }
