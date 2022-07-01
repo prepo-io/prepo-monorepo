@@ -4,40 +4,54 @@ sidebar_position: 7
 
 # Roadmap 🛣
 
-## 2021
+## ~~2021~~
 
-### Q3
+### ~~H2 (Build)~~
 
 - ~~[Seed Round](https://prepo.io/blog/prepo-seed-round/)~~
-- ~~Scaling Team & Community~~\*
+- ~~Scaling Team & Community~~
 - ~~[SDK](/developer/sdk)~~
 - ~~[Simulator](/simulator)~~
-
-<sub>\*<a href="https://url.prepo.io/jobs">we're still hiring!</a></sub>
-
-### Q4
-
-- ~~Tokenomics~~
+- ~~[Website](https://prepo.io/)~~
 - ~~Documentation~~
-- ~~Website Redesign~~
 - ~~Core Dapp (Internal Alpha)~~
 
 ## 2022
 
-### Q1
+### ~~H1 (Pre-Launch)~~
 
-- Audits
-- Governance & Token Launch
-- Core Dapp Guarded Launch on L2
+- ~~[Strategic Round](https://prepo.io/blog/prepo-strategic-round/)~~
+- ~~[Tokenomics](/tokenomics)~~
+- ~~Core Dapp Audit (Code 423n4)~~
+- ~~[Testnet Launch](https://app.prepo.io/)~~
 
-### Q2
+### H2 (Launch)
 
-- Integrations (Fiat On-Ramps, Leverage, Insurance, DEX Aggregators, Zaps, etc.)
+- Token Audits
+- PPO Token Launch
+- Governance Launch
+- Guarded Platform Launch (Arbitrum)
 
-### Q3
+## 2023
 
-- Social Gamification
+### Gamify
 
-### Beyond
+- Staking & Rewards
+- Achievements
+- Social Profiles
+- PPO Shop
 
+### Integrate
+
+- Fiat on-Ramps
+- Leverage
+- Insurance
+- DEX Aggregators
+- Zaps
+- Gnosis Safe App
+
+## Beyond
+
+- prePO V2
+- prePO Pro
 - CEX & Broker Partnerships
