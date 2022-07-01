@@ -1,10 +1,34 @@
 import gql from 'graphql-tag'
-import { selectFromPosition } from '../../../../generated/mst-gql/core-dapp'
+import {
+  selectFromHistoricalEvent,
+  selectFromPosition,
+} from '../../../../generated/mst-gql/core-dapp'
 
 export const userPositionsQueryString = gql`
   query userPositions($address: String!) {
     positions(where: { ownerAddress: $address }) {
         ${selectFromPosition().id.costBasis.ownerAddress.longShortToken(({ id }) => id)}
+    }
+  }
+`
+
+export const userHistoricalEventsQueryString = gql`
+  query userHistoricalEvents($address: String!) {
+    historicalEvents(where: { ownerAddress: $address }, orderBy: createdAtTimestamp, orderDirection: desc) {
+      ${selectFromHistoricalEvent()
+        .id.amountUSD.createdAtTimestamp.event.hash.txCount.longShortToken(({ id }) =>
+          id.market().token(({ name }) => name.id.symbol)
+        )
+        .collateralToken(({ id }) =>
+          id
+            .token(({ name }) => name.id.symbol)
+            .baseToken((baseToken) => baseToken.token((token) => token.id.name.symbol))
+        )
+        .transactions((transaction) =>
+          transaction.id.amountUSD.action.createdAtTimestamp.event.hash
+            .collateralToken(({ id }) => id.baseToken().token(({ name }) => name.id.symbol))
+            .longShortToken(({ id }) => id.market().token(({ name }) => name.id.symbol))
+        )}
     }
   }
 `
