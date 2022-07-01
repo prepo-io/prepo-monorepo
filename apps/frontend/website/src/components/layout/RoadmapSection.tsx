@@ -5,10 +5,10 @@ import SectionTitle from '../SectionTitle'
 
 const items: FlatCarouselItemData[] = [
   {
-    id: '2021Q3',
-    caption: 'Q3 2021',
-    icon: 'grow',
-    title: 'Grow',
+    id: '2021H2',
+    caption: 'H2 2021',
+    icon: 'spanner',
+    title: 'Build',
     content: (
       <>
         <span>Seed Round</span>
@@ -16,60 +16,70 @@ const items: FlatCarouselItemData[] = [
         <span>Scaling Team & Community</span>
         <br />
         <span>SDK & Simulator</span>
-      </>
-    ),
-  },
-  {
-    id: '2021Q4',
-    caption: 'Q4 2021',
-    icon: 'spanner',
-    title: 'Build',
-    content: (
-      <>
-        <span>Core Dapp Smart Contracts</span>
         <br />
-        <span>Website Relaunch</span>
+        <span>Website</span>
         <br />
-        <span>Tokenomics Design</span>
+        <span>Core Dapp (Internal Alpha)</span>
         <br />
         <span>Documentation</span>
       </>
     ),
   },
   {
-    id: '2022Q1',
-    caption: 'Q1 2022',
-    title: 'Pre-Launch',
+    id: '2022H1',
+    caption: 'H1 2022',
     icon: 'rocket-document',
+    title: 'Pre-Launch',
     content: (
       <>
+        <span>Strategic Round</span>
+        <br />
+        <span>Tokenomics</span>
+        <br />
         <span>Core Dapp Audit</span>
         <br />
-        <span>Whitelist & Pregen Pass</span>
+        <span>Testnet Launch</span>
+      </>
+    ),
+  },
+  {
+    id: '2022H2',
+    caption: 'H2 2022',
+    icon: 'rocket',
+    title: 'Launch',
+    content: (
+      <>
+        <span>Token Audits</span>
         <br />
-        <span>Token Smart Contracts</span>
+        <span>PPO Token Launch</span>
+        <br />
+        <span>Governance Launch</span>
+        <br />
+        <span>Platform Launch (Arbitrum)</span>
       </>
     ),
     current: true,
   },
   {
-    id: '2022Q2',
-    caption: 'Q2 2022',
-    icon: 'rocket',
-    title: 'Launch',
+    id: '2023G',
+    caption: '2023',
+    icon: 'game',
+    title: 'Gamify',
     content: (
       <>
-        <span>Token Contract Audits</span>
+        <span>Staking & Rewards</span>
         <br />
-        <span>Governance & Token Launch</span>
+        <span>Achievements</span>
         <br />
-        <span>Guarded Layer 2 Launch</span>
+        <span>Social Profiles</span>
+        <br />
+        <span>PPO Shop</span>
       </>
     ),
   },
   {
-    id: '2022Q3',
-    caption: 'Q3 2022',
+    id: '2023P',
+    caption: '2023',
     icon: 'puzzle',
     title: 'Integrate',
     content: (
@@ -85,25 +95,6 @@ const items: FlatCarouselItemData[] = [
         <span>Zaps</span>
         <br />
         <span>Gnosis Safe App</span>
-      </>
-    ),
-  },
-  {
-    id: '2022Q4',
-    caption: 'Q4 2022',
-    icon: 'game',
-    title: 'Gamify',
-    content: (
-      <>
-        <span>Achievements</span>
-        <br />
-        <span>Leaderboards</span>
-        <br />
-        <span>Exp & Levels</span>
-        <br />
-        <span>Avatars</span>
-        <br />
-        <span>prePO Universe</span>
       </>
     ),
   },
