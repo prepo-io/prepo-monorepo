@@ -5,7 +5,6 @@ import {
   HistoricalEvent,
   HistoricalEventCollateralToken,
   HistoricalEventLongShortToken,
-  HistoricalEventType,
   HistoryEventItemType,
   HistoryTransaction,
 } from './history.types'
@@ -18,7 +17,7 @@ import { supportedMarkets } from '../../lib/markets-contracts'
 type DynamicHistoryTransactionProps = {
   iconName: IconName
   name: string
-  eventType?: HistoricalEventType
+  eventType?: PositionType
 }
 
 export const iconSymbolMap: { [key: string]: IconName } = {
@@ -84,7 +83,7 @@ const findLongShortTokenStaticData = (
   const isShort = localShortToken?.toLowerCase() === longShortToken.id.toLowerCase()
 
   return {
-    eventType: isShort ? HistoricalEventType.Short : HistoricalEventType.Long,
+    eventType: isShort ? 'short' : 'long',
     iconName: market.iconName,
     name: market.name,
   }
@@ -131,7 +130,7 @@ export const formatHistoricalEvent = (
         const longShortTokenData = findLongShortTokenStaticData(network, longShortToken)
 
         const iconName = collateralTokenData?.iconName ?? longShortTokenData?.iconName
-        const name = collateralTokenData?.name ?? longShortTokenData?.iconName
+        const name = collateralTokenData?.name ?? longShortTokenData?.name
 
         if (iconName !== undefined && name !== undefined)
           formattedEvents.push({
@@ -152,7 +151,7 @@ export const formatHistoricalEvent = (
             const longShortTokenData = findLongShortTokenStaticData(network, tx.longShortToken)
 
             const iconName = collateralTokenData?.iconName ?? longShortTokenData?.iconName
-            const name = collateralTokenData?.name ?? longShortTokenData?.iconName
+            const name = collateralTokenData?.name ?? longShortTokenData?.name
 
             if (iconName !== undefined && name !== undefined)
               formattedEvents.push({

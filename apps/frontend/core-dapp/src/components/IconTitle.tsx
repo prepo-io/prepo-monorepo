@@ -33,6 +33,10 @@ const MarketName = styled.span<{ styles: MarketNameStyleProps }>`
   font-weight: ${({ theme, styles }): number => theme.fontWeight[styles.weight || 'semiBold']};
   line-height: 20px;
 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   ${media.desktop<{ styles: MarketNameStyleProps }>`
     font-size: ${({ theme, styles }): string => theme.fontSize[styles.labelFontSize || '4xl']};
   `}
