@@ -102,7 +102,7 @@ module.exports = {
             items: [
               {
                 label: 'Discord',
-                href: 'https://url.prepo.io/discord-website-desktop',
+                href: 'https://url.prepo.io/discord-docs',
               },
               {
                 label: 'Twitter',
