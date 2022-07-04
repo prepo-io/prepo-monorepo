@@ -18,6 +18,7 @@ type DynamicHistoryTransactionProps = {
   iconName: IconName
   name: string
   eventType?: PositionType
+  marketId?: string
 }
 
 export const iconSymbolMap: { [key: string]: IconName } = {
@@ -86,6 +87,7 @@ const findLongShortTokenStaticData = (
     eventType: isShort ? 'short' : 'long',
     iconName: market.iconName,
     name: market.name,
+    marketId: market.urlId,
   }
 }
 /**
@@ -141,6 +143,7 @@ export const formatHistoricalEvent = (
             iconName,
             name,
             eventType: longShortTokenData?.eventType,
+            marketId: longShortTokenData?.marketId,
           })
       } else {
         // find Send/Receive of Collateral/LongShort tokens
@@ -161,6 +164,7 @@ export const formatHistoricalEvent = (
                 usdValue: +formatEther(tx.amountUSD.toString().split('.')[0]),
                 iconName,
                 name,
+                marketId: longShortTokenData?.marketId,
               })
           }
         })

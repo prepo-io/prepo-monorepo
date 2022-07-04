@@ -1,7 +1,7 @@
 import { Button, Icon, IconName, media, spacingIncrement, Subtitle } from 'prepo-ui'
-import { useMemo } from 'react'
+import { HTMLAttributeAnchorTarget, useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import styled from 'styled-components'
+import styled, { Color } from 'styled-components'
 import Link from '../../components/Link'
 import Percent from '../../components/Percent'
 import { numberFormatter } from '../../utils/numberFormatter'
@@ -18,14 +18,22 @@ type Data = {
   usd?: boolean
 }
 
+export type RecordButtonColors = {
+  backgroundColor: keyof Color
+  color: keyof Color
+}
+
 type Props = {
-  nameRedirectUrl: string
+  nameRedirectUrl?: string
   iconName: IconName
   name: string
   position?: PositionType
+  href?: string
+  target?: HTMLAttributeAnchorTarget
   data: Data[]
   onButtonClicked?: () => unknown
   buttonLabel: string
+  buttonStyles?: RecordButtonColors
 }
 
 const Body = styled.div`
@@ -39,13 +47,6 @@ const ButtonContainer = styled.div`
   align-items: center;
   display: flex;
   justify-content: flex-end;
-
-  &&&& {
-    .ant-btn {
-      background-color: ${({ theme }): string => theme.color.primaryAccent};
-      border: none;
-    }
-  }
 `
 
 const HideOnDesktop = styled.div`
@@ -60,6 +61,13 @@ const HideOnMobile = styled.div`
   ${media.largeDesktop`
         display: flex;
     `}
+`
+
+const IconTitleSkeleton = styled.div`
+  align-items: center;
+  display: grid;
+  grid-column-gap: ${spacingIncrement(10)};
+  grid-template-columns: ${spacingIncrement(28)} auto;
 `
 
 const MainRow = styled.div`
@@ -92,14 +100,17 @@ const Name = styled.p`
 `
 
 const NameLink = styled(Link)`
-  align-items: center;
-  display: flex;
-  gap: ${spacingIncrement(10)};
   :hover {
     p {
       color: ${({ theme }): string => theme.color.primary};
     }
   }
+`
+
+const NameWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${spacingIncrement(10)};
 `
 
 const PositionWrapper = styled.div`
@@ -166,7 +177,42 @@ const Wrapper = styled.div`
     border-bottom: none;
   }
 `
+
+export const RecordSkeleton: React.FC = () => (
+  <Wrapper>
+    <MainRow>
+      <div>
+        <IconTitleSkeleton>
+          <Skeleton circle height={28} width={28} />
+          <Skeleton height={20} width={80} />
+        </IconTitleSkeleton>
+        <Skeleton height={20} width={80} />
+      </div>
+      <div>
+        <ResponsiveData>
+          <Skeleton height={20} width={80} />
+          <Skeleton height={20} width={60} />
+        </ResponsiveData>
+      </div>
+      <div>
+        <ResponsiveData>
+          <Skeleton height={20} width={80} />
+          <Skeleton height={20} width={60} />
+        </ResponsiveData>
+      </div>
+      <Skeleton height={54} width="100%" />
+    </MainRow>
+    <Body>
+      <MainRow>
+        <Skeleton height={20} width={80} />
+        <Skeleton height={20} width={60} />
+      </MainRow>
+    </Body>
+  </Wrapper>
+)
+
 const Record: React.FC<Props> = ({
+  buttonStyles,
   name,
   nameRedirectUrl,
   iconName,
@@ -174,6 +220,8 @@ const Record: React.FC<Props> = ({
   data,
   onButtonClicked,
   buttonLabel,
+  href,
+  target,
 }) => {
   const renderData = useMemo(
     () =>
@@ -211,10 +259,19 @@ const Record: React.FC<Props> = ({
             minWidth: 0,
           }}
         >
-          <NameLink href={nameRedirectUrl}>
-            <Icon name={iconName} height="30px" width="30px" />
-            <Name>{name}</Name>
-          </NameLink>
+          {nameRedirectUrl === undefined ? (
+            <NameWrapper>
+              <Icon name={iconName} height="30px" width="30px" />
+              <Name>{name}</Name>
+            </NameWrapper>
+          ) : (
+            <NameLink href={nameRedirectUrl}>
+              <NameWrapper>
+                <Icon name={iconName} height="30px" width="30px" />
+                <Name>{name}</Name>
+              </NameWrapper>
+            </NameLink>
+          )}
           {position !== undefined && (
             <HideOnMobile>
               <PositionWrapper>
@@ -231,6 +288,16 @@ const Record: React.FC<Props> = ({
           <StyledButton
             onClick={onButtonClicked}
             block
+            href={href}
+            target={target}
+            customColors={{
+              background: buttonStyles?.backgroundColor,
+              border: buttonStyles?.backgroundColor,
+              label: buttonStyles?.color,
+              hoverBackground: buttonStyles?.backgroundColor,
+              hoverBorder: buttonStyles?.backgroundColor,
+              hoverLabel: buttonStyles?.color,
+            }}
             sizes={{
               desktop: {
                 height: 54,

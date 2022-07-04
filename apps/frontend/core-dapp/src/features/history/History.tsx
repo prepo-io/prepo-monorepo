@@ -1,28 +1,38 @@
 import { observer } from 'mobx-react-lite'
-import { Box, centered, coreDappTheme, Flex, Typography } from 'prepo-ui'
-import styled from 'styled-components'
-import HistoryItem from './HistoryItem'
+import { NETWORKS } from 'prepo-constants'
+import { Box, Flex, Typography } from 'prepo-ui'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { getFullDateTimeFromSeconds } from '../../utils/date-utils'
-import Record from '../portfolio/Record'
-import { PositionItemSkeleton } from '../position/PositionItem'
+import Record, { RecordButtonColors, RecordSkeleton } from '../portfolio/Record'
 
-const { Z_INDEX } = coreDappTheme
+const DEFAULT_COLORS: RecordButtonColors = {
+  backgroundColor: 'accentPrimary',
+  color: 'buttonDefaultLabel',
+}
 
-const Overlay = styled.div`
-  ${centered}
-  background-color: rgba(255, 255, 255, 0.7);
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: ${Z_INDEX.onboardModal};
-`
+const buttonColors: { [key: string]: RecordButtonColors } = {
+  Withdrawn: {
+    backgroundColor: 'accentWarning',
+    color: 'warning',
+  },
+  Deposited: {
+    backgroundColor: 'accentWarning',
+    color: 'warning',
+  },
+  Opened: {
+    backgroundColor: 'accentSuccess',
+    color: 'success',
+  },
+  Closed: {
+    backgroundColor: 'accentError',
+    color: 'error',
+  },
+}
+
 const History: React.FC = () => {
   const { portfolioStore, web3Store } = useRootStore()
   const { historicalEvents } = portfolioStore
-  const { connected } = web3Store
+  const { connected, network } = web3Store
 
   if (!connected)
     return (
@@ -36,9 +46,9 @@ const History: React.FC = () => {
   if (historicalEvents === undefined)
     return (
       <Box>
-        <PositionItemSkeleton />
-        <PositionItemSkeleton />
-        <PositionItemSkeleton />
+        <RecordSkeleton />
+        <RecordSkeleton />
+        <RecordSkeleton />
       </Box>
     )
 
@@ -54,27 +64,38 @@ const History: React.FC = () => {
   return (
     <Box>
       {historicalEvents.map(
-        ({ iconName, event, name, timestamp, transactionHash, usdValue, eventType }) => (
-          <Record
-            key={transactionHash}
-            iconName={iconName}
-            name={name}
-            nameRedirectUrl="/"
-            position={eventType}
-            data={[
-              {
-                label: 'Value',
-                amount: usdValue,
-              },
-              {
-                label: 'Transaction Time',
-                amount: getFullDateTimeFromSeconds(timestamp),
-                usd: false,
-              },
-            ]}
-            buttonLabel={event}
-          />
-        )
+        ({ iconName, event, name, timestamp, transactionHash, usdValue, eventType, marketId }) => {
+          let nameRedirectUrl: string | undefined
+          if ((marketId !== undefined && event === 'Opened') || event === 'Closed')
+            nameRedirectUrl = `/markets/${marketId}/trade`
+          if (event === 'Deposited') nameRedirectUrl = '/portfolio/deposit'
+          if (event === 'Withdrawn') nameRedirectUrl = '/portfolio/withdraw'
+
+          return (
+            <Record
+              key={transactionHash}
+              iconName={iconName}
+              name={name}
+              nameRedirectUrl={nameRedirectUrl}
+              position={eventType}
+              buttonStyles={buttonColors[event] ?? DEFAULT_COLORS}
+              data={[
+                {
+                  label: 'Value',
+                  amount: usdValue,
+                },
+                {
+                  label: 'Transaction Time',
+                  amount: getFullDateTimeFromSeconds(timestamp),
+                  usd: false,
+                },
+              ]}
+              buttonLabel={event}
+              target="_blank"
+              href={`${NETWORKS[network.name].blockExplorer}/tx/${transactionHash}`}
+            />
+          )
+        }
       )}
     </Box>
   )

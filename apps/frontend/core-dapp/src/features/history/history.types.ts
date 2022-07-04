@@ -64,6 +64,7 @@ export type HistoryTransaction = {
   eventType?: PositionType
   iconName: IconName
   name: string
+  marketId?: string
   usdValue: number
   timestamp: number
   transactionHash: string
