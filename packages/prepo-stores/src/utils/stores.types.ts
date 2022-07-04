@@ -1,7 +1,6 @@
 import { Network } from 'prepo-constants'
-// eslint-disable-next-line import/no-unresolved
-import { Initialization } from 'bnc-onboard/dist/src/interfaces'
 import { providers, Contract, BigNumber } from 'ethers'
+import { InitOptions } from '@web3-onboard/core'
 
 type PromiseResolved<T> = T extends Promise<infer R> ? R : never
 
@@ -59,7 +58,7 @@ export type StoreConfig<SupportedContracts> = {
   appName: string
   defaultNetwork: Network
   supportedNetworks: Network[]
-  onboardConfig?: Initialization
+  onboardConfig?: InitOptions
   supportedContracts: SupportedContracts
 }
 

@@ -3,15 +3,8 @@ import * as utils from '../src'
 // eslint-disable-next-line jest/no-mocks-import
 import mockData from '../__mocks__/utils.mock'
 
-const { getShortAccount, getNetworkByChainId, getOnboardConfig, createFallbackProvider } = utils
-const {
-  ethAddress,
-  ethAddressShort,
-  goerliNetwork,
-  appName,
-  onboardObject,
-  fallbackProviderObject,
-} = mockData
+const { getShortAccount, getNetworkByChainId, createFallbackProvider } = utils
+const { ethAddress, ethAddressShort, goerliNetwork, fallbackProviderObject } = mockData
 
 // TODO: will need to deep compare the objects in future
 describe('prepo-utils', () => {
@@ -27,12 +20,6 @@ describe('prepo-utils', () => {
     expect(network.blockExplorer).toEqual(goerliNetwork.blockExplorer)
     expect(network.rpcUrls).toEqual(goerliNetwork.rpcUrls)
     expect(network.color).toEqual(goerliNetwork.color)
-  })
-  it('tests getOnboardConfig function', () => {
-    const onboardConfig = getOnboardConfig(ChainId.Goerli, appName)
-    expect(onboardConfig.networkId).toEqual(onboardObject.networkId)
-    expect(onboardConfig.walletSelect.wallets[0]).toEqual(onboardObject.walletSelect.wallets[0])
-    expect(onboardConfig.walletCheck[0]).toEqual(onboardObject.walletCheck[0])
   })
   it('tests createFallbackProvider function', () => {
     const fallbackProvider = createFallbackProvider(goerliNetwork)
