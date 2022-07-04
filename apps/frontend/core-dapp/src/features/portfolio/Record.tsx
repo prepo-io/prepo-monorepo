@@ -151,12 +151,6 @@ const ResponsiveDataValue = styled.div`
   `}
 `
 
-const StyledButton = styled(Button)`
-  ${media.largeDesktop`
-    width: 100%;
-  `}
-`
-
 const StyledPositionlabel = styled(PositionLabel)`
   display: inline-block;
   font-size: ${({ theme }): string => theme.fontSize.sm};
@@ -285,9 +279,8 @@ const Record: React.FC<Props> = ({
           <HideOnMobile key={id}>{content}</HideOnMobile>
         ))}
         <ButtonContainer>
-          <StyledButton
+          <Button
             onClick={onButtonClicked}
-            block
             href={href}
             target={target}
             customColors={{
@@ -310,7 +303,7 @@ const Record: React.FC<Props> = ({
             }}
           >
             {buttonLabel}
-          </StyledButton>
+          </Button>
         </ButtonContainer>
       </MainRow>
       {position !== undefined && (
