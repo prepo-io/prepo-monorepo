@@ -214,7 +214,7 @@ export class Web3Store {
     window.localStorage.removeItem('selectedWallet')
     this.connecting = false
     if (this.onboard) {
-      const wallets = this.onboard.state.get().wallets
+      const { wallets } = this.onboard.state.get()
       if (!wallets.length) {
         return
       }
