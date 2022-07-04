@@ -5,11 +5,9 @@ import {
   HistoricalEvent,
   HistoricalEventCollateralToken,
   HistoricalEventLongShortToken,
-  HistoryEventItemType,
   HistoryTransaction,
 } from './history.types'
 import { PositionType } from '../../utils/prepo.types'
-import { coinsMock } from '../../__mocks__/currency.mock'
 import { markets } from '../../lib/markets'
 import { supportedMarketTokens } from '../../lib/markets-tokens-contracts'
 import { supportedMarkets } from '../../lib/markets-contracts'
@@ -23,29 +21,6 @@ type DynamicHistoryTransactionProps = {
 
 export const iconSymbolMap: { [key: string]: IconName } = {
   FAKEUSD: 'usdc',
-}
-
-export const getHistoryItemIconTitle = (
-  iconName: IconName
-): { iconName: IconName; iconText: string } | undefined => {
-  const allItems = [...coinsMock, ...markets]
-  const foundedItem = allItems.find((item) => item.iconName === iconName)
-
-  if (!foundedItem) {
-    return undefined
-  }
-
-  return { iconName: foundedItem?.iconName, iconText: foundedItem?.name }
-}
-
-export const eventTypeRequiresPosition = (
-  eventType: HistoryEventItemType
-): eventType is PositionType => {
-  if (eventType === 'deposit' || eventType === 'withdraw') {
-    return false
-  }
-
-  return true
 }
 
 export const KNOWN_HISTORY_EVENTS: { [key: string]: string } = {

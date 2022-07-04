@@ -1,19 +1,6 @@
 import { IconName } from 'prepo-ui'
 import { PositionType } from '../../utils/prepo.types'
 
-export type HistoryEventItemType = 'deposit' | 'withdraw' | 'short' | 'long' | 'liquidity'
-export type HistoryEventActionType = 'open' | 'close' | 'add'
-export type HistoryEventType = {
-  type: HistoryEventItemType
-  action?: HistoryEventActionType
-}
-export type HistoryItem = {
-  event: HistoryEventType
-  amount: number
-  timestamp: number
-  asset: IconName // Either market or Currency
-}
-
 export type BasicTokenInfo = {
   symbol: string
   name: string
