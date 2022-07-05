@@ -13,7 +13,13 @@ export const Zepeto: FC<SVGProps<SVGSVGElement>> = ({ id, ...props }) => (
     <circle cx="94.0704" cy="94.0704" r="94.0704" fill="#5C46FF" />
     <rect x="8" y="35" width="172" height="117" rx="58.5" fill={`url(#${id})`} />
     <defs>
-      <pattern id={id} patternContentUnits="objectBoundingBox" width="1" height="1">
+      <pattern
+        id={id}
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+        className="animate-maintain-svg"
+      >
         <use
           xlinkHref="#image0_103_137"
           transform="translate(0 -0.235043) scale(0.0025 0.00367521)"
