@@ -68,7 +68,6 @@ const Koji = dynamic(() => import('./partners/Koji'), { ssr: false })
 const Paperclip = dynamic(() => import('./partners/Paperclip'), { ssr: false })
 const Sushi = dynamic(() => import('./partners/Sushi'), { ssr: false })
 const DappRadar = dynamic(() => import('./partners/DappRadar'), { ssr: false })
-const Dapp = dynamic(() => import('./partners/Dapp'), { ssr: false })
 const Cometh = dynamic(() => import('./partners/Cometh'), { ssr: false })
 const Seascape = dynamic(() => import('./partners/Seascape'), { ssr: false })
 const EvolutionLand = dynamic(() => import('./partners/EvolutionLand'), { ssr: false })
@@ -120,7 +119,6 @@ export default {
   uniswap: Uniswap,
   societyOne: SocietyOne,
   sushi: Sushi,
-  dapp: Dapp,
   dappRadar: DappRadar,
   zedRun: ZedRun,
 
