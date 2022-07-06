@@ -30,8 +30,10 @@ const buttonColors: { [key: string]: RecordButtonColors } = {
 }
 
 const History: React.FC = () => {
-  const { portfolioStore, web3Store } = useRootStore()
-  const { historicalEvents } = portfolioStore
+  const {
+    portfolioStore: { historicalEvents },
+    web3Store,
+  } = useRootStore()
   const { connected, network } = web3Store
 
   if (!connected)
