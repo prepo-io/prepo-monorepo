@@ -32,7 +32,18 @@ const config: HardhatUserConfig = {
     target: 'ethers-v5',
   },
   etherscan: {
-    apiKey: hardhatLocalConfig.ETHERSCAN_API_KEY,
+    apiKey: {
+      // ethereum
+      mainnet: hardhatLocalConfig.ETHERSCAN_API_KEY,
+      ropsten: hardhatLocalConfig.ETHERSCAN_API_KEY,
+      rinkeby: hardhatLocalConfig.ETHERSCAN_API_KEY,
+      goerli: hardhatLocalConfig.ETHERSCAN_API_KEY,
+      optimisticEthereum: hardhatLocalConfig.ETHERSCAN_API_KEY,
+
+      // polygon
+      polygon: hardhatLocalConfig.POLYGONSCAN_API_KEY, // use matic when running script
+      polygonMumbai: hardhatLocalConfig.POLYGONSCAN_API_KEY,
+    },
   },
   contractSizer: {
     alphaSort: true,

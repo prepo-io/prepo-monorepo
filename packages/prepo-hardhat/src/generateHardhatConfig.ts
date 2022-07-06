@@ -11,7 +11,9 @@ const generateHardhatConfig = (config: HardhatLocalConfig): HardhatUserConfig =>
   }
 
   function createTestnetConfig(network: SupportedNetworks): NetworkUserConfig {
-    const url = `https://${network}.infura.io/v3/${config.INFURA_API_KEY}`
+    const url = `https://${NETWORKS[network].infuraEndpointName ?? network}.infura.io/v3/${
+      config.INFURA_API_KEY
+    }`
     return {
       accounts,
       chainId: NETWORKS[network].chainId,
@@ -51,6 +53,7 @@ const generateHardhatConfig = (config: HardhatLocalConfig): HardhatUserConfig =>
       kovan: createTestnetConfig(NETWORKS.kovan.name),
       rinkeby: createTestnetConfig(NETWORKS.rinkeby.name),
       ropsten: createTestnetConfig(NETWORKS.ropsten.name),
+      matic: createTestnetConfig(NETWORKS.matic.name),
     },
     paths: {
       artifacts: './artifacts',

@@ -47,6 +47,7 @@ export type Network = {
   color: string
   chainId: ChainId
   blockExplorer: string
+  infuraEndpointName?: string
   rpcUrls: string[]
   faucet?: string
   gasPrice?: BigNumber
@@ -155,6 +156,7 @@ export const NETWORKS: Networks = {
     name: 'matic',
     color: '#2bbdf7',
     chainId: ChainId.Polygon,
+    infuraEndpointName: 'polygon-mainnet',
     rpcUrls: ['https://polygon-rpc.com', 'https://matic-mainnet.chainstacklabs.com'],
     faucet: 'https://faucet.matic.network',
     blockExplorer: 'https://polygonscan.com',

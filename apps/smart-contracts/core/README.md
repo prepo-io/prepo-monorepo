@@ -82,6 +82,12 @@ Add Etherscan API key to `.env`, then run:
 
 `yarn hardhat verify-contract --contract-name <CONTRACT_NAME> --address <DEPLOYED_ADDRESS>`
 
+### Verify on Polygonscan
+
+Add POLYGONSCAN_API_KEY API key to `.env`, then run:
+
+`yarn hardhat verify <CONTRACT_ADDRESS> --network matic "PARAM 1" "PARAM 2"...`
+
 ### The Graph
 
 1. https://thegraph.com/docs/deploy-a-subgraph#create-a-graph-explorer-account
