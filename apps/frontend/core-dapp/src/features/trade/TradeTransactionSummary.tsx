@@ -14,16 +14,11 @@ const { significantDigits } = numberFormatter
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
-  const {
-    tradeStore,
-    preCTTokenStore,
-    advancedSettingsStore: { slippage },
-  } = useRootStore()
+  const { tradeStore, preCTTokenStore } = useRootStore()
   const { openTradeAmount, openTradeHash, openTradeUILoading, setOpenTradeHash, tradeDisabled } =
     tradeStore
   const selectedMarket = useSelectedMarket()
-
-  const { amountOut } = tradeStore
+  const { valuation } = tradeStore
 
   useEffect(() => {
     if (!selectedMarket) return
@@ -60,22 +55,12 @@ const TradeTransactionSummary: React.FC = () => {
 
   if (selectedMarket === undefined) return null
 
-  const estimatedValuation = selectedMarket.estimatedValuation?.value
-    ? `$${significantDigits(selectedMarket.estimatedValuation?.value)}`
-    : undefined
+  const estimatedValuation = valuation ? `$${significantDigits(valuation)}` : undefined
 
   const tradeTransactionSummary = [
     {
       label: 'Trade Size',
       amount: openTradeAmount,
-    },
-    {
-      label: 'Expected output amount',
-      amount: amountOut || 'calculating',
-    },
-    {
-      label: 'Minimum received after slippage (N%)',
-      amount: amountOut ? amountOut * (1 - slippage) : 'calculating',
     },
     {
       label: 'Average Valuation Price',

@@ -6,6 +6,7 @@ import { Erc20Store } from '../../stores/entities/Erc20.entity'
 import { MarketEntity } from '../../stores/entities/MarketEntity'
 import { RootStore } from '../../stores/RootStore'
 import { TradeType } from '../../stores/SwapStore'
+import { calculateValuation } from '../../utils/market-utils'
 import { normalizeDecimalPrecision } from '../../utils/number-utils'
 
 export type Direction = 'long' | 'short'
@@ -19,6 +20,7 @@ export class TradeStore {
   openTradeAmountBigNumber = BigNumber.from(0)
   openTradeHash?: string
   amountOut?: number
+  valuation?: number
 
   constructor(public root: RootStore) {
     makeAutoObservable(this, {}, { autoBind: true })
@@ -58,9 +60,17 @@ export class TradeStore {
   async quoteExactInput(selectedMarket: MarketEntity): Promise<number | null> {
     const selectedToken = selectedMarket?.[`${this.direction}Token`]
     const pool = selectedMarket?.[`${this.direction}Pool`]
+    const { payoutRange, valuationRange } = selectedMarket
     const state = pool?.poolState
     const fee = pool?.poolImmutables?.fee
-    if (!fee || !selectedToken || !state || !this.openTradeAmount) {
+    if (
+      !fee ||
+      !selectedToken ||
+      !state ||
+      !this.openTradeAmount ||
+      !valuationRange ||
+      !payoutRange
+    ) {
       return null
     }
     const tokenAddressFrom = this.root.preCTTokenStore.uniswapToken.address
@@ -72,11 +82,24 @@ export class TradeStore {
     )
     const func: ethers.ContractFunction<BigNumber> = quoterContract.callStatic.quoteExactInputSingle
     try {
-      const result = await func(tokenAddressFrom, tokenAddressTo, fee, this.openTradeAmount, 0)
+      const sqrtPriceLimitX96 = 0 // The price limit of the pool that cannot be exceeded by the swap
+      const result = await func(
+        tokenAddressFrom,
+        tokenAddressTo,
+        fee,
+        this.openTradeAmount,
+        sqrtPriceLimitX96
+      )
       this.amountOut = result.toNumber()
+      if (this.amountOut && selectedMarket?.payoutRange && selectedMarket?.valuationRange) {
+        const price = this.openTradeAmount / this.amountOut
+        const longTokenPrice = this.direction === 'long' ? price : 1 - price
+        this.valuation = calculateValuation({ longTokenPrice, payoutRange, valuationRange })
+      }
       return this.amountOut
     } catch (e) {
       this.amountOut = undefined
+      this.valuation = undefined
       this.root.toastStore.errorToast('Error calculating output amount', e)
       return null
     }
