@@ -6,6 +6,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { MerkleTree } from 'merkletreejs'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
 import {
   ZERO_HASH,
   ONE,
@@ -14,8 +15,7 @@ import {
   hashAccountAmountLeafNode,
   generateAccountAmountMerkleTree,
   revertReason,
-} from './utils'
-import { stakingRewardsDistributionFixture } from './fixtures/StakingRewardsDistributionFixtures'
+} from '../utils'
 import { StakingRewardsDistribution } from '../types/generated'
 
 chai.use(smock.matchers)

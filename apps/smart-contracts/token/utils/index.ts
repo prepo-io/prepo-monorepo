@@ -1,12 +1,8 @@
 /* eslint-disable no-await-in-loop */
-<<<<<<< HEAD
-import { BigNumber, BigNumberish, providers } from 'ethers'
-=======
-import { BigNumber } from 'ethers'
->>>>>>> d09fb9c (fix: tests)
-import { ethers } from 'hardhat'
+import { BigNumber, BigNumberish } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
+import { solidityKeccak256, formatBytes32String } from 'ethers/lib/utils'
 
 export const MAX_UINT64 = BigNumber.from(2).pow(64).sub(1)
 export const MAX_INT64 = BigNumber.from(2).pow(63).sub(1)
@@ -14,7 +10,7 @@ export const MIN_INT64 = BigNumber.from(2).pow(63).mul(-1)
 export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 export const ZERO = BigNumber.from(0)
 export const ONE = BigNumber.from(1)
-export const ZERO_HASH = ethers.utils.formatBytes32String('')
+export const ZERO_HASH = formatBytes32String('')
 export const ONE_WEEK = BigNumber.from(60 * 60 * 24 * 7)
 
 export type IOUPPOLeafNode = {
@@ -28,30 +24,6 @@ export type AccountAmountLeafNode = {
   amount: BigNumber
 }
 
-<<<<<<< HEAD
-export async function setNextTimestamp(
-  provider: providers.Web3Provider,
-  timestamp: number
-): Promise<void> {
-  await provider.send('evm_setNextBlockTimestamp', [timestamp])
-}
-
-=======
->>>>>>> 6a58e4d (feat: move smart contract core utils)
-export async function getLastTimestamp(): Promise<number> {
-  /**
-   * Changed this from ethers.provider.getBlockNumber since if evm_revert is used to return
-   * to a snapshot, getBlockNumber will still return the last mined block rather than the
-   * block height of the snapshot.
-   */
-  const currentBlock = await ethers.provider.getBlock('latest')
-  return currentBlock.timestamp
-}
-
-export function getZeroPadHexFromAddress(address: string): string {
-  return ethers.utils.hexZeroPad(address, 32)
-}
-
 export function revertReason(reason: string): string {
   return reason
 }
@@ -61,9 +33,10 @@ export function hashIOUPPOLeafNode(leaf: IOUPPOLeafNode): Buffer {
    * slice(2) removes '0x' from the hash
    */
   return Buffer.from(
-    ethers.utils
-      .solidityKeccak256(['address', 'uint256', 'bool'], [leaf.account, leaf.amount, leaf.staked])
-      .slice(2),
+    solidityKeccak256(
+      ['address', 'uint256', 'bool'],
+      [leaf.account, leaf.amount, leaf.staked]
+    ).slice(2),
     'hex'
   )
 }
@@ -76,7 +49,7 @@ export function generateMerkleTreeIOUPPO(leaves: IOUPPOLeafNode[]): MerkleTree {
 export function hashAccountAmountLeafNode(leaf: AccountAmountLeafNode): Buffer {
   // slice(2) removes '0x' from the hash
   return Buffer.from(
-    ethers.utils.solidityKeccak256(['address', 'uint256'], [leaf.account, leaf.amount]).slice(2),
+    solidityKeccak256(['address', 'uint256'], [leaf.account, leaf.amount]).slice(2),
     'hex'
   )
 }

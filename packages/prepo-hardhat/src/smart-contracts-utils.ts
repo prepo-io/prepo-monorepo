@@ -2,6 +2,7 @@ import { BigNumber, providers, Contract } from 'ethers'
 import { parse, stringify } from 'envfile'
 import { ChainId, NETWORKS } from 'prepo-constants'
 import { readFileSync, writeFileSync } from 'fs'
+import { hexZeroPad } from 'ethers/lib/utils'
 
 function expandToDecimals(n: number, decimals: number): BigNumber {
   return BigNumber.from(n).mul(BigNumber.from(10).pow(decimals))
@@ -20,6 +21,20 @@ function nowPlusMonths(n: number): number {
   d.setMonth(d.getMonth() + n)
   d.setHours(0, 0, 0, 0)
   return d.getTime() / 1000
+}
+
+function getZeroPadHexFromAddress(address: string): string {
+  return hexZeroPad(address, 32)
+}
+
+async function getLastTimestamp(provider: providers.Web3Provider): Promise<number> {
+  /**
+   * Changed this from ethers.provider.getBlockNumber since if evm_revert is used to return
+   * to a snapshot, getBlockNumber will still return the last mined block rather than the
+   * block height of the snapshot.
+   */
+  const currentBlock = await provider.getBlock('latest')
+  return currentBlock.timestamp
 }
 
 async function setNextTimestamp(
@@ -74,6 +89,8 @@ export const utils = {
   expandTo6Decimals,
   expandTo18Decimals,
   nowPlusMonths,
+  getZeroPadHexFromAddress,
+  getLastTimestamp,
   setNextTimestamp,
   assertIsTestnetChain,
   recordDeployment,

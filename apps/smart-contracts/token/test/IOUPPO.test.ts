@@ -6,7 +6,12 @@ import { ZERO_ADDRESS } from 'prepo-constants'
 import { iouPPOFixture } from './fixtures/IOUPPOFixtures'
 import { ppoDeployFixture } from './fixtures/PPOFixture'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import { IOUPPOLeafNode, hashIOUPPOLeafNode, generateMerkleTreeIOUPPO, revertReason } from './utils'
+import {
+  IOUPPOLeafNode,
+  hashIOUPPOLeafNode,
+  generateMerkleTreeIOUPPO,
+  revertReason,
+} from '../utils'
 import { IOUPPO, PPO, MockERC20 } from '../types/generated'
 
 const { parseEther } = ethers.utils

@@ -3,7 +3,7 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { ZERO_ADDRESS } from 'prepo-constants'
 import { withdrawalRightsFixture } from './fixtures/WithdrawalRightsFixtures'
-import { revertReason } from './utils'
+import { revertReason } from '../utils'
 import { WithdrawalRights } from '../types/generated'
 
 describe('WithdrawalRights', () => {
