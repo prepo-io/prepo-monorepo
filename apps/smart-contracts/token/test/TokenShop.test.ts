@@ -6,9 +6,9 @@ import { FakeContract, MockContract, smock } from '@defi-wonderland/smock'
 import { Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
-import { revertReason, ZERO } from './utils'
 import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
+import { revertReason, ZERO } from '../utils'
 import { TokenShop, MockERC20 } from '../types/generated'
 
 chai.use(smock.matchers)

@@ -6,9 +6,9 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { MockContract, smock } from '@defi-wonderland/smock'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
-import { revertReason, ZERO } from './utils'
 import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
+import { revertReason, ZERO } from '../utils'
 import { MockERC20, PurchaseHook } from '../types/generated'
 
 chai.use(smock.matchers)

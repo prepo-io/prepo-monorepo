@@ -2,6 +2,7 @@ import { BigNumber, providers, Contract } from 'ethers'
 import { parse, stringify } from 'envfile'
 import { ChainId, NETWORKS } from 'prepo-constants'
 import { readFileSync, writeFileSync } from 'fs'
+import { hexZeroPad } from 'ethers/lib/utils'
 
 function expandToDecimals(n: number, decimals: number): BigNumber {
   return BigNumber.from(n).mul(BigNumber.from(10).pow(decimals))
@@ -20,6 +21,20 @@ function nowPlusMonths(n: number): number {
   d.setMonth(d.getMonth() + n)
   d.setHours(0, 0, 0, 0)
   return d.getTime() / 1000
+}
+
+function getZeroPadHexFromAddress(address: string): string {
+  return hexZeroPad(address, 32)
+}
+
+async function getLastTimestamp(provider: providers.Web3Provider): Promise<number> {
+  /**
+   * Changed this from ethers.provider.getBlockNumber since if evm_revert is used to return
+   * to a snapshot, getBlockNumber will still return the last mined block rather than the
+   * block height of the snapshot.
+   */
+  const currentBlock = await provider.getBlock('latest')
+  return currentBlock.timestamp
 }
 
 async function setNextTimestamp(
@@ -54,12 +69,32 @@ function recordDeployment(envVarName: string, contract: Contract): void {
   process.env[envVarName] = contract.address
 }
 
+async function mineBlocks(provider: providers.Web3Provider, blocks: number): Promise<void> {
+  for (let i = 0; i < blocks; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    await provider.send('evm_mine', [])
+  }
+}
+
+function mineBlock(provider: providers.Web3Provider, timestamp: number): Promise<void> {
+  return provider.send('evm_mine', [timestamp])
+}
+
+function revertReason(reason: string): string {
+  return `VM Exception while processing transaction: reverted with reason string '${reason}'`
+}
+
 export const utils = {
   expandToDecimals,
   expandTo6Decimals,
   expandTo18Decimals,
   nowPlusMonths,
+  getZeroPadHexFromAddress,
+  getLastTimestamp,
   setNextTimestamp,
   assertIsTestnetChain,
   recordDeployment,
+  mineBlocks,
+  mineBlock,
+  revertReason,
 }

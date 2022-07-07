@@ -12,11 +12,10 @@ import {
   createMarketFixture,
 } from './fixtures/PrePOMarketFactoryFixture'
 import { getCollateralValidityChangedEvent } from './events'
-import { revertReason } from './utils'
 import { PrePOMarketFactory } from '../typechain/PrePOMarketFactory'
 import { MockERC20 } from '../typechain/MockERC20'
 
-const { nowPlusMonths } = utils
+const { nowPlusMonths, revertReason } = utils
 
 chai.use(solidity)
 

@@ -8,13 +8,13 @@ import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import { getMockStrategyVaultChangedEvent } from './events'
-import { returnFromMockAPY, revertReason } from './utils'
+import { returnFromMockAPY } from './utils'
 import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
 import { MockBaseToken } from '../typechain/MockBaseToken'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
 
-const { setNextTimestamp } = utils
+const { setNextTimestamp, revertReason } = utils
 
 chai.use(solidity)
 

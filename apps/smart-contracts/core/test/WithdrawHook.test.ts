@@ -4,11 +4,13 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { withdrawHookFixture } from './fixtures/HookFixture'
 import { collateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { revertReason } from './utils'
 import { getWithdrawHookVaultChangedEvent } from './events'
 import { CollateralDepositRecord, WithdrawHook } from '../typechain'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 

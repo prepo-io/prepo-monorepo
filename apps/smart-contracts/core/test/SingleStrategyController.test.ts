@@ -2,15 +2,18 @@ import chai, { expect } from 'chai'
 import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import { singleStrategyControllerFixture } from './fixtures/SingleStrategyControllerFixture'
 import { getSingleStrategyControllerVaultChangedEvent, getStrategyMigratedEvent } from './events'
-import { returnFromMockAPY, revertReason } from './utils'
+import { returnFromMockAPY } from './utils'
 import { SingleStrategyController } from '../typechain/SingleStrategyController'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 
