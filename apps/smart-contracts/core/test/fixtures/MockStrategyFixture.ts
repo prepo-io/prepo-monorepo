@@ -10,5 +10,5 @@ export async function mockStrategyFixture(
   baseToken: string
 ): Promise<MockStrategy> {
   const mockStrategy = await ethers.getContractFactory('MockStrategy')
-  return (await mockStrategy.deploy(controller, baseToken)) as MockStrategy
+  return (await mockStrategy.deploy(controller, baseToken)) as unknown as MockStrategy
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button } from 'antd'
 import { utils } from 'ethers'
 import { runInAction } from 'mobx'
-import { EMPTY_CONTRACT_ADDRESS } from 'prepo-constants'
+import { ZERO_ADDRESS } from 'prepo-constants'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { spacingIncrement } from '../../utils/theme/utils'
 import Heading from '../../components/Heading'
@@ -25,7 +25,7 @@ const Title = styled(Heading)`
   margin-bottom: ${spacingIncrement(32)};
 `
 
-const BLACK_HOLE = EMPTY_CONTRACT_ADDRESS
+const BLACK_HOLE = ZERO_ADDRESS
 
 const AMOUNT = '0.000000000000000001'
 

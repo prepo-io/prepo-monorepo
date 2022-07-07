@@ -1,4 +1,4 @@
-import { getOnboardConfig } from 'prepo-utils'
+import { getOnboardConfig } from './onboard-config'
 import { StoreConfig } from './stores.types'
 
 export const normalizeStoreConfig = <SupportedContracts>(

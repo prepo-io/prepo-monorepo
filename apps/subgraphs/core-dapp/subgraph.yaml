@@ -95,6 +95,7 @@ templates:
       entities:
         - Token
         - Transaction
+        - HistoricalEvent
       abis:
         - name: UniswapV3Pool
           file: ./abis/UniswapV3Pool.json
@@ -118,6 +119,7 @@ templates:
       entities:
         - Position
         - Transaction
+        - HistoricalEvent
       abis:
         - name: LongShortToken
           file: ./abis/LongShortToken.json
@@ -136,9 +138,29 @@ templates:
       file: ./src/mappings/core.ts
       entities:
         - Transaction
+        - HistoricalEvent
       abis:
         - name: CollateralToken
           file: ./abis/CollateralToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleCollateralTokenTransfer
+  - kind: ethereum/contract
+    name: BaseToken
+    network: goerli
+    source:
+      abi: ERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/core.ts
+      entities:
+        - Transaction
+        - HistoricalEvent
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleBaseTokenTransfer

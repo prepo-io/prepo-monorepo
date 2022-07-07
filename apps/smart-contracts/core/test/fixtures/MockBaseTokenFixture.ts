@@ -7,5 +7,5 @@ chai.use(solidity)
 
 export async function mockBaseTokenFixture(name: string, symbol: string): Promise<MockBaseToken> {
   const mockBaseToken = await ethers.getContractFactory('MockBaseToken')
-  return (await mockBaseToken.deploy(name, symbol)) as MockBaseToken
+  return (await mockBaseToken.deploy(name, symbol)) as unknown as MockBaseToken
 }

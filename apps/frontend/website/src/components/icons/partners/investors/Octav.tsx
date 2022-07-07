@@ -13,7 +13,13 @@ const Octav: FC<SVGProps<SVGSVGElement>> = ({ id, ...props }) => (
     <circle cx="94.0704" cy="94.0704" r="94.0704" fill="#1A202C" />
     <rect x="17" y="16" width="155" height="155" rx="77.5" fill="url(#octav_logo)" />
     <defs>
-      <pattern id="octav_logo" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <pattern
+        id="octav_logo"
+        patternContentUnits="objectBoundingBox"
+        width="1"
+        height="1"
+        className="animate-maintain-svg"
+      >
         <use xlinkHref="#image0_103_184" transform="scale(0.0025)" />
       </pattern>
       <image

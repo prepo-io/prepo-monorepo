@@ -3,9 +3,12 @@ import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { parseEther } from 'ethers/lib/utils'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
-import { AddressZero, revertReason } from './utils'
 import { MockBaseToken } from '../typechain/MockBaseToken'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 
@@ -78,11 +81,11 @@ describe('=> MockBaseToken', () => {
 
     it('sets to zero address', async () => {
       await mockBaseToken.connect(owner).setMockStrategy(mockStrategy.address)
-      expect(await mockBaseToken.getMockStrategy()).to.not.eq(AddressZero)
+      expect(await mockBaseToken.getMockStrategy()).to.not.eq(ZERO_ADDRESS)
 
-      await mockBaseToken.connect(owner).setMockStrategy(AddressZero)
+      await mockBaseToken.connect(owner).setMockStrategy(ZERO_ADDRESS)
 
-      expect(await mockBaseToken.getMockStrategy()).to.eq(AddressZero)
+      expect(await mockBaseToken.getMockStrategy()).to.eq(ZERO_ADDRESS)
     })
   })
 

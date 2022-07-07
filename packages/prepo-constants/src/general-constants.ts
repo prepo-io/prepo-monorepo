@@ -1,8 +1,11 @@
 export const DEFAULT_LANGUAGE = 'en-us'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const IS_BROWSER = typeof window !== 'undefined'
 
-export const EMPTY_CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const JUNK_ADDRESS = '0x0000000000000000000000000000000000000001'
 
 export const UNLIMITED_AMOUNT_APPROVAL =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'

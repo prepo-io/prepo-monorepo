@@ -2,7 +2,7 @@
 
 ### Discord Governance Channels
 
-All governance discussion - whether general, or related to PREPs or Temperature Checks - occurs in governance channels within the [prePO Discord community](https://url.prepo.io/discord).
+All governance discussion - whether general, or related to PREPs or Temperature Checks - occurs in governance channels within the [prePO Discord community](https://url.prepo.io/discord-docs).
 
 ### Discourse Governance Forum
 

@@ -5,11 +5,14 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { parseEther } from 'ethers/lib/utils'
 import { Contract } from 'ethers'
 import { MockContract, smock } from '@defi-wonderland/smock'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { depositHookFixture } from './fixtures/HookFixture'
 import { smockCollateralDepositRecordFixture } from './fixtures/CollateralDepositRecordFixture'
-import { AddressZero, revertReason } from './utils'
 import { getDepositHookVaultChangedEvent } from './events'
 import { DepositHook } from '../typechain'
+
+const { revertReason } = utils
 
 chai.use(solidity)
 chai.use(smock.matchers)
@@ -37,7 +40,7 @@ describe('=> DepositHook', () => {
 
   describe('# initialize', () => {
     it('should be initialized with correct values', async () => {
-      expect(await depositHook.getVault()).to.eq(AddressZero)
+      expect(await depositHook.getVault()).to.eq(ZERO_ADDRESS)
       expect(await depositHook.getDepositRecord()).to.eq(mockCollateralDepositRecord.address)
     })
   })
@@ -73,7 +76,7 @@ describe('=> DepositHook', () => {
     })
 
     it('should be settable to an address', async () => {
-      expect(await depositHook.getVault()).to.eq(AddressZero)
+      expect(await depositHook.getVault()).to.eq(ZERO_ADDRESS)
 
       await depositHook.connect(deployer).setVault(vault.address)
 
@@ -84,13 +87,13 @@ describe('=> DepositHook', () => {
       await depositHook.connect(deployer).setVault(vault.address)
       expect(await depositHook.getVault()).to.eq(vault.address)
 
-      await depositHook.connect(deployer).setVault(AddressZero)
+      await depositHook.connect(deployer).setVault(ZERO_ADDRESS)
 
-      expect(await depositHook.getVault()).to.eq(AddressZero)
+      expect(await depositHook.getVault()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {
-      expect(await depositHook.getVault()).to.eq(AddressZero)
+      expect(await depositHook.getVault()).to.eq(ZERO_ADDRESS)
 
       await depositHook.connect(deployer).setVault(vault.address)
 
@@ -119,8 +122,8 @@ describe('=> DepositHook', () => {
     })
 
     it('sets to non-zero address', async () => {
-      await depositHook.connect(deployer).setDepositRecord(AddressZero)
-      expect(mockCollateralDepositRecord.address).to.not.eq(AddressZero)
+      await depositHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
+      expect(mockCollateralDepositRecord.address).to.not.eq(ZERO_ADDRESS)
       expect(await depositHook.getDepositRecord()).to.not.eq(mockCollateralDepositRecord.address)
 
       await depositHook.connect(deployer).setDepositRecord(mockCollateralDepositRecord.address)
@@ -129,15 +132,15 @@ describe('=> DepositHook', () => {
     })
 
     it('sets to zero address', async () => {
-      expect(await depositHook.getDepositRecord()).to.not.eq(AddressZero)
+      expect(await depositHook.getDepositRecord()).to.not.eq(ZERO_ADDRESS)
 
-      await depositHook.connect(deployer).setDepositRecord(AddressZero)
+      await depositHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
 
-      expect(await depositHook.getDepositRecord()).to.eq(AddressZero)
+      expect(await depositHook.getDepositRecord()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      await depositHook.connect(deployer).setDepositRecord(AddressZero)
+      await depositHook.connect(deployer).setDepositRecord(ZERO_ADDRESS)
       expect(await depositHook.getDepositRecord()).to.not.eq(mockCollateralDepositRecord.address)
 
       await depositHook.connect(deployer).setDepositRecord(mockCollateralDepositRecord.address)

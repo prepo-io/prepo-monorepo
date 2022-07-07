@@ -4,7 +4,10 @@
   "description": "prePO utils",
   "source": "src/index.ts",
   "main": "src/index.ts",
-  "files": ["src/index.ts", "src/types.ts"],
+  "files": [
+    "src/index.ts",
+    "src/types.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "npx jest",
@@ -12,9 +15,8 @@
     "build:watch": "yarn build --watch"
   },
   "dependencies": {
-    "prepo-constants": "*",
     "ethers": "5.6.8",
-    "bnc-onboard": "1.38.3"
+    "prepo-constants": "*"
   },
   "devDependencies": {
     "config": "*",

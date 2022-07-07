@@ -3,6 +3,8 @@ import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { LongShortTokenAttachFixture } from './fixtures/LongShortTokenFixture'
 import { prePOMarketAttachFixture } from './fixtures/PrePOMarketFixture'
@@ -19,20 +21,13 @@ import {
   getTreasuryChangedEvent,
   getFinalLongPriceSetEvent,
 } from './events'
-import {
-  AddressZero,
-  nowPlusMonths,
-  MAX_PRICE,
-  calculateFee,
-  FEE_LIMIT,
-  FEE_DENOMINATOR,
-  getLastTimestamp,
-  revertReason,
-} from './utils'
+import { MAX_PRICE, calculateFee, FEE_LIMIT, FEE_DENOMINATOR, getLastTimestamp } from './utils'
 import { PrePOMarketFactory } from '../typechain/PrePOMarketFactory'
 import { PrePOMarket } from '../typechain/PrePOMarket'
 import { LongShortToken } from '../typechain/LongShortToken'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { nowPlusMonths, revertReason } = utils
 
 chai.use(solidity)
 
@@ -294,11 +289,11 @@ describe('=> prePOMarket', () => {
     })
 
     it('should be settable to the zero address', async () => {
-      expect(await prePOMarket.getTreasury()).to.not.eq(AddressZero)
+      expect(await prePOMarket.getTreasury()).to.not.eq(ZERO_ADDRESS)
 
-      await prePOMarket.connect(treasury).setTreasury(AddressZero)
+      await prePOMarket.connect(treasury).setTreasury(ZERO_ADDRESS)
 
-      expect(await prePOMarket.getTreasury()).to.eq(AddressZero)
+      expect(await prePOMarket.getTreasury()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {

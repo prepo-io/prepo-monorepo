@@ -5,21 +5,18 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { BigNumber, Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { MockContract, smock } from '@defi-wonderland/smock'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { testCollateralFixture } from './fixtures/CollateralFixture'
 import { singleStrategyControllerFixture } from './fixtures/SingleStrategyControllerFixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import {
-  AddressZero,
   FEE_LIMIT,
   calculateFee,
   returnFromMockAPY,
-  setNextTimestamp,
-  getLastTimestamp,
   getLastBlockNumber,
-  mineBlocks,
-  mineBlock,
-  revertReason,
+  getLastTimestamp,
 } from './utils'
 import {
   getStrategyControllerChangedEvent,
@@ -42,6 +39,8 @@ import {
   MockStrategy,
   CollateralDepositRecord,
 } from '../typechain'
+
+const { setNextTimestamp, mineBlocks, mineBlock, revertReason } = utils
 
 chai.use(solidity)
 chai.use(smock.matchers)
@@ -269,7 +268,7 @@ describe('=> Collateral', () => {
     })
 
     it('should call depositHook with the correct parameters if a hook is configured', async () => {
-      expect(await collateral.getDepositHook()).to.not.eq(AddressZero)
+      expect(await collateral.getDepositHook()).to.not.eq(ZERO_ADDRESS)
       /**
        * Transfer some Base Token directly to the contract to verify that the second amount passed in
        * includes the contract's latent balance
@@ -289,7 +288,7 @@ describe('=> Collateral', () => {
     })
 
     it("should not call depositHook if a hook isn't configured", async () => {
-      expect(await collateral.getDepositHook()).to.eq(AddressZero)
+      expect(await collateral.getDepositHook()).to.eq(ZERO_ADDRESS)
       await collateral.connect(deployer).setDepositsAllowed(true)
       await baseToken
         .connect(deployer)
@@ -618,7 +617,7 @@ describe('=> Collateral', () => {
     })
 
     it("should not call withdrawHook if a hook isn't configured", async () => {
-      expect(await collateral.getWithdrawHook()).to.eq(AddressZero)
+      expect(await collateral.getWithdrawHook()).to.eq(ZERO_ADDRESS)
       const beginning = await setupApyAndBeginning(TEST_APY)
       const mintedShares = await mintCollateralToWithdraw(user, TEST_ACCOUNT_DEPOSIT_CAP)
       const sharesToRedeem = mintedShares.div(2)
@@ -882,7 +881,7 @@ describe('=> Collateral', () => {
     })
 
     it("should not call withdrawHook if a hook isn't configured", async () => {
-      expect(await collateral.getWithdrawHook()).to.eq(AddressZero)
+      expect(await collateral.getWithdrawHook()).to.eq(ZERO_ADDRESS)
       const beginning = await setupApyAndBeginning(TEST_APY)
       const mintedShares = await mintCollateralToWithdraw(user, TEST_ACCOUNT_DEPOSIT_CAP)
       const sharesToRedeem = mintedShares.div(2)
@@ -1130,11 +1129,11 @@ describe('=> Collateral', () => {
 
     it('should be settable to the zero address', async () => {
       await collateral.setStrategyController(user.address)
-      expect(await collateral.getStrategyController()).to.not.eq(AddressZero)
+      expect(await collateral.getStrategyController()).to.not.eq(ZERO_ADDRESS)
 
-      await collateral.setStrategyController(AddressZero)
+      await collateral.setStrategyController(ZERO_ADDRESS)
 
-      expect(await collateral.getStrategyController()).to.eq(AddressZero)
+      expect(await collateral.getStrategyController()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {
@@ -1305,11 +1304,11 @@ describe('=> Collateral', () => {
     it('should be settable to the zero address', async () => {
       expect(await collateral.owner()).to.eq(deployer.address)
       await collateral.connect(deployer).setDepositHook(user.address)
-      expect(await collateral.getDepositHook()).to.not.eq(AddressZero)
+      expect(await collateral.getDepositHook()).to.not.eq(ZERO_ADDRESS)
 
-      await collateral.connect(deployer).setDepositHook(AddressZero)
+      await collateral.connect(deployer).setDepositHook(ZERO_ADDRESS)
 
-      expect(await collateral.getDepositHook()).to.eq(AddressZero)
+      expect(await collateral.getDepositHook()).to.eq(ZERO_ADDRESS)
     })
 
     it('should emit a DepositHookChanged event', async () => {
@@ -1341,11 +1340,11 @@ describe('=> Collateral', () => {
     it('should be settable to the zero address', async () => {
       expect(await collateral.owner()).to.eq(deployer.address)
       await collateral.connect(deployer).setWithdrawHook(user.address)
-      expect(await collateral.getWithdrawHook()).to.not.eq(AddressZero)
+      expect(await collateral.getWithdrawHook()).to.not.eq(ZERO_ADDRESS)
 
-      await collateral.connect(deployer).setWithdrawHook(AddressZero)
+      await collateral.connect(deployer).setWithdrawHook(ZERO_ADDRESS)
 
-      expect(await collateral.getWithdrawHook()).to.eq(AddressZero)
+      expect(await collateral.getWithdrawHook()).to.eq(ZERO_ADDRESS)
     })
 
     it('should emit a WithdrawHookChanged event', async () => {

@@ -1,10 +1,12 @@
 // eslint-disable no-console
 import { task } from 'hardhat/config'
 import { types } from 'hardhat/config'
-import { nowPlusMonths } from '../utils'
+import { utils } from 'prepo-hardhat'
 import { PrePO } from '../harnesses/PrePO'
 import { PrePOMarket } from '../typechain'
 import { fetchExistingPrePOMarketFactory } from '../helpers'
+
+const { nowPlusMonths } = utils
 
 task('create-market', 'create PrePOMarket from PrePOMarketFactory')
   .addParam('nameSuffix', 'suffix of market token name e.g. preSTRIPE 100-200 30-September 2021')

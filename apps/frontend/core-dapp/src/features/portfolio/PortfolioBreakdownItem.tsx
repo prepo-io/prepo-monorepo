@@ -56,10 +56,10 @@ const PortfolioBreakdownItem: React.FC<PortfolioBreakdownItemProps> = ({
       <Flex>
         <Icon height="21" width="21" name={iconName} />
         <Flex justifyContent="space-between" width="100%">
-          <Typography color="neutral4" variant="text-medium-sm" ml={10}>
+          <Typography color="neutral4" variant="text-medium-md" ml={10}>
             {label}
           </Typography>
-          <Typography color="neutral4" variant="text-medium-sm">
+          <Typography color="neutral4" variant="text-medium-md">
             {renderValue}
           </Typography>
         </Flex>

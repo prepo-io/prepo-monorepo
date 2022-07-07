@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
-import './interfaces/IAccountAccessController.sol';
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "./interfaces/IAccountAccessController.sol";
 
 contract AccountAccessController is Ownable, IAccountAccessController {
   bytes32 private _root;
@@ -49,11 +49,11 @@ contract AccountAccessController is Ownable, IAccountAccessController {
   function allowSelf(bytes32[] calldata _proof) external override {
     require(
       _allowedAccounts[_allowedAccountsIndex][msg.sender] == false,
-      'Account already registered'
+      "Account already registered"
     );
     bytes32 _leaf = keccak256(abi.encodePacked(msg.sender));
 
-    require(MerkleProof.verify(_proof, _root, _leaf), 'Invalid proof');
+    require(MerkleProof.verify(_proof, _root, _leaf), "Invalid proof");
     _allowedAccounts[_allowedAccountsIndex][msg.sender] = true;
     emit AccountAllowed(msg.sender);
   }

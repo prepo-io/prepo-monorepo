@@ -20,7 +20,8 @@ export async function prePOMarketFixture(
   expiryTime: number,
   publicMinting: boolean
 ): Promise<PrePOMarket> {
-  const prePOMarket = await ethers.getContractFactory('PrePOMarket')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prePOMarket: any = await ethers.getContractFactory('PrePOMarket')
   return (await prePOMarket.deploy(
     governance,
     collateral,
@@ -38,6 +39,7 @@ export async function prePOMarketFixture(
 }
 
 export async function prePOMarketAttachFixture(marketAddress: string): Promise<PrePOMarket> {
-  const prePOMarket = await ethers.getContractFactory('PrePOMarket')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prePOMarket: any = await ethers.getContractFactory('PrePOMarket')
   return prePOMarket.attach(marketAddress) as PrePOMarket
 }

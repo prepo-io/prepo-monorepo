@@ -71,16 +71,24 @@ export class PrePO {
     this.chainId = chainId
     this.ethers = ethers
     this.accounts = await ethers.getSigners()
-    this.baseToken = await ethers.getContract('MockBaseToken')
-    this.mockStrategy = await ethers.getContract('MockStrategy')
+    this.baseToken = (await ethers.getContract('MockBaseToken')) as unknown as MockBaseToken
+    this.mockStrategy = (await ethers.getContract('MockStrategy')) as unknown as MockStrategy
     this.collateral = await fetchExistingCollateral(chainId, ethers)
     this.marketFactory = await fetchExistingPrePOMarketFactory(chainId, ethers)
-    this.depositHook = await ethers.getContract('DepositHook')
-    this.withdrawHook = await ethers.getContract('WithdrawHook')
-    this.strategyController = await ethers.getContract('SingleStrategyController')
-    this.collateralDepositRecord = await ethers.getContract('CollateralDepositRecord')
-    this.marketContractFactory = await ethers.getContractFactory('PrePOMarket')
-    this.positionContractFactory = await ethers.getContractFactory('LongShortToken')
+    this.depositHook = (await ethers.getContract('DepositHook')) as unknown as DepositHook
+    this.withdrawHook = (await ethers.getContract('WithdrawHook')) as unknown as WithdrawHook
+    this.strategyController = (await ethers.getContract(
+      'SingleStrategyController'
+    )) as unknown as SingleStrategyController
+    this.collateralDepositRecord = (await ethers.getContract(
+      'CollateralDepositRecord'
+    )) as unknown as CollateralDepositRecord
+    this.marketContractFactory = (await ethers.getContractFactory(
+      'PrePOMarket'
+    )) as unknown as ContractFactory
+    this.positionContractFactory = (await ethers.getContractFactory(
+      'LongShortToken'
+    )) as unknown as ContractFactory
     return this
   }
 

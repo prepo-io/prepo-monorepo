@@ -18,6 +18,35 @@ type CollateralToken @entity {
   pools: [Pool!]! @derivedFrom(field: "collateralToken")
   "ERC20 properties"
   token: Token!
+  "treasury address where fees are sent to"
+  treasuryAddress: String!
+}
+
+type HistoricalEvent @entity {
+  "{HASH}-{OWNER_ADDRESS}"
+  id: ID!
+  "amount of tokens"
+  amount: BigDecimal!
+  "USD value to display"
+  amountUSD: BigDecimal!
+  "block number"
+  createdAtBlockNumber: BigInt!
+  "when transaction was made"
+  createdAtTimestamp: BigInt!
+  "potential event"
+  event: String!
+  "hash of the transaction"
+  hash: String!
+  "owner address"
+  ownerAddress: String!
+  "collateral token if this is deposit or withdraw"
+  collateralToken: CollateralToken
+  "long/short token if this is open or close"
+  longShortToken: LongShortToken
+  "number of transactions related to this hash for the same owner"
+  txCount: BigInt!
+  "all transactions with same hash that belongs to the same owner"
+  transactions: [Transaction!]!
 }
 
 type LongShortToken @entity {
@@ -124,6 +153,8 @@ type Transaction @entity {
   amount: BigDecimal!
   "token amount in USD value (for Pool related events, this is the amount user paid (input amount) in USD value)"
   amountUSD: BigDecimal!
+  "the contract that emitted this event"
+  contractAddress: String!
   "block number"
   createdAtBlockNumber: BigInt!
   "when transaction was made"
@@ -132,10 +163,16 @@ type Transaction @entity {
   event: String!
   "transaction hash"
   hash: String!
+  "{HASH}-{OWNER_ADDRESS}"
+  historicalEvent: HistoricalEvent
   "owner"
   ownerAddress: String!
-  "the token which owner's balance is affected"
-  tokenAddress: String!
+  "recipent address"
+  recipientAddress: String!
+  "sender address"
+  senderAddress: String!
+  "[Base token's transfer] base token entity if transaction is transfer of base tokens"
+  baseToken: BaseToken
   "[Collateral token's transfer] collateral token entity if transaction is transfer of collateral tokens"
   collateralToken: CollateralToken
   "[Long/short token's transfer] long/short token entity if transaction is transfer of long short token"

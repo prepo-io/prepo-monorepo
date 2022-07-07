@@ -1,0 +1,4 @@
+{
+  "extends": "tsconfig/smart-contracts.json",
+  "include": ["./types/**/*.ts", "./tasks/**/*.ts", "./test/**/*.ts", "./*.js", "index.ts"]
+}

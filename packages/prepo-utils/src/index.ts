@@ -1,5 +1,4 @@
 import { createFallbackProvider } from './createFallbackProvider'
-import { getOnboardConfig } from './getOnboardConfig'
 import { getNetworkByChainId } from './getNetworkByChainId'
 import { getShortAccount } from './getShortAccount'
 import { getContractAddress } from './getContractAddress'
@@ -8,11 +7,11 @@ import { sleep } from './sleep'
 import { makeError } from './makeError'
 import { truncateAmountString } from './truncateAmountString'
 import { validateNumber } from './validateNumber'
+import { chainIdToHexString } from './chainIdToHexString'
 
 export {
   getShortAccount,
   getNetworkByChainId,
-  getOnboardConfig,
   createFallbackProvider,
   getContractAddress,
   formatNumber,
@@ -20,6 +19,7 @@ export {
   makeError,
   truncateAmountString,
   validateNumber,
+  chainIdToHexString,
 }
 
 export * from './types'

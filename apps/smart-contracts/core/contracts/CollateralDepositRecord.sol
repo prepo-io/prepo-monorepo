@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
-import './interfaces/ICollateralDepositRecord.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "./interfaces/ICollateralDepositRecord.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 pragma solidity =0.8.7;
 
@@ -12,7 +12,7 @@ contract CollateralDepositRecord is ICollateralDepositRecord, Ownable {
   mapping(address => bool) private _allowedHooks;
 
   modifier onlyAllowedHooks() {
-    require(_allowedHooks[msg.sender], 'Caller not allowed');
+    require(_allowedHooks[msg.sender], "Caller not allowed");
     _;
   }
 
@@ -22,10 +22,10 @@ contract CollateralDepositRecord is ICollateralDepositRecord, Ownable {
   }
 
   function recordDeposit(address _sender, uint256 _amount) external override onlyAllowedHooks {
-    require(_amount + _globalDepositAmount <= _globalDepositCap, 'Global deposit cap exceeded');
+    require(_amount + _globalDepositAmount <= _globalDepositCap, "Global deposit cap exceeded");
     require(
       _amount + _accountToNetDeposit[_sender] <= _accountDepositCap,
-      'Account deposit cap exceeded'
+      "Account deposit cap exceeded"
     );
     _globalDepositAmount += _amount;
     _accountToNetDeposit[_sender] += _amount;

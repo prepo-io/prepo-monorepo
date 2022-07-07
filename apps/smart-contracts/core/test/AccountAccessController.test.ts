@@ -1,9 +1,10 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { MerkleTree } from 'merkletreejs'
+import { utils } from 'prepo-hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { mockAccountAccessControllerFixture } from './fixtures/AccountAccessControllerFixture'
-import { hashAddress, generateMerkleTree, revertReason } from './utils'
+import { hashAddress, generateMerkleTree } from './utils'
 import {
   getAccountAllowedEvent,
   getAccountBlockedEvent,
@@ -12,6 +13,8 @@ import {
   getBlockedAccountsClearedEvent,
 } from './events'
 import { MockAccountAccessController } from '../typechain'
+
+const { revertReason } = utils
 
 describe('=> AccountAccessController', function () {
   let eligibleSigners: SignerWithAddress[]

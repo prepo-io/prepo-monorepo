@@ -155,7 +155,7 @@ const MarketChart: React.FC = () => {
       },
       chartTooltipFormatter: {
         formatPrice: (price?: number): string =>
-          price === undefined ? 'N/A' : significantDigits(price),
+          price === undefined ? 'N/A' : `$${significantDigits(price)}`,
       },
     }
 

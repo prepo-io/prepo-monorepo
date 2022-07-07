@@ -3,14 +3,18 @@ import { solidity } from 'ethereum-waffle'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
+import { ZERO_ADDRESS } from 'prepo-constants'
+import { utils } from 'prepo-hardhat'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixture'
 import { mockStrategyFixture } from './fixtures/MockStrategyFixture'
 import { getMockStrategyVaultChangedEvent } from './events'
-import { setNextTimestamp, returnFromMockAPY, revertReason, AddressZero } from './utils'
+import { returnFromMockAPY } from './utils'
 import { mockBaseTokenFixture } from './fixtures/MockBaseTokenFixture'
 import { MockBaseToken } from '../typechain/MockBaseToken'
 import { MockStrategy } from '../typechain/MockStrategy'
 import { MockERC20 } from '../typechain/MockERC20'
+
+const { setNextTimestamp, revertReason } = utils
 
 chai.use(solidity)
 
@@ -70,7 +74,7 @@ describe('=> MockStrategy', () => {
   describe('# initialize', () => {
     it('should be initialized with correct values', async () => {
       expect(await mockStrategy.owner()).to.eq(governance.address)
-      expect(await mockStrategy.vault()).to.eq(AddressZero)
+      expect(await mockStrategy.vault()).to.eq(ZERO_ADDRESS)
       expect(await mockStrategy.getController()).to.eq(controller.address)
       expect(await mockStrategy.getBaseToken()).to.eq(baseToken.address)
     })
@@ -114,7 +118,7 @@ describe('=> MockStrategy', () => {
     })
 
     it('should be settable to an address', async () => {
-      expect(await mockStrategy.vault()).to.eq(AddressZero)
+      expect(await mockStrategy.vault()).to.eq(ZERO_ADDRESS)
 
       await mockStrategy.connect(governance).setVault(collateralToken.address)
 
@@ -125,13 +129,13 @@ describe('=> MockStrategy', () => {
       await mockStrategy.connect(governance).setVault(collateralToken.address)
       expect(await mockStrategy.vault()).to.eq(collateralToken.address)
 
-      await mockStrategy.connect(governance).setVault(AddressZero)
+      await mockStrategy.connect(governance).setVault(ZERO_ADDRESS)
 
-      expect(await mockStrategy.vault()).to.eq(AddressZero)
+      expect(await mockStrategy.vault()).to.eq(ZERO_ADDRESS)
     })
 
     it('should be settable to the same value twice', async () => {
-      expect(await mockStrategy.vault()).to.eq(AddressZero)
+      expect(await mockStrategy.vault()).to.eq(ZERO_ADDRESS)
 
       await mockStrategy.connect(governance).setVault(collateralToken.address)
 

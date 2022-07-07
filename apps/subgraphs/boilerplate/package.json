@@ -2,7 +2,6 @@
   "name": "subgraph-boilerplate",
   "version": "1.0.0",
   "description": "prePO subgraph boilerplate",
-  "license": "ISC",
   "scripts": {
     "build": "graph build",
     "deploy:testnet": "graph deploy --product hosted-service chrisling-dev/prepo-goerli",
