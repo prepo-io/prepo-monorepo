@@ -69,12 +69,13 @@ export class TradeStore {
       !state ||
       !this.openTradeAmount ||
       !valuationRange ||
-      !payoutRange
+      !payoutRange ||
+      !selectedToken.address
     ) {
       return null
     }
     const tokenAddressFrom = this.root.preCTTokenStore.uniswapToken.address
-    const tokenAddressTo = selectedToken.address ?? ''
+    const tokenAddressTo = selectedToken.address
     const quoterContract = new ethers.Contract(
       UNISWAP_QUOTER_ADDRESS.mainnet ?? '', // all uniswap contracts has same address on all chains
       QuoterABI,
