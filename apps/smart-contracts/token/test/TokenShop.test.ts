@@ -26,9 +26,15 @@ describe('TokenShop', () => {
   const erc1155Id1 = 1
   const erc1155Id1Amount = 2
   const erc1155Id1Price = parseEther('1')
+  const erc1155Id2 = 2
+  const erc1155Id2Amount = 2
+  const erc1155Id2Price = parseEther('2')
   const erc721Id1 = 1
   const erc721Id1Amount = 1
   const erc721Id1Price = parseEther('1')
+  const erc721Id2 = 2
+  const erc721Id2Price = parseEther('2')
+  const erc721Id2Amount = 1
   const itemPrices = [erc1155Id1Price, erc721Id1Price]
   const tokenIds = [erc1155Id1, erc721Id1]
   const amounts = [erc1155Id1Amount, erc721Id1Amount]
@@ -382,6 +388,7 @@ describe('TokenShop', () => {
       await paymentToken
         .connect(user1)
         .approve(tokenShop.address, erc1155Id1Price.mul(erc1155Id1Amount))
+
       await tokenShop
         .connect(user1)
         .purchase([mockERC1155.address], [erc1155Id1], [erc1155Id1Amount])
@@ -392,6 +399,7 @@ describe('TokenShop', () => {
 
     it("doesn't call ERC1155 hook if only purchasing ERC721 item", async () => {
       await paymentToken.connect(user1).approve(tokenShop.address, erc721Id1Price)
+
       await tokenShop.connect(user1).purchase([mockERC721.address], [erc721Id1], [erc721Id1Amount])
 
       expect(mockPurchaseHook.hookERC721).to.have.been.called
@@ -404,8 +412,6 @@ describe('TokenShop', () => {
         erc1155Id1
       )
       const userERC1155BalanceBefore = await mockERC1155.balanceOf(user1.address, erc1155Id1)
-      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
-      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
       await paymentToken
         .connect(user1)
         .approve(tokenShop.address, erc1155Id1Price.mul(erc1155Id1Amount))
@@ -420,6 +426,19 @@ describe('TokenShop', () => {
       expect(await mockERC1155.balanceOf(user1.address, erc1155Id1)).to.be.eq(
         userERC1155BalanceBefore.add(erc1155Id1Amount)
       )
+    })
+
+    it('transfers payment token if single ERC1155 item', async () => {
+      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
+      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
+      await paymentToken
+        .connect(user1)
+        .approve(tokenShop.address, erc1155Id1Price.mul(erc1155Id1Amount))
+
+      await tokenShop
+        .connect(user1)
+        .purchase([mockERC1155.address], [erc1155Id1], [erc1155Id1Amount])
+
       expect(await paymentToken.balanceOf(user1.address)).to.be.eq(
         userPaymentTokenBalanceBefore.sub(erc1155Id1Price.mul(erc1155Id1Amount))
       )
@@ -430,9 +449,6 @@ describe('TokenShop', () => {
 
     it('transfers to user if multiple ERC1155 items', async () => {
       const erc1155Contracts = [mockERC1155.address, mockERC1155.address]
-      const erc1155Id2 = 2
-      const erc1155Id2Price = parseEther('2')
-      const erc1155Id2Amount = 2
       // Since ERC1155 for id = 2 is not minted in beforeEach
       await mockERC1155.mint(tokenShop.address, erc1155Id2, erc1155Id2Amount)
       // Since price for second ERC1155 (id = 2) is not set in beforeEach
@@ -449,8 +465,6 @@ describe('TokenShop', () => {
       )
       const userERC1155Id1BalanceBefore = await mockERC1155.balanceOf(user1.address, erc1155Id1)
       const userERC1155Id2BalanceBefore = await mockERC1155.balanceOf(user1.address, erc1155Id2)
-      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
-      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
       const totalPurchaseAmount = erc1155Id1Price
         .mul(erc1155Id1Amount)
         .add(erc1155Id2Price.mul(erc1155Id2Amount))
@@ -472,6 +486,27 @@ describe('TokenShop', () => {
       expect(await mockERC1155.balanceOf(user1.address, erc1155Id2)).to.be.eq(
         userERC1155Id2BalanceBefore.add(erc1155Id2Amount)
       )
+    })
+
+    it('transfers payment token if multiple ERC1155 items', async () => {
+      const erc1155Contracts = [mockERC1155.address, mockERC1155.address]
+      // Since ERC1155 for id = 2 is not minted in beforeEach
+      await mockERC1155.mint(tokenShop.address, erc1155Id2, erc1155Id2Amount)
+      // Since price for second ERC1155 (id = 2) is not set in beforeEach
+      await tokenShop
+        .connect(owner)
+        .setContractToIdToPrice([mockERC1155.address], [erc1155Id2], [erc1155Id2Price])
+      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
+      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
+      const totalPurchaseAmount = erc1155Id1Price
+        .mul(erc1155Id1Amount)
+        .add(erc1155Id2Price.mul(erc1155Id2Amount))
+      await paymentToken.connect(user1).approve(tokenShop.address, totalPurchaseAmount)
+
+      await tokenShop
+        .connect(user1)
+        .purchase(erc1155Contracts, [erc1155Id1, erc1155Id2], [erc1155Id1Amount, erc1155Id2Amount])
+
       expect(await paymentToken.balanceOf(user1.address)).to.be.eq(
         userPaymentTokenBalanceBefore.sub(totalPurchaseAmount)
       )
@@ -483,8 +518,6 @@ describe('TokenShop', () => {
     it('transfers to user if single ERC721 item', async () => {
       const tokenShopERC721BalanceBefore = await mockERC721.balanceOf(tokenShop.address)
       const userERC721BalanceBefore = await mockERC721.balanceOf(user1.address)
-      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
-      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
       await paymentToken.connect(user1).approve(tokenShop.address, erc721Id1Price)
 
       await tokenShop.connect(user1).purchase([mockERC721.address], [erc721Id1], [erc721Id1Amount])
@@ -495,6 +528,15 @@ describe('TokenShop', () => {
       expect(await mockERC721.balanceOf(user1.address)).to.be.eq(
         userERC721BalanceBefore.add(erc721Id1Amount)
       )
+    })
+
+    it('transfers payment token if single ERC721 item', async () => {
+      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
+      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
+      await paymentToken.connect(user1).approve(tokenShop.address, erc721Id1Price)
+
+      await tokenShop.connect(user1).purchase([mockERC721.address], [erc721Id1], [erc721Id1Amount])
+
       expect(await paymentToken.balanceOf(user1.address)).to.be.eq(
         userPaymentTokenBalanceBefore.sub(erc721Id1Price)
       )
@@ -505,9 +547,6 @@ describe('TokenShop', () => {
 
     it('transfers to user if multiple ERC721 items', async () => {
       const erc721Contracts = [mockERC721.address, mockERC721.address]
-      const erc721Id2 = 2
-      const erc721Id2Price = parseEther('2')
-      const erc721Id2Amount = 1
       // Since id 1 is already minted in beforeEach
       await mockERC721.mint(tokenShop.address, erc721Id2)
       // Since price for Id 2 is not set in beforeEach
@@ -516,8 +555,6 @@ describe('TokenShop', () => {
         .setContractToIdToPrice([mockERC721.address], [erc721Id2], [erc721Id2Price])
       const tokenShopERC721BalanceBefore = await mockERC721.balanceOf(tokenShop.address)
       const userERC721BalanceBefore = await mockERC721.balanceOf(user1.address)
-      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
-      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
       const totalPurchaseAmount = erc721Id1Price
         .mul(erc721Id1Amount)
         .add(erc721Id2Price.mul(erc721Id2Amount))
@@ -533,6 +570,27 @@ describe('TokenShop', () => {
       expect(await mockERC721.balanceOf(user1.address)).to.be.eq(
         userERC721BalanceBefore.add(erc721Id1Amount + erc721Id2Amount)
       )
+    })
+
+    it('transfers payment token if multiple ERC721 items', async () => {
+      const erc721Contracts = [mockERC721.address, mockERC721.address]
+      // Since id 1 is already minted in beforeEach
+      await mockERC721.mint(tokenShop.address, erc721Id2)
+      // Since price for Id 2 is not set in beforeEach
+      await tokenShop
+        .connect(owner)
+        .setContractToIdToPrice([mockERC721.address], [erc721Id2], [erc721Id2Price])
+      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
+      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
+      const totalPurchaseAmount = erc721Id1Price
+        .mul(erc721Id1Amount)
+        .add(erc721Id2Price.mul(erc721Id2Amount))
+      await paymentToken.connect(user1).approve(tokenShop.address, totalPurchaseAmount)
+
+      await tokenShop
+        .connect(user1)
+        .purchase(erc721Contracts, [erc721Id1, erc721Id2], [erc721Id1Amount, erc721Id2Amount])
+
       expect(await paymentToken.balanceOf(user1.address)).to.be.eq(
         userPaymentTokenBalanceBefore.sub(erc721Id1Price.add(erc721Id2Price))
       )
@@ -549,8 +607,6 @@ describe('TokenShop', () => {
       const userERC1155BalanceBefore = await mockERC1155.balanceOf(user1.address, erc1155Id1)
       const tokenShopERC721BalanceBefore = await mockERC721.balanceOf(tokenShop.address)
       const userERC721BalanceBefore = await mockERC721.balanceOf(user1.address)
-      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
-      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
       const totalPurchaseAmount = erc1155Id1Price
         .mul(erc1155Id1Amount)
         .add(erc721Id1Price.mul(erc721Id1Amount))
@@ -572,6 +628,20 @@ describe('TokenShop', () => {
       expect(await mockERC721.balanceOf(user1.address)).to.be.eq(
         userERC721BalanceBefore.add(erc721Id1Amount)
       )
+    })
+
+    it('transfers payment token if both ERC721 and ERC1155 items', async () => {
+      const userPaymentTokenBalanceBefore = await paymentToken.balanceOf(user1.address)
+      const tokenShopPaymentTokenBalanceBefore = await paymentToken.balanceOf(tokenShop.address)
+      const totalPurchaseAmount = erc1155Id1Price
+        .mul(erc1155Id1Amount)
+        .add(erc721Id1Price.mul(erc721Id1Amount))
+      await paymentToken.connect(user1).approve(tokenShop.address, totalPurchaseAmount)
+
+      await tokenShop
+        .connect(user1)
+        .purchase(tokenContracts, [erc1155Id1, erc721Id1], [erc1155Id1Amount, erc721Id1Amount])
+
       expect(await paymentToken.balanceOf(user1.address)).to.be.eq(
         userPaymentTokenBalanceBefore.sub(totalPurchaseAmount)
       )
