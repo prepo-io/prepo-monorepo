@@ -27,7 +27,7 @@ const TradeTransactionSummary: React.FC = () => {
     tradeStore.valuation(selectedMarket).then((data) => {
       if (data) setValuation(significantDigits(data))
     })
-  }, [selectedMarket, tradeStore])
+  }, [selectedMarket, tradeStore, tradeStore.openTradeAmount])
 
   const onCancel = (): void => {
     setOpenTradeHash(undefined)
