@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import Dropdown from '../../components/Dropdown'
 import AreaChart from '../../components/charts/templates/AreaChart'
 import Tabs, { secondaryTabsStyles } from '../../components/Tabs'
-import Menu, { MenuItem } from '../../components/Menu'
+import Menu from '../../components/Menu'
 import { ColorType } from '../../components/charts'
 import { ChartTimeframe, ChartView } from '../../types/market.types'
 import useTransformedTVLData from '../../hooks/useTransformedTVLData'
@@ -193,13 +193,14 @@ const MarketChart: React.FC = () => {
 
   const renderChartTypes = useMemo(
     (): ReactElement => (
-      <Menu selectedKeys={[view]}>
-        {chartView.map((type) => (
-          <MenuItem key={type} onClick={(): void => onChangeChartType(type)}>
-            {type}
-          </MenuItem>
-        ))}
-      </Menu>
+      <Menu
+        selectedKeys={[view]}
+        items={chartView.map((type) => ({
+          key: type,
+          onClick: (): void => onChangeChartType(type),
+          label: type,
+        }))}
+      />
     ),
     [view]
   )

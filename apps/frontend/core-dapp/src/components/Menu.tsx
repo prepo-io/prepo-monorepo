@@ -2,6 +2,7 @@
 import { Menu as AMenu, MenuProps, MenuItemProps } from 'antd'
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components'
 import { spacingIncrement } from 'prepo-ui'
+import { forwardRef } from 'react'
 
 export const MenuItem: React.FC<MenuItemProps> = (props) => (
   <>
@@ -12,7 +13,29 @@ export const MenuItem: React.FC<MenuItemProps> = (props) => (
 
 type Props = {
   size?: 'sm' | 'md' | 'lg'
+  keepBackgroundColorOnHover?: boolean
 }
+
+const keepBackgroundOnHover = css`
+  .ant-dropdown-menu-item-active {
+    background-color: ${({ theme }): string => theme.color.neutral10};;
+    * {
+      color: ${({ theme }): string => theme.color.neutral3};
+      font-weight: ${({ theme }): number => theme.fontWeight.semiBold};
+    }
+    :hover {
+      * {
+        color: ${({ theme }): string => theme.color.primary};
+        font-weight: ${({ theme }): number => theme.fontWeight.medium};
+      }
+    }
+`
+
+const hoverBackground = css`
+  .ant-dropdown-menu-item-active {
+    background-color: ${({ theme }): string => theme.color.neutral7};
+  }
+`
 
 const sizeSmallStyles = css`
   .ant-dropdown-menu-item {
@@ -57,9 +80,12 @@ const Wrapper = styled.div<Props>`
       border-radius: ${({ theme }): number => theme.borderRadius}px;
       padding: 0;
     }
-    .ant-dropdown-menu-item-active {
-      background-color: ${({ theme }): string => theme.color.neutral7};
-    }
+    ${({ keepBackgroundColorOnHover }): FlattenInterpolation<ThemeProps<DefaultTheme>> => {
+      if (keepBackgroundColorOnHover) {
+        return keepBackgroundOnHover
+      }
+      return hoverBackground
+    }}
     .ant-dropdown-menu-item-divider {
       background-color: transparent;
       height: 2px;
@@ -82,10 +108,18 @@ const Wrapper = styled.div<Props>`
   }
 `
 
-const Menu: React.FC<MenuProps & Props> = ({ size, ...props }) => (
-  <Wrapper size={size}>
-    <AMenu {...props} />
-  </Wrapper>
+const Menu: React.FC<MenuProps & Props> = forwardRef(
+  ({ size, keepBackgroundColorOnHover, className, ...props }, ref: React.Ref<HTMLDivElement>) => (
+    <Wrapper
+      ref={ref}
+      size={size}
+      keepBackgroundColorOnHover={keepBackgroundColorOnHover}
+      className={className}
+    >
+      <AMenu {...props} />
+    </Wrapper>
+  )
 )
+Menu.displayName = 'Menu'
 
 export default Menu

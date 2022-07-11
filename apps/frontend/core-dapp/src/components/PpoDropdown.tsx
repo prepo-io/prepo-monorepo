@@ -1,7 +1,7 @@
 import { centered, Icon, spacingIncrement } from 'prepo-ui'
 import styled from 'styled-components'
 import { NavigationItem } from './Navigation'
-import Menu, { MenuItem } from './Menu'
+import Menu from './Menu'
 import Link from './Link'
 import Dropdown from './Dropdown'
 import useResponsive from '../hooks/useResponsive'
@@ -10,22 +10,6 @@ import usePpoNavigation from '../features/ppo/usePpoNavigation'
 
 const PpoWrapper = styled.div`
   ${centered};
-`
-
-const StyledMenuItem = styled(MenuItem)`
-  &&&.ant-dropdown-menu-item-active {
-    background-color: white;
-    * {
-      color: ${({ theme }): string => theme.color.neutral3};
-      font-weight: ${({ theme }): number => theme.fontWeight.semiBold};
-    }
-    :hover {
-      * {
-        color: ${({ theme }): string => theme.color.primary};
-        font-weight: ${({ theme }): number => theme.fontWeight.medium};
-      }
-    }
-  }
 `
 
 const Name = styled.div`
@@ -64,11 +48,14 @@ const PpoDropdown: React.FC = () => {
   const ppoItems = usePpoNavigation()
 
   const desktopDropdownMenu = (): React.ReactElement => (
-    <Menu size="md">
-      {ppoItems
+    <Menu
+      keepBackgroundColorOnHover
+      size="md"
+      items={ppoItems
         .filter(({ href }) => Boolean(href))
-        .map(({ title, href, target }) => (
-          <StyledMenuItem key={title}>
+        .map(({ title, href, target }) => ({
+          key: title,
+          label: (
             <Link href={href} target={target}>
               <Name>
                 {title}
@@ -82,10 +69,15 @@ const PpoDropdown: React.FC = () => {
                 )}
               </Name>
             </Link>
-          </StyledMenuItem>
-        ))}
-    </Menu>
+          ),
+        }))}
+    />
   )
+  /* {ppoItems
+        .filter(({ href }) => Boolean(href))
+        .map(({ title, href, target }) => (
+
+        ))} */
 
   return isPhone || isTablet ? (
     <PpoLabel />

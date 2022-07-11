@@ -1,5 +1,5 @@
 import Dropdown from './Dropdown'
-import Menu, { MenuItem } from './Menu'
+import Menu from './Menu'
 import MarketIconTitle from './MarketIconTitle'
 import { Market } from '../types/market.types'
 
@@ -19,15 +19,18 @@ const MarketDropdown: React.FC<Props> = ({
     if (typeof onSelectMarket === 'function') onSelectMarket(key)
   }
   const getMarketsDropdownMenu = (
-    <Menu size="md" onClick={onClick}>
-      {markets.map((market) => (
-        <MenuItem key={market.urlId}>
+    <Menu
+      size="md"
+      onClick={onClick}
+      items={markets.map((market) => ({
+        key: market.urlId,
+        label: (
           <MarketIconTitle iconName={market.iconName} size="sm">
             {market.name}
           </MarketIconTitle>
-        </MenuItem>
-      ))}
-    </Menu>
+        ),
+      }))}
+    />
   )
 
   return (
