@@ -12,7 +12,7 @@ const { toUsd } = numberFormatter
 export type RowData = {
   label: string
   tooltip?: React.ReactNode
-  amount?: number | string | JSX.Element
+  amount?: number | string
   percent?: number
   ignoreFormatAmount?: boolean
   market?: {
