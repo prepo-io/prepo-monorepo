@@ -1,16 +1,13 @@
 import { useRouter } from 'next/router'
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 import EstimateProfitLoss from './EstimateProfitLoss'
+import Valuation from './Valuation'
 import TransactionSummary from '../../components/TransactionSummary/TransactionSummary'
 import { Callback } from '../../types/common.types'
 import { useRootStore } from '../../context/RootStoreProvider'
 import useSelectedMarket from '../../hooks/useSelectedMarket'
 import { EstimatedValuation } from '../definitions'
 import { Routes } from '../../lib/routes'
-import { numberFormatter } from '../../utils/numberFormatter'
-
-const { significantDigits } = numberFormatter
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
@@ -18,13 +15,6 @@ const TradeTransactionSummary: React.FC = () => {
   const { openTradeAmount, openTradeHash, openTradeUILoading, setOpenTradeHash, tradeDisabled } =
     tradeStore
   const selectedMarket = useSelectedMarket()
-  const { valuation } = tradeStore
-
-  useEffect(() => {
-    if (!selectedMarket) return
-
-    tradeStore.quoteExactInput(selectedMarket)
-  }, [selectedMarket, tradeStore, openTradeAmount])
 
   const onCancel = (): void => {
     setOpenTradeHash(undefined)
@@ -55,8 +45,6 @@ const TradeTransactionSummary: React.FC = () => {
 
   if (selectedMarket === undefined) return null
 
-  const estimatedValuation = valuation ? `$${significantDigits(valuation)}` : undefined
-
   const tradeTransactionSummary = [
     {
       label: 'Trade Size',
@@ -65,7 +53,7 @@ const TradeTransactionSummary: React.FC = () => {
     {
       label: 'Average Valuation Price',
       tooltip: <EstimatedValuation marketName={selectedMarket.name} />,
-      amount: estimatedValuation,
+      amount: <Valuation />,
       ignoreFormatAmount: true,
     },
   ]

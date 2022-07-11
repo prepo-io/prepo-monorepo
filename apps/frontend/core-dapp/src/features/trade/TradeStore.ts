@@ -19,8 +19,6 @@ export class TradeStore {
   openTradeAmount = 0
   openTradeAmountBigNumber = BigNumber.from(0)
   openTradeHash?: string
-  amountOut?: number
-  valuation?: number
 
   constructor(public root: RootStore) {
     makeAutoObservable(this, {}, { autoBind: true })
@@ -53,25 +51,24 @@ export class TradeStore {
     this.openTradeHash = hash
   }
 
-  setAmountOut(value: number): void {
-    this.amountOut = value
+  async valuation(selectedMarket: MarketEntity): Promise<number | undefined> {
+    const { payoutRange, valuationRange } = selectedMarket
+    const amountOut = await this.quoteExactInput(selectedMarket)
+    if (!valuationRange || !payoutRange || !amountOut) {
+      return undefined
+    }
+
+    const price = this.openTradeAmount / amountOut
+    const longTokenPrice = this.direction === 'long' ? price : 1 - price
+    return calculateValuation({ longTokenPrice, payoutRange, valuationRange })
   }
 
   async quoteExactInput(selectedMarket: MarketEntity): Promise<number | null> {
     const selectedToken = selectedMarket?.[`${this.direction}Token`]
     const pool = selectedMarket?.[`${this.direction}Pool`]
-    const { payoutRange, valuationRange } = selectedMarket
     const state = pool?.poolState
     const fee = pool?.poolImmutables?.fee
-    if (
-      !fee ||
-      !selectedToken ||
-      !state ||
-      !this.openTradeAmount ||
-      !valuationRange ||
-      !payoutRange ||
-      !selectedToken.address
-    ) {
+    if (!fee || !selectedToken || !state || !this.openTradeAmount || !selectedToken.address) {
       return null
     }
     const tokenAddressFrom = this.root.preCTTokenStore.uniswapToken.address
@@ -81,26 +78,19 @@ export class TradeStore {
       QuoterABI,
       this.root.web3Store.coreProvider
     )
-    const func: ethers.ContractFunction<BigNumber> = quoterContract.callStatic.quoteExactInputSingle
+
     try {
       const sqrtPriceLimitX96 = 0 // The price limit of the pool that cannot be exceeded by the swap
-      const result = await func(
+      const result: BigNumber = await quoterContract.callStatic.quoteExactInputSingle(
         tokenAddressFrom,
         tokenAddressTo,
         fee,
-        this.openTradeAmount,
+        ethers.utils.parseEther(`${this.openTradeAmount}`),
         sqrtPriceLimitX96
       )
-      this.amountOut = result.toNumber()
-      if (this.amountOut && selectedMarket?.payoutRange && selectedMarket?.valuationRange) {
-        const price = this.openTradeAmount / this.amountOut
-        const longTokenPrice = this.direction === 'long' ? price : 1 - price
-        this.valuation = calculateValuation({ longTokenPrice, payoutRange, valuationRange })
-      }
-      return this.amountOut
+      const amountOut = +ethers.utils.formatEther(result)
+      return amountOut
     } catch (e) {
-      this.amountOut = undefined
-      this.valuation = undefined
       this.root.toastStore.errorToast('Error calculating output amount', e)
       return null
     }
@@ -113,17 +103,16 @@ export class TradeStore {
     const fee = selectedMarket[`${this.direction}Pool`]?.poolImmutables?.fee
     const { swap } = this.root.swapStore
     const { uniswapToken } = this.root.preCTTokenStore
-    if (!selectedToken?.address || price === undefined || fee === undefined)
+    const amountOut = await this.quoteExactInput(selectedMarket)
+    if (!selectedToken?.address || price === undefined || fee === undefined || !amountOut)
       return { success: false }
 
     this.setOpenTradeHash(undefined)
-    if (this.amountOut === undefined) return { success: false }
-
     return swap({
       fee,
       fromAmount: this.openTradeAmount,
       fromTokenAddress: uniswapToken.address,
-      toAmount: this.amountOut,
+      toAmount: amountOut,
       toTokenAddress: selectedToken.address,
       type: TradeType.EXACT_INPUT,
       onHash: (hash) => this.setOpenTradeHash(hash),
