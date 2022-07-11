@@ -10,6 +10,7 @@ contract PurchaseHook is IPurchaseHook, Ownable {
   mapping(address => mapping(uint256 => uint256)) private _erc1155ToIdToMaxPurchasesPerUser;
   ITokenShop private _tokenShop;
 
+  //TODO: EOA validation check in hookERC721 and hookERC1155 implementation
   function hookERC721(
     address _user,
     address _tokenContract,

@@ -72,8 +72,8 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
       bool _isERC1155 = IERC1155(_tokenContracts[i]).supportsInterface(type(IERC1155).interfaceId);
       require(_contractToIdToPrice[_tokenContracts[i]][_ids[i]] != 0, "Non-purchasable item");
       if (_isERC1155) {
-        _purchaseHook.hookERC1155(tx.origin, _tokenContracts[i], _ids[i], _amounts[i]);
-        _userToERC1155ToIdToPurchaseCount[tx.origin][_tokenContracts[i]][_ids[i]] += _amounts[i];
+        _purchaseHook.hookERC1155(msg.sender, _tokenContracts[i], _ids[i], _amounts[i]);
+        _userToERC1155ToIdToPurchaseCount[msg.sender][_tokenContracts[i]][_ids[i]] += _amounts[i];
         IERC1155(_tokenContracts[i]).safeTransferFrom(
           address(this),
           _msgSender(),
@@ -82,8 +82,8 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
           ""
         );
       } else {
-        _purchaseHook.hookERC721(tx.origin, _tokenContracts[i], _ids[i]);
-        ++_userToERC721ToPurchaseCount[tx.origin][_tokenContracts[i]];
+        _purchaseHook.hookERC721(msg.sender, _tokenContracts[i], _ids[i]);
+        ++_userToERC721ToPurchaseCount[msg.sender][_tokenContracts[i]];
         IERC721(_tokenContracts[i]).safeTransferFrom(address(this), _msgSender(), _ids[i]);
       }
     }

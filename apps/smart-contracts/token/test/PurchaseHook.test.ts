@@ -8,7 +8,7 @@ import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { purchaseHookFixture } from './fixtures/PurchaseHookFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import { revertReason, ZERO } from '../utils'
+import { ZERO, MAX_UINT256 } from '../utils'
 import { MockERC20, PurchaseHook } from '../types/generated'
 
 chai.use(smock.matchers)
@@ -518,6 +518,27 @@ describe('PurchaseHook', () => {
       await expect(
         purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, erc1155MaxAmount)
       ).to.not.reverted
+    })
+
+    it('succeeds if purchase amount = 0', async () => {
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [erc1155MaxAmount])
+
+      await expect(purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, ZERO)).to.not
+        .reverted
+    })
+
+    it('succeeds if purchase amount is max UINT', async () => {
+      await purchaseHook
+        .connect(owner)
+        .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [MAX_UINT256])
+      tokenShop.getERC1155PurchaseCount
+        .whenCalledWith(user1.address, erc1155Contract, tokenId)
+        .returns(0)
+
+      await expect(purchaseHook.hookERC1155(user1.address, erc1155Contract, tokenId, MAX_UINT256))
+        .to.not.reverted
     })
   })
 })

@@ -15,6 +15,7 @@ interface ITokenShop {
 
   function setPurchaseHook(address newPurchaseHook) external;
 
+  //TODO: dev comment that ids can be left as 0 if it's an ERC721
   function purchase(
     address[] memory tokenContracts,
     uint256[] memory ids,
