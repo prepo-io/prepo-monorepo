@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity =0.8.6;
 
-import "./interfaces/ITimeMultiplierCalculator.sol";
+import "./interfaces/ICalculatorFromTimestamp.sol";
 
-contract SteppedTimeMultiplierV1 is ITimeMultiplierCalculator {
+contract SteppedTimeMultiplierV1 is ICalculatorFromTimestamp {
   function calculate(uint256 _timestamp) external view override returns (uint256 timeMultiplier) {
     // If user has no timestamp, it means they haven't staked
     if (_timestamp == 0) return 1000000000000;
