@@ -66,6 +66,10 @@ describe('TokenShop', () => {
     it('sets payment token from constructor', async () => {
       expect(await tokenShop.getPaymentToken()).to.eq(paymentToken.address)
     })
+
+    it('sets deployer as owner', async () => {
+      expect(await tokenShop.owner()).to.eq(deployer.address)
+    })
   })
 
   describe('# setContractToIdToPrice', () => {

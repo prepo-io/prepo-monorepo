@@ -45,6 +45,10 @@ describe('PregenPass', () => {
     it('sets nominee from constructor', async () => {
       expect(await pregenPass.getNominee()).to.eq(owner.address)
     })
+
+    it('sets deployer as owner', async () => {
+      expect(await pregenPass.owner()).to.eq(deployer.address)
+    })
   })
 
   describe('# setURI', () => {

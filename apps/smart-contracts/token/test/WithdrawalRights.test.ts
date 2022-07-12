@@ -45,6 +45,10 @@ describe('WithdrawalRights', () => {
     it('sets nominee from constructor', async () => {
       expect(await withdrawalRights.getNominee()).to.eq(governance.address)
     })
+
+    it('sets deployer as owner', async () => {
+      expect(await withdrawalRights.owner()).to.eq(deployer.address)
+    })
   })
 
   describe('# setURI', () => {

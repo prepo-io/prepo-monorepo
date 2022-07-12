@@ -67,6 +67,10 @@ describe('Vesting', () => {
 
       expect(await vesting.getNominee()).to.eq(owner.address)
     })
+
+    it('sets deployer as owner', async () => {
+      expect(await vesting.owner()).to.eq(deployer.address)
+    })
   })
 
   describe('# setPaused', () => {

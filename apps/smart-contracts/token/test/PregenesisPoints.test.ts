@@ -70,6 +70,10 @@ describe('PregenesisPoints', () => {
     it('sets shop as zero address', async () => {
       expect(await points.getShop()).to.eq(ZERO_ADDRESS)
     })
+
+    it('sets deployer as owner', async () => {
+      expect(await points.owner()).to.eq(deployer.address)
+    })
   })
 
   describe('# setShop', () => {
