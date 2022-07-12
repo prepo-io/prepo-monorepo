@@ -92,8 +92,8 @@ export class TradeStore {
   }
 
   quoteExactInput = debounce(async (selectedMarket: MarketEntity): Promise<number | undefined> => {
-    const selectedToken = selectedMarket?.[`${this.direction}Token`]
-    const pool = selectedMarket?.[`${this.direction}Pool`]
+    const selectedToken = selectedMarket[`${this.direction}Token`]
+    const pool = selectedMarket[`${this.direction}Pool`]
     const state = pool?.poolState
     const fee = pool?.poolImmutables?.fee
     if (!fee || !selectedToken || !state || !this.openTradeAmount || !selectedToken.address) {
