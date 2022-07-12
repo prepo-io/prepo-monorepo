@@ -2,7 +2,7 @@
 pragma solidity =0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "prepo-smart-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract ERC721Mintable is ERC721, SafeOwnable {
   constructor(string memory _newName, string memory _newSymbol) ERC721(_newName, _newSymbol) {}

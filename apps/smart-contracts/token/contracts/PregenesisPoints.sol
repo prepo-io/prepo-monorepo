@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./interfaces/IPregenesisPoints.sol";
-import "prepo-smart-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract PregenesisPoints is IPregenesisPoints, SafeOwnable, ReentrancyGuard, ERC20 {
   address private _shop;
@@ -13,11 +13,11 @@ contract PregenesisPoints is IPregenesisPoints, SafeOwnable, ReentrancyGuard, ER
   mapping(address => bool) private _userToClaim;
 
   constructor(
-    address _owner,
+    address _nominatedOwner,
     string memory _name,
     string memory _symbol
   ) ERC20(_name, _symbol) {
-    transferOwnership(_owner);
+    transferOwnership(_nominatedOwner);
   }
 
   function setShop(address _newShop) external override onlyOwner {

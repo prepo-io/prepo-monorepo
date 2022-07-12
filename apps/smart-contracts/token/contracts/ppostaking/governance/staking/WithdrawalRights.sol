@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "prepo-smart-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract WithdrawalRights is SafeOwnable, ERC721 {

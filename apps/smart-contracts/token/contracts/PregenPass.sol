@@ -2,15 +2,18 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "prepo-smart-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract PregenPass is SafeOwnable, ERC721Enumerable {
   uint256 private _id;
   string private _uri;
 
-  /// @dev owner needs to be set as the prePO governance address not the deployer
-  constructor(address _owner, string memory _newURI) ERC721("Pregen Pass", "PREGENPASS") {
-    transferOwnership(_owner);
+  /** 
+   * @dev Owner will be set as the deployer. After deployment, the nominated owner needs to 
+   * accept the nomination for ownership to be transferred.
+   */ 
+  constructor(address _nominatedOwner, string memory _newURI) ERC721("Pregen Pass", "PREGENPASS") {
+    transferOwnership(_nominatedOwner);
     _uri = _newURI;
   }
 

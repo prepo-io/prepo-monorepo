@@ -8,9 +8,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/ITokenShop.sol";
 import "./interfaces/IPurchaseHook.sol";
-import "prepo-smart-contracts/contracts/SafeOwnable.sol";
-
-// import "prepo-shared-contracts/contracts/SafeOwnable.sol"; // Example on how to use the prepo-shared-contracts package
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
   using SafeERC20 for IERC20;
@@ -28,8 +26,8 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
     _;
   }
 
-  constructor(address _owner, address _newPaymentToken) {
-    transferOwnership(_owner);
+  constructor(address _nominatedOwner, address _newPaymentToken) {
+    transferOwnership(_nominatedOwner);
     _paymentToken = IERC20(_newPaymentToken);
   }
 
