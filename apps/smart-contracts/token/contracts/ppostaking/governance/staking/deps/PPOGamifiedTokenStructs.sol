@@ -2,7 +2,6 @@
 pragma solidity =0.8.7;
 
 // TODO move to IPPOGamifiedToken
-// TODO update compiler to 0.8.7
 
 struct Balance {
   /// units of staking token that has been deposited and consequently wrapped
