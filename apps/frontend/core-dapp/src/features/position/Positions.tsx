@@ -1,13 +1,13 @@
 import { Box, Button, Flex, Typography } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
-import PositionItem, { PositionItemSkeleton } from './PositionItem'
 import ClosePositionSummary from './ClosePositionSummary'
 import { useRootStore } from '../../context/RootStoreProvider'
 import { Routes } from '../../lib/routes'
+import Record, { RecordSkeleton } from '../portfolio/Record'
 
 const Positions: React.FC = () => {
   const { portfolioStore, web3Store } = useRootStore()
-  const { positions, selectedPosition } = portfolioStore
+  const { positions, selectedPosition, setSelectedPosition } = portfolioStore
   const { connected } = web3Store
 
   if (!connected)
@@ -35,8 +35,34 @@ const Positions: React.FC = () => {
     <Box position="relative">
       {positions.map(({ position, market, data }) => {
         const key = `${position}_${market.urlId}`
-        if (!data) return <PositionItemSkeleton key={key} />
-        return <PositionItem key={key} position={{ position, market, data }} />
+        if (!data) return <RecordSkeleton key={key} />
+        return (
+          <Record
+            key={key}
+            iconName={market.iconName}
+            name={market.name}
+            nameRedirectUrl={`/markets/${market.urlId}/trade`}
+            position={position}
+            buttonLabel="Close Position"
+            buttonStyles={{
+              backgroundColor: 'primaryAccent',
+              color: 'buttonDefaultLabel',
+            }}
+            data={[
+              {
+                label: 'PNL',
+                amount: data.pnl,
+                percent: data.percentage,
+              },
+              {
+                label: 'Total Value',
+                amount: data.totalValue,
+                usd: true,
+              },
+            ]}
+            onButtonClicked={(): void => setSelectedPosition({ position, market, data })}
+          />
+        )
       })}
       {selectedPosition && <ClosePositionSummary position={selectedPosition} />}
     </Box>
