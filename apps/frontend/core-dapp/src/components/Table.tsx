@@ -19,6 +19,7 @@ export type RowData = {
     name: string
     position: PositionType
   }
+  warning?: boolean
 }
 
 const Wrapper = styled.div<{ hideBorder: boolean; padding: number }>`
@@ -42,8 +43,8 @@ const PercentWrapper = styled.div`
   display: inline-block;
 `
 
-const Right = styled(Col)`
-  color: ${({ theme }): string => theme.color.neutral1};
+const Right = styled(Col)<{ $warning?: boolean }>`
+  color: ${({ theme, $warning }): string => ($warning ? theme.color.error : theme.color.neutral1)};
   font-size: ${({ theme }): string => theme.fontSize.sm};
   font-weight: ${({ theme }): number => theme.fontWeight.semiBold};
   text-align: right;
@@ -103,10 +104,12 @@ const Table: React.FC<Props> = ({
       {data.map((dataItem) => (
         <Wrapper key={dataItem.label} hideBorder={hideBorder} padding={TABLE_PADDING[padding]}>
           <Row>
-            <Col xs={16}>
+            <Col xs={18}>
               <Subtitle tooltip={dataItem.tooltip}>{dataItem.label}</Subtitle>
             </Col>
-            <Right xs={8}>{renderRightSide(dataItem)}</Right>
+            <Right $warning={dataItem.warning} xs={6}>
+              {renderRightSide(dataItem)}
+            </Right>
           </Row>
         </Wrapper>
       ))}

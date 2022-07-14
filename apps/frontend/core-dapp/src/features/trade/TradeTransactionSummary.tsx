@@ -11,10 +11,15 @@ import { Routes } from '../../lib/routes'
 import { numberFormatter } from '../../utils/numberFormatter'
 
 const { significantDigits } = numberFormatter
+const HIGHLIGHT_IMPACT_BREAKPOINT = 5
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
-  const { tradeStore, preCTTokenStore } = useRootStore()
+  const {
+    tradeStore,
+    preCTTokenStore,
+    advancedSettingsStore: { slippage },
+  } = useRootStore()
   const {
     openTradeAmount,
     openTradeHash,
@@ -58,15 +63,32 @@ const TradeTransactionSummary: React.FC = () => {
 
   if (selectedMarket === undefined) return null
 
+  const estimatedValution = valuation ?? 0
+  const currentValuation = selectedMarket.estimatedValuation?.value
+  const valuationImpact = currentValuation
+    ? numberFormatter.rawPercent(estimatedValution / currentValuation - 1)
+    : undefined
+
   const tradeTransactionSummary = [
     {
       label: 'Trade Size',
       amount: openTradeAmount,
     },
     {
-      label: 'Average Valuation Price',
+      label: 'Expected Valuation',
       tooltip: <EstimatedValuation marketName={selectedMarket.name} />,
-      amount: valuation === undefined ? undefined : `$${significantDigits(valuation)}`,
+      amount: `$${significantDigits(estimatedValution)}`,
+      ignoreFormatAmount: true,
+    },
+    {
+      label: 'Valuation Impact',
+      amount: `${valuationImpact}%`,
+      ignoreFormatAmount: true,
+      warning: +(valuationImpact || 0) > HIGHLIGHT_IMPACT_BREAKPOINT,
+    },
+    {
+      label: `Maximum Valuation After Slippage (${numberFormatter.percent(slippage)})`,
+      amount: `$${significantDigits(estimatedValution * (1 - slippage))}`,
       ignoreFormatAmount: true,
     },
   ]
@@ -75,7 +97,7 @@ const TradeTransactionSummary: React.FC = () => {
     <TransactionSummary
       loading={openTradeUILoading(selectedMarket)}
       data={tradeTransactionSummary}
-      disabled={tradeDisabled}
+      disabled={tradeDisabled || valuation === undefined}
       onComplete={onComplete}
       onConfirm={handlePlaceTrade}
       onRetry={handlePlaceTrade}
