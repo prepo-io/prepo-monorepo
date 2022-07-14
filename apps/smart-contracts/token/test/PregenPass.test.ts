@@ -20,11 +20,6 @@ describe('PregenPass', () => {
     pregenPass = await mockPregenPassFixture(owner.address, URI)
   }
 
-  const setupPregenPass = async (): Promise<void> => {
-    await deployPregenPass()
-    await pregenPass.connect(owner).acceptOwnership()
-  }
-
   describe('constructor', () => {
     before(async () => {
       await deployPregenPass()
@@ -43,6 +38,7 @@ describe('PregenPass', () => {
     })
 
     it('sets nominee from constructor', async () => {
+      expect(await pregenPass.getNominee()).to.not.eq(deployer.address)
       expect(await pregenPass.getNominee()).to.eq(owner.address)
     })
 
@@ -53,7 +49,8 @@ describe('PregenPass', () => {
 
   describe('# setURI', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', () => {
@@ -93,7 +90,8 @@ describe('PregenPass', () => {
 
   describe('# mint', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', () => {
@@ -121,7 +119,8 @@ describe('PregenPass', () => {
 
   describe('# mintBatch', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', () => {
@@ -169,7 +168,8 @@ describe('PregenPass', () => {
 
   describe('# burn', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', () => {
@@ -207,7 +207,8 @@ describe('PregenPass', () => {
 
   describe('# burnBatch', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', async () => {
@@ -265,7 +266,8 @@ describe('PregenPass', () => {
 
   describe('# _beforeTokenTransfer', () => {
     beforeEach(async () => {
-      await setupPregenPass()
+      await deployPregenPass()
+      await pregenPass.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', () => {

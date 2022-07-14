@@ -44,11 +44,6 @@ describe('PregenesisPoints', () => {
     merkleTree = generateAccountAmountMerkleTree(eligibleNodes)
   }
 
-  const setupPregenesisPoints = async (): Promise<void> => {
-    await deployPregenesisPoints()
-    await points.connect(owner).acceptOwnership()
-  }
-
   describe('initial state', () => {
     before(async () => {
       await deployPregenesisPoints()
@@ -78,7 +73,8 @@ describe('PregenesisPoints', () => {
 
   describe('# setShop', () => {
     beforeEach(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
+      await points.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', async () => {
@@ -121,7 +117,8 @@ describe('PregenesisPoints', () => {
 
   describe('# setMerkleTreeRoot', () => {
     beforeEach(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
+      await points.connect(owner).acceptOwnership()
     })
 
     it('reverts if not owner', async () => {
@@ -165,7 +162,8 @@ describe('PregenesisPoints', () => {
 
   describe('# mint', () => {
     beforeEach(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
+      await points.connect(owner).acceptOwnership()
       await points.connect(owner).setShop(shop.address)
     })
 
@@ -214,7 +212,8 @@ describe('PregenesisPoints', () => {
    */
   describe('# burn', () => {
     beforeEach(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
+      await points.connect(owner).acceptOwnership()
       await points.connect(owner).setShop(shop.address)
     })
 
@@ -274,7 +273,8 @@ describe('PregenesisPoints', () => {
 
   describe('# claim', () => {
     beforeEach(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
+      await points.connect(owner).acceptOwnership()
       await points.connect(owner).setMerkleTreeRoot(merkleTree.getHexRoot())
     })
 

@@ -23,11 +23,6 @@ describe('WithdrawalRights', () => {
     withdrawalRights = await withdrawalRightsFixture(governance.address)
   }
 
-  const setupWithdrawalRights = async (): Promise<void> => {
-    await deployWithdrawalRights()
-    await withdrawalRights.connect(governance).acceptOwnership()
-  }
-
   describe('initial state', () => {
     before(async () => {
       await setupAccounts()
@@ -43,6 +38,7 @@ describe('WithdrawalRights', () => {
     })
 
     it('sets nominee from constructor', async () => {
+      expect(await withdrawalRights.getNominee()).to.not.eq(deployer.address)
       expect(await withdrawalRights.getNominee()).to.eq(governance.address)
     })
 
@@ -54,7 +50,8 @@ describe('WithdrawalRights', () => {
   describe('# setURI', () => {
     beforeEach(async () => {
       await setupAccounts()
-      await setupWithdrawalRights()
+      await deployWithdrawalRights()
+      await withdrawalRights.connect(governance).acceptOwnership()
     })
 
     it('reverts if not owner', async () => {
@@ -98,7 +95,8 @@ describe('WithdrawalRights', () => {
   describe('# setPPOStaking', () => {
     beforeEach(async () => {
       await setupAccounts()
-      await setupWithdrawalRights()
+      await deployWithdrawalRights()
+      await withdrawalRights.connect(governance).acceptOwnership()
     })
 
     it('reverts if not owner', async () => {
@@ -142,7 +140,8 @@ describe('WithdrawalRights', () => {
   describe('# mint', () => {
     beforeEach(async () => {
       await setupAccounts()
-      await setupWithdrawalRights()
+      await deployWithdrawalRights()
+      await withdrawalRights.connect(governance).acceptOwnership()
       await withdrawalRights.connect(governance).setPPOStaking(ppoStaking.address)
     })
 

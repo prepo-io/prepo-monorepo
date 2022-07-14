@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity =0.8.7;
 
-import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../../interfaces/IStakingRewardsDistribution.sol";
 import "../../governance/staking/interfaces/IPPOStaking.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract StakingRewardsDistribution is IStakingRewardsDistribution, SafeOwnable, ReentrancyGuard {
   IPPOStaking private _ppoStaking;
