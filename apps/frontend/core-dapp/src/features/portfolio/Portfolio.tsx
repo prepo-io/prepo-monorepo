@@ -147,7 +147,7 @@ const Portfolio: React.FC = () => {
         <PositionsAndHistory />
       </Col>
       {isDesktop && (
-        <Col flex={2}>
+        <Col flex="3">
           <Box>
             <Typography color="neutral4" variant="text-semiBold-md" pb={8} pl={27} pt={20}>
               Portfolio Breakdown
