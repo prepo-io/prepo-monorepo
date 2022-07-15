@@ -10,6 +10,7 @@ contract PurchaseHook is IPurchaseHook, SafeOwnable {
   mapping(address => mapping(uint256 => uint256)) private _erc1155ToIdToMaxPurchasesPerUser;
   ITokenShop private _tokenShop;
 
+  //TODO: EOA validation check in hookERC721 and hookERC1155 implementation
   function hookERC721(
     address _user,
     address _tokenContract,
@@ -35,7 +36,22 @@ contract PurchaseHook is IPurchaseHook, SafeOwnable {
     address _tokenContract,
     uint256 _tokenId,
     uint256 _amount
-  ) external override {}
+  ) external override {
+    require(address(_tokenShop) != address(0), "Token shop not set in hook");
+    uint256 _maxPurchaseAmount = _erc1155ToIdToMaxPurchasesPerUser[_tokenContract][_tokenId];
+    // TODO: move in the new ITokenShopPurchaseHook.sol in future PR
+    /**
+     * _maxPurchaseAmount = 0 means an unlimited amount of items
+     * can be purchased for a ERC1155 Contract and tokenId.
+     */
+    if (_maxPurchaseAmount != 0) {
+      require(
+        _tokenShop.getERC1155PurchaseCount(_user, _tokenContract, _tokenId) + _amount <=
+          _maxPurchaseAmount,
+        "ERC1155 purchase limit reached"
+      );
+    }
+  }
 
   function setTokenShop(address _newTokenShop) external override onlyOwner {
     _tokenShop = ITokenShop(_newTokenShop);

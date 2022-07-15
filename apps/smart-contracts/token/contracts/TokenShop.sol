@@ -19,6 +19,8 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
   IPurchaseHook private _purchaseHook;
   mapping(address => mapping(uint256 => uint256)) private _contractToIdToPrice;
   mapping(address => mapping(address => uint256)) private _userToERC721ToPurchaseCount;
+  mapping(address => mapping(address => mapping(uint256 => uint256)))
+    private _userToERC1155ToIdToPurchaseCount;
 
   //TODO: move it into Pausable.sol
   modifier whenNotPaused() {
@@ -67,7 +69,8 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
       bool _isERC1155 = IERC1155(_tokenContracts[i]).supportsInterface(type(IERC1155).interfaceId);
       require(_contractToIdToPrice[_tokenContracts[i]][_ids[i]] != 0, "Non-purchasable item");
       if (_isERC1155) {
-        _purchaseHook.hookERC1155(tx.origin, _tokenContracts[i], _ids[i], _amounts[i]);
+        _purchaseHook.hookERC1155(msg.sender, _tokenContracts[i], _ids[i], _amounts[i]);
+        _userToERC1155ToIdToPurchaseCount[msg.sender][_tokenContracts[i]][_ids[i]] += _amounts[i];
         IERC1155(_tokenContracts[i]).safeTransferFrom(
           address(this),
           _msgSender(),
@@ -76,8 +79,8 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
           ""
         );
       } else {
-        _purchaseHook.hookERC721(tx.origin, _tokenContracts[i], _ids[i]);
-        ++_userToERC721ToPurchaseCount[tx.origin][_tokenContracts[i]];
+        _purchaseHook.hookERC721(msg.sender, _tokenContracts[i], _ids[i]);
+        ++_userToERC721ToPurchaseCount[msg.sender][_tokenContracts[i]];
         IERC721(_tokenContracts[i]).safeTransferFrom(address(this), _msgSender(), _ids[i]);
       }
     }
@@ -132,6 +135,14 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
     returns (uint256)
   {
     _userToERC721ToPurchaseCount[_user][_tokenContract];
+  }
+
+  function getERC1155PurchaseCount(
+    address _user,
+    address _tokenContract,
+    uint256 _id
+  ) external view override returns (uint256) {
+    return _userToERC1155ToIdToPurchaseCount[_user][_tokenContract][_id];
   }
 
   function onERC1155Received(
