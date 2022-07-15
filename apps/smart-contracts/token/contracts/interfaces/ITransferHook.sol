@@ -3,5 +3,9 @@ pragma solidity =0.8.7;
 
 //TODO: add all natspecs at the end
 interface ITransferHook {
-    function hook(address from, address to, uint256 amount) external;
+  function hook(
+    address from,
+    address to,
+    uint256 amount
+  ) external;
 }
