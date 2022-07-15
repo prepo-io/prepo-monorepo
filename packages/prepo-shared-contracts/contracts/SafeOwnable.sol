@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity =0.8.7;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -16,7 +16,7 @@ contract SafeOwnable is ISafeOwnable, Ownable {
     _setNominee(_account);
   }
 
-  function acceptOwnership() public virtual onlyNominee {
+  function acceptOwnership() public virtual override onlyNominee {
     _transferOwnership(_nominee);
     _setNominee(address(0));
   }
