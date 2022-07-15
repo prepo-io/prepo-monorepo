@@ -1,4 +1,4 @@
-import { ExternalContract, SupportedContracts } from './contract.types'
+import { ExternalContract } from './contract.types'
 
 export type SupportedMarketTokens =
   | 'PREFAKESTOCK_LONG_TOKEN'
@@ -22,7 +22,11 @@ export const PREFAKETOKEN_SHORT_TOKEN: ExternalContract = {
   goerli: '0x262f7263d2683e106109f216fF720D9f3eB69ca6',
 }
 
-export const supportedMarketTokens: SupportedContracts = {
+type SupportedMarketTokensContract = {
+  [key in SupportedMarketTokens]: ExternalContract
+}
+
+export const supportedMarketTokens: SupportedMarketTokensContract = {
   PREFAKESTOCK_LONG_TOKEN,
   PREFAKESTOCK_SHORT_TOKEN,
   PREFAKETOKEN_LONG_TOKEN,

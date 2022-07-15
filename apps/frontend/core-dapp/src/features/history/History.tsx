@@ -1,30 +1,106 @@
-import { Box, centered, coreDappTheme, Typography } from 'prepo-ui'
-import styled from 'styled-components'
-import { PositionItemSkeleton } from '../position/PositionItem'
+import { observer } from 'mobx-react-lite'
+import { NETWORKS } from 'prepo-constants'
+import { Box, Flex, Typography } from 'prepo-ui'
+import { useRootStore } from '../../context/RootStoreProvider'
+import { getFullDateTimeFromSeconds } from '../../utils/date-utils'
+import Record, { RecordButtonColors, RecordSkeleton } from '../portfolio/Record'
 
-const { Z_INDEX } = coreDappTheme
+const DEFAULT_COLORS: RecordButtonColors = {
+  backgroundColor: 'accentPrimary',
+  color: 'buttonDefaultLabel',
+}
 
-const Overlay = styled.div`
-  ${centered}
-  background-color: rgba(255, 255, 255, 0.7);
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: ${Z_INDEX.onboardModal};
-`
-const History: React.FC = () => (
-  <Box position="relative">
-    <PositionItemSkeleton />
-    <PositionItemSkeleton />
-    <PositionItemSkeleton />
-    <Overlay>
-      <Typography color="primary" variant="text-bold-md">
-        Coming Soon
-      </Typography>
-    </Overlay>
-  </Box>
-)
+const buttonColors: { [key: string]: RecordButtonColors } = {
+  Withdrawn: {
+    backgroundColor: 'accentWarning',
+    color: 'warning',
+  },
+  Deposited: {
+    backgroundColor: 'accentWarning',
+    color: 'warning',
+  },
+  Opened: {
+    backgroundColor: 'accentSuccess',
+    color: 'success',
+  },
+  Closed: {
+    backgroundColor: 'accentError',
+    color: 'error',
+  },
+}
 
-export default History
+const History: React.FC = () => {
+  const {
+    portfolioStore: { historicalEvents },
+    web3Store,
+  } = useRootStore()
+  const { connected, network } = web3Store
+
+  if (!connected)
+    return (
+      <Flex p={24} flexDirection="column">
+        <Typography color="neutral3" mb={12} textAlign="center" variant="text-regular-base">
+          Your wallet is not connected.
+        </Typography>
+      </Flex>
+    )
+
+  if (historicalEvents === undefined)
+    return (
+      <Box>
+        <RecordSkeleton />
+        <RecordSkeleton />
+        <RecordSkeleton />
+      </Box>
+    )
+
+  if (historicalEvents.length === 0)
+    return (
+      <Flex p={24} flexDirection="column">
+        <Typography color="neutral3" mb={12} variant="text-regular-base">
+          No transaction history.
+        </Typography>
+      </Flex>
+    )
+
+  return (
+    <Box>
+      {historicalEvents.map(
+        ({ iconName, event, name, timestamp, transactionHash, usdValue, eventType, marketId }) => {
+          let nameRedirectUrl: string | undefined
+          if ((marketId !== undefined && event === 'Opened') || event === 'Closed')
+            nameRedirectUrl = `/markets/${marketId}/trade`
+          if (event === 'Deposited') nameRedirectUrl = '/portfolio/deposit'
+          if (event === 'Withdrawn') nameRedirectUrl = '/portfolio/withdraw'
+
+          return (
+            <Record
+              key={transactionHash}
+              iconName={iconName}
+              name={name}
+              nameRedirectUrl={nameRedirectUrl}
+              position={eventType}
+              buttonStyles={buttonColors[event] ?? DEFAULT_COLORS}
+              data={[
+                {
+                  label: 'Value',
+                  amount: usdValue,
+                },
+                {
+                  label: 'Transaction Time',
+                  amount: getFullDateTimeFromSeconds(timestamp),
+                  usd: false,
+                },
+              ]}
+              buttonLabel={event}
+              target="_blank"
+              href={`${NETWORKS[network.name].blockExplorer}/tx/${transactionHash}`}
+            />
+          )
+        }
+      )}
+    </Box>
+  )
+}
+
+export default observer(History)

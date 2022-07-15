@@ -6,6 +6,8 @@ import { RootStore } from '../../stores/RootStore'
 import { Position as PositionFromGraph } from '../../types/user.types'
 import { normalizeDecimalPrecision } from '../../utils/number-utils'
 import { PositionType } from '../../utils/prepo.types'
+import { formatHistoricalEvent } from '../history/history-utils'
+import { HistoryTransaction } from '../history/history.types'
 import { Direction } from '../trade/TradeStore'
 
 export type Position = {
@@ -82,6 +84,15 @@ export class PortfolioStore {
     }
 
     return returnValue
+  }
+
+  get historicalEvents(): HistoryTransaction[] | undefined {
+    const { address, network } = this.root.web3Store
+    if (!address) return []
+    return formatHistoricalEvent(
+      this.root.coreGraphStore.historicalEvents(address)?.historicalEvents,
+      network.name
+    )
   }
 
   get tradingPositions(): Position[] {
