@@ -88,7 +88,7 @@ const TradeTransactionSummary: React.FC = () => {
     },
     {
       label: `Maximum Valuation After Slippage (${numberFormatter.percent(slippage)})`,
-      amount: `$${significantDigits(estimatedValution * (1 - slippage))}`,
+      amount: `$${significantDigits(estimatedValution * (1 + slippage))}`,
       ignoreFormatAmount: true,
     },
   ]
