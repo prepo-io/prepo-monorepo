@@ -18,7 +18,7 @@ type Props = {
 
 const keepBackgroundOnHover = css`
   .ant-dropdown-menu-item-active {
-    background-color: ${({ theme }): string => theme.color.neutral10};;
+    background-color: ${({ theme }): string => theme.color.neutral10};
     * {
       color: ${({ theme }): string => theme.color.neutral3};
       font-weight: ${({ theme }): number => theme.fontWeight.semiBold};
@@ -29,6 +29,7 @@ const keepBackgroundOnHover = css`
         font-weight: ${({ theme }): number => theme.fontWeight.medium};
       }
     }
+  }
 `
 
 const hoverBackground = css`
@@ -80,12 +81,8 @@ const Wrapper = styled.div<Props>`
       border-radius: ${({ theme }): number => theme.borderRadius}px;
       padding: 0;
     }
-    ${({ keepBackgroundColorOnHover }): FlattenInterpolation<ThemeProps<DefaultTheme>> => {
-      if (keepBackgroundColorOnHover) {
-        return keepBackgroundOnHover
-      }
-      return hoverBackground
-    }}
+    ${({ keepBackgroundColorOnHover }): FlattenInterpolation<ThemeProps<DefaultTheme>> =>
+      keepBackgroundColorOnHover ? keepBackgroundOnHover : hoverBackground}
     .ant-dropdown-menu-item-divider {
       background-color: transparent;
       height: 2px;

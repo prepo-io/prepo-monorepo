@@ -73,11 +73,6 @@ const PpoDropdown: React.FC = () => {
         }))}
     />
   )
-  /* {ppoItems
-        .filter(({ href }) => Boolean(href))
-        .map(({ title, href, target }) => (
-
-        ))} */
 
   return isPhone || isTablet ? (
     <PpoLabel />
