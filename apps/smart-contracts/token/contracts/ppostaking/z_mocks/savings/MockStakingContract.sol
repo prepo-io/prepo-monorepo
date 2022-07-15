@@ -2,7 +2,7 @@
 
 import {IGovernanceHook} from "../../governance/staking/interfaces/IGovernanceHook.sol";
 
-pragma solidity 0.8.6;
+pragma solidity =0.8.7;
 
 contract MockStakingContract {
   mapping(address => uint256) private _balances;

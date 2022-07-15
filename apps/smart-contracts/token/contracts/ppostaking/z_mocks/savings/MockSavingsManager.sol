@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.8.6;
+pragma solidity =0.8.7;
 
 import {IMasset} from "../../interfaces/IMasset.sol";
 import {ISavingsContractV1} from "../../interfaces/ISavingsContract.sol";
