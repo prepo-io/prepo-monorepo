@@ -529,7 +529,7 @@ describe('PurchaseHook', () => {
         .reverted
     })
 
-    it('succeeds if purchase amount is max UINT', async () => {
+    it('succeeds if purchase amount is max uint', async () => {
       await purchaseHook
         .connect(owner)
         .setMaxERC1155PurchasesPerUser([erc1155Contract], [tokenId], [MAX_UINT256])
