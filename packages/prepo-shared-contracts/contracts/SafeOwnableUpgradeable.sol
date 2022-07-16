@@ -4,7 +4,7 @@ pragma solidity =0.8.7;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./interfaces/ISafeOwnable.sol";
 
-abstract contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
+contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
   address private _nominee;
 
   modifier onlyNominee() {
