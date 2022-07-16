@@ -3,9 +3,7 @@ pragma solidity =0.8.7;
 
 //TODO: add all natspecs at the end
 interface IBlocklist {
-  function blockAccounts(address[] memory accounts) external;
+  function set(address[] calldata accounts, bool[] calldata blocked) external;
 
-  function removeAccounts(address[] memory accounts) external;
-
-  function reset() external;
+  function reset(address[] calldata blockedAccounts) external;
 }
