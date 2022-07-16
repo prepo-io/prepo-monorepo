@@ -118,4 +118,25 @@ describe('=> PPO', () => {
       expect(await ppo.balanceOf(deployer.address)).to.eq(deployerPPOBalanceBefore)
     })
   })
+
+  describe('# burn', () => {
+    beforeEach(async () => {
+      await setupPPO()
+      await ppo.connect(owner).mint(1)
+    })
+
+    it('reverts if amount > balance', async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(owner.address)
+
+      await ppo.connect(owner).mint(1)
+
+      expect(await ppo.balanceOf(owner.address)).to.eq(ownerPPOBalanceBefore.add(1))
+    })
+
+    it("doesn't decrease caller balance if amount = 0", async () => {})
+
+    it('decreases caller balance if amount = 1', async () => {})
+
+    it('decreases caller balance if amount > 1', async () => {})
+  })
 })
