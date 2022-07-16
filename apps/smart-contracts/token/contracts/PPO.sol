@@ -9,12 +9,14 @@ contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
   ITransferHook private _transferHook;
 
   function initialize(address _nominatedOwner) public initializer {
-    __Ownable_init_unchained();
     __ReentrancyGuard_init_unchained();
+    __Ownable_init();
     transferOwnership(_nominatedOwner);
   }
 
-  function setTransferHook(ITransferHook _newTransferHook) external override onlyOwner {}
+  function setTransferHook(ITransferHook _newTransferHook) external override onlyOwner {
+    _transferHook = _newTransferHook;
+  }
 
   function mint(uint256 _amount) external override onlyOwner {}
 
