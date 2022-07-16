@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./interfaces/ISafeOwnable.sol";
 
-contract SafeOwnable is ISafeOwnable, Ownable {
+contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
   address private _nominee;
 
   modifier onlyNominee() {
@@ -12,10 +12,14 @@ contract SafeOwnable is ISafeOwnable, Ownable {
     _;
   }
 
+  function initialize() public initializer {
+    __Ownable_init_unchained();
+  }
+
   function transferOwnership(address _nominee)
     public
     virtual
-    override(ISafeOwnable, Ownable)
+    override(ISafeOwnable, OwnableUpgradeable)
     onlyOwner
   {
     _setNominee(_nominee);
@@ -31,8 +35,7 @@ contract SafeOwnable is ISafeOwnable, Ownable {
   }
 
   function _setNominee(address _newNominee) internal virtual {
-    address _oldNominee = _nominee;
+    emit NomineeUpdate(_nominee, _newNominee);
     _nominee = _newNominee;
-    emit NomineeUpdate(_oldNominee, _newNominee);
   }
 }

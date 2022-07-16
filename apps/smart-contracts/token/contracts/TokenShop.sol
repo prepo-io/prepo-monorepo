@@ -66,8 +66,10 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
     );
     require(address(_purchaseHook) != address(0), "Purchase hook not set");
     for (uint256 i; i < _tokenContracts.length; ++i) {
-      bool _isERC1155 = IERC1155(_tokenContracts[i]).supportsInterface(type(IERC1155).interfaceId);
       require(_contractToIdToPrice[_tokenContracts[i]][_ids[i]] != 0, "Non-purchasable item");
+      uint256 _totalPaymentAmount = _contractToIdToPrice[_tokenContracts[i]][_ids[i]] * _amounts[i];
+      _paymentToken.transferFrom(_msgSender(), address(this), _totalPaymentAmount);
+      bool _isERC1155 = IERC1155(_tokenContracts[i]).supportsInterface(type(IERC1155).interfaceId);
       if (_isERC1155) {
         _purchaseHook.hookERC1155(msg.sender, _tokenContracts[i], _ids[i], _amounts[i]);
         _userToERC1155ToIdToPurchaseCount[msg.sender][_tokenContracts[i]][_ids[i]] += _amounts[i];
