@@ -24,8 +24,8 @@ contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable, ERC20B
     _transferHook = _newTransferHook;
   }
 
-  function mint(uint256 _amount) external override onlyOwner {
-    _mint(owner(), _amount);
+  function mint(address _recipient, uint256 _amount) external override onlyOwner {
+    _mint(_recipient, _amount);
   }
 
   function burn(uint256 _amount) public override(IPPO, ERC20BurnableUpgradeable) {

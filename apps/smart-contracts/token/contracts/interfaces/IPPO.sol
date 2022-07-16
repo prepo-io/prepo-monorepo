@@ -7,7 +7,7 @@ import "./ITransferHook.sol";
 interface IPPO {
   function setTransferHook(ITransferHook newTransferHook) external;
 
-  function mint(uint256 amount) external;
+  function mint(address recipient, uint256 amount) external;
 
   function burn(uint256 amount) external;
 
