@@ -8,6 +8,6 @@ interface ISafeOwnable {
   function transferOwnership(address account) external;
 
   function acceptOwnership() external;
-  
+
   function getNominee() external view returns (address);
 }

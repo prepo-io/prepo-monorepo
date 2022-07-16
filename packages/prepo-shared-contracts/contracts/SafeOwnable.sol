@@ -12,7 +12,12 @@ contract SafeOwnable is ISafeOwnable, Ownable {
     _;
   }
 
-  function transferOwnership(address _account) public virtual override onlyOwner {
+  function transferOwnership(address _account)
+    public
+    virtual
+    override(ISafeOwnable, Ownable)
+    onlyOwner
+  {
     _setNominee(_account);
   }
 
