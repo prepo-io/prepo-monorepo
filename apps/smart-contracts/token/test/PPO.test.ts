@@ -3,6 +3,7 @@ import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { ppoFixture } from './fixtures/PPOFixtures'
+import { MAX_UINT256 } from '../utils'
 import { PPO } from '../types/generated'
 
 describe('=> PPO', () => {
@@ -99,23 +100,57 @@ describe('=> PPO', () => {
 
     it('reverts if not owner', async () => {
       expect(await ppo.owner()).to.not.eq(user1.address)
-      await expect(ppo.connect(user1).mint(1)).revertedWith('Ownable: caller is not the owner')
+
+      await expect(ppo.connect(user1).mint(user1.address, 1)).revertedWith(
+        'Ownable: caller is not the owner'
+      )
     })
 
-    it("increases owner's balance", async () => {
-      const ownerPPOBalanceBefore = await ppo.balanceOf(owner.address)
-
-      await ppo.connect(owner).mint(1)
-
-      expect(await ppo.balanceOf(owner.address)).to.eq(ownerPPOBalanceBefore.add(1))
+    it('reverts if minting to zero address', async () => {
+      await expect(ppo.connect(owner).mint(ZERO_ADDRESS, 1)).revertedWith(
+        'ERC20: mint to the zero address'
+      )
     })
 
-    it("does not increase deployer's balance", async () => {
-      const deployerPPOBalanceBefore = await ppo.balanceOf(deployer.address)
+    it('increases non-caller balance', async () => {
+      const nonCallerPPOBalanceBefore = await ppo.balanceOf(user1.address)
+      expect(owner).to.not.eq(user1)
 
-      await ppo.connect(owner).mint(1)
+      await ppo.connect(owner).mint(user1.address, 1)
 
-      expect(await ppo.balanceOf(deployer.address)).to.eq(deployerPPOBalanceBefore)
+      expect(await ppo.balanceOf(user1.address)).to.eq(nonCallerPPOBalanceBefore.add(1))
+    })
+
+    it('increases caller balance', async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(owner.address)
+
+      await ppo.connect(owner).mint(owner.address, 1)
+
+      expect(await ppo.balanceOf(owner.address)).to.eq(callerPPOBalanceBefore.add(1))
+    })
+
+    it('increases recipient balance if amount = 0', async () => {
+      const recipientPPOBalanceBefore = await ppo.balanceOf(owner.address)
+
+      await ppo.connect(owner).mint(user1.address, 0)
+
+      expect(await ppo.balanceOf(owner.address)).to.eq(recipientPPOBalanceBefore)
+    })
+
+    it('increases recipient balance if amount > 1', async () => {
+      const recipientPPOBalanceBefore = await ppo.balanceOf(owner.address)
+
+      await ppo.connect(owner).mint(user1.address, 2)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(recipientPPOBalanceBefore.add(2))
+    })
+
+    it('increases recipient balance if amount = max uint', async () => {
+      expect(await ppo.balanceOf(user1.address)).to.eq(0)
+
+      await ppo.connect(owner).mint(user1.address, MAX_UINT256)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(MAX_UINT256)
     })
   })
 })
