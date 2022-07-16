@@ -22,12 +22,12 @@ describe('SafeOwnable', () => {
     safeOwnable = await safeOwnableFixture()
   }
 
-  describe('# initial state', () => {
+  describe('initial state', () => {
     beforeEach(async () => {
       await setupSafeOwnable()
     })
 
-    it('sets owner as deployer', async () => {
+    it('sets owner to deployer', async () => {
       expect(await safeOwnable.owner()).to.eq(deployer.address)
     })
   })

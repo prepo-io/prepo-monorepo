@@ -16,13 +16,13 @@ contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
     __Ownable_init_unchained();
   }
 
-  function transferOwnership(address _account)
+  function transferOwnership(address _nominee)
     public
     virtual
     override(ISafeOwnable, OwnableUpgradeable)
     onlyOwner
   {
-    _setNominee(_account);
+    _setNominee(_nominee);
   }
 
   function acceptOwnership() public virtual override onlyNominee {
@@ -35,8 +35,7 @@ contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
   }
 
   function _setNominee(address _newNominee) internal virtual {
-    address _oldNominee = _nominee;
+    emit NomineeUpdate(_nominee, _newNominee);
     _nominee = _newNominee;
-    emit NomineeUpdate(_oldNominee, _newNominee);
   }
 }
