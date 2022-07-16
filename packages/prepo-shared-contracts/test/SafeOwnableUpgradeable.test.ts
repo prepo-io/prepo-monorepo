@@ -2,8 +2,8 @@ import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { ZERO_ADDRESS } from 'prepo-constants'
-import { safeOwnableUpgradeableFixture } from './fixtures/SafeOwnableUpgradeableFixture'
-import { SafeOwnableUpgradeable } from '../types/generated'
+import { deployableSafeOwnableUpgradeableFixture } from './fixtures/DeployableSafeOwnableUpgradeableFixture'
+import { DeployableSafeOwnableUpgradeable } from '../types/generated'
 
 describe('SafeOwnableUpgradeable', () => {
   let deployer: SignerWithAddress
@@ -11,12 +11,12 @@ describe('SafeOwnableUpgradeable', () => {
   let user1: SignerWithAddress
   let user2: SignerWithAddress
   let nominee: SignerWithAddress
-  let safeOwnable: SafeOwnableUpgradeable
+  let safeOwnable: DeployableSafeOwnableUpgradeable
 
   const setupSafeOwnableUpgradeable = async (): Promise<void> => {
     ;[deployer, user1, user2] = await ethers.getSigners()
     owner = deployer
-    safeOwnable = await safeOwnableUpgradeableFixture()
+    safeOwnable = await deployableSafeOwnableUpgradeableFixture()
   }
 
   describe('initial state', () => {

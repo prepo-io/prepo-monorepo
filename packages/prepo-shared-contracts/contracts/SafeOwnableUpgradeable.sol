@@ -12,10 +12,6 @@ contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
     _;
   }
 
-  function initialize() public initializer {
-    __Ownable_init_unchained();
-  }
-
   function transferOwnership(address _nominee)
     public
     virtual
