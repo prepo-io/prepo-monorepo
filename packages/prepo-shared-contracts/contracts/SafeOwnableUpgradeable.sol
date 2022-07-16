@@ -4,16 +4,12 @@ pragma solidity =0.8.7;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./interfaces/ISafeOwnable.sol";
 
-contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
+abstract contract SafeOwnableUpgradeable is ISafeOwnable, OwnableUpgradeable {
   address private _nominee;
 
   modifier onlyNominee() {
     require(_msgSender() == _nominee, "SafeOwnable: sender must be nominee");
     _;
-  }
-
-  function initialize() public initializer {
-    __Ownable_init_unchained();
   }
 
   function transferOwnership(address _nominee)
