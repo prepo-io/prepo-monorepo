@@ -1,30 +1,27 @@
-import chai, { expect } from 'chai'
-import { solidity } from 'ethereum-waffle'
+import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { ZERO_ADDRESS } from 'prepo-constants'
-import { safeOwnableFixture } from './fixtures/SafeOwnableFixture'
-import { SafeOwnable } from '../types/generated'
+import { safeOwnableUpgradeableFixture } from './fixtures/SafeOwnableUpgradeableFixture'
+import { SafeOwnableUpgradeable } from '../types/generated'
 
-chai.use(solidity)
-
-describe('SafeOwnable', () => {
+describe('SafeOwnableUpgradeable', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user1: SignerWithAddress
   let user2: SignerWithAddress
   let nominee: SignerWithAddress
-  let safeOwnable: SafeOwnable
+  let safeOwnable: SafeOwnableUpgradeable
 
-  const setupSafeOwnable = async (): Promise<void> => {
+  const setupSafeOwnableUpgradeable = async (): Promise<void> => {
     ;[deployer, user1, user2] = await ethers.getSigners()
     owner = deployer
-    safeOwnable = await safeOwnableFixture()
+    safeOwnable = await safeOwnableUpgradeableFixture()
   }
 
   describe('initial state', () => {
     beforeEach(async () => {
-      await setupSafeOwnable()
+      await setupSafeOwnableUpgradeable()
     })
 
     it('sets owner to deployer', async () => {
@@ -34,7 +31,7 @@ describe('SafeOwnable', () => {
 
   describe('# transferOwnership', () => {
     beforeEach(async () => {
-      await setupSafeOwnable()
+      await setupSafeOwnableUpgradeable()
     })
 
     it('reverts if not owner and not nominee', async () => {
@@ -100,7 +97,7 @@ describe('SafeOwnable', () => {
 
   describe('# acceptOwnership', () => {
     beforeEach(async () => {
-      await setupSafeOwnable()
+      await setupSafeOwnableUpgradeable()
       nominee = user1
       await safeOwnable.connect(owner).transferOwnership(nominee.address)
     })
