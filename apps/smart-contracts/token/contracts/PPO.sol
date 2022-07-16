@@ -6,7 +6,13 @@ import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 import "prepo-shared-contracts/contracts/SafeOwnableUpgradeable.sol";
 
 contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
-  function initialize(address _nominatedOwner) public initializer {}
+  ITransferHook private _transferHook;
+
+  function initialize(address _nominatedOwner) public initializer {
+    __Ownable_init_unchained();
+    __ReentrancyGuard_init_unchained();
+    transferOwnership(_nominatedOwner);
+  }
 
   function setTransferHook(ITransferHook _newTransferHook) external override onlyOwner {}
 
@@ -15,4 +21,8 @@ contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
   function burn(uint256 _amount) external override onlyOwner {}
 
   function burnFrom(address _account, uint256 _amount) external override onlyOwner {}
+
+  function getTransferHook() external view override returns (ITransferHook) {
+    return _transferHook;
+  }
 }
