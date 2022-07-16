@@ -8,11 +8,11 @@ import "prepo-shared-contracts/contracts/SafeOwnableUpgradeable.sol";
 contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
   function initialize(address _nominatedOwner) public initializer {}
 
-  function setTransferHook(ITransferHook newTransferHook) external override onlyOwner {}
+  function setTransferHook(ITransferHook _newTransferHook) external override onlyOwner {}
 
-  function mint(uint256 amount) external override onlyOwner {}
+  function mint(uint256 _amount) external override onlyOwner {}
 
-  function burn(uint256 amount) external override onlyOwner {}
+  function burn(uint256 _amount) external override onlyOwner {}
 
-  function burnFrom(address account, uint256 amount) external override onlyOwner {}
+  function burnFrom(address _account, uint256 _amount) external override onlyOwner {}
 }
