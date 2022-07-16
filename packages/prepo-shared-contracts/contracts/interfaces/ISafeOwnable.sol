@@ -5,7 +5,7 @@ pragma solidity =0.8.7;
 interface ISafeOwnable {
   event NomineeUpdate(address indexed previousNominee, address indexed newNominee);
 
-  function transferOwnership(address account) external;
+  function transferOwnership(address nominee) external;
 
   function acceptOwnership() external;
 
