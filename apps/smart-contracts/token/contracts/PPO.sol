@@ -3,14 +3,20 @@ pragma solidity =0.8.7;
 
 import "./interfaces/IPPO.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
 import "prepo-shared-contracts/contracts/SafeOwnableUpgradeable.sol";
 
-contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
+contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable, ERC20BurnableUpgradeable {
   ITransferHook private _transferHook;
 
-  function initialize(address _nominatedOwner) public initializer {
-    __ReentrancyGuard_init_unchained();
+  function initialize(
+    address _nominatedOwner,
+    string memory _name,
+    string memory _symbol
+  ) public initializer {
     __Ownable_init();
+    __ERC20_init(_name, _symbol);
+    __ReentrancyGuard_init_unchained();
     transferOwnership(_nominatedOwner);
   }
 
@@ -20,9 +26,13 @@ contract PPO is IPPO, ReentrancyGuardUpgradeable, SafeOwnableUpgradeable {
 
   function mint(uint256 _amount) external override onlyOwner {}
 
-  function burn(uint256 _amount) external override onlyOwner {}
+  function burn(uint256 _amount) public override(IPPO, ERC20BurnableUpgradeable) onlyOwner {}
 
-  function burnFrom(address _account, uint256 _amount) external override onlyOwner {}
+  function burnFrom(address _account, uint256 _amount)
+    public
+    override(IPPO, ERC20BurnableUpgradeable)
+    onlyOwner
+  {}
 
   function getTransferHook() external view override returns (ITransferHook) {
     return _transferHook;

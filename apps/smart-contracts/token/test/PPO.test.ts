@@ -13,7 +13,7 @@ describe('=> PPO', () => {
 
   const deployPPO = async (): Promise<void> => {
     ;[deployer, owner, user1] = await ethers.getSigners()
-    ppo = await ppoFixture(owner.address)
+    ppo = await ppoFixture(owner.address, 'prePO Token', 'PPO')
   }
 
   const setupPPO = async (): Promise<void> => {
@@ -29,6 +29,14 @@ describe('=> PPO', () => {
     it('sets nominee from initialize', async () => {
       expect(await ppo.getNominee()).to.not.eq(deployer.address)
       expect(await ppo.getNominee()).to.eq(owner.address)
+    })
+
+    it('sets name from initialize', async () => {
+      expect(await ppo.name()).to.eq('prePO Token')
+    })
+
+    it('sets symbol from initialize', async () => {
+      expect(await ppo.symbol()).to.eq('PPO')
     })
 
     it('sets owner to deployer', async () => {
