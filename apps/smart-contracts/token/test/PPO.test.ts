@@ -91,4 +91,17 @@ describe('=> PPO', () => {
       expect(await ppo.getTransferHook()).to.eq(JUNK_ADDRESS)
     })
   })
+
+  describe('# mint', () => {
+    beforeEach(async () => {
+      await setupPPO()
+    })
+
+    it('reverts if not owner', async () => {
+      expect(await ppo.owner()).to.not.eq(user1.address)
+      await expect(ppo.connect(user1).mint(JUNK_ADDRESS)).revertedWith(
+        'Ownable: caller is not the owner'
+      )
+    })
+  })
 })
