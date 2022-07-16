@@ -2,7 +2,7 @@
 pragma solidity =0.8.7;
 
 //TODO: add all natspecs at the end
-interface IBlocklist {
+interface IBlockList {
   function set(address[] calldata accounts, bool[] calldata blocked) external;
 
   function reset(address[] calldata blockedAccounts) external;
