@@ -3,15 +3,11 @@ pragma solidity =0.8.7;
 
 //TODO: add all natspecs at the end
 interface IAllowlist {
-  function allowDestinations(address[] memory accounts) external;
+  function setDestinations(address[] calldata destinations, bool[] calldata allowed) external;
 
-  function removeDestinations(address[] memory accounts) external;
+  function resetDestinations(address[] calldata allowedDestinations) external;
 
-  function resetDestinations() external;
+  function setSources(address[] calldata sources, bool[] calldata allowed) external;
 
-  function allowSources(address[] memory accounts) external;
-
-  function removeSources(address[] memory accounts) external;
-
-  function resetSources() external;
+  function resetSources(address[] calldata allowedSources) external;
 }
