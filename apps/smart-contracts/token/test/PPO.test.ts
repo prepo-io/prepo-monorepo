@@ -99,9 +99,23 @@ describe('=> PPO', () => {
 
     it('reverts if not owner', async () => {
       expect(await ppo.owner()).to.not.eq(user1.address)
-      await expect(ppo.connect(user1).mint(JUNK_ADDRESS)).revertedWith(
-        'Ownable: caller is not the owner'
-      )
+      await expect(ppo.connect(user1).mint(1)).revertedWith('Ownable: caller is not the owner')
+    })
+
+    it("increases owner's balance", async () => {
+      const ownerPPOBalanceBefore = await ppo.balanceOf(owner.address)
+
+      await ppo.connect(owner).mint(1)
+
+      expect(await ppo.balanceOf(owner.address)).to.eq(ownerPPOBalanceBefore.add(1))
+    })
+
+    it("does not increase deployer's balance", async () => {
+      const deployerPPOBalanceBefore = await ppo.balanceOf(deployer.address)
+
+      await ppo.connect(owner).mint(1)
+
+      expect(await ppo.balanceOf(deployer.address)).to.eq(deployerPPOBalanceBefore)
     })
   })
 })
