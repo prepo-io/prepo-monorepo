@@ -13,7 +13,7 @@ describe('=> PPO', () => {
 
   const deployPPO = async (): Promise<void> => {
     ;[deployer, owner, user1] = await ethers.getSigners()
-    ppo = await ppoFixture(owner.address, 'prePO Token', 'PPO')
+    ppo = await ppoFixture('prePO Token', 'PPO', owner.address)
   }
 
   const setupPPO = async (): Promise<void> => {
