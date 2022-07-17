@@ -54,7 +54,7 @@ describe('StakingRewardsDistribution', () => {
       await setupStakingRewardsDistribution()
     })
 
-    it('sets deployer as owner', async () => {
+    it('sets owner to deployer', async () => {
       expect(await stakingRewardsDistribution.owner()).to.eq(deployer.address)
     })
 

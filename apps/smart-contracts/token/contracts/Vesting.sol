@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IVesting.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract Vesting is IVesting, Ownable, ReentrancyGuard {
+contract Vesting is IVesting, SafeOwnable, ReentrancyGuard {
   using SafeERC20 for IERC20;
 
   bool private _paused;
@@ -19,8 +19,8 @@ contract Vesting is IVesting, Ownable, ReentrancyGuard {
 
   uint256 private _totalAllocatedSupply;
 
-  constructor(address _owner) {
-    transferOwnership(_owner);
+  constructor(address _nominatedOwner) {
+    transferOwnership(_nominatedOwner);
   }
 
   modifier whenNotPaused() {
