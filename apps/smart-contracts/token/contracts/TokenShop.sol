@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -9,10 +8,9 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/ITokenShop.sol";
 import "./interfaces/IPurchaseHook.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-// import "prepo-shared-contracts/contracts/SafeOwnable.sol"; // Example on how to use the prepo-shared-contracts package
-
-contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
+contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
   using SafeERC20 for IERC20;
 
   IERC20 private _paymentToken;
@@ -30,9 +28,8 @@ contract TokenShop is ITokenShop, Ownable, ReentrancyGuard {
     _;
   }
 
-  constructor(address _owner, address _newPaymentToken) {
-    //TODO: switch to nominate + accept version using `safeOwnable`
-    transferOwnership(_owner);
+  constructor(address _nominatedOwner, address _newPaymentToken) {
+    transferOwnership(_nominatedOwner);
     _paymentToken = IERC20(_newPaymentToken);
   }
 

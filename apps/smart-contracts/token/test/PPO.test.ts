@@ -15,7 +15,7 @@ describe('=> PPO', () => {
 
   const deployPPO = async (): Promise<void> => {
     ;[deployer, owner, user1, user2] = await ethers.getSigners()
-    ppo = await ppoFixture(owner.address, 'prePO Token', 'PPO')
+    ppo = await ppoFixture('prePO Token', 'PPO', owner.address)
   }
 
   const setupPPO = async (): Promise<void> => {
@@ -47,6 +47,18 @@ describe('=> PPO', () => {
 
     it('sets transfer hook as zero address', async () => {
       expect(await ppo.getTransferHook()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets token supply to zero', async () => {
+      expect(await ppo.totalSupply()).to.eq(0)
+    })
+
+    it('sets owner token balance to zero', async () => {
+      await ppo.balanceOf(deployer.address)
+    })
+
+    it('sets nominee token balance to zero', async () => {
+      await ppo.balanceOf(owner.address)
     })
   })
 
@@ -113,7 +125,7 @@ describe('=> PPO', () => {
       )
     })
 
-    it('increases non-caller balance', async () => {
+    it('mints to non-caller if recipient is non-caller', async () => {
       const nonCallerPPOBalanceBefore = await ppo.balanceOf(user1.address)
       expect(owner).to.not.eq(user1)
 
@@ -122,7 +134,7 @@ describe('=> PPO', () => {
       expect(await ppo.balanceOf(user1.address)).to.eq(nonCallerPPOBalanceBefore.add(1))
     })
 
-    it('increases caller balance', async () => {
+    it('mints to caller if recipient is caller', async () => {
       const callerPPOBalanceBefore = await ppo.balanceOf(owner.address)
 
       await ppo.connect(owner).mint(owner.address, 1)
@@ -130,7 +142,7 @@ describe('=> PPO', () => {
       expect(await ppo.balanceOf(owner.address)).to.eq(callerPPOBalanceBefore.add(1))
     })
 
-    it('increases recipient balance if amount = 0', async () => {
+    it("doesn't increase recipient balance if amount = 0", async () => {
       const recipientPPOBalanceBefore = await ppo.balanceOf(owner.address)
 
       await ppo.connect(owner).mint(user1.address, 0)
@@ -152,6 +164,38 @@ describe('=> PPO', () => {
       await ppo.connect(owner).mint(user1.address, MAX_UINT256)
 
       expect(await ppo.balanceOf(user1.address)).to.eq(MAX_UINT256)
+    })
+
+    it('emits transfer if amount = 0 and recipient is caller', async () => {
+      const tx = await ppo.connect(owner).mint(owner.address, 0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(ZERO_ADDRESS, owner.address, 0)
+    })
+
+    it('emits transfer if amount = 0 and recipient is non-caller', async () => {
+      const tx = await ppo.connect(owner).mint(user1.address, 0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(ZERO_ADDRESS, user1.address, 0)
+    })
+
+    it('emits transfer if amount > 0 and recipient is caller', async () => {
+      const tx = await ppo.connect(owner).mint(owner.address, 1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(ZERO_ADDRESS, owner.address, 1)
+    })
+
+    it('emits transfer if amount > 0 and recipient is non-caller', async () => {
+      const tx = await ppo.connect(owner).mint(user1.address, 1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(ZERO_ADDRESS, user1.address, 1)
     })
   })
 

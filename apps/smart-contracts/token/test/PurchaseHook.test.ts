@@ -64,7 +64,7 @@ describe('PurchaseHook', () => {
       await setupPurchaseHook()
     })
 
-    it('sets deployer as owner', async () => {
+    it('sets owner to deployer', async () => {
       expect(await purchaseHook.owner()).to.eq(owner.address)
     })
   })

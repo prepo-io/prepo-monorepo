@@ -3,9 +3,9 @@ pragma solidity =0.8.7;
 
 import "./interfaces/IPurchaseHook.sol";
 import "./interfaces/ITokenShop.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract PurchaseHook is IPurchaseHook, Ownable {
+contract PurchaseHook is IPurchaseHook, SafeOwnable {
   mapping(address => uint256) private _erc721ToMaxPurchasesPerUser;
   mapping(address => mapping(uint256 => uint256)) private _erc1155ToIdToMaxPurchasesPerUser;
   ITokenShop private _tokenShop;
