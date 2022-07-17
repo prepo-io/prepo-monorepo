@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import { expect } from 'chai'
-import { blocklistFixture } from './fixtures/BlocklistFixtures'
-import { Blocklist } from '../types/generated'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { blocklistFixture } from './fixtures/BlocklistFixtures'
+import { Blocklist } from '../types/generated'
 
 describe('=> Blocklist', () => {
   let deployer: SignerWithAddress
@@ -11,22 +12,34 @@ describe('=> Blocklist', () => {
   let blockedUser2: SignerWithAddress
   let unblockedUser1: SignerWithAddress
   let unblockedUser2: SignerWithAddress
+  let newBlockedUser1: SignerWithAddress
+  let newBlockedUser2: SignerWithAddress
   let blocklist: Blocklist
   let blockedUsersArray: string[]
   let unblockedUsersArray: string[]
+  let newBlockedUsersArray: string[]
   const blockedArray = [true, true]
   const unblockedArray = [false, false]
 
   const deployBlocklist = async (): Promise<void> => {
-    ;[deployer, owner, blockedUser1, blockedUser2, unblockedUser1, unblockedUser2] =
-      await ethers.getSigners()
+    ;[
+      deployer,
+      owner,
+      blockedUser1,
+      blockedUser2,
+      unblockedUser1,
+      unblockedUser2,
+      newBlockedUser1,
+      newBlockedUser2,
+    ] = await ethers.getSigners()
     blocklist = await blocklistFixture(owner.address)
   }
 
   const setupBlocklist = async (): Promise<void> => {
     await deployBlocklist()
     blockedUsersArray = [blockedUser1.address, blockedUser2.address]
-    unblockedUsersArray = [unblockedUser1.address, unblockedUser1.address]
+    unblockedUsersArray = [unblockedUser1.address, unblockedUser2.address]
+    newBlockedUsersArray = [newBlockedUser1.address, newBlockedUser2.address]
     await blocklist.connect(owner).acceptOwnership()
   }
 
@@ -117,10 +130,83 @@ describe('=> Blocklist', () => {
       expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(true)
       expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(false)
 
-      await blocklist.connect(owner).set([blockedUser1.address, unblockedUser1.address], [true, false])
+      await blocklist
+        .connect(owner)
+        .set([blockedUser1.address, unblockedUser1.address], [true, false])
 
       expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(false)
       expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(true)
+    })
+  })
+
+  describe('# reset', () => {
+    beforeEach(async () => {
+      await setupBlocklist()
+      await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
+    })
+
+    it('reverts if not owner', async () => {
+      expect(await blocklist.owner()).to.not.eq(blockedUser1.address)
+
+      await expect(blocklist.connect(blockedUser1).reset(blockedUsersArray)).revertedWith(
+        'Ownable: caller is not the owner'
+      )
+    })
+
+    it('increments blocked accounts index by 1 if no new blocked accounts', async () => {
+      const blockedAccountIndex = await blocklist.getBlockedAllountsIndex()
+
+      await blocklist.connect(owner).reset([])
+
+      expect(await blocklist.getBlockedAllountsIndex()).to.eq(blockedAccountIndex.add(1))
+    })
+
+    it('increments blocked accounts index by 1 if new blocked accounts', async () => {
+      const blockedAccountIndex = await blocklist.getBlockedAllountsIndex()
+
+      await blocklist.connect(owner).reset(newBlockedUsersArray)
+
+      expect(await blocklist.getBlockedAllountsIndex()).to.eq(blockedAccountIndex.add(1))
+    })
+
+    it('clears blocklist if no new blocked accounts', async () => {
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+
+      await blocklist.connect(owner).reset([])
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+      }
+    })
+
+    it('replaces old blocklist if single new blocked account', async () => {
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+      expect(await blocklist.isAccountBlocked(newBlockedUser1.address)).to.eq(false)
+
+      await blocklist.connect(owner).reset([newBlockedUser1.address])
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+      }
+      expect(await blocklist.isAccountBlocked(newBlockedUser1.address)).to.eq(true)
+    })
+
+    it('replaces old blocklist if multiple new blocked accounts', async () => {
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isAccountBlocked(newBlockedUsersArray[i])).to.eq(false)
+      }
+
+      await blocklist.connect(owner).reset(newBlockedUsersArray)
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isAccountBlocked(newBlockedUsersArray[i])).to.eq(true)
+      }
     })
   })
 })
