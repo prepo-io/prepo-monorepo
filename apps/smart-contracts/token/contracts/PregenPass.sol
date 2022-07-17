@@ -8,10 +8,6 @@ contract PregenPass is SafeOwnable, ERC721Enumerable {
   uint256 private _id;
   string private _uri;
 
-  /**
-   * @dev Owner will be set as the deployer. After deployment, the nominated owner needs to
-   * accept the nomination for ownership to be transferred.
-   */
   constructor(address _nominatedOwner, string memory _newURI) ERC721("Pregen Pass", "PREGENPASS") {
     transferOwnership(_nominatedOwner);
     _uri = _newURI;

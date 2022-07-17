@@ -42,7 +42,7 @@ describe('WithdrawalRights', () => {
       expect(await withdrawalRights.getNominee()).to.eq(governance.address)
     })
 
-    it('sets deployer as owner', async () => {
+    it('sets owner to deployer', async () => {
       expect(await withdrawalRights.owner()).to.eq(deployer.address)
     })
   })

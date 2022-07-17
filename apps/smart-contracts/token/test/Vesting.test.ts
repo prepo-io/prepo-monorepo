@@ -40,6 +40,11 @@ describe('Vesting', () => {
   const deployVesting = async (): Promise<void> => {
     ;[deployer, owner, user1, user2] = await ethers.getSigners()
     vesting = await vestingFixture(owner.address)
+  }
+
+  const setupVesting = async (): Promise<void> => {
+    await deployVesting()
+    await vesting.connect(owner).acceptOwnership()
     const mockERC20Recipient = owner.address
     const mockERC20Decimal = 18
     const mockERC20InitialMint = ONE_ETH.mul(100)
@@ -62,15 +67,14 @@ describe('Vesting', () => {
       expect(await vesting.getNominee()).to.eq(owner.address)
     })
 
-    it('sets deployer as owner', async () => {
+    it('sets owner to deployer', async () => {
       expect(await vesting.owner()).to.eq(deployer.address)
     })
   })
 
   describe('# setPaused', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
     })
 
     it('reverts if not owner', async () => {
@@ -113,8 +117,7 @@ describe('Vesting', () => {
 
   describe('# setToken', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
     })
 
     it('reverts if not owner', async () => {
@@ -158,8 +161,7 @@ describe('Vesting', () => {
 
   describe('# setVestingStartTime', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       currentTime = await utils.getLastTimestamp(ethers.provider as Web3Provider)
       vestingStartTime =
         (await utils.getLastTimestamp(ethers.provider as Web3Provider)) + DAY_IN_SECONDS
@@ -259,8 +261,7 @@ describe('Vesting', () => {
 
   describe('# setVestingEndTime', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       currentTime = await utils.getLastTimestamp(ethers.provider as Web3Provider)
       vestingStartTime = currentTime + DAY_IN_SECONDS
       vestingEndTime = vestingStartTime + 3 * YEAR_IN_SECONDS
@@ -374,8 +375,7 @@ describe('Vesting', () => {
     })
 
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       recipients = [user1.address, user2.address]
       vestingStartTime =
         (await utils.getLastTimestamp(ethers.provider as Web3Provider)) + DAY_IN_SECONDS
@@ -597,8 +597,7 @@ describe('Vesting', () => {
 
   describe('# claim', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       mockVestingClaimer = await mockVestingClaimerFixture(vesting.address)
       recipients = [user1.address, user2.address, mockVestingClaimer.address]
       amountsAllocated = [ONE_ETH, ONE_ETH.mul(2), ONE_ETH.mul(3)]
@@ -855,8 +854,7 @@ describe('Vesting', () => {
     })
 
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       recipients = [user1.address, user2.address]
       vestingStartTime =
         (await utils.getLastTimestamp(ethers.provider as Web3Provider)) + DAY_IN_SECONDS
@@ -987,8 +985,7 @@ describe('Vesting', () => {
     })
 
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       recipients = [user1.address, user2.address]
       vestingStartTime =
         (await utils.getLastTimestamp(ethers.provider as Web3Provider)) + DAY_IN_SECONDS
@@ -1076,8 +1073,7 @@ describe('Vesting', () => {
 
   describe('# withdrawERC20', () => {
     beforeEach(async () => {
-      await deployVesting()
-      await vesting.connect(owner).acceptOwnership()
+      await setupVesting()
       const externalERC20Recipient = user1.address
       const externalERC20Decimal = 18
       const externalERC20InitialMint = parseEther(`100`)

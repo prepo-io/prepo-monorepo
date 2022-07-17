@@ -54,6 +54,11 @@ describe('TokenShop', () => {
     tokenShop = await tokenShopFixture(owner.address, paymentToken.address)
   }
 
+  const setupTokenShop = async (): Promise<void> => {
+    await deployTokenShop()
+    await tokenShop.connect(owner).acceptOwnership()
+  }
+
   const setupMockContracts = async (): Promise<void> => {
     const mockERC115Factory = await smock.mock('ERC1155Mintable')
     const mockERC721Factory = await smock.mock('ERC721Mintable')
@@ -75,15 +80,14 @@ describe('TokenShop', () => {
       expect(await tokenShop.getPaymentToken()).to.eq(paymentToken.address)
     })
 
-    it('sets deployer as owner', async () => {
+    it('sets owner to deployer', async () => {
       expect(await tokenShop.owner()).to.eq(deployer.address)
     })
   })
 
   describe('# setContractToIdToPrice', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
       tokenContracts = [mockERC1155.address, mockERC721.address]
     })
@@ -207,8 +211,7 @@ describe('TokenShop', () => {
 
   describe('# setPaused', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
     })
 
     it('reverts if not owner', async () => {
@@ -251,8 +254,7 @@ describe('TokenShop', () => {
 
   describe('# setPurchaseHook', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
     })
 
     it('reverts if not owner', async () => {
@@ -298,8 +300,7 @@ describe('TokenShop', () => {
     let mockPurchaseHook: FakeContract<Contract>
 
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
       mockPurchaseHook = await smock.fake('PurchaseHook')
       tokenContracts = [mockERC1155.address, mockERC721.address]
@@ -662,8 +663,7 @@ describe('TokenShop', () => {
 
   describe('# withdrawERC20', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       const externalERC20Recipient = user1.address
       const externalERC20Decimals = 18
       const mockERC20InitialSupply = parseEther(`100`)
@@ -729,8 +729,7 @@ describe('TokenShop', () => {
   describe('# withdrawERC721', () => {
     const erc721Id = 1
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
       await mockERC721.mint(tokenShop.address, erc721Id)
     })
@@ -770,8 +769,7 @@ describe('TokenShop', () => {
     const erc1155Id = 1
     const erc1155Amount = 10
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
       await mockERC1155.mint(tokenShop.address, erc1155Id, erc1155Amount)
     })
@@ -825,8 +823,7 @@ describe('TokenShop', () => {
 
   describe('# onERC1155Received', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
     })
 
@@ -843,8 +840,7 @@ describe('TokenShop', () => {
 
   describe('# onERC1155BatchReceived', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
     })
 
@@ -867,8 +863,7 @@ describe('TokenShop', () => {
 
   describe('# onERC721Received', () => {
     beforeEach(async () => {
-      await deployTokenShop()
-      await tokenShop.connect(owner).acceptOwnership()
+      await setupTokenShop()
       await setupMockContracts()
     })
 
