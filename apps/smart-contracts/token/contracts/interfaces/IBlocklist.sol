@@ -6,4 +6,8 @@ interface IBlocklist {
   function set(address[] calldata accounts, bool[] calldata blocked) external;
 
   function reset(address[] calldata blockedAccounts) external;
+
+  function isAccountBlocked(address account) external view returns (bool);
+
+  function getBlockedAllountsIndex() external view returns (uint256);
 }
