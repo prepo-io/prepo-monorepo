@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import { expect } from 'chai'
-import { blocklistFixture } from './fixtures/BlocklistFixtures'
-import { Blocklist } from '../types/generated'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { blocklistFixture } from './fixtures/BlocklistFixtures'
+import { Blocklist } from '../types/generated'
 
 describe('=> Blocklist', () => {
   let deployer: SignerWithAddress
@@ -26,7 +27,7 @@ describe('=> Blocklist', () => {
   const setupBlocklist = async (): Promise<void> => {
     await deployBlocklist()
     blockedUsersArray = [blockedUser1.address, blockedUser2.address]
-    unblockedUsersArray = [unblockedUser1.address, unblockedUser1.address]
+    unblockedUsersArray = [unblockedUser1.address, unblockedUser2.address]
     await blocklist.connect(owner).acceptOwnership()
   }
 
@@ -117,10 +118,34 @@ describe('=> Blocklist', () => {
       expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(true)
       expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(false)
 
-      await blocklist.connect(owner).set([blockedUser1.address, unblockedUser1.address], [true, false])
+      await blocklist
+        .connect(owner)
+        .set([blockedUser1.address, unblockedUser1.address], [true, false])
 
       expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(false)
       expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(true)
+    })
+
+    it('is idempotent', async () => {
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+      }
+
+      await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+
+      await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
     })
   })
 })
