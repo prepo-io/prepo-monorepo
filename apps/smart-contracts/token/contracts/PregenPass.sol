@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract PregenPass is Ownable, ERC721Enumerable {
+contract PregenPass is SafeOwnable, ERC721Enumerable {
   uint256 private _id;
   string private _uri;
 
-  /// @dev owner needs to be set as the prePO governance address not the deployer
-  constructor(address _owner, string memory _newURI) ERC721("Pregen Pass", "PREGENPASS") {
-    _transferOwnership(_owner);
+  constructor(address _nominatedOwner, string memory _newURI) ERC721("Pregen Pass", "PREGENPASS") {
+    transferOwnership(_nominatedOwner);
     _uri = _newURI;
   }
 
