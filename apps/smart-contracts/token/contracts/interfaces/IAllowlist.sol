@@ -10,4 +10,12 @@ interface IAllowlist {
   function setSources(address[] calldata sources, bool[] calldata allowed) external;
 
   function resetSources(address[] calldata allowedSources) external;
+
+  function getSourceAccountsIndex() external view returns (uint256);
+
+  function getDestinationAccountsIndex() external view returns (uint256);
+
+  function isAccountSourceAllowed(address account) external view returns (bool);
+
+  function isAccountDestinationAllowed(address account) external view returns (bool);
 }

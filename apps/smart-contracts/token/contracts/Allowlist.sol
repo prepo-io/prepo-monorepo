@@ -5,7 +5,14 @@ import "./interfaces/IAllowlist.sol";
 import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract Allowlist is IAllowlist, SafeOwnable {
-  constructor(address _nominatedOwner) {}
+  uint256 private _sourceAccountsIndex;
+  uint256 private _destinationAccountsIndex;
+  mapping(uint256 => mapping(address => bool)) private _allowedSourceAccounts;
+  mapping(uint256 => mapping(address => bool)) private _allowedDestinationAccounts;
+
+  constructor(address _nominatedOwner) {
+    transferOwnership(_nominatedOwner);
+  }
 
   function setDestinations(address[] calldata _destinations, bool[] calldata _allowed)
     external
@@ -22,4 +29,20 @@ contract Allowlist is IAllowlist, SafeOwnable {
   {}
 
   function resetSources(address[] calldata _allowedSources) external override onlyOwner {}
+
+  function getSourceAccountsIndex() external view override returns (uint256) {
+    return _sourceAccountsIndex;
+  }
+
+  function getDestinationAccountsIndex() external view override returns (uint256) {
+    return _destinationAccountsIndex;
+  }
+
+  function isAccountSourceAllowed(address _account) external view override returns (bool) {
+    return _allowedSourceAccounts[_sourceAccountsIndex][_account];
+  }
+
+  function isAccountDestinationAllowed(address _account) external view override returns (bool) {
+    return _allowedDestinationAccounts[_destinationAccountsIndex][_account];
+  }
 }
