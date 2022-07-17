@@ -137,6 +137,28 @@ describe('=> Blocklist', () => {
       expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(false)
       expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(true)
     })
+
+    it('is idempotent', async () => {
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+      }
+
+      await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+
+      await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
+
+      for (let i = 0; i < blockedUsersArray.length; i++) {
+        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+      }
+    })
   })
 
   describe('# reset', () => {
