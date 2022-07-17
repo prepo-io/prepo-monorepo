@@ -29,9 +29,13 @@ describe('PregenesisPoints', () => {
   const TOKEN_NAME = `Pregenesis Points`
   const TOKEN_SYMBOL = 'PP'
 
-  const setupPregenesisPoints = async (): Promise<void> => {
+  const deployPregenesisPoints = async (): Promise<void> => {
     ;[deployer, owner, user1, user2, shop] = await ethers.getSigners()
     points = await pregenesisPointsFixture(owner.address, TOKEN_NAME, TOKEN_SYMBOL)
+  }
+
+  const setupPregenesisPoints = async (): Promise<void> => {
+    await deployPregenesisPoints()
     eligibleNode1 = {
       account: user1.address,
       amount: parseEther('0.1'),
@@ -42,16 +46,17 @@ describe('PregenesisPoints', () => {
     }
     const eligibleNodes = [eligibleNode1, eligibleNode2]
     merkleTree = generateAccountAmountMerkleTree(eligibleNodes)
+    await points.connect(owner).acceptOwnership()
   }
 
   describe('initial state', () => {
     before(async () => {
-      await setupPregenesisPoints()
+      await deployPregenesisPoints()
     })
 
-    it('sets owner from constructor', async () => {
-      expect(await points.owner()).to.not.eq(deployer.address)
-      expect(await points.owner()).to.eq(owner.address)
+    it('sets nominee from constructor', async () => {
+      expect(await points.getNominee()).to.not.eq(deployer.address)
+      expect(await points.getNominee()).to.eq(owner.address)
     })
 
     it('sets name from constructor', async () => {
@@ -64,6 +69,10 @@ describe('PregenesisPoints', () => {
 
     it('sets shop as zero address', async () => {
       expect(await points.getShop()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets owner to deployer', async () => {
+      expect(await points.owner()).to.eq(deployer.address)
     })
   })
 
