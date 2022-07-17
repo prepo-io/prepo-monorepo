@@ -12,11 +12,12 @@ contract Blocklist is IBlocklist, SafeOwnable {
     transferOwnership(_nominatedOwner);
   }
 
-  function set(address[] calldata _accounts, bool[] calldata _blocked)
-    external
-    override
-    onlyOwner
-  {}
+  function set(address[] calldata _accounts, bool[] calldata _blocked) external override onlyOwner {
+    require(_accounts.length == _blocked.length, "Array length mismatch");
+    for (uint256 i; i < _accounts.length; ++i) {
+      _blockedAccounts[_blockedAccountsIndex][_accounts[i]] = _blocked[i];
+    }
+  }
 
   function reset(address[] calldata _newBlockedAccounts) external override onlyOwner {}
 
