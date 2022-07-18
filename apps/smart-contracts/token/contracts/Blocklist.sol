@@ -7,7 +7,11 @@ import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 contract Blocklist is IBlocklist, SafeOwnable {
   constructor(address _nominatedOwner) {}
 
-  function set(address[] calldata _accounts, bool[] calldata _blocked) external override onlyOwner {}
+  function set(address[] calldata _accounts, bool[] calldata _blocked)
+    external
+    override
+    onlyOwner
+  {}
 
   function reset(address[] calldata _blockedAccounts) external override onlyOwner {}
 }

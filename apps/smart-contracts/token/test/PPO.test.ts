@@ -358,7 +358,7 @@ describe('=> PPO', () => {
 
       await expect(tx)
         .to.emit(ppo, 'Transfer(address,address,uint256)')
-        .withArgs(user1.address, ZERO_ADDRESS, 0)
+        .withArgs(user1.address, ZERO_ADDRESS, 1)
     })
   })
 })
