@@ -7,5 +7,7 @@ interface IAccountList {
 
   function reset(address[] calldata newIncludedAccounts) external;
 
-  function isIncludedAccount(address account) external view returns (bool);
+  function getResetIndex() external view returns (uint256);
+
+  function isIncluded(address account) external view returns (bool);
 }

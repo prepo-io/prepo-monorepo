@@ -5,8 +5,8 @@ import "./interfaces/IAccountList.sol";
 import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract AccountList is IAccountList, SafeOwnable {
-  uint256 private _listIndex;
-  mapping(uint256 => mapping(address => bool)) private _indexToIncludedAccounts;
+  uint256 private _resetIndex;
+  mapping(uint256 => mapping(address => bool)) private _resetIndexToAccountToIncluded;
 
   constructor(address _nominatedOwner) {
     transferOwnership(_nominatedOwner);
@@ -16,7 +16,11 @@ contract AccountList is IAccountList, SafeOwnable {
 
   function reset(address[] calldata _newIncludedAccounts) external override onlyOwner {}
 
-  function isIncludedAccount(address _account) external view override returns (bool) {
-    return _indexToIncludedAccounts[_listIndex][_account];
+  function getResetIndex() external view override returns (uint256) {
+    return _resetIndex;
+  }
+
+  function isIncluded(address _account) external view override returns (bool) {
+    return _resetIndexToAccountToIncluded[_resetIndex][_account];
   }
 }
