@@ -237,7 +237,7 @@ describe('=> PPO', () => {
       expect(await ppo.balanceOf(user1.address)).to.eq(0)
     })
 
-    it('decreases total suppy if amount > 0', async () => {
+    it('decreases total supply if amount > 0', async () => {
       const totalSupplyBefore = await ppo.totalSupply()
 
       await ppo.connect(user1).burn(1)
@@ -245,7 +245,7 @@ describe('=> PPO', () => {
       expect(await ppo.totalSupply()).to.eq(totalSupplyBefore.sub(1))
     })
 
-    it("doesn't total suppy if amount = 0", async () => {
+    it("doesn't change total supply if amount = 0", async () => {
       const totalSupplyBefore = await ppo.totalSupply()
 
       await ppo.connect(user1).burn(0)
@@ -327,7 +327,7 @@ describe('=> PPO', () => {
       expect(await ppo.balanceOf(user1.address)).to.eq(0)
     })
 
-    it('decreases total suppy if amount > 0', async () => {
+    it('decreases total supply if amount > 0', async () => {
       const totalSupplyBefore = await ppo.totalSupply()
       await ppo.connect(user1).approve(user2.address, 1)
 
@@ -336,7 +336,7 @@ describe('=> PPO', () => {
       expect(await ppo.totalSupply()).to.eq(totalSupplyBefore.sub(1))
     })
 
-    it("doesn't total suppy if amount = 0", async () => {
+    it("doesn't change total supply if amount = 0", async () => {
       const totalSupplyBefore = await ppo.totalSupply()
 
       await ppo.connect(user2).burnFrom(user1.address, 0)
