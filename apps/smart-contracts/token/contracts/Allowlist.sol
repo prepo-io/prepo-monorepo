@@ -20,7 +20,7 @@ contract Allowlist is IAllowlist, SafeOwnable {
     onlyOwner
   {}
 
-  function resetDestinations(address[] calldata _allowedDestinations) external override onlyOwner {}
+  function resetDestinations(address[] calldata _destinationsToAllow) external override onlyOwner {}
 
   function setSources(address[] calldata _sources, bool[] calldata _allowed)
     external
@@ -28,21 +28,13 @@ contract Allowlist is IAllowlist, SafeOwnable {
     onlyOwner
   {}
 
-  function resetSources(address[] calldata _allowedSources) external override onlyOwner {}
+  function resetSources(address[] calldata _sourcesToAllow) external override onlyOwner {}
 
-  function getSourceAccountsIndex() external view override returns (uint256) {
-    return _sourceAccountsIndex;
-  }
+    function isAccountSourceAllowed(address _account) external view override returns (bool) {
+        return _allowedSourceAccounts[_sourceAccountsIndex][_account];
+    }
 
-  function getDestinationAccountsIndex() external view override returns (uint256) {
-    return _destinationAccountsIndex;
-  }
-
-  function isAccountSourceAllowed(address _account) external view override returns (bool) {
-    return _allowedSourceAccounts[_sourceAccountsIndex][_account];
-  }
-
-  function isAccountDestinationAllowed(address _account) external view override returns (bool) {
-    return _allowedDestinationAccounts[_destinationAccountsIndex][_account];
-  }
+    function isAccountDestinationAllowed(address _account) external view override returns (bool) {
+        return _allowedDestinationAccounts[_destinationAccountsIndex][_account];
+    }
 }
