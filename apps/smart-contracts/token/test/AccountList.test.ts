@@ -136,7 +136,8 @@ describe('=> AccountList', () => {
     })
 
     it('sets lattermost bool value if account passed multiple times', async () => {
-      expect(await accountList.isIncluded(includedUser1.address)).to.eq(false)
+      await accountList.connect(owner).set([includedUser1.address], [true])
+      expect(await accountList.isIncluded(includedUser1.address)).to.eq(true)
 
       await accountList
         .connect(owner)
