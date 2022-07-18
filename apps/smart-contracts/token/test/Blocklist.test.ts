@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { blocklistFixture } from './fixtures/BlocklistFixtures'
-import { Blocklist } from '../types/generated'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
+import { blocklistFixture } from './fixtures/BlocklistFixtures'
+import { Blocklist } from '../types/generated'
 
 describe('=> Blocklist', () => {
   let deployer: SignerWithAddress
@@ -32,10 +32,6 @@ describe('=> Blocklist', () => {
 
     it('sets owner to deployer', async () => {
       expect(await blocklist.owner()).to.eq(deployer.address)
-    })
-
-    it('sets blocked accounts index to zero', async () => {
-      expect(await blocklist.getBlockedAllountsIndex()).to.eq(0)
     })
   })
 })
