@@ -177,59 +177,43 @@ describe('=> Blocklist', () => {
       )
     })
 
-    it('increments blocked accounts index by 1 if no new blocked accounts', async () => {
-      const blockedAccountIndex = await blocklist.getBlockedAllountsIndex()
-
-      await blocklist.connect(owner).reset([])
-
-      expect(await blocklist.getBlockedAllountsIndex()).to.eq(blockedAccountIndex.add(1))
-    })
-
-    it('increments blocked accounts index by 1 if new blocked accounts', async () => {
-      const blockedAccountIndex = await blocklist.getBlockedAllountsIndex()
-
-      await blocklist.connect(owner).reset(newBlockedUsersArray)
-
-      expect(await blocklist.getBlockedAllountsIndex()).to.eq(blockedAccountIndex.add(1))
-    })
-
-    it('clears blocklist if no new blocked accounts', async () => {
+    it('clears list if not setting new list', async () => {
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
       }
 
       await blocklist.connect(owner).reset([])
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(false)
       }
     })
 
-    it('replaces old blocklist if single new blocked account', async () => {
+    it('replaces old list with one account', async () => {
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
       }
-      expect(await blocklist.isAccountBlocked(newBlockedUser1.address)).to.eq(false)
+      expect(await blocklist.isBlocked(newBlockedUser1.address)).to.eq(false)
 
       await blocklist.connect(owner).reset([newBlockedUser1.address])
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(false)
       }
-      expect(await blocklist.isAccountBlocked(newBlockedUser1.address)).to.eq(true)
+      expect(await blocklist.isBlocked(newBlockedUser1.address)).to.eq(true)
     })
 
-    it('replaces old blocklist if multiple new blocked accounts', async () => {
+    it('replaces old list with multiple accounts', async () => {
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
-        expect(await blocklist.isAccountBlocked(newBlockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(newBlockedUsersArray[i])).to.eq(false)
       }
 
       await blocklist.connect(owner).reset(newBlockedUsersArray)
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
-        expect(await blocklist.isAccountBlocked(newBlockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(newBlockedUsersArray[i])).to.eq(true)
       }
     })
   })

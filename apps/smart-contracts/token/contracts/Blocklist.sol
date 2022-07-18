@@ -20,10 +20,10 @@ contract Blocklist is IBlocklist, SafeOwnable {
   }
 
   function reset(address[] calldata _accountsToBlock) external override onlyOwner {
-      _resetIndex++;
-      for (uint256 i; i < _accountsToBlock.length; ++i) {
-          _blockedAccounts[_resetIndex][_accountsToBlock[i]] = true;
-      }
+    _resetIndex++;
+    for (uint256 i; i < _accountsToBlock.length; ++i) {
+      _resetIndexToAccountToBlocked[_resetIndex][_accountsToBlock[i]] = true;
+    }
   }
 
   function isBlocked(address _account) external view override returns (bool) {
