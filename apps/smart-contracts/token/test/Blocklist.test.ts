@@ -68,79 +68,85 @@ describe('=> Blocklist', () => {
     })
 
     it('blocks single account', async () => {
-      expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(false)
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(false)
 
       await blocklist.connect(owner).set([blockedUser1.address], [true])
 
-      expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(true)
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(true)
     })
 
     it('blocks multiple accounts', async () => {
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(false)
       }
 
       await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
       }
     })
 
     it('unblocks single account', async () => {
       await blocklist.connect(owner).set([unblockedUser1.address], [true])
-      expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(true)
+      expect(await blocklist.isBlocked(unblockedUser1.address)).to.eq(true)
 
       await blocklist.connect(owner).set([unblockedUser1.address], [false])
 
-      expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(false)
+      expect(await blocklist.isBlocked(unblockedUser1.address)).to.eq(false)
     })
 
     it('unblocks multiple accounts', async () => {
       for (let i = 0; i < unblockedUsersArray.length; i++) {
         await blocklist.connect(owner).set([unblockedUsersArray[i]], [true])
-        expect(await blocklist.isAccountBlocked(unblockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(unblockedUsersArray[i])).to.eq(true)
       }
 
       await blocklist.connect(owner).set(unblockedUsersArray, unblockedArray)
 
       for (let i = 0; i < unblockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(unblockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(unblockedUsersArray[i])).to.eq(false)
       }
     })
 
     it('blocks and unblocks accounts', async () => {
       await blocklist.connect(owner).set([unblockedUser1.address], [true])
-      expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(true)
-      expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(false)
+      expect(await blocklist.isBlocked(unblockedUser1.address)).to.eq(true)
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(false)
 
       await blocklist
         .connect(owner)
-        .set([blockedUser1.address, unblockedUser1.address], [true, false])
+        .set([unblockedUser1.address, blockedUser1.address], [false, true])
 
-      expect(await blocklist.isAccountBlocked(unblockedUser1.address)).to.eq(false)
-      expect(await blocklist.isAccountBlocked(blockedUser1.address)).to.eq(true)
+      expect(await blocklist.isBlocked(unblockedUser1.address)).to.eq(false)
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(true)
+    })
+
+    it('sets lattermost bool value if account passed multiple times', async () => {
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(false)
+
+      await blocklist
+        .connect(owner)
+        .set([blockedUser1.address, blockedUser1.address], [true, false])
+
+      expect(await blocklist.isBlocked(blockedUser1.address)).to.eq(false)
     })
 
     it('is idempotent', async () => {
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(false)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(false)
       }
 
       await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
-      }
-
-      for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
       }
 
       await blocklist.connect(owner).set(blockedUsersArray, blockedArray)
 
       for (let i = 0; i < blockedUsersArray.length; i++) {
-        expect(await blocklist.isAccountBlocked(blockedUsersArray[i])).to.eq(true)
+        expect(await blocklist.isBlocked(blockedUsersArray[i])).to.eq(true)
       }
     })
   })
