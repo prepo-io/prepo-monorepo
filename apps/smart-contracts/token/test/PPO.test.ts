@@ -10,10 +10,11 @@ describe('=> PPO', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user1: SignerWithAddress
+  let user2: SignerWithAddress
   let ppo: PPO
 
   const deployPPO = async (): Promise<void> => {
-    ;[deployer, owner, user1] = await ethers.getSigners()
+    ;[deployer, owner, user1, user2] = await ethers.getSigners()
     ppo = await ppoFixture('prePO Token', 'PPO', owner.address)
   }
 
@@ -195,6 +196,169 @@ describe('=> PPO', () => {
       await expect(tx)
         .to.emit(ppo, 'Transfer(address,address,uint256)')
         .withArgs(ZERO_ADDRESS, user1.address, 1)
+    })
+  })
+
+  describe('# burn', () => {
+    beforeEach(async () => {
+      await setupPPO()
+      await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if amount > balance', async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(user1.address)
+
+      await expect(ppo.connect(user1).burn(callerPPOBalanceBefore.add(1))).to.revertedWith(
+        'ERC20: burn amount exceeds balance'
+      )
+    })
+
+    it("doesn't decrease caller balance if amount = 0", async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(user1.address)
+
+      await ppo.connect(user1).burn(0)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(callerPPOBalanceBefore)
+    })
+
+    it('decreases caller balance if amount < balance', async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(user1.address)
+
+      await ppo.connect(user1).burn(callerPPOBalanceBefore.sub(1))
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(1)
+    })
+
+    it('decreases caller balance if amount = balance', async () => {
+      const callerPPOBalanceBefore = await ppo.balanceOf(user1.address)
+
+      await ppo.connect(user1).burn(callerPPOBalanceBefore)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(0)
+    })
+
+    it('decreases total supply if amount > 0', async () => {
+      const totalSupplyBefore = await ppo.totalSupply()
+
+      await ppo.connect(user1).burn(1)
+
+      expect(await ppo.totalSupply()).to.eq(totalSupplyBefore.sub(1))
+    })
+
+    it("doesn't change total supply if amount = 0", async () => {
+      const totalSupplyBefore = await ppo.totalSupply()
+
+      await ppo.connect(user1).burn(0)
+
+      expect(await ppo.totalSupply()).to.eq(totalSupplyBefore)
+    })
+
+    it('emits transfer if amount = 0', async () => {
+      const tx = await ppo.connect(user1).burn(0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, ZERO_ADDRESS, 0)
+    })
+
+    it('emits transfer if amount > 0', async () => {
+      const tx = await ppo.connect(user1).burn(1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, ZERO_ADDRESS, 1)
+    })
+  })
+
+  describe('# burnFrom', () => {
+    beforeEach(async () => {
+      await setupPPO()
+      await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if burn from zero address', async () => {
+      await expect(ppo.connect(user1).burnFrom(ZERO_ADDRESS, 1)).revertedWith(
+        'ERC20: burn amount exceeds allowance'
+      )
+    })
+
+    it('reverts if amount > allowance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore.sub(1))
+
+      await expect(
+        ppo.connect(user2).burnFrom(user1.address, user1PPOBalanceBefore)
+      ).to.revertedWith('ERC20: burn amount exceeds allowance')
+    })
+
+    it('reverts if amount > balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore.add(1))
+
+      await expect(
+        ppo.connect(user2).burnFrom(user1.address, user1PPOBalanceBefore.add(1))
+      ).to.revertedWith('ERC20: burn amount exceeds balance')
+    })
+
+    it("doesn't decrease user balance if amount = 0", async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore)
+
+      await ppo.connect(user2).burnFrom(user1.address, 0)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(user1PPOBalanceBefore)
+    })
+
+    it('decreases user balance if amount < balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore)
+
+      await ppo.connect(user2).burnFrom(user1.address, user1PPOBalanceBefore.sub(1))
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(1)
+    })
+
+    it('decreases user balance if amount = balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore)
+
+      await ppo.connect(user2).burnFrom(user1.address, user1PPOBalanceBefore)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(0)
+    })
+
+    it('decreases total supply if amount > 0', async () => {
+      const totalSupplyBefore = await ppo.totalSupply()
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await ppo.connect(user2).burnFrom(user1.address, 1)
+
+      expect(await ppo.totalSupply()).to.eq(totalSupplyBefore.sub(1))
+    })
+
+    it("doesn't change total supply if amount = 0", async () => {
+      const totalSupplyBefore = await ppo.totalSupply()
+
+      await ppo.connect(user2).burnFrom(user1.address, 0)
+
+      expect(await ppo.totalSupply()).to.eq(totalSupplyBefore)
+    })
+
+    it('emits transfer if amount = 0', async () => {
+      const tx = await ppo.connect(user2).burnFrom(user1.address, 0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, ZERO_ADDRESS, 0)
+    })
+
+    it('emits transfer if amount > 0', async () => {
+      await ppo.connect(user1).approve(user2.address, 1)
+      const tx = await ppo.connect(user2).burnFrom(user1.address, 1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, ZERO_ADDRESS, 1)
     })
   })
 })
