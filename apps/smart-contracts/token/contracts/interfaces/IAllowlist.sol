@@ -11,7 +11,7 @@ interface IAllowlist {
 
   function resetSources(address[] calldata sourcesToAllow) external;
 
-    function isAccountSourceAllowed(address account) external view returns (bool);
+  function isSourceAllowed(address account) external view returns (bool);
 
-    function isAccountDestinationAllowed(address account) external view returns (bool);
+  function isDestinationAllowed(address account) external view returns (bool);
 }

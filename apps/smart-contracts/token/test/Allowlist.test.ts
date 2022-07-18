@@ -33,13 +33,5 @@ describe('=> Allowlist', () => {
     it('sets owner to deployer', async () => {
       expect(await allowlist.owner()).to.eq(deployer.address)
     })
-
-    it('sets source accounts index to zero', async () => {
-      expect(await allowlist.getSourceAccountsIndex()).to.eq(0)
-    })
-
-    it('sets destination accounts index to zero', async () => {
-      expect(await allowlist.getDestinationAccountsIndex()).to.eq(0)
-    })
   })
 })
