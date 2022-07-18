@@ -26,13 +26,16 @@ contract PPO is IPPO, SafeOwnableUpgradeable, ERC20BurnableUpgradeable {
     _mint(_recipient, _amount);
   }
 
-  function burn(uint256 _amount) public override(IPPO, ERC20BurnableUpgradeable) onlyOwner {}
+  function burn(uint256 _amount) public override(IPPO, ERC20BurnableUpgradeable) {
+    super.burn(_amount);
+  }
 
   function burnFrom(address _account, uint256 _amount)
     public
     override(IPPO, ERC20BurnableUpgradeable)
-    onlyOwner
-  {}
+  {
+    super.burnFrom(_account, _amount);
+  }
 
   function getTransferHook() external view override returns (ITransferHook) {
     return _transferHook;
