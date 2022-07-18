@@ -5,5 +5,7 @@ pragma solidity =0.8.7;
 interface IBlocklist {
   function set(address[] calldata accounts, bool[] calldata blocked) external;
 
-  function reset(address[] calldata blockedAccounts) external;
+  function reset(address[] calldata accountsToBlock) external;
+
+  function isBlocked(address account) external view returns (bool);
 }
