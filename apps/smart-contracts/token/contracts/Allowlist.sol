@@ -13,7 +13,7 @@ contract Allowlist is IAllowlist, SafeOwnable {
     onlyOwner
   {}
 
-  function resetDestinations(address[] calldata _allowedDestinations) external override onlyOwner {}
+  function resetDestinations(address[] calldata _destinationsToAllow) external override onlyOwner {}
 
   function setSources(address[] calldata _sources, bool[] calldata _allowed)
     external
@@ -21,5 +21,5 @@ contract Allowlist is IAllowlist, SafeOwnable {
     onlyOwner
   {}
 
-  function resetSources(address[] calldata _allowedSources) external override onlyOwner {}
+  function resetSources(address[] calldata _sourcesToAllow) external override onlyOwner {}
 }

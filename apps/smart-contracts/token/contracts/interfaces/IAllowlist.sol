@@ -5,9 +5,9 @@ pragma solidity =0.8.7;
 interface IAllowlist {
   function setDestinations(address[] calldata destinations, bool[] calldata allowed) external;
 
-  function resetDestinations(address[] calldata allowedDestinations) external;
+  function resetDestinations(address[] calldata destinationsToAllow) external;
 
   function setSources(address[] calldata sources, bool[] calldata allowed) external;
 
-  function resetSources(address[] calldata allowedSources) external;
+  function resetSources(address[] calldata sourcesToAllow) external;
 }
