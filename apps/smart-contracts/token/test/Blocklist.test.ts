@@ -44,10 +44,6 @@ describe('=> Blocklist', () => {
     it('sets owner to deployer', async () => {
       expect(await blocklist.owner()).to.eq(deployer.address)
     })
-
-    it('sets blocked accounts index to zero', async () => {
-      expect(await blocklist.getBlockedAllountsIndex()).to.eq(0)
-    })
   })
 
   describe('# set', () => {
