@@ -18,9 +18,19 @@ contract Allowlist is IAllowlist, SafeOwnable {
     external
     override
     onlyOwner
-  {}
+  {
+    require(_destinations.length == _allowed.length, "Array length mismatch");
+    for (uint256 i; i < _destinations.length; ++i) {
+      _destinationIndexToAccountToAllowed[_destinationIndex][_destinations[i]] = _allowed[i];
+    }
+  }
 
-  function resetDestinations(address[] calldata _destinationsToAllow) external override onlyOwner {}
+  function resetDestinations(address[] calldata _destinationsToAllow) external override onlyOwner {
+    _destinationIndex++;
+    for (uint256 i; i < _destinationsToAllow.length; ++i) {
+      _destinationIndexToAccountToAllowed[_destinationIndex][_destinationsToAllow[i]] = true;
+    }
+  }
 
   function setSources(address[] calldata _sources, bool[] calldata _allowed)
     external
