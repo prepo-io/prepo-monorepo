@@ -24,10 +24,12 @@ describe('RestrictedTransferHook', () => {
     restrictedTransferHook = await restrictedTransferHookFixture(owner.address)
   }
 
-  const setupHookAndLists = async (): Promise<void> => {
+  const setupHook = async (): Promise<void> => {
     await deployHook()
     await restrictedTransferHook.connect(owner).acceptOwnership()
-    await restrictedTransferHook.connect(owner).setPPO(ppoToken.address)
+  }
+
+  const setupLists = async (): Promise<void> => {
     allowedSources = await smockAccountListFixture(owner.address)
     await restrictedTransferHook.connect(owner).setAllowedSources(allowedSources.address)
     allowedDestinations = await smockAccountListFixture(owner.address)
@@ -53,7 +55,7 @@ describe('RestrictedTransferHook', () => {
 
   describe('setPPO', () => {
     beforeEach(async () => {
-      await setupHookAndLists()
+      await setupHook()
     })
 
     it('reverts if not owner', async () => {
@@ -74,6 +76,7 @@ describe('RestrictedTransferHook', () => {
     })
 
     it('sets to zero address', async () => {
+      await restrictedTransferHook.connect(owner).setPPO(JUNK_ADDRESS)
       expect(await restrictedTransferHook.getPPO()).to.not.eq(ZERO_ADDRESS)
 
       await restrictedTransferHook.connect(owner).setPPO(ZERO_ADDRESS)
@@ -96,7 +99,7 @@ describe('RestrictedTransferHook', () => {
 
   describe('setAllowedSources', () => {
     beforeEach(async () => {
-      await setupHookAndLists()
+      await setupHook()
     })
 
     it('reverts if not owner', async () => {
@@ -117,6 +120,7 @@ describe('RestrictedTransferHook', () => {
     })
 
     it('sets to zero address', async () => {
+      await restrictedTransferHook.connect(owner).setAllowedSources(JUNK_ADDRESS)
       expect(await restrictedTransferHook.getAllowedSources()).to.not.eq(ZERO_ADDRESS)
 
       await restrictedTransferHook.connect(owner).setAllowedSources(ZERO_ADDRESS)
@@ -139,7 +143,7 @@ describe('RestrictedTransferHook', () => {
 
   describe('setAllowedDestinations', () => {
     beforeEach(async () => {
-      await setupHookAndLists()
+      await setupHook()
     })
 
     it('reverts if not owner', async () => {
@@ -160,6 +164,7 @@ describe('RestrictedTransferHook', () => {
     })
 
     it('sets to zero address', async () => {
+      await restrictedTransferHook.connect(owner).setAllowedDestinations(JUNK_ADDRESS)
       expect(await restrictedTransferHook.getAllowedDestinations()).to.not.eq(ZERO_ADDRESS)
 
       await restrictedTransferHook.connect(owner).setAllowedDestinations(ZERO_ADDRESS)
@@ -182,7 +187,7 @@ describe('RestrictedTransferHook', () => {
 
   describe('setBlockedAccounts', () => {
     beforeEach(async () => {
-      await setupHookAndLists()
+      await setupHook()
     })
 
     it('reverts if not owner', async () => {
@@ -203,6 +208,7 @@ describe('RestrictedTransferHook', () => {
     })
 
     it('sets to zero address', async () => {
+      await restrictedTransferHook.connect(owner).setBlockedAccounts(JUNK_ADDRESS)
       expect(await restrictedTransferHook.getBlockedAccounts()).to.not.eq(ZERO_ADDRESS)
 
       await restrictedTransferHook.connect(owner).setBlockedAccounts(ZERO_ADDRESS)
