@@ -40,7 +40,14 @@ contract RestrictedTransferHook is ITransferHook, SafeOwnable {
     address _from,
     address _to,
     uint256 _amount
-  ) external override onlyPPO {}
+  ) external override onlyPPO {
+    require(
+      !_blockedAccounts.isIncluded(_from) &&
+        !_blockedAccounts.isIncluded(_to) &&
+        (_allowedDestinations.isIncluded(_to) || _allowedSources.isIncluded(_from)),
+      "Account blocked"
+    );
+  }
 
   function getPPO() external view returns (address) {
     return _ppo;
