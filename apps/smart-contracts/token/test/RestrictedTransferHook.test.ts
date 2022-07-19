@@ -51,6 +51,22 @@ describe('RestrictedTransferHook', () => {
     it('sets owner to deployer', async () => {
       expect(await restrictedTransferHook.owner()).to.eq(deployer.address)
     })
+
+    it('sets ppo to zero address', async () => {
+      expect(await restrictedTransferHook.getPPO()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets blocked list to zero address', async () => {
+      expect(await restrictedTransferHook.getBlockedAccounts()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets allowed sources list to zero address', async () => {
+      expect(await restrictedTransferHook.getAllowedSources()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets allowed destinations list to zero address', async () => {
+      expect(await restrictedTransferHook.getAllowedDestinations()).to.eq(ZERO_ADDRESS)
+    })
   })
 
   describe('setPPO', () => {
