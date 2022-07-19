@@ -45,6 +45,14 @@ describe('UnrestrictedTransferHook', () => {
     it('sets owner to deployer', async () => {
       expect(await unrestrictedTransferHook.owner()).to.eq(deployer.address)
     })
+
+    it('sets ppo to zero address', async () => {
+      expect(await unrestrictedTransferHook.getPPO()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets blocked accounts list to zero address', async () => {
+      expect(await unrestrictedTransferHook.getBlockedAccounts()).to.eq(ZERO_ADDRESS)
+    })
   })
 
   describe('setPPO', () => {
