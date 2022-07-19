@@ -12,9 +12,23 @@ contract AccountList is IAccountList, SafeOwnable {
     transferOwnership(_nominatedOwner);
   }
 
-  function set(address[] calldata accounts, bool[] calldata included) external override onlyOwner {}
+  function set(address[] calldata _accounts, bool[] calldata _included)
+    external
+    override
+    onlyOwner
+  {
+    require(_accounts.length == _included.length, "Array length mismatch");
+    for (uint256 i; i < _accounts.length; ++i) {
+      _resetIndexToAccountToIncluded[_resetIndex][_accounts[i]] = _included[i];
+    }
+  }
 
-  function reset(address[] calldata _newIncludedAccounts) external override onlyOwner {}
+  function reset(address[] calldata _newIncludedAccounts) external override onlyOwner {
+    _resetIndex++;
+    for (uint256 i; i < _newIncludedAccounts.length; ++i) {
+      _resetIndexToAccountToIncluded[_resetIndex][_newIncludedAccounts[i]] = true;
+    }
+  }
 
   function getResetIndex() external view override returns (uint256) {
     return _resetIndex;
