@@ -145,54 +145,54 @@ describe('BlocklistTransferHook', () => {
   })
 
   describe('hook', () => {
-    let source: SignerWithAddress
-    let destination: SignerWithAddress
+    let sender: SignerWithAddress
+    let recipient: SignerWithAddress
     beforeEach(async () => {
       await setupHookAndList()
       await blocklistTransferHook.connect(owner).setToken(ppoToken.address)
-      source = user1
-      destination = user2
+      sender = user1
+      recipient = user2
     })
 
     it('reverts if caller is not PPO', async () => {
       expect(await blocklistTransferHook.getToken()).to.not.eq(user1.address)
 
       await expect(
-        blocklistTransferHook.connect(user1).hook(source.address, destination.address, 1)
+        blocklistTransferHook.connect(user1).hook(sender.address, recipient.address, 1)
       ).to.be.revertedWith('msg.sender != token')
     })
 
-    it('reverts if source blocked', async () => {
-      blockedAccounts.isIncluded.whenCalledWith(source.address).returns(true)
+    it('reverts if sender blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
 
       await expect(
-        blocklistTransferHook.connect(ppoToken).hook(source.address, destination.address, 1)
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
       ).to.be.revertedWith('Sender blocked')
     })
 
-    it('reverts if destination blocked', async () => {
-      blockedAccounts.isIncluded.whenCalledWith(destination.address).returns(true)
+    it('reverts if recipient blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
 
       await expect(
-        blocklistTransferHook.connect(ppoToken).hook(source.address, destination.address, 1)
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
       ).to.be.revertedWith('Recipient blocked')
     })
 
-    it('reverts if both source and destination blocked', async () => {
-      blockedAccounts.isIncluded.whenCalledWith(source.address).returns(true)
-      blockedAccounts.isIncluded.whenCalledWith(destination.address).returns(true)
+    it('reverts if both sender and recipient blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
 
       await expect(
-        blocklistTransferHook.connect(ppoToken).hook(source.address, destination.address, 1)
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
       ).to.be.revertedWith('Sender blocked')
     })
 
-    it("doesn't revert if both source and destination not blocked", async () => {
-      blockedAccounts.isIncluded.whenCalledWith(source.address).returns(false)
-      blockedAccounts.isIncluded.whenCalledWith(destination.address).returns(false)
+    it("doesn't revert if both sender and recipient not blocked", async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(false)
 
       await expect(
-        blocklistTransferHook.connect(ppoToken).hook(source.address, destination.address, 1)
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
       ).to.not.reverted
     })
   })
