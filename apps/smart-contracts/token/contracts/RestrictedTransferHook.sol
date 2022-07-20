@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "./interfaces/ITransferHook.sol";
-import "prepo-shared-contracts/contracts/SafeOwnable.sol";
+import "./interfaces/IRestrictedTransferHook.sol";
 import "./interfaces/IAccountList.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract RestrictedTransferHook is ITransferHook, SafeOwnable {
+/**
+  TODO: Import BlocklistTransferHook.sol and remove duplicate implementation
+  and tests for setting blocklist. 
+  TODO: Call super.hook(...) to check for blocklist in `hook()`.
+*/
+
+contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
+  //TODO: Extract this to a shared contract to reduce duplication.
   address private _token;
   IAccountList private _blocklist;
   IAccountList private _sourceAllowlist;
@@ -30,15 +37,19 @@ contract RestrictedTransferHook is ITransferHook, SafeOwnable {
     _token = _newToken;
   }
 
-  function setBlockList(IAccountList _newBlockedAccounts) external onlyOwner {
+  function setBlocklist(IAccountList _newBlockedAccounts) external override onlyOwner {
     _blocklist = _newBlockedAccounts;
   }
 
-  function setSourceAllowList(IAccountList _newAllowedSources) external onlyOwner {
+  function setSourceAllowlist(IAccountList _newAllowedSources) external override onlyOwner {
     _sourceAllowlist = _newAllowedSources;
   }
 
-  function setDestinationAllowList(IAccountList _newAllowedDestinations) external onlyOwner {
+  function setDestinationAllowlist(IAccountList _newAllowedDestinations)
+    external
+    override
+    onlyOwner
+  {
     _destinationAllowlist = _newAllowedDestinations;
   }
 
@@ -46,15 +57,15 @@ contract RestrictedTransferHook is ITransferHook, SafeOwnable {
     return _token;
   }
 
-  function getBlockList() external view returns (IAccountList) {
+  function getBlocklist() external view override returns (IAccountList) {
     return _blocklist;
   }
 
-  function getSourceAllowList() external view returns (IAccountList) {
+  function getSourceAllowlist() external view override returns (IAccountList) {
     return _sourceAllowlist;
   }
 
-  function getDestinationAllowList() external view returns (IAccountList) {
+  function getDestinationAllowlist() external view override returns (IAccountList) {
     return _destinationAllowlist;
   }
 }
