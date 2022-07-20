@@ -306,14 +306,6 @@ describe('RestrictedTransferHook', () => {
         blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
       })
 
-      it('reverts if sender blocked', async () => {
-        blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
-
-        await expect(
-          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-        ).to.be.revertedWith('Sender blocked')
-      })
-
       it('reverts if sender not blocked', async () => {
         blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
 
@@ -339,68 +331,9 @@ describe('RestrictedTransferHook', () => {
       })
     })
 
-    describe('if sender is allowed source', () => {
-      beforeEach(() => {
-        allowedSources.isIncluded.whenCalledWith(sender.address).returns(true)
-      })
-
-      it('reverts if sender blocked', async () => {
-        blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
-
-        await expect(
-          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-        ).to.be.revertedWith('Sender blocked')
-      })
-
-      it('reverts if recipient blocked', async () => {
-        blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
-
-        await expect(
-          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-        ).to.be.revertedWith('Recipient blocked')
-      })
-
-      describe('if both sender and recipient not blocked', () => {
-        beforeEach(() => {
-          blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
-          blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(false)
-        })
-
-        it("doesn't revert if recipient is not allowed destination", async () => {
-          allowedDestinations.isIncluded.whenCalledWith(recipient.address).returns(false)
-          await expect(
-            restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-          ).to.not.reverted
-        })
-
-        it("doesn't revert if recipient is allowed destination", async () => {
-          allowedDestinations.isIncluded.whenCalledWith(recipient.address).returns(true)
-          await expect(
-            restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-          ).to.not.reverted
-        })
-      })
-    })
-
     describe('if recipient is allowed destination', () => {
       beforeEach(() => {
         allowedDestinations.isIncluded.whenCalledWith(recipient.address).returns(true)
-      })
-
-      it('reverts if sender blocked', async () => {
-        blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
-
-        await expect(
-          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-        ).to.be.revertedWith('Sender blocked')
-      })
-
-      it('reverts if recipient blocked', async () => {
-        blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
-
-        await expect(
-          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
-        ).to.be.revertedWith('Recipient blocked')
       })
 
       describe('if both sender and recipient not blocked', () => {
@@ -418,6 +351,26 @@ describe('RestrictedTransferHook', () => {
 
         it("doesn't revert if sender is allowed source", async () => {
           allowedSources.isIncluded.whenCalledWith(sender.address).returns(true)
+          await expect(
+            restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+          ).to.not.reverted
+        })
+      })
+    })
+
+    describe('if sender is allowed source', () => {
+      beforeEach(() => {
+        allowedSources.isIncluded.whenCalledWith(sender.address).returns(true)
+      })
+
+      describe('if both sender and recipient not blocked', () => {
+        beforeEach(() => {
+          blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
+          blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(false)
+        })
+
+        it("doesn't revert if recipient is not allowed destination", async () => {
+          allowedDestinations.isIncluded.whenCalledWith(recipient.address).returns(false)
           await expect(
             restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
           ).to.not.reverted
@@ -450,6 +403,38 @@ describe('RestrictedTransferHook', () => {
       it('reverts if both sender and recipient not blocked', async () => {
         blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
         blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(false)
+
+        await expect(
+          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+        ).to.be.revertedWith('Destination not allowed')
+      })
+    })
+
+    describe('if sender in allowed source and recipient in allowed destination', () => {
+      beforeEach(() => {
+        allowedSources.isIncluded.whenCalledWith(sender.address).returns(true)
+        allowedDestinations.isIncluded.whenCalledWith(recipient.address).returns(true)
+      })
+
+      it('reverts if sender blocked', async () => {
+        blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
+
+        await expect(
+          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+        ).to.be.revertedWith('Sender blocked')
+      })
+
+      it('reverts if recipient blocked', async () => {
+        blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
+
+        await expect(
+          restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+        ).to.be.revertedWith('Recipient blocked')
+      })
+
+      it('reverts if both sender and recipient blocked', async () => {
+        blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
+        blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
 
         await expect(
           restrictedTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
