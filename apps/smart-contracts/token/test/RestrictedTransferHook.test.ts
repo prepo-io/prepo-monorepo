@@ -29,13 +29,13 @@ describe('RestrictedTransferHook', () => {
     await restrictedTransferHook.connect(owner).acceptOwnership()
   }
 
-  const setupLists = async (): Promise<void> => {
+  const setupHookAndLists = async (): Promise<void> => {
     allowedSources = await smockAccountListFixture(owner.address)
-    await restrictedTransferHook.connect(owner).setAllowedSources(allowedSources.address)
+    await restrictedTransferHook.connect(owner).setSourceAllowlist(allowedSources.address)
     allowedDestinations = await smockAccountListFixture(owner.address)
-    await restrictedTransferHook.connect(owner).setAllowedDestinations(allowedDestinations.address)
+    await restrictedTransferHook.connect(owner).setDestinationAllowlist(allowedDestinations.address)
     blockedAccounts = await smockAccountListFixture(owner.address)
-    await restrictedTransferHook.connect(owner).setBlockedAccounts(blockedAccounts.address)
+    await restrictedTransferHook.connect(owner).setBlocklist(blockedAccounts.address)
   }
 
   describe('initial state', () => {
@@ -51,9 +51,25 @@ describe('RestrictedTransferHook', () => {
     it('sets owner to deployer', async () => {
       expect(await restrictedTransferHook.owner()).to.eq(deployer.address)
     })
+
+    it('sets token to zero address', async () => {
+      expect(await restrictedTransferHook.getToken()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets blocked list to zero address', async () => {
+      expect(await restrictedTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets source allow list to zero address', async () => {
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(ZERO_ADDRESS)
+    })
+
+    it('sets destination allow list to zero address', async () => {
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(ZERO_ADDRESS)
+    })
   })
 
-  describe('setPPO', () => {
+  describe('# setToken', () => {
     beforeEach(async () => {
       await setupHook()
     })
@@ -61,43 +77,43 @@ describe('RestrictedTransferHook', () => {
     it('reverts if not owner', async () => {
       expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
 
-      await expect(restrictedTransferHook.connect(user1).setPPO(JUNK_ADDRESS)).revertedWith(
+      await expect(restrictedTransferHook.connect(user1).setToken(JUNK_ADDRESS)).revertedWith(
         'Ownable: caller is not the owner'
       )
     })
 
     it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getPPO()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setPPO(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getPPO()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getPPO()).to.not.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setPPO(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getPPO()).to.not.eq(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setPPO(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setToken(ZERO_ADDRESS)
 
-      expect(await restrictedTransferHook.getPPO()).to.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getPPO()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setPPO(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getPPO()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setPPO(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getPPO()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
     })
   })
 
-  describe('setAllowedSources', () => {
+  describe('# setSourceAllowlist', () => {
     beforeEach(async () => {
       await setupHook()
     })
@@ -106,42 +122,42 @@ describe('RestrictedTransferHook', () => {
       expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
 
       await expect(
-        restrictedTransferHook.connect(user1).setAllowedSources(JUNK_ADDRESS)
+        restrictedTransferHook.connect(user1).setSourceAllowlist(JUNK_ADDRESS)
       ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getAllowedSources()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedSources(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setSourceAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedSources()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getAllowedSources()).to.not.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setAllowedSources(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getAllowedSources()).to.not.eq(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setSourceAllowlist(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.not.eq(ZERO_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedSources(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setSourceAllowlist(ZERO_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedSources()).to.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getAllowedSources()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedSources(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setSourceAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedSources()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedSources(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setSourceAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedSources()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(JUNK_ADDRESS)
     })
   })
 
-  describe('setAllowedDestinations', () => {
+  describe('# setDestinationAllowlist', () => {
     beforeEach(async () => {
       await setupHook()
     })
@@ -150,42 +166,42 @@ describe('RestrictedTransferHook', () => {
       expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
 
       await expect(
-        restrictedTransferHook.connect(user1).setAllowedDestinations(JUNK_ADDRESS)
+        restrictedTransferHook.connect(user1).setDestinationAllowlist(JUNK_ADDRESS)
       ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedDestinations(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setDestinationAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.not.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setAllowedDestinations(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.not.eq(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setDestinationAllowlist(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.not.eq(ZERO_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedDestinations(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setDestinationAllowlist(ZERO_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedDestinations(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setDestinationAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setAllowedDestinations(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setDestinationAllowlist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getAllowedDestinations()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(JUNK_ADDRESS)
     })
   })
 
-  describe('setBlockedAccounts', () => {
+  describe('# setBlocklist', () => {
     beforeEach(async () => {
       await setupHook()
     })
@@ -193,42 +209,41 @@ describe('RestrictedTransferHook', () => {
     it('reverts if not owner', async () => {
       expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
 
-      await expect(
-        restrictedTransferHook.connect(user1).setBlockedAccounts(JUNK_ADDRESS)
-      ).revertedWith('Ownable: caller is not the owner')
+      await expect(restrictedTransferHook.connect(user1).setBlocklist(JUNK_ADDRESS)).revertedWith(
+        'Ownable: caller is not the owner'
+      )
     })
 
     it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setBlockedAccounts(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.not.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(ZERO_ADDRESS)
     })
 
     it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setBlockedAccounts(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.not.eq(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(ZERO_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setBlockedAccounts(ZERO_ADDRESS)
+      await restrictedTransferHook.connect(owner).setBlocklist(ZERO_ADDRESS)
 
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.eq(ZERO_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
     })
 
     it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.not.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setBlockedAccounts(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
 
-      await restrictedTransferHook.connect(owner).setBlockedAccounts(JUNK_ADDRESS)
+      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
 
-      expect(await restrictedTransferHook.getBlockedAccounts()).to.eq(JUNK_ADDRESS)
+      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
     })
   })
-
   describe('hook', () => {
     let source: SignerWithAddress
     let destination: SignerWithAddress

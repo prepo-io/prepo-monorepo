@@ -1,67 +1,71 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.8.7;
 
-import "./interfaces/ITransferHook.sol";
-import "prepo-shared-contracts/contracts/SafeOwnable.sol";
+import "./interfaces/IRestrictedTransferHook.sol";
 import "./interfaces/IAccountList.sol";
+import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract RestrictedTransferHook is ITransferHook, SafeOwnable {
-  address private _ppo;
-  IAccountList private _allowedSources;
-  IAccountList private _allowedDestinations;
-  IAccountList private _blockedAccounts;
+/**
+  TODO: Import BlocklistTransferHook.sol and remove duplicate implementation
+  and tests for setting blocklist.
+  TODO: Call super.hook(...) to check for blocklist in `hook()`.
+*/
 
-  modifier onlyPPO() {
-    require(msg.sender == _ppo, "Only PPO can call hook");
+contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
+  //TODO: Extract this to a shared contract to reduce duplication.
+  address private _token;
+  IAccountList private _blocklist;
+  IAccountList private _sourceAllowlist;
+  IAccountList private _destinationAllowlist;
+
+  modifier onlyToken() {
     _;
+    require(msg.sender == _token, "msg.sender != token");
   }
 
   constructor(address _nominatedOwner) {
     transferOwnership(_nominatedOwner);
   }
 
-  function setPPO(address _newPPO) external onlyOwner {
-    _ppo = _newPPO;
-  }
-
-  function setAllowedSources(IAccountList _newAllowedSources) external onlyOwner {
-    _allowedSources = _newAllowedSources;
-  }
-
-  function setAllowedDestinations(IAccountList _newAllowedDestinations) external onlyOwner {
-    _allowedDestinations = _newAllowedDestinations;
-  }
-
-  function setBlockedAccounts(IAccountList _newBlockedAccounts) external onlyOwner {
-    _blockedAccounts = _newBlockedAccounts;
-  }
-
   function hook(
     address _from,
     address _to,
     uint256 _amount
-  ) external override onlyPPO {
-    require(
-      !_blockedAccounts.isIncluded(_from) &&
-        !_blockedAccounts.isIncluded(_to) &&
-        (_allowedDestinations.isIncluded(_to) || _allowedSources.isIncluded(_from)),
-      "Account blocked"
-    );
+  ) external override onlyToken {}
+
+  function setToken(address _newToken) external onlyOwner {
+    _token = _newToken;
   }
 
-  function getPPO() external view returns (address) {
-    return _ppo;
+  function setBlocklist(IAccountList _newBlockedAccounts) external override onlyOwner {
+    _blocklist = _newBlockedAccounts;
   }
 
-  function getAllowedSources() external view returns (IAccountList) {
-    return _allowedSources;
+  function setSourceAllowlist(IAccountList _newAllowedSources) external override onlyOwner {
+    _sourceAllowlist = _newAllowedSources;
   }
 
-  function getAllowedDestinations() external view returns (IAccountList) {
-    return _allowedDestinations;
+  function setDestinationAllowlist(IAccountList _newAllowedDestinations)
+    external
+    override
+    onlyOwner
+  {
+    _destinationAllowlist = _newAllowedDestinations;
   }
 
-  function getBlockedAccounts() external view returns (IAccountList) {
-    return _blockedAccounts;
+  function getToken() external view returns (address) {
+    return _token;
+  }
+
+  function getBlocklist() external view override returns (IAccountList) {
+    return _blocklist;
+  }
+
+  function getSourceAllowlist() external view override returns (IAccountList) {
+    return _sourceAllowlist;
+  }
+
+  function getDestinationAllowlist() external view override returns (IAccountList) {
+    return _destinationAllowlist;
   }
 }
