@@ -1,5 +1,5 @@
 import { ethers } from 'hardhat'
-import { RestrictedTransferHook, UnrestrictedTransferHook } from '../../types/generated'
+import { RestrictedTransferHook, BlocklistTransferHook } from '../../types/generated'
 
 export async function restrictedTransferHookFixture(
   nominatedOwnerAddress: string
@@ -8,9 +8,9 @@ export async function restrictedTransferHookFixture(
   return (await Factory.deploy(nominatedOwnerAddress)) as RestrictedTransferHook
 }
 
-export async function unrestrictedTransferHookFixture(
+export async function blocklistTransferHookFixture(
   nominatedOwnerAddress: string
-): Promise<UnrestrictedTransferHook> {
-  const Factory = await ethers.getContractFactory('UnrestrictedTransferHook')
-  return (await Factory.deploy(nominatedOwnerAddress)) as UnrestrictedTransferHook
+): Promise<BlocklistTransferHook> {
+  const Factory = await ethers.getContractFactory('BlocklistTransferHook')
+  return (await Factory.deploy(nominatedOwnerAddress)) as BlocklistTransferHook
 }
