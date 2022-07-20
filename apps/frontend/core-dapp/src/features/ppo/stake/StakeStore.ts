@@ -13,7 +13,7 @@ export class StakeStore {
   }
 
   get isCurrentStakingValueValid(): boolean {
-    const balance = this.root.ppoTokenStore.tokenBalance ?? 0
+    const balance = this.root.ppoTokenStore.tokenBalanceRaw ?? 0
     return Boolean(this.currentStakingValue) && this.currentStakingValue <= balance
   }
 
@@ -25,15 +25,15 @@ export class StakeStore {
     this.showDelegate = show
   }
 
-  stake(): {
+  stake(): Promise<{
     success: boolean
     error?: string | undefined
-  } {
+  }> {
     const balance = this.getBalance()
     if (this.currentStakingValue > balance) {
-      return { success: false }
+      return Promise.resolve({ success: false })
     }
-    return { success: true }
+    return this.root.ppoStakingStore.stake(this.currentStakingValue)
   }
 
   private getBalance(): number {

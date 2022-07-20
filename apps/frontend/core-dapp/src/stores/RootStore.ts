@@ -24,6 +24,7 @@ import { StakeStore } from '../features/ppo/stake/StakeStore'
 import { UnstakeStore } from '../features/ppo/stake/UnstakeStore'
 import { PpoHistoryStore } from '../features/ppo/history/PpoHistoryStore'
 import { Language } from '../types/general.types'
+import { PPOStakingStore } from '../features/ppo/stake/PPOStakingStore'
 
 type LocalStorage = {
   isPortfolioVisible: boolean
@@ -57,6 +58,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
   currenciesStore: CurrenciesStore
   delegateStore: DelegateStore
   stakeStore: StakeStore
+  ppoStakingStore: PPOStakingStore
   swapStore: SwapStore
   ppoTokenStore: Erc20Store
   ppoHistoryStore: PpoHistoryStore
@@ -92,6 +94,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
     this.ppoTokenStore = new Erc20Store({ root: this, tokenName: 'PPO', symbolOverride: 'PPO' })
     this.ppoHistoryStore = new PpoHistoryStore(this)
     this.stakeStore = new StakeStore(this)
+    this.ppoStakingStore = new PPOStakingStore(this)
     this.unstakeStore = new UnstakeStore(this)
   }
 }
