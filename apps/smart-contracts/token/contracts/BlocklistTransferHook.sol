@@ -8,7 +8,7 @@ import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 contract BlocklistTransferHook is IBlocklistTransferHook, SafeOwnable {
   //TODO: Extract this to a shared contract to reduce duplication.
   address private _token;
-  IAccountList private _blockedAccounts;
+  IAccountList private _blocklist;
 
   modifier onlyToken() {
     require(msg.sender == _token, "msg.sender != token");
@@ -29,8 +29,8 @@ contract BlocklistTransferHook is IBlocklistTransferHook, SafeOwnable {
     _token = _newToken;
   }
 
-  function setBlocklist(IAccountList _newBlockedAccounts) external override onlyOwner {
-    _blockedAccounts = _newBlockedAccounts;
+  function setBlocklist(IAccountList _newBlocklist) external override onlyOwner {
+    _blocklist = _newBlocklist;
   }
 
   function getToken() external view returns (address) {
@@ -38,6 +38,6 @@ contract BlocklistTransferHook is IBlocklistTransferHook, SafeOwnable {
   }
 
   function getBlocklist() external view override returns (IAccountList) {
-    return _blockedAccounts;
+    return _blocklist;
   }
 }
