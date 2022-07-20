@@ -35,7 +35,7 @@ contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
     require(!_blocklist.isIncluded(_from), "Sender blocked");
     require(!_blocklist.isIncluded(_to), "Recipient blocked");
     if (_sourceAllowlist.isIncluded(_from)) return;
-    require(_destinationAllowlist.isIncluded(_to), "Destination blocked");
+    require(_destinationAllowlist.isIncluded(_to), "Destination not allowed");
   }
 
   function setToken(address _newToken) external onlyOwner {
