@@ -6,55 +6,55 @@ import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 import "./interfaces/IAccountList.sol";
 
 contract RestrictedTransferHook is ITransferHook, SafeOwnable {
-  address private _ppo;
-  IAccountList private _allowedSources;
-  IAccountList private _allowedDestinations;
-  IAccountList private _blockedAccounts;
+  address private _token;
+  IAccountList private _blocklist;
+  IAccountList private _sourceAllowlist;
+  IAccountList private _destinationAllowlist;
 
-  modifier onlyPPO() {
-    require(msg.sender == _ppo, "Only PPO can call hook");
+  modifier onlyToken() {
     _;
+    require(msg.sender == _token, "msg.sender != token");
   }
 
   constructor(address _nominatedOwner) {
     transferOwnership(_nominatedOwner);
   }
 
-  function setPPO(address _newPPO) external onlyOwner {
-    _ppo = _newPPO;
-  }
-
-  function setAllowedSources(IAccountList _newAllowedSources) external onlyOwner {
-    _allowedSources = _newAllowedSources;
-  }
-
-  function setAllowedDestinations(IAccountList _newAllowedDestinations) external onlyOwner {
-    _allowedDestinations = _newAllowedDestinations;
-  }
-
-  function setBlockedAccounts(IAccountList _newBlockedAccounts) external onlyOwner {
-    _blockedAccounts = _newBlockedAccounts;
-  }
-
   function hook(
     address _from,
     address _to,
     uint256 _amount
-  ) external override onlyPPO {}
+  ) external override onlyToken {}
 
-  function getPPO() external view returns (address) {
-    return _ppo;
+  function setToken(address _newToken) external onlyOwner {
+    _token = _newToken;
   }
 
-  function getAllowedSources() external view returns (IAccountList) {
-    return _allowedSources;
+  function setBlockList(IAccountList _newBlockedAccounts) external onlyOwner {
+    _blocklist = _newBlockedAccounts;
   }
 
-  function getAllowedDestinations() external view returns (IAccountList) {
-    return _allowedDestinations;
+  function setSourceAllowList(IAccountList _newAllowedSources) external onlyOwner {
+    _sourceAllowlist = _newAllowedSources;
   }
 
-  function getBlockedAccounts() external view returns (IAccountList) {
-    return _blockedAccounts;
+  function setDestinationAllowList(IAccountList _newAllowedDestinations) external onlyOwner {
+    _destinationAllowlist = _newAllowedDestinations;
+  }
+
+  function getToken() external view returns (address) {
+    return _token;
+  }
+
+  function getBlockList() external view returns (IAccountList) {
+    return _blocklist;
+  }
+
+  function getSourceAllowList() external view returns (IAccountList) {
+    return _sourceAllowlist;
+  }
+
+  function getDestinationAllowList() external view returns (IAccountList) {
+    return _destinationAllowlist;
   }
 }
