@@ -6,7 +6,7 @@ import "./IAccountList.sol";
 
 //TODO: add all natspecs at the end
 interface IBlocklistTransferHook is ITransferHook {
-  function setBlocklist(IAccountList newBlockList) external;
+  function setBlocklist(IAccountList newBlocklist) external;
 
   function getBlocklist() external view returns (IAccountList);
 }
