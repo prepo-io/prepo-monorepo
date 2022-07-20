@@ -44,7 +44,8 @@ async function setNextTimestamp(
   await provider.send('evm_setNextBlockTimestamp', [timestamp])
 }
 
-function assertIsTestnetChain(chainId: ChainId): void {
+function assertIsTestnetChain(chainId: string): void {
+  const convertedHardhatChainId = Number(chainId)
   const testChains = [
     NETWORKS.hardhat.chainId,
     NETWORKS.ropsten.chainId,
@@ -52,7 +53,7 @@ function assertIsTestnetChain(chainId: ChainId): void {
     NETWORKS.goerli.chainId,
     NETWORKS.kovan.chainId,
   ]
-  if (!testChains.includes(chainId)) {
+  if (!testChains.includes(convertedHardhatChainId)) {
     throw new Error('Deployment to production environments is disabled!')
   }
 }

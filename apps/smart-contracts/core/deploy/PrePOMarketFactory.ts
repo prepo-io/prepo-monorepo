@@ -3,7 +3,6 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { ContractAddressOrInstance } from '@openzeppelin/hardhat-upgrades/dist/utils'
 import { utils } from 'prepo-hardhat'
-import { ChainId } from 'prepo-constants'
 import { fetchExistingCollateral, sendTxAndWait } from '../helpers'
 import { PrePOMarketFactory } from '../typechain'
 
@@ -22,7 +21,7 @@ const deployFunction: DeployFunction = async function ({
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
    */
-  assertIsTestnetChain(currentChain as unknown as ChainId)
+  assertIsTestnetChain(currentChain)
   // Fetch existing Collateral deployment from local .env
   const collateral = await fetchExistingCollateral(currentChain, ethers)
   /**

@@ -1,7 +1,6 @@
 // eslint-disable no-console
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { ChainId } from 'prepo-constants'
 import { utils } from 'prepo-hardhat'
 
 const { assertIsTestnetChain } = utils
@@ -24,7 +23,7 @@ const deployFunction: DeployFunction = async function ({
    * Make sure this script is not accidentally targeted towards a production environment,
    * this can be removed once we deploy to prod.
    */
-  assertIsTestnetChain(currentChain as unknown as ChainId)
+  assertIsTestnetChain(currentChain)
   // Retrieve existing non-upgradeable deployments using hardhat-deploy
   const baseToken = await ethers.getContract('MockBaseToken')
   // Deploy SingleStrategyController and configure with the Collateral vault

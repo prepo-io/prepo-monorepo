@@ -3,7 +3,6 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { ContractAddressOrInstance } from '@openzeppelin/hardhat-upgrades/dist/utils'
 import { utils } from 'prepo-hardhat'
-import { ChainId } from 'prepo-constants'
 import { sendTxAndWait } from '../helpers'
 import { Collateral, ERC20 } from '../typechain'
 
@@ -24,7 +23,7 @@ const deployFunction: DeployFunction = async function ({
    * this can be removed once we deploy to prod.
    * TODO Only deploy "Mock" contracts when on a testchain
    */
-  assertIsTestnetChain(currentChain as unknown as ChainId)
+  assertIsTestnetChain(currentChain)
   /**
    * Attempt to retrieve existing Collateral deployment to attempt an upgrade, or deploy
    * a new instance if one doesn't exist.
