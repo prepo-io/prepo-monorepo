@@ -19,8 +19,8 @@ contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
   IAccountList private _destinationAllowlist;
 
   modifier onlyToken() {
-    _;
     require(msg.sender == _token, "msg.sender != token");
+    _;
   }
 
   constructor(address _nominatedOwner) {
@@ -31,7 +31,12 @@ contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
     address _from,
     address _to,
     uint256 _amount
-  ) external override onlyToken {}
+  ) external override onlyToken {
+    require(!_blocklist.isIncluded(_from), "Sender blocked");
+    require(!_blocklist.isIncluded(_to), "Recipient blocked");
+    if (_sourceAllowlist.isIncluded(_from)) return;
+    require(_destinationAllowlist.isIncluded(_to), "Destination blocked");
+  }
 
   function setToken(address _newToken) external onlyOwner {
     _token = _newToken;
