@@ -47,7 +47,7 @@ const StakeUnstakeLayout: React.FC<{
   const {
     delegateStore: { selectedDelegate: delegate },
     stakeStore: { isCurrentStakingValueValid, stake },
-    unstakeStore: { isCurrentUnstakingValueValid, withdraw },
+    unstakeStore: { isCurrentUnstakingValueValid },
     ppoStakingStore: { staking },
     uiStore: { disableMocks },
   } = useRootStore()
@@ -59,7 +59,7 @@ const StakeUnstakeLayout: React.FC<{
   const buttonDisabled =
     staking || loading || !(isStake ? isCurrentStakingValueValid : isCurrentUnstakingValueValid)
   const buttonText = isStake ? 'Stake PPO' : 'Unstake PPO'
-  const onClick = isStake ? stake : withdraw
+  const onClick = isStake ? stake : (): void => {} // withdraw function, will be added later
   const comingSoonText = buttonText
 
   return (

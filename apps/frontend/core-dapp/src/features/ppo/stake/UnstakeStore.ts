@@ -26,8 +26,4 @@ export class UnstakeStore {
   setCurrentUnstakingValue(value: number | string): void {
     this.currentUnstakingValue = validateNumber(+value) // TODO: compare with staked value from SC
   }
-
-  withdraw(): void {
-    console.log(this)
-  }
 }

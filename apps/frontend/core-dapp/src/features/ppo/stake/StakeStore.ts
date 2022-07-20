@@ -13,7 +13,7 @@ export class StakeStore {
   }
 
   get isCurrentStakingValueValid(): boolean {
-    const balance = this.root.ppoTokenStore.tokenBalanceRaw ?? 0
+    const balance = this.root.ppoTokenStore.tokenBalance ?? 0
     return Boolean(this.currentStakingValue) && this.currentStakingValue <= balance
   }
 
