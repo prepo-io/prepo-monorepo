@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "6.19.6",
-    "antd": "4.20.7",
+    "antd": "4.21.6",
     "clone-deep": "4.0.1",
     "configcat-js-ssr": "3.10.0",
     "ethereum-multicall": "2.10.0",

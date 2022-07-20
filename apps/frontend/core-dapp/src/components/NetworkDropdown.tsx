@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ChainId, NetworkType } from 'prepo-constants'
 import Dropdown from './Dropdown'
-import Menu, { MenuItem } from './Menu'
+import Menu from './Menu'
 import { useRootStore } from '../context/RootStoreProvider'
 import useResponsive from '../hooks/useResponsive'
 
@@ -31,14 +31,6 @@ const StyledDropdown = styled(Dropdown)`
     }
     svg {
       fill: ${({ theme }): string => theme.color.neutral1};
-    }
-  }
-`
-
-const StyledMenuItem = styled(MenuItem)`
-  &:hover {
-    * > {
-      border: none;
     }
   }
 `
@@ -137,17 +129,15 @@ const NetworkDropdown: React.FC = () => {
   const { isDesktop } = useResponsive()
 
   const marketsDropdownMenu = (
-    <StyledMenu size="md">
-      {allNetworks.map((network) => (
-        <StyledMenuItem
-          key={network.name}
-          disabled={!network.supported}
-          onClick={(): void => selectNetwork(network.chainId)}
-        >
-          <Item network={network} selectedName={selectedNetwork.name} />
-        </StyledMenuItem>
-      ))}
-    </StyledMenu>
+    <StyledMenu
+      size="md"
+      items={allNetworks.map((network) => ({
+        key: network.name,
+        disabled: !network.supported,
+        onClick: (): void => selectNetwork(network.chainId),
+        label: <Item network={network} selectedName={selectedNetwork.name} />,
+      }))}
+    />
   )
 
   const iconSize = '24px'

@@ -22,11 +22,11 @@ type Props = {
 }
 
 type StyledInputProps = {
-  isSingleCurrency?: boolean
+  $isSingleCurrency?: boolean
 }
 
 const StyledInput = styled(Input)<StyledInputProps>`
-  text-align: ${({ isSingleCurrency }): string => (isSingleCurrency ? 'right' : 'left')};
+  text-align: ${({ $isSingleCurrency }): string => ($isSingleCurrency ? 'right' : 'left')};
   ${media.tablet<StyledInputProps>`
     text-align: left;
   `}
@@ -35,7 +35,7 @@ const StyledInput = styled(Input)<StyledInputProps>`
 const InputLabelWrapper = styled.div<StyledInputProps>`
   color: ${({ theme }): string => theme.color.neutral1};
   font-size: ${({ theme }): string => theme.fontSize.md};
-  text-align: ${({ isSingleCurrency }): string => (isSingleCurrency ? 'right' : 'left')};
+  text-align: ${({ $isSingleCurrency }): string => ($isSingleCurrency ? 'right' : 'left')};
   ${media.tablet<StyledInputProps>`
     text-align: left;
   `}
@@ -133,7 +133,7 @@ const MultiCurrencySelect: React.FC<Props> = ({
 
   return (
     <StyledInput
-      isSingleCurrency={isSingleCurrency}
+      $isSingleCurrency={isSingleCurrency}
       primaryLabel={label}
       secondaryLabel={balance}
       renderLeft={((isPhone && isSingleCurrency) || nonInput) && <CurrencySelectionComponent />}
@@ -144,7 +144,7 @@ const MultiCurrencySelect: React.FC<Props> = ({
       renderInputAsLabel={
         !isFocus &&
         !isSingleCurrency && (
-          <InputLabelWrapper onClick={onInputFocus} isSingleCurrency={isSingleCurrency}>
+          <InputLabelWrapper onClick={onInputFocus} $isSingleCurrency={isSingleCurrency}>
             {inputValue}
             <InputLabelSuffix currency="USD" isSingleCurrency={isSingleCurrency} />
           </InputLabelWrapper>

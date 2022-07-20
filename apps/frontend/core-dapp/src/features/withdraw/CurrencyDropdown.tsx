@@ -1,5 +1,5 @@
 import CurrencyIconTitle from './CurrencyIconTitle'
-import Menu, { MenuItem } from '../../components/Menu'
+import Menu from '../../components/Menu'
 import Dropdown from '../../components/Dropdown'
 import { Currency } from '../../types/currency.types'
 
@@ -19,13 +19,14 @@ const CurrencyDropdown: React.FC<Props> = ({
     if (typeof onSelectMarket === 'function') onSelectMarket(key)
   }
   const getMarketsDropdownMenu = (
-    <Menu size="md" onClick={onClick}>
-      {coins.map((coin) => (
-        <MenuItem key={coin.id}>
-          <CurrencyIconTitle iconName={coin.iconName}>{coin.name}</CurrencyIconTitle>
-        </MenuItem>
-      ))}
-    </Menu>
+    <Menu
+      size="md"
+      onClick={onClick}
+      items={coins.map((coin) => ({
+        key: coin.id,
+        label: <CurrencyIconTitle iconName={coin.iconName}>{coin.name}</CurrencyIconTitle>,
+      }))}
+    />
   )
 
   return (
