@@ -6,6 +6,7 @@
   "files": [
     "base.json",
     "frontend.json",
-    "server.json"
+    "server.json",
+    "smart-contracts.json"
   ]
 }

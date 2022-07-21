@@ -52,7 +52,7 @@ function assertIsTestnetChain(chainId: ChainId): void {
     NETWORKS.goerli.chainId,
     NETWORKS.kovan.chainId,
   ]
-  if (!testChains.includes(chainId)) {
+  if (!testChains.includes(+chainId)) {
     throw new Error('Deployment to production environments is disabled!')
   }
 }

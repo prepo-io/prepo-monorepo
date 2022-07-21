@@ -35,7 +35,7 @@ export type SupportedNetworks =
   | 'ropsten'
   | 'goerli'
   | 'xdai'
-  | 'matic'
+  | 'polygon'
   | 'mumbai'
   | 'smartchain'
   | 'smartchaintest'
@@ -47,6 +47,7 @@ export type Network = {
   color: string
   chainId: ChainId
   blockExplorer: string
+  infuraEndpointName?: string
   rpcUrls: string[]
   faucet?: string
   gasPrice?: BigNumber
@@ -150,11 +151,12 @@ export const NETWORKS: Networks = {
     type: 'dai',
     testNetwork: false,
   },
-  matic: {
+  polygon: {
     chainName: 'Polygon',
-    name: 'matic',
+    name: 'polygon',
     color: '#2bbdf7',
     chainId: ChainId.Polygon,
+    infuraEndpointName: 'polygon-mainnet',
     rpcUrls: ['https://polygon-rpc.com', 'https://matic-mainnet.chainstacklabs.com'],
     faucet: 'https://faucet.matic.network',
     blockExplorer: 'https://polygonscan.com',

@@ -78,9 +78,15 @@ The following command will allow you to specify an external Ethereum network to 
 
 ### Verify on Etherscan
 
-Add Etherscan API key to `.env`, then run:
+Add your Etherscan API key using ETHERSCAN_API_KEY in `.env`, then run:
 
-`yarn hardhat verify-contract --contract-name <CONTRACT_NAME> --address <DEPLOYED_ADDRESS>`
+`yarn hardhat verify <CONTRACT_ADDRESS> --network mainnet "PARAM 1" "PARAM 2"...`
+
+### Verify on Polygonscan
+
+Add your Polygonscan API key using POLYGONSCAN_API_KEY in `.env`, then run:
+
+`yarn hardhat verify <CONTRACT_ADDRESS> --network matic "PARAM 1" "PARAM 2"...`
 
 ### The Graph
 
