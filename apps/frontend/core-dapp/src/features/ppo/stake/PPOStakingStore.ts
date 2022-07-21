@@ -64,7 +64,7 @@ export class PPOStakingStore extends Erc20Store {
         this.staking = true
         this.stakingHash = undefined
       })
-      const { address } = this.root.web3Store
+      const { address } = this.root.web3Store.signerState
       if (!address) {
         return {
           success: false,
