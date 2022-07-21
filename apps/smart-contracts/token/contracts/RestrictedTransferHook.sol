@@ -42,20 +42,20 @@ contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable {
     _token = _newToken;
   }
 
-  function setBlocklist(IAccountList _newBlockedAccounts) external override onlyOwner {
-    _blocklist = _newBlockedAccounts;
+  function setBlocklist(IAccountList _newBlocklist) external override onlyOwner {
+    _blocklist = _newBlocklist;
   }
 
-  function setSourceAllowlist(IAccountList _newAllowedSources) external override onlyOwner {
-    _sourceAllowlist = _newAllowedSources;
+  function setSourceAllowlist(IAccountList _newSourceAllowlist) external override onlyOwner {
+    _sourceAllowlist = _newSourceAllowlist;
   }
 
-  function setDestinationAllowlist(IAccountList _newAllowedDestinations)
+  function setDestinationAllowlist(IAccountList _newDestinationAllowlist)
     external
     override
     onlyOwner
   {
-    _destinationAllowlist = _newAllowedDestinations;
+    _destinationAllowlist = _newDestinationAllowlist;
   }
 
   function getToken() external view returns (address) {
