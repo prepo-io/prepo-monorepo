@@ -53,7 +53,10 @@ const generateHardhatConfig = (config: HardhatLocalConfig): HardhatUserConfig =>
       kovan: createTestnetConfig(NETWORKS.kovan.name),
       rinkeby: createTestnetConfig(NETWORKS.rinkeby.name),
       ropsten: createTestnetConfig(NETWORKS.ropsten.name),
+      arbitrumOne: createTestnetConfig(NETWORKS.arbitrumOne.name),
+      arbitrumTestnet: createTestnetConfig(NETWORKS.arbitrumTestnet.name),
       polygon: createTestnetConfig(NETWORKS.polygon.name),
+      polygonMumbai: createTestnetConfig(NETWORKS.polygonMumbai.name),
     },
     paths: {
       artifacts: './artifacts',
