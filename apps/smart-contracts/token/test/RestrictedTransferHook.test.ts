@@ -59,10 +59,6 @@ describe('RestrictedTransferHook', () => {
       expect(await restrictedTransferHook.getToken()).to.eq(ZERO_ADDRESS)
     })
 
-    it('sets blocklist to zero address', async () => {
-      expect(await restrictedTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
-    })
-
     it('sets source allowlist to zero address', async () => {
       expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(ZERO_ADDRESS)
     })
@@ -201,50 +197,6 @@ describe('RestrictedTransferHook', () => {
       await restrictedTransferHook.connect(owner).setDestinationAllowlist(JUNK_ADDRESS)
 
       expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(JUNK_ADDRESS)
-    })
-  })
-
-  describe('# setBlocklist', () => {
-    beforeEach(async () => {
-      await setupHook()
-    })
-
-    it('reverts if not owner', async () => {
-      expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
-
-      await expect(restrictedTransferHook.connect(user1).setBlocklist(JUNK_ADDRESS)).revertedWith(
-        'Ownable: caller is not the owner'
-      )
-    })
-
-    it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(ZERO_ADDRESS)
-    })
-
-    it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(ZERO_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setBlocklist(ZERO_ADDRESS)
-
-      expect(await restrictedTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
-    })
-
-    it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getBlocklist()).to.not.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setBlocklist(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
     })
   })
 
