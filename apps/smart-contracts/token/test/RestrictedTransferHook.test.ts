@@ -59,15 +59,15 @@ describe('RestrictedTransferHook', () => {
       expect(await restrictedTransferHook.getToken()).to.eq(ZERO_ADDRESS)
     })
 
-    it('sets blocked list to zero address', async () => {
+    it('sets blocklist to zero address', async () => {
       expect(await restrictedTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
     })
 
-    it('sets source allow list to zero address', async () => {
+    it('sets source allowlist to zero address', async () => {
       expect(await restrictedTransferHook.getSourceAllowlist()).to.eq(ZERO_ADDRESS)
     })
 
-    it('sets destination allow list to zero address', async () => {
+    it('sets destination allowlist to zero address', async () => {
       expect(await restrictedTransferHook.getDestinationAllowlist()).to.eq(ZERO_ADDRESS)
     })
   })
@@ -259,7 +259,7 @@ describe('RestrictedTransferHook', () => {
       recipient = user2
     })
 
-    it('reverts if caller is not Token', async () => {
+    it('reverts if caller is not token', async () => {
       expect(await restrictedTransferHook.getToken()).to.not.eq(user1.address)
 
       await expect(
