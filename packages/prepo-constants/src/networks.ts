@@ -35,7 +35,7 @@ export type SupportedNetworks =
   | 'ropsten'
   | 'goerli'
   | 'xdai'
-  | 'matic'
+  | 'polygon'
   | 'mumbai'
   | 'smartchain'
   | 'smartchaintest'
@@ -151,9 +151,9 @@ export const NETWORKS: Networks = {
     type: 'dai',
     testNetwork: false,
   },
-  matic: {
+  polygon: {
     chainName: 'Polygon',
-    name: 'matic',
+    name: 'polygon',
     color: '#2bbdf7',
     chainId: ChainId.Polygon,
     infuraEndpointName: 'polygon-mainnet',
