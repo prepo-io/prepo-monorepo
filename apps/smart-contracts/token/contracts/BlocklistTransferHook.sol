@@ -23,7 +23,7 @@ contract BlocklistTransferHook is IBlocklistTransferHook, SafeOwnable {
     address _from,
     address _to,
     uint256 _amount
-  ) external override onlyToken {
+  ) public virtual override onlyToken {
     require(!_blocklist.isIncluded(_from), "Sender blocked");
     require(!_blocklist.isIncluded(_to), "Recipient blocked");
   }
