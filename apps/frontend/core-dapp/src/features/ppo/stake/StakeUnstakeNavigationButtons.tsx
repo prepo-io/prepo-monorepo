@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   }
 `
 
-const customStyles: ButtonColors = {
+export const customStyles: ButtonColors = {
   ...lightPurpleButtonStyles,
   border: 'accentPrimary',
   hoverBorder: 'accentPrimary',

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Checkbox, Flex, Icon, media, spacingIncrement, TokenInput } from 'prepo-ui'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
+import { BigNumber } from 'ethers'
 import StakeUnstakeLayout from './StakeUnstakeLayout'
 import StakeDelegate from './StakeDelegate'
 import { CooldownPeriod } from './StakeWarningMessages'
@@ -59,12 +60,14 @@ const StakePage: React.FC = () => {
   const {
     ppoTokenStore: { tokenBalance },
     unstakeStore: { confirm, setConfirm, currentUnstakingValue, setCurrentUnstakingValue },
+    ppoStakingStore: { balanceData },
     stakeStore,
     web3Store: { connected },
   } = useRootStore()
   const { currentStakingValue, setCurrentStakingValue } = stakeStore
   const { isDesktop } = useResponsive()
   const size = isDesktop ? '24' : '16'
+  const stakedPPO = balanceData?.raw ? BigNumber.from(balanceData.raw).toNumber() : undefined
 
   const pageMap = {
     stake: {
@@ -100,10 +103,12 @@ const StakePage: React.FC = () => {
           <TokenInput
             alignInput="right"
             disableClickBalance
-            balance={tokenBalance}
+            balance={stakedPPO}
             connected={connected}
             iconName="ppo-logo"
-            max={tokenBalance}
+            max={stakedPPO}
+            label="Amount to Unstake"
+            balanceLabel="Staked"
             onChange={setCurrentUnstakingValue}
             symbol="PPO"
             value={currentUnstakingValue}

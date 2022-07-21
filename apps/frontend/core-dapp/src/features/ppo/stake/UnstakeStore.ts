@@ -1,4 +1,5 @@
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { BigNumber } from 'ethers'
 import { makeAutoObservable } from 'mobx'
 import { TRANSACTION_SETTING } from '../../../lib/constants'
 import { RootStore } from '../../../stores/RootStore'
@@ -12,7 +13,12 @@ export class UnstakeStore {
   fee = FEE_MOCK
 
   get isCurrentUnstakingValueValid(): boolean {
-    return Boolean(this.currentUnstakingValue) // TODO: add staked value check
+    const stakedPPO = this.root.ppoStakingStore.balanceData?.raw
+    if (!stakedPPO) return false
+    return (
+      BigNumber.from(stakedPPO).toNumber() >= this.currentUnstakingValue &&
+      this.currentUnstakingValue !== 0
+    )
   }
 
   constructor(private root: RootStore) {
@@ -25,5 +31,21 @@ export class UnstakeStore {
 
   setCurrentUnstakingValue(value: number | string): void {
     this.currentUnstakingValue = validateNumber(+value) // TODO: compare with staked value from SC
+  }
+
+  startCooldown(): Promise<{
+    success: boolean
+    error?: string | undefined
+  }> {
+    const balance = this.getBalance()
+    if (this.currentUnstakingValue > balance) {
+      return Promise.resolve({ success: false })
+    }
+    return this.root.ppoStakingStore.startCooldown(this.currentUnstakingValue)
+  }
+
+  private getBalance(): number {
+    const raw = this.root.ppoStakingStore.balanceData?.raw
+    return raw ? BigNumber.from(raw).toNumber() : 0
   }
 }

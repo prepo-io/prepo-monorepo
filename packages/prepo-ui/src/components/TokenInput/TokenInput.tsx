@@ -27,6 +27,7 @@ type Props = {
   symbol?: string
   usd?: boolean
   value?: number
+  balanceLabel?: string
 }
 
 const BalanceText = styled.p<{ $clickable?: boolean }>`
@@ -90,6 +91,7 @@ const TokenInput: React.FC<Props> = ({
   shadowSuffix,
   showSlider,
   symbol = '',
+  balanceLabel = 'Balance',
   usd,
   value,
 }) => {
@@ -140,7 +142,7 @@ const TokenInput: React.FC<Props> = ({
     if (balance === undefined && connected)
       return (
         <FlexCenterWrapper>
-          <BalanceText>Balance: </BalanceText>
+          <BalanceText>{balanceLabel}: </BalanceText>
           <Skeleton height={20} width={80} />
         </FlexCenterWrapper>
       )
@@ -151,7 +153,7 @@ const TokenInput: React.FC<Props> = ({
           if (canInteract) handleClickBalance(balance ?? 0)
         }}
       >
-        Balance:&nbsp;
+        {balanceLabel}:&nbsp;
         <SemiboldText>
           {usd && '$'}
           {truncateAmountString(`${!connected ? 0 : balance}`)}&nbsp;

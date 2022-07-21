@@ -1,3 +1,4 @@
+import { addDays } from 'date-fns'
 import { BigNumber } from 'ethers'
 import { action, makeObservable, observable, reaction, runInAction } from 'mobx'
 import { ContractReturn, Factory } from 'prepo-stores'
@@ -7,12 +8,19 @@ import { Erc20Store } from '../../../stores/entities/Erc20.entity'
 import { RootStore } from '../../../stores/RootStore'
 
 type Stake = PPOStakingAbi['functions']['stake']
+type StartCooldown = PPOStakingAbi['functions']['startCooldown']
 type BalanceData = PPOStakingAbi['functions']['balanceData']
 
 // use this key to store balance in localStorage, while there's no SC
 const MOCK_KEY = 'MOCK_BALANCE_DATA'
 
 const TOKEN_SYMBOL = 'PPO_STAKING'
+
+const MOCKED_CONFIG = {
+  cooldownPeriod: 21, // 21 days cooldown period
+  withdrawWindow: 7, // 7 days to withdraw - post-cooldown
+  fee: 10.12, // Fee will calculated based on how long staking time length
+}
 
 // Storing data in localStorage - will allow us to test withdraw/startCooldown functionality
 function getMockedBalance(address: string): BalanceStructOutput | undefined {
@@ -26,6 +34,11 @@ export class PPOStakingStore extends Erc20Store {
   staking = false
   stakingHash?: string
   mockRawBalance?: BigNumber
+  startingCooldown = false
+  startingCooldownHash?: string
+  endingCooldown = false
+  endingCooldownHash?: string
+
   constructor(root: RootStore) {
     super({ root, tokenName: TOKEN_SYMBOL, factory: PPOStakingAbi__factory as unknown as Factory })
     this.symbolOverride = TOKEN_SYMBOL
@@ -35,6 +48,8 @@ export class PPOStakingStore extends Erc20Store {
       stake: action.bound,
       mockRawBalance: observable,
       getBalanceData: observable,
+      startCooldown: action.bound,
+      endCooldown: action.bound,
     })
     this.subscribe()
   }
@@ -56,6 +71,36 @@ export class PPOStakingStore extends Erc20Store {
     const result = this.getBalanceData(address)
     if (result === undefined) return undefined
     return result[0]
+  }
+
+  get cooldownStarted(): Date | undefined {
+    const cooldownStartedAt = this.balanceData?.cooldownTimestamp as unknown as number
+    if (!cooldownStartedAt) return undefined
+
+    return new Date(cooldownStartedAt)
+  }
+
+  get isCooldownActive(): boolean {
+    if (!this.withdrawWindowStarted) return false
+    return new Date() < this.withdrawWindowStarted
+  }
+
+  get withdrawWindowStarted(): Date | undefined {
+    if (!this.cooldownStarted) return undefined
+    return addDays(this.cooldownStarted, MOCKED_CONFIG.cooldownPeriod)
+  }
+
+  get isWithdrawWindowActive(): boolean {
+    if (!this.withdrawWindowStarted) return false
+    return (
+      !this.isCooldownActive &&
+      new Date() < addDays(this.withdrawWindowStarted, MOCKED_CONFIG.withdrawWindow)
+    )
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get fee(): number {
+    return MOCKED_CONFIG.fee
   }
 
   async stake(amount: number): Promise<{ success: boolean; error?: string }> {
@@ -82,7 +127,10 @@ export class PPOStakingStore extends Erc20Store {
             const balance = getMockedBalance(address)
             const hexAmount = BigNumber.from(params[1])
             if (balance) {
-              const record = { raw: BigNumber.from(balance.raw).add(hexAmount) }
+              const record = {
+                ...balance,
+                raw: BigNumber.from(balance.raw).add(hexAmount),
+              }
               const map = JSON.parse(localStorage.getItem(MOCK_KEY) ?? '{}')
               map[address] = record
               localStorage.setItem(MOCK_KEY, JSON.stringify(map))
@@ -109,6 +157,119 @@ export class PPOStakingStore extends Erc20Store {
     } finally {
       runInAction(() => {
         this.staking = false
+      })
+    }
+  }
+
+  async startCooldown(amount: number): Promise<{ success: boolean; error?: string }> {
+    try {
+      runInAction(() => {
+        this.startingCooldown = true
+        this.startingCooldownHash = undefined
+      })
+      const { address } = this.root.web3Store.signerState
+      if (!address) {
+        return {
+          success: false,
+          error: 'wallet is not connected',
+        }
+      }
+      // const { hash, wait } = await this.sendTransaction<StartCooldown>('startCooldown', [address, amount])
+      // Once SC is implemented uncomment above line, and remove lines below
+      const mockStakeCall = (
+        params: Parameters<StartCooldown>
+      ): Promise<{ hash: string; wait: () => Promise<void> }> =>
+        Promise.resolve({
+          hash: 'SOME_MOCKED_HASH',
+          wait: () => {
+            const balance = getMockedBalance(address)
+            const hexAmount = BigNumber.from(params[0])
+            if (balance) {
+              const record = {
+                ...balance,
+                cooldownUnits: BigNumber.from(balance.cooldownUnits ?? 0).add(hexAmount),
+                cooldownTimestamp: +new Date(),
+                raw: BigNumber.from(balance.raw).sub(hexAmount),
+              }
+              const map = JSON.parse(localStorage.getItem(MOCK_KEY) ?? '{}')
+              map[address] = record
+              localStorage.setItem(MOCK_KEY, JSON.stringify(map))
+            }
+            return Promise.resolve()
+          },
+        })
+      const { hash, wait } = await mockStakeCall([amount])
+      runInAction(() => {
+        this.startingCooldownHash = hash
+      })
+      await wait()
+      return {
+        success: true,
+      }
+    } catch (error) {
+      this.root.toastStore.errorToast(`Error calling start cooldown`, error)
+      return {
+        success: false,
+        error: (error as Error).message,
+      }
+    } finally {
+      runInAction(() => {
+        this.startingCooldown = false
+      })
+    }
+  }
+
+  async endCooldown(): Promise<{ success: boolean; error?: string }> {
+    try {
+      runInAction(() => {
+        this.endingCooldown = true
+        this.endingCooldownHash = undefined
+      })
+      const { address } = this.root.web3Store.signerState
+      if (!address) {
+        return {
+          success: false,
+          error: 'wallet is not connected',
+        }
+      }
+      // const { hash, wait } = await this.sendTransaction<EndCooldown>('endCooldown', [])
+      // Once SC is implemented uncomment above line, and remove lines below
+      const mockStakeCall = (): Promise<{ hash: string; wait: () => Promise<void> }> =>
+        Promise.resolve({
+          hash: 'SOME_MOCKED_HASH',
+          wait: () => {
+            const balance = getMockedBalance(address)
+            if (balance) {
+              const record = {
+                ...balance,
+                raw: BigNumber.from(balance.raw).add(BigNumber.from(balance.cooldownUnits)),
+                cooldownUnits: 0,
+                cooldownTimestamp: 0,
+              }
+              const map = JSON.parse(localStorage.getItem(MOCK_KEY) ?? '{}')
+              map[address] = record
+              localStorage.setItem(MOCK_KEY, JSON.stringify(map))
+            }
+            return Promise.resolve()
+          },
+        })
+      const { hash, wait } = await mockStakeCall()
+      runInAction(() => {
+        this.endingCooldownHash = hash
+      })
+      await wait()
+      return {
+        success: true,
+      }
+    } catch (error) {
+      this.root.toastStore.errorToast(`Error calling end cooldown`, error)
+      return {
+        success: false,
+        error: (error as Error).message,
+      }
+    } finally {
+      runInAction(() => {
+        this.endingCooldown = false
       })
     }
   }
