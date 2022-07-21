@@ -147,6 +147,7 @@ describe('BlocklistTransferHook', () => {
   describe('hook', () => {
     let sender: SignerWithAddress
     let recipient: SignerWithAddress
+
     beforeEach(async () => {
       await setupHookAndList()
       await blocklistTransferHook.connect(owner).setToken(ppoToken.address)
@@ -154,7 +155,7 @@ describe('BlocklistTransferHook', () => {
       recipient = user2
     })
 
-    it('reverts if caller is not PPO', async () => {
+    it('reverts if caller is not token', async () => {
       expect(await blocklistTransferHook.getToken()).to.not.eq(user1.address)
 
       await expect(
