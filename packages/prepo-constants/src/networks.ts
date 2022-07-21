@@ -38,7 +38,7 @@ export type SupportedNetworks =
   | 'polygon'
   | 'polygonMumbai'
   | 'smartchain'
-  | 'smartchaintest'
+  | 'smartchainTest'
   | 'arbitrumOne'
   | 'arbitrumTestnet'
 
@@ -186,9 +186,9 @@ export const NETWORKS: Networks = {
     type: 'bsc',
     testNetwork: false,
   },
-  smartchaintest: {
+  smartchainTest: {
     chainName: 'SmartChain Testnet',
-    name: 'smartchaintest',
+    name: 'smartchainTest',
     color: '#F0B90B',
     chainId: ChainId.BSCTestnet,
     rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
