@@ -8,7 +8,6 @@ import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
 contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable, BlocklistTransferHook {
   //TODO: Extract this to a shared contract to reduce duplication.
-  address private _token;
   IAccountList private _sourceAllowlist;
   IAccountList private _destinationAllowlist;
 
