@@ -46,8 +46,9 @@ const StakeUnstakeLayout: React.FC<{
   const theme = useTheme()
   const {
     delegateStore: { selectedDelegate: delegate },
-    stakeStore: { isCurrentStakingValueValid },
+    stakeStore: { isCurrentStakingValueValid, stake },
     unstakeStore: { isCurrentUnstakingValueValid },
+    ppoStakingStore: { staking },
     uiStore: { disableMocks },
   } = useRootStore()
   const loading = delegate && !delegate.delegateAddress
@@ -56,11 +57,10 @@ const StakeUnstakeLayout: React.FC<{
   const content = pageMap[tab]
 
   const buttonDisabled =
-    disableMocks ||
-    loading ||
-    !(isStake ? isCurrentStakingValueValid : isCurrentUnstakingValueValid)
+    staking || loading || !(isStake ? isCurrentStakingValueValid : isCurrentUnstakingValueValid)
   const buttonText = isStake ? 'Stake PPO' : 'Unstake PPO'
-  const comingSoonText = disableMocks ? 'Coming Soon' : buttonText
+  const onClick = isStake ? stake : (): void => {} // withdraw function, will be added later
+  const comingSoonText = buttonText
 
   return (
     <Box mx="auto">
@@ -122,7 +122,13 @@ const StakeUnstakeLayout: React.FC<{
               {children}
             </ControlPanel>
             <StakeWarning messages={messages} />
-            <Button type="primary" block disabled={buttonDisabled} loading={loading}>
+            <Button
+              type="primary"
+              block
+              disabled={buttonDisabled}
+              loading={loading}
+              onClick={onClick}
+            >
               {comingSoonText}
             </Button>
           </Flex>

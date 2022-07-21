@@ -9,6 +9,7 @@ export type CoreTokenContractNames =
   | 'MARKET_FACTORY'
   | 'PREPO_MARKET'
   | 'PPO'
+  | 'PPO_STAKING'
 
 export type CoreContracts = {
   [key in CoreTokenContractNames]: ExternalContract
@@ -46,6 +47,10 @@ export const PPO_ADDRESS: ExternalContract = {
   goerli: '0xfD4D774f151f210F5761d60CC6618378658269f6',
 }
 
+export const PPO_STAKING_ADDRESS: ExternalContract = {
+  goerli: 'Not yet deployed',
+}
+
 export const coreContracts: CoreContracts = {
   MBT: BASE_TOKEN_ADDRESS,
   preCT: COLLATERAL_TOKEN_ADDRESS,
@@ -55,4 +60,5 @@ export const coreContracts: CoreContracts = {
   MARKET_FACTORY: MARKET_FACTORY_ADDRESS,
   PREPO_MARKET: PREPO_MARKET_ADDRESS,
   PPO: PPO_ADDRESS,
+  PPO_STAKING: PPO_STAKING_ADDRESS,
 }
