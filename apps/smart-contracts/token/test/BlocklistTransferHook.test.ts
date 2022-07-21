@@ -56,50 +56,6 @@ describe('BlocklistTransferHook', () => {
     })
   })
 
-  describe('# setToken', () => {
-    beforeEach(async () => {
-      await setupHook()
-    })
-
-    it('reverts if not owner', async () => {
-      expect(await blocklistTransferHook.owner()).to.not.eq(user1.address)
-
-      await expect(blocklistTransferHook.connect(user1).setToken(JUNK_ADDRESS)).revertedWith(
-        'Ownable: caller is not the owner'
-      )
-    })
-
-    it('sets to non-zero address', async () => {
-      expect(await blocklistTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
-
-      await blocklistTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await blocklistTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-      expect(await blocklistTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
-    })
-
-    it('sets to zero address', async () => {
-      await blocklistTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-      expect(await blocklistTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
-
-      await blocklistTransferHook.connect(owner).setToken(ZERO_ADDRESS)
-
-      expect(await blocklistTransferHook.getToken()).to.eq(ZERO_ADDRESS)
-    })
-
-    it('is idempotent', async () => {
-      expect(await blocklistTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
-
-      await blocklistTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await blocklistTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-
-      await blocklistTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await blocklistTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-    })
-  })
-
   describe('# setBlocklist', () => {
     beforeEach(async () => {
       await setupHook()
