@@ -6,12 +6,6 @@ import "./interfaces/IAccountList.sol";
 import "./BlocklistTransferHook.sol";
 import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-/**
-  TODO: Import BlocklistTransferHook.sol and remove duplicate implementation
-  and tests for setting blocklist.
-  TODO: Call super.hook(...) to check for blocklist in `hook()`.
-*/
-
 contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable, BlocklistTransferHook {
   //TODO: Extract this to a shared contract to reduce duplication.
   address private _token;

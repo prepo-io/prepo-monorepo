@@ -68,50 +68,6 @@ describe('RestrictedTransferHook', () => {
     })
   })
 
-  describe('# setToken', () => {
-    beforeEach(async () => {
-      await setupHook()
-    })
-
-    it('reverts if not owner', async () => {
-      expect(await restrictedTransferHook.owner()).to.not.eq(user1.address)
-
-      await expect(restrictedTransferHook.connect(user1).setToken(JUNK_ADDRESS)).revertedWith(
-        'Ownable: caller is not the owner'
-      )
-    })
-
-    it('sets to non-zero address', async () => {
-      expect(await restrictedTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
-    })
-
-    it('sets to zero address', async () => {
-      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-      expect(await restrictedTransferHook.getToken()).to.not.eq(ZERO_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setToken(ZERO_ADDRESS)
-
-      expect(await restrictedTransferHook.getToken()).to.eq(ZERO_ADDRESS)
-    })
-
-    it('is idempotent', async () => {
-      expect(await restrictedTransferHook.getToken()).to.not.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-
-      await restrictedTransferHook.connect(owner).setToken(JUNK_ADDRESS)
-
-      expect(await restrictedTransferHook.getToken()).to.eq(JUNK_ADDRESS)
-    })
-  })
-
   describe('# setSourceAllowlist', () => {
     beforeEach(async () => {
       await setupHook()
@@ -200,7 +156,7 @@ describe('RestrictedTransferHook', () => {
     })
   })
 
-  describe('hook', () => {
+  describe('# hook', () => {
     let sender: SignerWithAddress
     let recipient: SignerWithAddress
 
