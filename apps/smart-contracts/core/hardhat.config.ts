@@ -31,6 +31,10 @@ const config: HardhatUserConfig = {
     outDir: './typechain',
     target: 'ethers-v5',
   },
+  /**
+   * This can't be put in the shared local config since the `etherscan` field
+   * is not a native Hardhat field and injected by `@nomiclabs/hardhat-ethers`.
+   */
   etherscan: {
     apiKey: {
       // ethereum
@@ -38,10 +42,12 @@ const config: HardhatUserConfig = {
       ropsten: hardhatLocalConfig.ETHERSCAN_API_KEY,
       rinkeby: hardhatLocalConfig.ETHERSCAN_API_KEY,
       goerli: hardhatLocalConfig.ETHERSCAN_API_KEY,
-      optimisticEthereum: hardhatLocalConfig.ETHERSCAN_API_KEY,
+
+      // optimism
+      optimisticEthereum: hardhatLocalConfig.OPTIMISTIC_ETHERSCAN_API_KEY,
 
       // polygon
-      polygon: hardhatLocalConfig.POLYGONSCAN_API_KEY, // use matic when running script
+      polygon: hardhatLocalConfig.POLYGONSCAN_API_KEY,
       polygonMumbai: hardhatLocalConfig.POLYGONSCAN_API_KEY,
     },
   },
