@@ -143,4 +143,58 @@ describe('BlocklistTransferHook', () => {
       expect(await blocklistTransferHook.getBlocklist()).to.eq(JUNK_ADDRESS)
     })
   })
+
+  describe('hook', () => {
+    let sender: SignerWithAddress
+    let recipient: SignerWithAddress
+
+    beforeEach(async () => {
+      await setupHookAndList()
+      await blocklistTransferHook.connect(owner).setToken(ppoToken.address)
+      sender = user1
+      recipient = user2
+    })
+
+    it('reverts if caller is not token', async () => {
+      expect(await blocklistTransferHook.getToken()).to.not.eq(user1.address)
+
+      await expect(
+        blocklistTransferHook.connect(user1).hook(sender.address, recipient.address, 1)
+      ).to.be.revertedWith('msg.sender != token')
+    })
+
+    it('reverts if sender blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
+
+      await expect(
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+      ).to.be.revertedWith('Sender blocked')
+    })
+
+    it('reverts if recipient blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
+
+      await expect(
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+      ).to.be.revertedWith('Recipient blocked')
+    })
+
+    it('reverts if both sender and recipient blocked', async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(true)
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(true)
+
+      await expect(
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+      ).to.be.revertedWith('Sender blocked')
+    })
+
+    it("doesn't revert if both sender and recipient not blocked", async () => {
+      blockedAccounts.isIncluded.whenCalledWith(sender.address).returns(false)
+      blockedAccounts.isIncluded.whenCalledWith(recipient.address).returns(false)
+
+      await expect(
+        blocklistTransferHook.connect(ppoToken).hook(sender.address, recipient.address, 1)
+      ).to.not.reverted
+    })
+  })
 })
