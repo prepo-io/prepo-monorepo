@@ -14,7 +14,7 @@ export enum ChainId {
   Theta = 361,
   ThetaTestnet = 365,
   Moonriver = 1285,
-  Mumbai = 80001,
+  PolygonMumbai = 80001,
   Harmony = 1666600000,
   Palm = 11297108109,
   Localhost = 1337,
@@ -36,11 +36,11 @@ export type SupportedNetworks =
   | 'goerli'
   | 'xdai'
   | 'polygon'
-  | 'mumbai'
+  | 'polygonMumbai'
   | 'smartchain'
   | 'smartchaintest'
-  | 'arbitrumone'
-  | 'arbitrumtestnet'
+  | 'arbitrumOne'
+  | 'arbitrumTestnet'
 
 export type Network = {
   name: SupportedNetworks
@@ -165,11 +165,11 @@ export const NETWORKS: Networks = {
     type: 'polygon',
     testNetwork: false,
   },
-  mumbai: {
+  polygonMumbai: {
     chainName: 'Polygon Testnet',
-    name: 'mumbai',
+    name: 'polygonMumbai',
     color: '#92D9FA',
-    chainId: ChainId.Mumbai,
+    chainId: ChainId.PolygonMumbai,
     rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
     faucet: 'https://faucet.matic.network',
     blockExplorer: 'https://mumbai-explorer.matic.today',
@@ -197,21 +197,23 @@ export const NETWORKS: Networks = {
     type: 'bsc',
     testNetwork: true,
   },
-  arbitrumone: {
-    name: 'arbitrumone',
+  arbitrumOne: {
     chainName: 'Arbitrum One',
+    name: 'arbitrumOne',
     color: '#2BA0EF',
     chainId: ChainId.ArbitrumOne,
+    infuraEndpointName: 'arbitrum-mainnet',
     rpcUrls: ['https://arb1.arbitrum.io/rpc'],
     blockExplorer: 'https://arbiscan.io/',
     type: 'arbitrum',
     testNetwork: false,
   },
-  arbitrumtestnet: {
-    name: 'arbitrumtestnet',
+  arbitrumTestnet: {
     chainName: 'Arbitrum Testnet',
+    name: 'arbitrumTestnet',
     color: '#2BA0EF',
     chainId: ChainId.ArbitrumTestnet,
+    infuraEndpointName: 'arbitrum-rinkeby',
     rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
     blockExplorer: 'https://testnet.arbiscan.io/',
     type: 'arbitrum',

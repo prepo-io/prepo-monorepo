@@ -66,8 +66,9 @@ const config: HardhatUserConfig = {
       rinkeby: hardhatLocalConfig.ETHERSCAN_API_KEY,
       goerli: hardhatLocalConfig.ETHERSCAN_API_KEY,
 
-      // optimism
-      optimisticEthereum: hardhatLocalConfig.OPTIMISTIC_ETHERSCAN_API_KEY,
+      // arbitrum
+      arbitrumOne: hardhatLocalConfig.ARBISCAN_API_KEY,
+      arbitrumTestnet: hardhatLocalConfig.ARBISCAN_API_KEY,
 
       // polygon
       polygon: hardhatLocalConfig.POLYGONSCAN_API_KEY,
