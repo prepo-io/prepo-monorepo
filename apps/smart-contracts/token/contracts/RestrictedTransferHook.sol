@@ -4,16 +4,12 @@ pragma solidity =0.8.7;
 import "./interfaces/IRestrictedTransferHook.sol";
 import "./interfaces/IAccountList.sol";
 import "./BlocklistTransferHook.sol";
-import "prepo-shared-contracts/contracts/SafeOwnable.sol";
 
-contract RestrictedTransferHook is IRestrictedTransferHook, SafeOwnable, BlocklistTransferHook {
-  //TODO: Extract this to a shared contract to reduce duplication.
+contract RestrictedTransferHook is IRestrictedTransferHook, BlocklistTransferHook {
   IAccountList private _sourceAllowlist;
   IAccountList private _destinationAllowlist;
 
-  constructor(address _nominatedOwner) BlocklistTransferHook(_nominatedOwner) {
-    transferOwnership(_nominatedOwner);
-  }
+  constructor(address _nominatedOwner) BlocklistTransferHook(_nominatedOwner) {}
 
   function hook(
     address _from,
