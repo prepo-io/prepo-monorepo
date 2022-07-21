@@ -51,7 +51,7 @@ describe('BlocklistTransferHook', () => {
       expect(await blocklistTransferHook.getToken()).to.eq(ZERO_ADDRESS)
     })
 
-    it('sets blocked list to zero address', async () => {
+    it('sets blocklist to zero address', async () => {
       expect(await blocklistTransferHook.getBlocklist()).to.eq(ZERO_ADDRESS)
     })
   })
