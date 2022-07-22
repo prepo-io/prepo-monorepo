@@ -5,7 +5,7 @@ import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { pausableWrapperFixture } from './fixtures/PausableWrapperFixture'
 import { PausableWrapper } from '../types/generated'
 
-describe('Token', () => {
+describe('Pausable', () => {
   let deployer: SignerWithAddress
   let owner: SignerWithAddress
   let user1: SignerWithAddress
