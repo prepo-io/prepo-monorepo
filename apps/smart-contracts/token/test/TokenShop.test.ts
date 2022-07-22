@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import chai, { expect } from 'chai'
+import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { FakeContract, MockContract, smock } from '@defi-wonderland/smock'
@@ -8,10 +8,8 @@ import { parseEther } from 'ethers/lib/utils'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { tokenShopFixture } from './fixtures/TokenShopFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
-import { revertReason, ZERO } from '../utils'
+import { ZERO } from '../utils'
 import { TokenShop, MockERC20 } from '../types/generated'
-
-chai.use(smock.matchers)
 
 describe('TokenShop', () => {
   let deployer: SignerWithAddress
@@ -97,7 +95,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).setContractToIdToPrice(tokenContracts, tokenIds, itemPrices)
-      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+      ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if token contract array length mismatch', async () => {
@@ -110,7 +108,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(owner).setContractToIdToPrice(contractArray, idArray, priceArray)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if item price array length mismatch', async () => {
@@ -123,7 +121,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(owner).setContractToIdToPrice(contractArray, idArray, priceArray)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if token id array length mismatch', async () => {
@@ -136,7 +134,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(owner).setContractToIdToPrice(contractArray, idArray, priceArray)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('sets price to non-zero for single item', async () => {
@@ -218,7 +216,7 @@ describe('TokenShop', () => {
       expect(await tokenShop.owner()).to.not.eq(user1.address)
 
       await expect(tokenShop.connect(user1).setPurchaseHook(JUNK_ADDRESS)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
+        'Ownable: caller is not the owner'
       )
     })
 
@@ -274,7 +272,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, amounts)
-      ).revertedWith(revertReason('Paused'))
+      ).revertedWith('Paused')
     })
 
     it('reverts if token contract array length mismatch', async () => {
@@ -285,7 +283,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(mismatchedContractArray, tokenIds, amounts)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if amount array length mismatch', async () => {
@@ -296,7 +294,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, mismatchedAmountArray)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if token id array length mismatch', async () => {
@@ -307,7 +305,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, mismatchedTokenIdArray, amounts)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('reverts if purchase hook is zero address', async () => {
@@ -316,7 +314,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, amounts)
-      ).revertedWith(revertReason('Purchase hook not set'))
+      ).revertedWith('Purchase hook not set')
     })
 
     it('reverts if non-purchasable item', async () => {
@@ -327,7 +325,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase([tokenContracts[0]], [erc1155Id1], [erc1155Id1Amount])
-      ).revertedWith(revertReason('Non-purchasable item'))
+      ).revertedWith('Non-purchasable item')
     })
 
     it('reverts if called contract neither ERC1155 nor ERC721', async () => {
