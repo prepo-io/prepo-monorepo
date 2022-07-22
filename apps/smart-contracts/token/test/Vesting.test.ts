@@ -72,49 +72,6 @@ describe('Vesting', () => {
     })
   })
 
-  describe('# setPaused', () => {
-    beforeEach(async () => {
-      await setupVesting()
-    })
-
-    it('reverts if not owner', async () => {
-      expect(await vesting.owner()).to.not.eq(user1.address)
-
-      await expect(vesting.connect(user1).setPaused(true)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
-      )
-    })
-
-    it('pauses', async () => {
-      expect(await vesting.connect(owner).getPaused()).to.eq(false)
-
-      await vesting.connect(owner).setPaused(true)
-
-      expect(await vesting.connect(owner).getPaused()).to.eq(true)
-    })
-
-    it('unpauses', async () => {
-      await vesting.connect(owner).setPaused(true)
-      expect(await vesting.connect(owner).getPaused()).to.eq(true)
-
-      await vesting.connect(owner).setPaused(false)
-
-      expect(await vesting.connect(owner).getPaused()).to.eq(false)
-    })
-
-    it('is idempotent', async () => {
-      expect(await vesting.connect(owner).getPaused()).to.eq(false)
-
-      await vesting.connect(owner).setPaused(true)
-
-      expect(await vesting.connect(owner).getPaused()).to.eq(true)
-
-      await vesting.connect(owner).setPaused(true)
-
-      expect(await vesting.connect(owner).getPaused()).to.eq(true)
-    })
-  })
-
   describe('# setToken', () => {
     beforeEach(async () => {
       await setupVesting()
@@ -614,9 +571,9 @@ describe('Vesting', () => {
 
     it('reverts if paused', async () => {
       await vesting.connect(owner).setPaused(true)
-      expect(await vesting.getPaused()).to.be.eq(true)
+      expect(await vesting.isPaused()).to.be.eq(true)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(revertReason('paused'))
+      await expect(vesting.connect(user1).claim()).revertedWith(revertReason('Paused'))
     })
 
     it('reverts if unallocated user', async () => {

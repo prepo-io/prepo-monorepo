@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IVesting.sol";
 import "prepo-shared-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/Pausable.sol";
 
-contract Vesting is IVesting, SafeOwnable, ReentrancyGuard {
+contract Vesting is IVesting, SafeOwnable, ReentrancyGuard, Pausable {
   using SafeERC20 for IERC20;
 
-  bool private _paused;
   IERC20 private _token;
   uint256 private _vestingStartTime;
   uint256 private _vestingEndTime;
@@ -21,15 +21,6 @@ contract Vesting is IVesting, SafeOwnable, ReentrancyGuard {
 
   constructor(address _nominatedOwner) {
     transferOwnership(_nominatedOwner);
-  }
-
-  modifier whenNotPaused() {
-    require(!_paused, "paused");
-    _;
-  }
-
-  function setPaused(bool _newPaused) external override onlyOwner {
-    _paused = _newPaused;
   }
 
   function setToken(address _newToken) external override onlyOwner {
@@ -107,10 +98,6 @@ contract Vesting is IVesting, SafeOwnable, ReentrancyGuard {
     if (block.timestamp < _start) return 0;
     uint256 _vested = (_allocated * (block.timestamp - _start)) / (_end - _start);
     return _vested < _allocated ? _vested : _allocated;
-  }
-
-  function getPaused() external view override returns (bool) {
-    return _paused;
   }
 
   function getToken() external view override returns (address) {

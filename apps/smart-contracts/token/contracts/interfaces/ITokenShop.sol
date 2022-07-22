@@ -11,8 +11,6 @@ interface ITokenShop {
     uint256[] memory prices
   ) external;
 
-  function setPaused(bool newPaused) external;
-
   function setPurchaseHook(address newPurchaseHook) external;
 
   //TODO: dev comment that ids can be left as 0 if it's an ERC721
@@ -33,8 +31,6 @@ interface ITokenShop {
   ) external;
 
   function getPrice(address tokenContract, uint256 id) external view returns (uint256);
-
-  function isPaused() external view returns (bool);
 
   function getPaymentToken() external view returns (address);
 

@@ -209,49 +209,6 @@ describe('TokenShop', () => {
     })
   })
 
-  describe('# setPaused', () => {
-    beforeEach(async () => {
-      await setupTokenShop()
-    })
-
-    it('reverts if not owner', async () => {
-      expect(await tokenShop.owner()).to.not.eq(user1.address)
-
-      await expect(tokenShop.connect(user1).setPaused(true)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
-      )
-    })
-
-    it('pauses', async () => {
-      expect(await tokenShop.isPaused()).to.eq(false)
-
-      await tokenShop.connect(owner).setPaused(true)
-
-      expect(await tokenShop.isPaused()).to.eq(true)
-    })
-
-    it('unpauses', async () => {
-      await tokenShop.connect(owner).setPaused(true)
-      expect(await tokenShop.isPaused()).to.eq(true)
-
-      await tokenShop.connect(owner).setPaused(false)
-
-      expect(await tokenShop.isPaused()).to.eq(false)
-    })
-
-    it('is idempotent', async () => {
-      expect(await tokenShop.isPaused()).to.eq(false)
-
-      await tokenShop.connect(owner).setPaused(true)
-
-      expect(await tokenShop.isPaused()).to.eq(true)
-
-      await tokenShop.connect(owner).setPaused(true)
-
-      expect(await tokenShop.isPaused()).to.eq(true)
-    })
-  })
-
   describe('# setPurchaseHook', () => {
     beforeEach(async () => {
       await setupTokenShop()
@@ -317,7 +274,7 @@ describe('TokenShop', () => {
 
       await expect(
         tokenShop.connect(user1).purchase(tokenContracts, tokenIds, amounts)
-      ).revertedWith(revertReason('Token Shop: paused'))
+      ).revertedWith(revertReason('Paused'))
     })
 
     it('reverts if token contract array length mismatch', async () => {
