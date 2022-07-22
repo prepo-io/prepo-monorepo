@@ -17,7 +17,7 @@ export enum ChainId {
   PolygonMumbai = 80001,
   Harmony = 1666600000,
   Palm = 11297108109,
-  Localhost = 1337,
+  Ganache = 1337,
   Hardhat = 31337,
   Fantom = 250,
   ArbitrumOne = 42161,
@@ -27,7 +27,7 @@ export enum ChainId {
 export type NetworkType = 'ethereum' | 'arbitrum' | 'polygon' | 'dai' | 'bsc'
 
 export type SupportedNetworks =
-  | 'localhost'
+  | 'ganache'
   | 'hardhat'
   | 'mainnet'
   | 'kovan'
@@ -67,17 +67,17 @@ export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 export const METAMASK_INFURA_ID = '9aa3d95b3bc440fa88ea12eaa4456161'
 
 export const NETWORKS: Networks = {
-  localhost: {
-    chainName: 'Localhost',
-    name: 'localhost',
+  ganache: {
+    chainName: 'Ganache Local Node',
+    name: 'ganache',
     color: '#666666',
-    chainId: ChainId.Localhost,
+    chainId: ChainId.Ganache,
     blockExplorer: '',
     rpcUrls: [`http://localhost:8545`],
     testNetwork: true,
   },
   hardhat: {
-    chainName: 'Hardhat',
+    chainName: 'Hardhat Local Node',
     name: 'hardhat',
     color: '#666666',
     chainId: ChainId.Hardhat,
