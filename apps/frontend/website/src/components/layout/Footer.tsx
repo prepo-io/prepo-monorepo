@@ -174,7 +174,6 @@ export const Footer: FC = () => (
           </NavGroup>
           <NavGroup title="Products">
             <NavItem title="Simulator" href="https://simulator.prepo.io" />
-            <NavItem title="Acquisition Royale" href="https://acquisitionroyale.com" />
           </NavGroup>
         </Nav>
         <NewsletterSignup />

@@ -336,16 +336,6 @@ export const angels: Partner[] = [
 
 export const integrations: Partner[] = [
   {
-    name: 'OpenSea',
-    url: 'https://opensea.io/collection/acquisition-royale',
-    iconName: 'openSea',
-  },
-  {
-    name: 'Polygon',
-    url: 'https://acquisitionroyale.com/',
-    iconName: 'polygon',
-  },
-  {
     name: 'Uniswap',
     url: 'https://url.prepo.io/RP-MATIC',
     iconName: 'uniswap',
@@ -355,16 +345,6 @@ export const integrations: Partner[] = [
     url: 'https://medium.com/sushiswap-org/introducing-the-sushi-next-generation-amm-trident-7dea6aa3cbc2',
     iconName: 'sushi',
   },
-  {
-    name: 'Dapp.com',
-    url: 'https://www.dapp.com/app/acquisition-royale',
-    iconName: 'dapp',
-  },
-  {
-    name: 'DappRadar',
-    url: 'https://dappradar.com/polygon/games/acquisition-royale',
-    iconName: 'dappRadar',
-  },
 ]
 
 export const collaborations: Partner[] = [
@@ -372,26 +352,6 @@ export const collaborations: Partner[] = [
     name: 'GoodGhosting',
     url: 'https://medium.com/goodghosting/advent-pool-is-coming-4d67a45fa4a1',
     iconName: 'goodGhosting',
-  },
-  {
-    name: 'Cometh',
-    url: 'https://medium.com/prepo/acquisition-royale-x-cometh-nft-giveaway-63b125c00b23',
-    iconName: 'cometh',
-  },
-  {
-    name: 'Seascape',
-    url: 'https://medium.com/prepo/acquisition-royale-x-seascape-nft-giveaway-81659c81f7fa',
-    iconName: 'seascape',
-  },
-  {
-    name: 'Evolution Land',
-    url: 'https://medium.com/prepo/acquisition-royale-x-evolution-land-nft-giveaway-94fd10611c09',
-    iconName: 'evolutionLand',
-  },
-  {
-    name: 'Polygon Punks',
-    url: 'https://medium.com/prepo/acquisition-royale-x-polygonpunks-nft-giveaway-46832fdc6fb2',
-    iconName: 'polygonPunks',
   },
   // {
   //   name: 'CrystlFinance',
