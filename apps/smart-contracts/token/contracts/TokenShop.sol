@@ -9,24 +9,17 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/ITokenShop.sol";
 import "./interfaces/IPurchaseHook.sol";
 import "prepo-shared-contracts/contracts/SafeOwnable.sol";
+import "prepo-shared-contracts/contracts/Pausable.sol";
 
-contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
+contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard, Pausable {
   using SafeERC20 for IERC20;
 
   IERC20 private _paymentToken;
-  // TODO: Separate pausing logic to a separate Pausable.sol
-  bool private _paused;
   IPurchaseHook private _purchaseHook;
   mapping(address => mapping(uint256 => uint256)) private _contractToIdToPrice;
   mapping(address => mapping(address => uint256)) private _userToERC721ToPurchaseCount;
   mapping(address => mapping(address => mapping(uint256 => uint256)))
     private _userToERC1155ToIdToPurchaseCount;
-
-  //TODO: move it into Pausable.sol
-  modifier whenNotPaused() {
-    require(!_paused, "Token Shop: paused");
-    _;
-  }
 
   constructor(address _nominatedOwner, address _newPaymentToken) {
     transferOwnership(_nominatedOwner);
@@ -45,10 +38,6 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
     for (uint256 i; i < _tokenContracts.length; ++i) {
       _contractToIdToPrice[_tokenContracts[i]][_ids[i]] = _prices[i];
     }
-  }
-
-  function setPaused(bool _newPaused) external override onlyOwner {
-    _paused = _newPaused;
   }
 
   function setPurchaseHook(address _newPurchaseHook) external override onlyOwner {
@@ -116,10 +105,6 @@ contract TokenShop is ITokenShop, SafeOwnable, ReentrancyGuard {
 
   function getPrice(address _tokenContract, uint256 _id) external view override returns (uint256) {
     return _contractToIdToPrice[_tokenContract][_id];
-  }
-
-  function isPaused() external view override returns (bool) {
-    return _paused;
   }
 
   function getPaymentToken() external view override returns (address) {
