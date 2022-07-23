@@ -18,12 +18,6 @@ interface IVesting {
 
   /**
    * @dev Only callable by `owner()`.
-   * @param newPaused Whether claiming of vested tokens should be paused
-   */
-  function setPaused(bool newPaused) external;
-
-  /**
-   * @dev Only callable by `owner()`.
    * @param newToken Address of the ERC20 token to be vested
    */
   function setToken(address newToken) external;
@@ -57,12 +51,6 @@ interface IVesting {
    * adjusted to be lower.
    */
   function claim() external;
-
-  /**
-   * @return True if claiming of vested tokens is paused,
-   * false otherwise
-   */
-  function getPaused() external view returns (bool);
 
   /**
    * @return Address of the vested tokens
