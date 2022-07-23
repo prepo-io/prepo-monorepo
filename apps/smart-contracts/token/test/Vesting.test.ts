@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import chai, { expect } from 'chai'
+import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { BigNumber } from 'ethers'
@@ -10,10 +10,10 @@ import { Web3Provider } from '@ethersproject/providers'
 import { vestingFixture } from './fixtures/VestingFixtures'
 import { mockERC20Fixture } from './fixtures/MockERC20Fixtures'
 import { mockVestingClaimerFixture } from './fixtures/MockVestingClaimerFixtures'
-import { ZERO, ONE, revertReason } from '../utils'
+import { ZERO, ONE } from '../utils'
 import { Vesting, MockERC20, MockVestingClaimer } from '../types/generated'
 
-const { setNextTimestamp, mineBlocks, mineBlock } = utils
+const { mineBlocks, mineBlock } = utils
 
 describe('Vesting', () => {
   let deployer: SignerWithAddress
@@ -81,7 +81,7 @@ describe('Vesting', () => {
       expect(await vesting.owner()).to.not.eq(user1.address)
 
       expect(vesting.connect(user1).setToken(mockERC20Token.address)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
+        'Ownable: caller is not the owner'
       )
     })
 
@@ -130,7 +130,7 @@ describe('Vesting', () => {
       expect(await vesting.owner()).to.not.eq(user1.address)
 
       expect(vesting.connect(user1).setVestingStartTime(vestingStartTime)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
+        'Ownable: caller is not the owner'
       )
     })
 
@@ -139,7 +139,7 @@ describe('Vesting', () => {
       expect(await vesting.getVestingEndTime()).to.be.equals(vestingEndTime)
 
       expect(vesting.connect(owner).setVestingStartTime(invalidVestingStartTime)).revertedWith(
-        revertReason('Vesting start time >= end time')
+        'Vesting start time >= end time'
       )
     })
 
@@ -148,7 +148,7 @@ describe('Vesting', () => {
       expect(await vesting.getVestingEndTime()).to.be.equals(vestingEndTime)
 
       expect(vesting.connect(owner).setVestingStartTime(invalidVestingStartTime)).revertedWith(
-        revertReason('Vesting start time >= end time')
+        'Vesting start time >= end time'
       )
     })
 
@@ -228,7 +228,7 @@ describe('Vesting', () => {
       expect(await vesting.owner()).to.not.eq(user1.address)
 
       expect(vesting.connect(user1).setVestingEndTime(vestingEndTime)).revertedWith(
-        revertReason('Ownable: caller is not the owner')
+        'Ownable: caller is not the owner'
       )
     })
 
@@ -240,7 +240,7 @@ describe('Vesting', () => {
       const invalidVestingEndTime = vestingStartTime - 1
 
       expect(vesting.connect(owner).setVestingEndTime(invalidVestingEndTime)).revertedWith(
-        revertReason('Vesting end time <= start time')
+        'Vesting end time <= start time'
       )
     })
 
@@ -252,7 +252,7 @@ describe('Vesting', () => {
       const invalidVestingEndTime = vestingStartTime
 
       expect(vesting.connect(owner).setVestingEndTime(invalidVestingEndTime)).revertedWith(
-        revertReason('Vesting end time <= start time')
+        'Vesting end time <= start time'
       )
     })
 
@@ -345,7 +345,7 @@ describe('Vesting', () => {
 
       await expect(
         vesting.connect(user1).setAllocations(recipients, amountsAllocated)
-      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+      ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if array length mismatch', async () => {
@@ -353,7 +353,7 @@ describe('Vesting', () => {
 
       await expect(
         vesting.connect(owner).setAllocations([user1.address], amountsAllocated)
-      ).revertedWith(revertReason('Array length mismatch'))
+      ).revertedWith('Array length mismatch')
     })
 
     it('allocates to single recipient', async () => {
@@ -573,24 +573,20 @@ describe('Vesting', () => {
       await vesting.connect(owner).setPaused(true)
       expect(await vesting.isPaused()).to.be.eq(true)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(revertReason('Paused'))
+      await expect(vesting.connect(user1).claim()).revertedWith('Paused')
     })
 
     it('reverts if unallocated user', async () => {
       expect(await vesting.getAmountAllocated(deployer.address)).to.be.eq(0)
 
-      await expect(vesting.connect(deployer).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(deployer).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('reverts if vesting not started', async () => {
       expect(currentTime).to.be.lt(vestingStartTime)
       expect(await vesting.connect(user1).getClaimableAmount(user1.address)).to.be.eq(0)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('reverts if allocated amount < already claimed', async () => {
@@ -613,9 +609,7 @@ describe('Vesting', () => {
       await vesting.connect(owner).setAllocations([user1.address], [newAllocation])
       expect(await vesting.getVestedAmount(user1.address)).to.be.lt(claimedAmount)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('reverts if allocated amount = already claimed', async () => {
@@ -633,9 +627,7 @@ describe('Vesting', () => {
       await vesting.connect(owner).setAllocations([user1.address], [newAllocation])
       expect(await vesting.getVestedAmount(user1.address)).to.be.lt(claimedAmount)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('reverts if vested amount < already claimed', async () => {
@@ -658,9 +650,7 @@ describe('Vesting', () => {
       await vesting.connect(owner).setAllocations([user1.address], [newAllocation])
       expect(await vesting.getVestedAmount(user1.address)).to.be.lt(claimedAmount)
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('reverts if insufficient balance in contract', async () => {
@@ -672,9 +662,7 @@ describe('Vesting', () => {
       const claimableAmount = await vesting.getClaimableAmount(user1.address)
       await mockERC20Token.connect(owner).transfer(vesting.address, claimableAmount.sub(1))
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Insufficient balance in contract')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Insufficient balance in contract')
     })
 
     it('transfers tokens if still vesting', async () => {
@@ -743,9 +731,7 @@ describe('Vesting', () => {
         contractBalanceBefore.sub(expectedChangeInBalance)
       )
 
-      await expect(vesting.connect(user1).claim()).revertedWith(
-        revertReason('Claimable amount = 0')
-      )
+      await expect(vesting.connect(user1).claim()).revertedWith('Claimable amount = 0')
     })
 
     it('transfers multiple times if still vesting', async () => {
@@ -1049,7 +1035,7 @@ describe('Vesting', () => {
 
       expect(
         vesting.connect(user1).withdrawERC20(externalERC20Token.address, amountToWithdraw)
-      ).revertedWith(revertReason('Ownable: caller is not the owner'))
+      ).revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if amount > contract balance', async () => {
@@ -1058,7 +1044,7 @@ describe('Vesting', () => {
 
       expect(
         vesting.connect(owner).withdrawERC20(externalERC20Token.address, amountToWithdraw)
-      ).revertedWith(revertReason('ERC20: transfer amount exceeds balance'))
+      ).revertedWith('ERC20: transfer amount exceeds balance')
     })
 
     it('transfers if amount = contract balance', async () => {
