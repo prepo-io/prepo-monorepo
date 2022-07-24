@@ -104,6 +104,7 @@ export class PPOStakingStore extends Erc20Store {
 
   get isWithdrawWindowActive(): boolean {
     if (!this.withdrawWindowStarted) return false
+
     return (
       !this.isCooldownActive &&
       new Date() < addDays(this.withdrawWindowStarted, MOCKED_CONFIG.withdrawWindow)
