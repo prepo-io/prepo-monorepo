@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import { Button } from 'prepo-ui'
+import { Button, Flex } from 'prepo-ui'
 import { customStyles } from './StakeUnstakeNavigationButtons'
 import { useRootStore } from '../../../context/RootStoreProvider'
 
@@ -39,14 +39,14 @@ const UnstakeButtons: React.FC = () => {
 
   if (isWithdrawWindowActive) {
     return (
-      <>
+      <Flex flexDirection="column" gap={8}>
         <Button type="primary" block onClick={endCooldown}>
           Cancel Unstaking
         </Button>
         <Button type="default" customColors={customStyles} block>
           Cancel Unstaking
         </Button>
-      </>
+      </Flex>
     )
   }
 
