@@ -62,7 +62,7 @@ const UnstakeButtons: React.FC = () => {
 
   const loading = startingCooldown
   const text = confirm ? 'Unstake PPO' : 'Begin Cooldown'
-  const onClick = confirm ? (): void => {} : startCooldown
+  const onClick = confirm ? unstakeImmediately : startCooldown
   return (
     <Button
       type={confirm ? 'primary' : 'default'}
