@@ -49,7 +49,6 @@
         "@nomicfoundation/hardhat-chai-matchers": "1.0.0-beta.0",
         "@openzeppelin/contracts": "4.4.0",
         "@openzeppelin/contracts-upgradeable": "4.4.0",
-        "@openzeppelin/hardhat-upgrades": "1.17.0",
         "@typechain/ethers-v5": "10.0.0",
         "@typechain/hardhat": "6.0.0",
         "chai": "4.3.4",

@@ -59,6 +59,8 @@
     "ethers": "5.4.7",
     "@nomiclabs/hardhat-ethers": "yarn:hardhat-deploy-ethers@0.3.0-beta.13",
     "@nomiclabs/hardhat-etherscan": "3.1.0",
+    "@openzeppelin/hardhat-upgrades": "1.19.0",
+    "@openzeppelin/hardhat-defender":  "1.7.0",
     "hardhat": "2.9.6",
     "hardhat-deploy": "0.11.10",
     "hardhat-contract-sizer": "2.1.1",

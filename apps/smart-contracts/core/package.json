@@ -47,7 +47,6 @@
         "@nomiclabs/hardhat-waffle": "2.0.1",
         "@openzeppelin/contracts": "4.4.0",
         "@openzeppelin/contracts-upgradeable": "4.4.0",
-        "@openzeppelin/hardhat-upgrades": "1.9.0",
         "@typechain/ethers-v5": "8.0.3",
         "@typechain/hardhat": "3.0.0",
         "chai": "4.3.3",
