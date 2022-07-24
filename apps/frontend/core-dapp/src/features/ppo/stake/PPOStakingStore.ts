@@ -10,11 +10,14 @@ import { RootStore } from '../../../stores/RootStore'
 type Stake = PPOStakingAbi['functions']['stake']
 type StartCooldown = PPOStakingAbi['functions']['startCooldown']
 type BalanceData = PPOStakingAbi['functions']['balanceData']
+type Withdraw = PPOStakingAbi['functions']['withdraw']
 
 // use this key to store balance in localStorage, while there's no SC
 const MOCK_KEY = 'MOCK_BALANCE_DATA'
 
 const TOKEN_SYMBOL = 'PPO_STAKING'
+
+const EXIT_COOLDOWN = false // I don't see much use in current UI implementation
 
 const MOCKED_CONFIG = {
   cooldownPeriod: 21, // 21 days cooldown period
@@ -38,6 +41,8 @@ export class PPOStakingStore extends Erc20Store {
   startingCooldownHash?: string
   endingCooldown = false
   endingCooldownHash?: string
+  withdrawing = false
+  withdrawHash?: string
 
   constructor(root: RootStore) {
     super({ root, tokenName: TOKEN_SYMBOL, factory: PPOStakingAbi__factory as unknown as Factory })
@@ -45,11 +50,18 @@ export class PPOStakingStore extends Erc20Store {
     makeObservable(this, {
       staking: observable,
       stakingHash: observable,
+      withdrawing: observable,
+      withdrawHash: observable,
+      startingCooldown: observable,
+      startingCooldownHash: observable,
+      endingCooldown: observable,
+      endingCooldownHash: observable,
       stake: action.bound,
       mockRawBalance: observable,
       getBalanceData: observable,
       startCooldown: action.bound,
       endCooldown: action.bound,
+      withdraw: action.bound,
     })
     this.subscribe()
   }
@@ -270,6 +282,67 @@ export class PPOStakingStore extends Erc20Store {
     } finally {
       runInAction(() => {
         this.endingCooldown = false
+      })
+    }
+  }
+
+  async withdraw(
+    amount: number,
+    immediate: boolean
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      runInAction(() => {
+        this.withdrawing = true
+        this.withdrawHash = undefined
+      })
+      const { address } = this.root.web3Store.signerState
+      if (!address) {
+        return {
+          success: false,
+          error: 'wallet is not connected',
+        }
+      }
+      // const { hash, wait } = await this.sendTransaction<Withdraw>('withdraw', [amount, address, EXIT_COOLDOWN, immediate])
+      // Once SC is implemented uncomment above line, and remove lines below
+      const mockStakeCall = (
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        params: Parameters<Withdraw>
+      ): Promise<{ hash: string; wait: () => Promise<void> }> =>
+        Promise.resolve({
+          hash: 'SOME_MOCKED_HASH',
+          wait: () => {
+            const balance = getMockedBalance(address)
+            if (balance) {
+              const record = {
+                ...balance,
+                raw: BigNumber.from(balance.raw).sub(BigNumber.from(params[0])),
+                cooldownUnits: 0,
+                cooldownTimestamp: 0,
+              }
+              const map = JSON.parse(localStorage.getItem(MOCK_KEY) ?? '{}')
+              map[address] = record
+              localStorage.setItem(MOCK_KEY, JSON.stringify(map))
+            }
+            return Promise.resolve()
+          },
+        })
+      const { hash, wait } = await mockStakeCall([amount, address, EXIT_COOLDOWN, immediate])
+      runInAction(() => {
+        this.withdrawHash = hash
+      })
+      await wait()
+      return {
+        success: true,
+      }
+    } catch (error) {
+      this.root.toastStore.errorToast(`Error calling withdraw`, error)
+      return {
+        success: false,
+        error: (error as Error).message,
+      }
+    } finally {
+      runInAction(() => {
+        this.withdrawing = false
       })
     }
   }
