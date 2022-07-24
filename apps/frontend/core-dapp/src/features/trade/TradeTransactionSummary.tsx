@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 import EstimateProfitLoss from './EstimateProfitLoss'
 import TransactionSummary from '../../components/TransactionSummary/TransactionSummary'
 import { Callback } from '../../types/common.types'
@@ -10,13 +11,28 @@ import { Routes } from '../../lib/routes'
 import { numberFormatter } from '../../utils/numberFormatter'
 
 const { significantDigits } = numberFormatter
+const HIGHLIGHT_IMPACT_BREAKPOINT = 5
 
 const TradeTransactionSummary: React.FC = () => {
   const router = useRouter()
-  const { tradeStore, preCTTokenStore } = useRootStore()
-  const { openTradeAmount, openTradeHash, openTradeUILoading, setOpenTradeHash, tradeDisabled } =
-    tradeStore
+  const {
+    tradeStore,
+    preCTTokenStore,
+    advancedSettingsStore: { slippage },
+  } = useRootStore()
+  const {
+    openTradeAmount,
+    openTradeHash,
+    openTradeUILoading,
+    setOpenTradeHash,
+    tradeDisabled,
+    valuation,
+  } = tradeStore
   const selectedMarket = useSelectedMarket()
+
+  useEffect(() => {
+    tradeStore.setSelectedMarket(selectedMarket)
+  }, [selectedMarket, tradeStore])
 
   const onCancel = (): void => {
     setOpenTradeHash(undefined)
@@ -47,8 +63,10 @@ const TradeTransactionSummary: React.FC = () => {
 
   if (selectedMarket === undefined) return null
 
-  const estimatedValuation = selectedMarket.estimatedValuation?.value
-    ? `$${significantDigits(selectedMarket.estimatedValuation?.value)}`
+  const estimatedValution = valuation ?? 0
+  const currentValuation = selectedMarket.estimatedValuation?.value
+  const valuationImpact = currentValuation
+    ? numberFormatter.rawPercent(estimatedValution / currentValuation - 1)
     : undefined
 
   const tradeTransactionSummary = [
@@ -57,9 +75,20 @@ const TradeTransactionSummary: React.FC = () => {
       amount: openTradeAmount,
     },
     {
-      label: 'Average Valuation Price',
+      label: 'Expected Valuation',
       tooltip: <EstimatedValuation marketName={selectedMarket.name} />,
-      amount: estimatedValuation,
+      amount: `$${significantDigits(estimatedValution)}`,
+      ignoreFormatAmount: true,
+    },
+    {
+      label: 'Valuation Impact',
+      amount: `${valuationImpact}%`,
+      ignoreFormatAmount: true,
+      warning: +(valuationImpact || 0) > HIGHLIGHT_IMPACT_BREAKPOINT,
+    },
+    {
+      label: `Maximum Valuation After Slippage (${numberFormatter.percent(slippage)})`,
+      amount: `$${significantDigits(estimatedValution * (1 + slippage))}`,
       ignoreFormatAmount: true,
     },
   ]
@@ -68,7 +97,7 @@ const TradeTransactionSummary: React.FC = () => {
     <TransactionSummary
       loading={openTradeUILoading(selectedMarket)}
       data={tradeTransactionSummary}
-      disabled={tradeDisabled}
+      disabled={tradeDisabled || valuation === undefined}
       onComplete={onComplete}
       onConfirm={handlePlaceTrade}
       onRetry={handlePlaceTrade}
