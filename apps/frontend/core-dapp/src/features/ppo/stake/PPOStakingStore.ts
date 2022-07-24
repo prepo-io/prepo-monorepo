@@ -45,6 +45,10 @@ export class PPOStakingStore extends Erc20Store {
     makeObservable(this, {
       staking: observable,
       stakingHash: observable,
+      startingCooldown: observable,
+      startingCooldownHash: observable,
+      endingCooldown: observable,
+      endingCooldownHash: observable,
       stake: action.bound,
       mockRawBalance: observable,
       getBalanceData: observable,

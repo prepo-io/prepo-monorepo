@@ -17,7 +17,7 @@ const UnstakeButtons: React.FC = () => {
 
   if (isCooldownActive) {
     return (
-      <>
+      <Flex flexDirection="column" gap={8}>
         <Button
           type="primary"
           block
@@ -33,7 +33,7 @@ const UnstakeButtons: React.FC = () => {
         <Button type="default" customColors={customStyles} block onClick={endCooldown}>
           Cancel Unstaking
         </Button>
-      </>
+      </Flex>
     )
   }
 
@@ -44,7 +44,7 @@ const UnstakeButtons: React.FC = () => {
           Cancel Unstaking
         </Button>
         <Button type="default" customColors={customStyles} block>
-          Cancel Unstaking
+          Confirm Unstaking
         </Button>
       </Flex>
     )
