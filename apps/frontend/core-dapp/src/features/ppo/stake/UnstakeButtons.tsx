@@ -26,7 +26,7 @@ const UnstakeButtons: React.FC = () => {
 
   if (isCooldownActive) {
     return (
-      <Flex flexDirection="column" gap={8}>
+      <Flex flexDirection="column" gap={8} alignItems="stretch">
         <Button
           type="primary"
           block
