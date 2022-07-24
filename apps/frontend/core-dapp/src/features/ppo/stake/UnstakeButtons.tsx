@@ -5,7 +5,7 @@ import { useRootStore } from '../../../context/RootStoreProvider'
 
 const UnstakeButtons: React.FC = () => {
   const {
-    unstakeStore: { isCurrentUnstakingValueValid, confirm, startCooldown },
+    unstakeStore: { isCurrentUnstakingValueValid, confirm, startCooldown, withdraw },
     ppoStakingStore: {
       startingCooldown,
       isCooldownActive,
@@ -15,12 +15,22 @@ const UnstakeButtons: React.FC = () => {
     },
   } = useRootStore()
 
+  const confirmUnstaking = (): Promise<{
+    success: boolean
+    error?: string | undefined
+  }> => withdraw(false)
+  const unstakeImmediately = (): Promise<{
+    success: boolean
+    error?: string | undefined
+  }> => withdraw(true)
+
   if (isCooldownActive) {
     return (
       <Flex flexDirection="column" gap={8} alignItems="stretch">
         <Button
           type="primary"
           block
+          onClick={unstakeImmediately}
           customColors={{
             background: 'error',
             border: 'error',
@@ -43,7 +53,7 @@ const UnstakeButtons: React.FC = () => {
         <Button type="primary" block onClick={endCooldown}>
           Cancel Unstaking
         </Button>
-        <Button type="default" customColors={customStyles} block>
+        <Button type="default" block customColors={customStyles} onClick={confirmUnstaking}>
           Confirm Unstaking
         </Button>
       </Flex>
@@ -52,7 +62,7 @@ const UnstakeButtons: React.FC = () => {
 
   const loading = startingCooldown
   const text = confirm ? 'Unstake PPO' : 'Begin Cooldown'
-  const onClick = confirm ? (): void => {} : startCooldown
+  const onClick = confirm ? unstakeImmediately : startCooldown
   return (
     <Button
       type={confirm ? 'primary' : 'default'}

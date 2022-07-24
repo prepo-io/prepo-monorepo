@@ -48,4 +48,11 @@ export class UnstakeStore {
     const raw = this.root.ppoStakingStore.balanceData?.raw
     return raw ? BigNumber.from(raw).toNumber() : 0
   }
+
+  withdraw = (
+    immediate: boolean
+  ): Promise<{
+    success: boolean
+    error?: string | undefined
+  }> => this.root.ppoStakingStore.withdraw(this.currentUnstakingValue, immediate)
 }
