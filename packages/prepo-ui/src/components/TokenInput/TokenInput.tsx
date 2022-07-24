@@ -165,6 +165,7 @@ const TokenInput: React.FC<Props> = ({
     hideBalance,
     balance,
     connected,
+    balanceLabel,
     canInteract,
     disableClickBalance,
     usd,
