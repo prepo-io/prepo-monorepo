@@ -1,10 +1,14 @@
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address'
 import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
+import { FakeContract, smock } from '@defi-wonderland/smock'
+import { Contract } from 'ethers'
 import { ppoFixture } from './fixtures/PPOFixtures'
 import { MAX_UINT256 } from '../utils'
 import { PPO } from '../types/generated'
+
+chai.use(smock.matchers)
 
 describe('=> PPO', () => {
   let deployer: SignerWithAddress
@@ -12,6 +16,8 @@ describe('=> PPO', () => {
   let user1: SignerWithAddress
   let user2: SignerWithAddress
   let ppo: PPO
+  let mockRestrictedTransferHook: FakeContract<Contract>
+  let mockBlocklistTransferHook: FakeContract<Contract>
 
   const deployPPO = async (): Promise<void> => {
     ;[deployer, owner, user1, user2] = await ethers.getSigners()
@@ -21,6 +27,13 @@ describe('=> PPO', () => {
   const setupPPO = async (): Promise<void> => {
     await deployPPO()
     await ppo.connect(owner).acceptOwnership()
+  }
+
+  const setupPPOAndMockTransferHooks = async (): Promise<void> => {
+    await setupPPO()
+    mockBlocklistTransferHook = await smock.fake('BlocklistTransferHook')
+    mockRestrictedTransferHook = await smock.fake('RestrictedTransferHook')
+    await ppo.connect(owner).setTransferHook(mockBlocklistTransferHook.address)
   }
 
   describe('initial state', () => {
@@ -62,7 +75,7 @@ describe('=> PPO', () => {
     })
   })
 
-  describe('#setTransferHook', () => {
+  describe('# setTransferHook', () => {
     beforeEach(async () => {
       await setupPPO()
     })
@@ -108,7 +121,33 @@ describe('=> PPO', () => {
 
   describe('# mint', () => {
     beforeEach(async () => {
-      await setupPPO()
+      await setupPPOAndMockTransferHooks()
+    })
+
+    it('reverts if transfer hook not set', async () => {
+      await ppo.connect(owner).setTransferHook(ZERO_ADDRESS)
+
+      await expect(ppo.connect(owner).mint(user1.address, 1)).revertedWith('Transfer hook not set')
+    })
+
+    it('reverts if blocklist transfer hook reverts', async () => {
+      mockBlocklistTransferHook.hook.reverts()
+
+      await expect(ppo.connect(owner).mint(user1.address, 1)).to.be.reverted
+      expect(mockBlocklistTransferHook.hook).to.have.been.calledWith(ZERO_ADDRESS, user1.address, 1)
+    })
+
+    it('reverts if restricted transfer hook reverts', async () => {
+      // as we had set mockBlocklistTransferHook in setupPPOAndMockTransferHooks
+      await ppo.connect(owner).setTransferHook(mockRestrictedTransferHook.address)
+      mockRestrictedTransferHook.hook.reverts()
+
+      await expect(ppo.connect(owner).mint(user1.address, 1)).to.be.reverted
+      expect(mockRestrictedTransferHook.hook).to.have.been.calledWith(
+        ZERO_ADDRESS,
+        user1.address,
+        1
+      )
     })
 
     it('reverts if not owner', async () => {
@@ -201,8 +240,34 @@ describe('=> PPO', () => {
 
   describe('# burn', () => {
     beforeEach(async () => {
-      await setupPPO()
+      await setupPPOAndMockTransferHooks()
       await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if transfer hook not set', async () => {
+      await ppo.connect(owner).setTransferHook(ZERO_ADDRESS)
+
+      await expect(ppo.connect(user1).burn(1)).revertedWith('Transfer hook not set')
+    })
+
+    it('reverts if blocklist transfer hook reverts', async () => {
+      mockBlocklistTransferHook.hook.reverts()
+
+      await expect(ppo.connect(user1).burn(1)).to.be.reverted
+      expect(mockBlocklistTransferHook.hook).to.have.been.calledWith(user1.address, ZERO_ADDRESS, 1)
+    })
+
+    it('reverts if restricted transfer hook reverts', async () => {
+      // as we had set mockBlocklistTransferHook in setupPPOAndMockTransferHooks
+      await ppo.connect(owner).setTransferHook(mockRestrictedTransferHook.address)
+      mockRestrictedTransferHook.hook.reverts()
+
+      await expect(ppo.connect(user1).burn(1)).to.be.reverted
+      expect(mockRestrictedTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        ZERO_ADDRESS,
+        1
+      )
     })
 
     it('reverts if amount > balance', async () => {
@@ -272,8 +337,39 @@ describe('=> PPO', () => {
 
   describe('# burnFrom', () => {
     beforeEach(async () => {
-      await setupPPO()
+      await setupPPOAndMockTransferHooks()
       await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if transfer hook not set', async () => {
+      await ppo.connect(owner).setTransferHook(ZERO_ADDRESS)
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).burnFrom(user1.address, 1)).revertedWith(
+        'Transfer hook not set'
+      )
+    })
+
+    it('reverts if blocklist transfer hook reverts', async () => {
+      mockBlocklistTransferHook.hook.reverts()
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).burnFrom(user1.address, 1)).to.be.reverted
+      expect(mockBlocklistTransferHook.hook).to.have.been.calledWith(user1.address, ZERO_ADDRESS, 1)
+    })
+
+    it('reverts if restricted transfer hook reverts', async () => {
+      // as we had set mockBlocklistTransferHook in setupPPOAndMockTransferHooks
+      await ppo.connect(owner).setTransferHook(mockRestrictedTransferHook.address)
+      mockRestrictedTransferHook.hook.reverts()
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).burnFrom(user1.address, 1)).to.be.reverted
+      expect(mockRestrictedTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        ZERO_ADDRESS,
+        1
+      )
     })
 
     it('reverts if burn from zero address', async () => {
@@ -359,6 +455,238 @@ describe('=> PPO', () => {
       await expect(tx)
         .to.emit(ppo, 'Transfer(address,address,uint256)')
         .withArgs(user1.address, ZERO_ADDRESS, 1)
+    })
+  })
+
+  describe('# transfer', () => {
+    beforeEach(async () => {
+      await setupPPOAndMockTransferHooks()
+      await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if transfer hook not set', async () => {
+      await ppo.connect(owner).setTransferHook(ZERO_ADDRESS)
+
+      await expect(ppo.connect(user1).transfer(user2.address, 1)).revertedWith(
+        'Transfer hook not set'
+      )
+    })
+
+    it('reverts if blocklist transfer hook reverts', async () => {
+      mockBlocklistTransferHook.hook.reverts()
+
+      await expect(ppo.connect(user1).transfer(user2.address, 1)).to.be.reverted
+      expect(mockBlocklistTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        user2.address,
+        1
+      )
+    })
+
+    it('reverts if restricted transfer hook reverts', async () => {
+      // as we had set mockBlocklistTransferHook in setupPPOAndMockTransferHooks
+      await ppo.connect(owner).setTransferHook(mockRestrictedTransferHook.address)
+      mockRestrictedTransferHook.hook.reverts()
+
+      await expect(ppo.connect(user1).transfer(user2.address, 1)).to.be.reverted
+      expect(mockRestrictedTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        user2.address,
+        1
+      )
+    })
+
+    it('reverts if amount > balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+
+      await expect(
+        ppo.connect(user1).transfer(user2.address, user1PPOBalanceBefore.add(1))
+      ).revertedWith('ERC20: transfer amount exceeds balance')
+    })
+
+    it('reverts if transfer to zero address', async () => {
+      await expect(ppo.connect(user1).transfer(ZERO_ADDRESS, 1)).revertedWith(
+        'ERC20: transfer to the zero address'
+      )
+    })
+
+    it('transfers if amount = 0', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+
+      await ppo.connect(user1).transfer(user2.address, 0)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(user1PPOBalanceBefore)
+      expect(await ppo.balanceOf(user2.address)).to.eq(user2PPOBalanceBefore)
+    })
+
+    it('transfers if amount < balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+
+      await ppo.connect(user1).transfer(user2.address, user1PPOBalanceBefore.sub(1))
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(1)
+      expect(await ppo.balanceOf(user2.address)).to.eq(
+        user2PPOBalanceBefore.add(user1PPOBalanceBefore.sub(1))
+      )
+    })
+
+    it('transfers if amount = balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+
+      await ppo.connect(user1).transfer(user2.address, user1PPOBalanceBefore)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(0)
+      expect(await ppo.balanceOf(user2.address)).to.eq(
+        user2PPOBalanceBefore.add(user1PPOBalanceBefore)
+      )
+    })
+
+    it('emits transfer if amount = 0', async () => {
+      const tx = await ppo.connect(user1).transfer(user2.address, 0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, user2.address, 0)
+    })
+
+    it('emits transfer if amount > 0', async () => {
+      const tx = await ppo.connect(user1).transfer(user2.address, 1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, user2.address, 1)
+    })
+  })
+
+  describe('# transferFrom', () => {
+    beforeEach(async () => {
+      await setupPPOAndMockTransferHooks()
+      await ppo.connect(owner).mint(user1.address, 10)
+    })
+
+    it('reverts if transfer hook not set', async () => {
+      await ppo.connect(owner).setTransferHook(ZERO_ADDRESS)
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).transferFrom(user1.address, user2.address, 1)).revertedWith(
+        'Transfer hook not set'
+      )
+    })
+
+    it('reverts if blocklist transfer hook reverts', async () => {
+      mockBlocklistTransferHook.hook.reverts()
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).transferFrom(user1.address, user2.address, 1)).to.be.reverted
+      expect(mockBlocklistTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        user2.address,
+        1
+      )
+    })
+
+    it('reverts if restricted transfer hook reverts', async () => {
+      // as we had set mockBlocklistTransferHook in setupPPOAndMockTransferHooks
+      await ppo.connect(owner).setTransferHook(mockRestrictedTransferHook.address)
+      mockRestrictedTransferHook.hook.reverts()
+      await ppo.connect(user1).approve(user2.address, 1)
+
+      await expect(ppo.connect(user2).transferFrom(user1.address, user2.address, 1)).to.be.reverted
+      expect(mockRestrictedTransferHook.hook).to.have.been.calledWith(
+        user1.address,
+        user2.address,
+        1
+      )
+    })
+
+    it('reverts if amount > allowance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore.sub(1))
+
+      await expect(
+        ppo.connect(user2).transferFrom(user1.address, user2.address, user1PPOBalanceBefore)
+      ).to.revertedWith('ERC20: transfer amount exceeds allowance')
+    })
+
+    it('reverts if amount > balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore.add(1))
+
+      await expect(
+        ppo.connect(user2).transferFrom(user1.address, user2.address, user1PPOBalanceBefore.add(1))
+      ).to.revertedWith('ERC20: transfer amount exceeds balance')
+    })
+
+    it('reverts if transfer from zero address', async () => {
+      await expect(ppo.connect(user2).transferFrom(ZERO_ADDRESS, user2.address, 1)).to.revertedWith(
+        'ERC20: transfer from the zero address'
+      )
+    })
+
+    it('reverts if transfer to zero address', async () => {
+      await expect(ppo.connect(user2).transferFrom(user1.address, ZERO_ADDRESS, 1)).to.revertedWith(
+        'ERC20: transfer to the zero address'
+      )
+    })
+
+    it('transfers if amount = 0', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+      await ppo.connect(user1).approve(user2.address, 0)
+
+      await ppo.connect(user2).transferFrom(user1.address, user2.address, 0)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(user1PPOBalanceBefore)
+      expect(await ppo.balanceOf(user2.address)).to.eq(user2PPOBalanceBefore)
+    })
+
+    it('transfers if amount < balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore.sub(1))
+
+      await ppo
+        .connect(user2)
+        .transferFrom(user1.address, user2.address, user1PPOBalanceBefore.sub(1))
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(1)
+      expect(await ppo.balanceOf(user2.address)).to.eq(
+        user2PPOBalanceBefore.add(user1PPOBalanceBefore.sub(1))
+      )
+    })
+
+    it('transfers if amount = balance', async () => {
+      const user1PPOBalanceBefore = await ppo.balanceOf(user1.address)
+      const user2PPOBalanceBefore = await ppo.balanceOf(user2.address)
+      await ppo.connect(user1).approve(user2.address, user1PPOBalanceBefore)
+
+      await ppo.connect(user2).transferFrom(user1.address, user2.address, user1PPOBalanceBefore)
+
+      expect(await ppo.balanceOf(user1.address)).to.eq(0)
+      expect(await ppo.balanceOf(user2.address)).to.eq(
+        user2PPOBalanceBefore.add(user1PPOBalanceBefore)
+      )
+    })
+
+    it('emits transfer if amount = 0', async () => {
+      await ppo.connect(user1).approve(user2.address, 0)
+      const tx = await ppo.connect(user2).transferFrom(user1.address, user2.address, 0)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, user2.address, 0)
+    })
+
+    it('emits transfer if amount > 0', async () => {
+      await ppo.connect(user1).approve(user2.address, 1)
+      const tx = await ppo.connect(user2).transferFrom(user1.address, user2.address, 1)
+
+      await expect(tx)
+        .to.emit(ppo, 'Transfer(address,address,uint256)')
+        .withArgs(user1.address, user2.address, 1)
     })
   })
 })
