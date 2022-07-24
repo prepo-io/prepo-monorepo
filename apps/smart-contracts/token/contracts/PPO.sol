@@ -40,4 +40,14 @@ contract PPO is IPPO, SafeOwnableUpgradeable, ERC20BurnableUpgradeable {
   function getTransferHook() external view override returns (ITransferHook) {
     return _transferHook;
   }
+
+  function _beforeTokenTransfer(
+    address _from,
+    address _to,
+    uint256 _amount
+  ) internal override {
+    require(address(_transferHook) != address(0), "Transfer hook not set");
+    _transferHook.hook(_from, _to, _amount);
+    super._beforeTokenTransfer(_from, _to, _amount);
+  }
 }
