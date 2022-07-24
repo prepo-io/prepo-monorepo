@@ -3,6 +3,7 @@ import '@nomiclabs/hardhat-etherscan'
 import '@nomicfoundation/hardhat-chai-matchers'
 import '@typechain/ethers-v5'
 import '@typechain/hardhat'
+import '@openzeppelin/hardhat-defender'
 import '@openzeppelin/hardhat-upgrades'
 import { config as dotenvConfig } from 'dotenv'
 import 'hardhat-contract-sizer'
@@ -79,6 +80,10 @@ const config: HardhatUserConfig = {
     alphaSort: true,
     disambiguatePaths: false,
     runOnCompile: false,
+  },
+  defender: {
+    apiKey: process.env.DEFENDER_API_KEY,
+    apiSecret: process.env.DEFENDER_API_SECRET,
   },
 }
 
