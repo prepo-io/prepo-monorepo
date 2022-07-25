@@ -4,6 +4,7 @@ pragma solidity =0.8.7;
 import "./interfaces/IWithdrawTokens.sol";
 import "./SafeOwnable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract WithdrawTokens is IWithdrawTokens, SafeOwnable {
@@ -15,6 +16,7 @@ contract WithdrawTokens is IWithdrawTokens, SafeOwnable {
     external
     override
     onlyOwner
+    nonReentrant
   {
     require(_erc20Tokens.length == _amounts.length, "Array length mismatch");
     for (uint256 i; i < _erc20Tokens.length; ++i) {
