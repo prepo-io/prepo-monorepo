@@ -44,7 +44,6 @@ describe('WithdrawTokens', () => {
       firstMockERC20 = await mockERC20Factory.deploy('firstMockERC20', 'MERC20F')
       await firstMockERC20.connect(owner).mint(withdrawTokens.address, parseEther('1'))
       secondMockERC20 = await mockERC20Factory.deploy('secondMockERC20', 'MERC20S')
-      await firstMockERC20.connect(owner).mint(withdrawTokens.address, parseEther('1'))
       await secondMockERC20.connect(owner).mint(withdrawTokens.address, parseEther('1'))
     })
 
