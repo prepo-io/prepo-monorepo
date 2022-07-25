@@ -6,4 +6,10 @@ interface IWithdrawTokens {
   function batchWithdrawERC20(address[] calldata erc20Tokens, uint256[] calldata amounts) external;
 
   function batchWithdrawERC721(address[] calldata erc721Tokens, uint256[] calldata ids) external;
+
+  function batchWithdrawERC1155(
+    address[] calldata erc1155Tokens,
+    uint256[] calldata ids,
+    uint256[] calldata amounts
+  ) external;
 }
