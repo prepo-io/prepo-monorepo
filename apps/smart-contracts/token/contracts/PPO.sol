@@ -3,9 +3,10 @@ pragma solidity =0.8.7;
 
 import "./interfaces/IPPO.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "prepo-shared-contracts/contracts/SafeOwnableUpgradeable.sol";
 
-contract PPO is IPPO, SafeOwnableUpgradeable, ERC20BurnableUpgradeable {
+contract PPO is IPPO, SafeOwnableUpgradeable, ERC20BurnableUpgradeable, ERC20PermitUpgradeable {
   ITransferHook private _transferHook;
 
   function initialize(
@@ -15,6 +16,7 @@ contract PPO is IPPO, SafeOwnableUpgradeable, ERC20BurnableUpgradeable {
   ) public initializer {
     __Ownable_init();
     __ERC20_init(_name, _symbol);
+    __ERC20Permit_init(_name);
     transferOwnership(_nominatedOwner);
   }
 

@@ -3,6 +3,7 @@ import { BigNumber, BigNumberish } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 import { solidityKeccak256, formatBytes32String } from 'ethers/lib/utils'
+import { TypedDataUtils } from 'eth-sig-util'
 
 export const MAX_UINT64 = BigNumber.from(2).pow(64).sub(1)
 export const MAX_INT64 = BigNumber.from(2).pow(63).sub(1)
@@ -123,4 +124,33 @@ export function divRoundingUp(num: BigNumber, denominator: BigNumber): BigNumber
   const remainder = num.mod(denominator)
   if (remainder.eq(0)) return res
   return res.add(1)
+}
+
+// EIP712 and Permit structures taken from OpenZeppelin's test suite
+export const EIP712Domain = [
+  { name: 'name', type: 'string' },
+  { name: 'version', type: 'string' },
+  { name: 'chainId', type: 'uint256' },
+  { name: 'verifyingContract', type: 'address' },
+]
+
+export const Permit = [
+  { name: 'owner', type: 'address' },
+  { name: 'spender', type: 'address' },
+  { name: 'value', type: 'uint256' },
+  { name: 'nonce', type: 'uint256' },
+  { name: 'deadline', type: 'uint256' },
+]
+
+export function generateDomainSeparator(
+  name: string,
+  version: string,
+  chainId: number,
+  verifyingContract: string
+): string {
+  return `0x${TypedDataUtils.hashStruct(
+    'EIP712Domain',
+    { name, version, chainId, verifyingContract },
+    { EIP712Domain }
+  ).toString('hex')}`
 }
