@@ -59,9 +59,7 @@ describe('WithdrawTokens', () => {
       expect([firstMockERC20].length).to.not.eq([1, 2].length)
 
       await expect(
-        withdrawTokens
-          .connect(owner)
-          .batchWithdrawERC20([firstMockERC20.address], [1, 2])
+        withdrawTokens.connect(owner).batchWithdrawERC20([firstMockERC20.address], [1, 2])
       ).revertedWith('Array length mismatch')
     })
 
