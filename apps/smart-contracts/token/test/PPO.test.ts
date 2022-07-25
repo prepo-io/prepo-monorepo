@@ -5,7 +5,7 @@ import { ZERO_ADDRESS, JUNK_ADDRESS } from 'prepo-constants'
 import { FakeContract, smock } from '@defi-wonderland/smock'
 import { Contract } from 'ethers'
 import { ppoFixture } from './fixtures/PPOFixtures'
-import { MAX_UINT256 } from '../utils'
+import { generateDomainSeparator, MAX_UINT256 } from '../utils'
 import { PPO } from '../types/generated'
 
 chai.use(smock.matchers)
@@ -67,11 +67,23 @@ describe('=> PPO', () => {
     })
 
     it('sets owner token balance to zero', async () => {
-      await ppo.balanceOf(deployer.address)
+      expect(await ppo.balanceOf(deployer.address)).to.eq(0)
     })
 
     it('sets nominee token balance to zero', async () => {
-      await ppo.balanceOf(owner.address)
+      expect(await ppo.balanceOf(owner.address)).to.eq(0)
+    })
+
+    it('generates domain separator from token name', async () => {
+      /**
+       * Domain separator is generated using the chainId accessed via
+       * `block.chainid`. It seems that the hardhat test network will return
+       * 0 for the chainId when accessed in-contract via `block.chainid`, even
+       * though the network provider designates 31337 for hardhat networks.
+       */
+      expect(await ppo.DOMAIN_SEPARATOR()).to.eq(
+        generateDomainSeparator('prePO Token', '1', 0, ppo.address)
+      )
     })
   })
 
